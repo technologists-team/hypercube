@@ -84,7 +84,10 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
 
     public void Register(Type type, Func<DependenciesContainer, object> factory)
     {
-        _factories[type] = factory;
+        lock (_lock)
+        {
+            _factories[type] = factory;
+        }
     }
 
     public T Resolve<T>()
