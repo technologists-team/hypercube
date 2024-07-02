@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Shared.Math\Hypercube.Shared.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Shared\Hypercube.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenTK" Version="5.0.0-pre.10" />
+      <PackageReference Include="OpenToolkit.Graphics" Version="4.0.0-pre9.3" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Input\Binding\" />
+    </ItemGroup>
+
+</Project>
