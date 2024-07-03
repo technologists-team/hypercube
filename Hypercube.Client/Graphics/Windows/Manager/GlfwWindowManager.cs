@@ -22,7 +22,7 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
     public bool Init()
     {
         DependencyManager.Inject(this);
-        InitChannels();
+
         if (!GlfwInit())
             return false;
 
@@ -48,11 +48,6 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         while (_running)
         {
             GLFW.WaitEvents();
-
-            while (_cmdReader.TryRead(out var cmd) && _running)
-            {
-                ProcessCmd(cmd);
-            }
         }
     }
 
@@ -68,7 +63,7 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         // Send an empty event to unfreeze the window
         // so that the lifecycle can be instantly terminated.
         // Otherwise, main app thread will wait for an event that will never come
-        GLFW.PostEmptyEvent();
+        // GLFW.PostEmptyEvent();
         
         _logger.EngineInfo("Exit main loop");
     }

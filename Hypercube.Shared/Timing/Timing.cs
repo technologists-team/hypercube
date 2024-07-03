@@ -4,7 +4,6 @@ namespace Hypercube.Shared.Timing;
 
 public class Timing : ITiming
 {
-    public FrameEventArgs FrameEventArgs => new((float)RealFrameTime.TotalSeconds);
     public TimeSpan RealTime => _stopwatch.Elapsed;
     
     public double Fps { get; private set; }

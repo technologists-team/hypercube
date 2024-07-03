@@ -4,29 +4,29 @@ namespace Hypercube.Client.Input.Handler;
 
 public sealed class InputHandler : IInputHandler
 {
-    public event Action<KeyStateArgs>? KeyUp;
-    public event Action<KeyStateArgs>? KeyDown;
+    public event Action<KeyStateChangedArgs>? KeyUp;
+    public event Action<KeyStateChangedArgs>? KeyDown;
     
     private readonly ILogger _logger = LoggingManager.GetLogger("input_handler");
 
-    public void SendKeyState(KeyStateArgs args)
+    public void SendKeyState(KeyStateChangedArgs changedArgs)
     {
 #if DEBUG
         // Use only in Debug build,
         // as this check can take quite a lot of performance during input processing
-        if (!Enum.IsDefined(typeof(Key), args.Key))
+        if (!Enum.IsDefined(typeof(Key), changedArgs.Key))
         {
-            _logger.Warning($"Unknown key {args.Key} handled");
+            _logger.Warning($"Unknown key {changedArgs.Key} handled");
             return;
         }
 #endif
         
-        if (args.Pressed)
+        if (changedArgs.Pressed)
         {
-            KeyUp?.Invoke(args);
+            KeyUp?.Invoke(changedArgs);
             return;
         }
         
-        KeyDown?.Invoke(args);
+        KeyDown?.Invoke(changedArgs);
     }
 }

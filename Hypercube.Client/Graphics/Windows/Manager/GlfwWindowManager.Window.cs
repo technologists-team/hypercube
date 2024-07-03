@@ -9,9 +9,9 @@ namespace Hypercube.Client.Graphics.Windows.Manager;
 
 public sealed unsafe partial class GlfwWindowManager
 {
-    public (WindowRegistration? registration, string? error) WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare)
-    {
-        GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
+    public WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare)
+    { 
+ GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
         GLFW.WindowHint(WindowHintString.X11InstanceName, "Hypercube");
 
         if (context is null)
@@ -94,7 +94,7 @@ public sealed unsafe partial class GlfwWindowManager
         if (window is null)
         {
             Terminate();
-            return (null, GLFWHelper.GetError());
+            return new WindowCreateResult(null, GLFWHelper.GetError());
         }
 
         
@@ -102,9 +102,9 @@ public sealed unsafe partial class GlfwWindowManager
         if (settings.NoTitleBar)
             GLFW.WindowHint(WindowHintBool.Decorated, false);
 
-        return (WindowSetup(window), null);
+        return new WindowCreateResult(WindowSetup(window), null);
     }
-     
+
      private GlfwWindowRegistration WindowSetup(Window* window)
      {
          var registration = new GlfwWindowRegistration
@@ -168,9 +168,5 @@ public sealed unsafe partial class GlfwWindowManager
 
          return null;
      }
-     
-     private void CrateWindowThreadHandle(CmdCreateWindow args)
-     {
-        
-     }
+    
 }

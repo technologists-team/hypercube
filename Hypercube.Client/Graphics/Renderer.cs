@@ -1,16 +1,21 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
+using Hypercube.Client.Runtimes.Event;
+using Hypercube.Client.Runtimes.Loop.Event;
+using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit;
-using FrameEventArgs = Hypercube.Shared.Timing.FrameEventArgs;
 
 namespace Hypercube.Client.Graphics;
 
-public sealed partial class Renderer : IRenderer
+public sealed partial class Renderer : IRenderer, IPostInject
 {
+    [Dependency] private readonly IEventBus _eventBus = default!;
+    
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL =  LoggingManager.GetLogger("open_gl")!;
     
@@ -59,13 +64,21 @@ public sealed partial class Renderer : IRenderer
         }
     }.ToFrozenDictionary();
     
-    public void Startup()
+    public void PostInject()
+    {
+        _eventBus.Subscribe<InitializationEvent>(OnInitialization);
+        _eventBus.Subscribe<StartupEvent>(OnStartup);
+        _eventBus.Subscribe<UpdateFrameEvent>(OnFrameUpdate);
+        _eventBus.Subscribe<RenderFrameEvent>(OnFrameRender);
+    }
+
+    private void OnInitialization(InitializationEvent args)
     {
         _windowManager = CreateWindowManager();
         _bindingsContext = new BindingsContext(_windowManager);
     }
 
-    public void StartupLoop()
+    private void OnStartup(StartupEvent args)
     {
         _currentThread = Thread.CurrentThread;
         _logger.EngineInfo($"Working thread {_currentThread.Name}");
@@ -84,11 +97,16 @@ public sealed partial class Renderer : IRenderer
         InitOpenGL();
     }
 
-    public void FrameUpdate(object? sender, FrameEventArgs args)
+    private void OnFrameUpdate(UpdateFrameEvent args)
     {
         _windowManager.PollEvents();
     }
 
+    private void OnFrameRender(RenderFrameEvent args)
+    {
+
+    }
+    
     private IWindowManager CreateWindowManager()
     {
         var windowManager = new GlfwWindowManager();

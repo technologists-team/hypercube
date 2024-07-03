@@ -8,9 +8,9 @@ namespace Hypercube.Client.Input.Handler;
 /// </summary>
 public interface IInputHandler
 {
-    event Action<KeyStateArgs>? KeyUp; 
-    event Action<KeyStateArgs>? KeyDown; 
+    event Action<KeyStateChangedArgs>? KeyUp; 
+    event Action<KeyStateChangedArgs>? KeyDown; 
     
     // TODO: Create Analyzer to allow access only for IWindowManager implementation
-    void SendKeyState(KeyStateArgs args);
+    void SendKeyState(KeyStateChangedArgs changedArgs);
 }

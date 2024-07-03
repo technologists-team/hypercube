@@ -14,7 +14,7 @@ public interface IWindowManager : IDisposable
     // Cursor
     
     // Window
-    (WindowRegistration? registration, string? error) WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare);
+    WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare);
     void MakeContextCurrent(WindowRegistration? window);
     void WindowDestroy(WindowRegistration window);
     void WindowSetTitle();

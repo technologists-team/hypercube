@@ -4,6 +4,7 @@ using Hypercube.Client.Input.Manager;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client;
@@ -17,12 +18,14 @@ public static class Dependencies
     public static void Register(DependenciesContainer rootContainer)
     {
         rootContainer.Register<ITiming, Timing>();
+        rootContainer.Register<IEventBus, EventBus>();
+        
+        rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
         
         rootContainer.Register<IInputHandler, InputHandler>();
         rootContainer.Register<IInputManager, InputManager>();
         
         rootContainer.Register<IRenderer, Renderer>();
         rootContainer.Register<Runtime>(_ => new Runtime(rootContainer));
-        rootContainer.Register<RuntimeLoop>();
     }
 }

@@ -1,31 +1,29 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Client.Runtimes.Loop.Event;
+using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client.Runtimes.Loop;
 
-public class RuntimeLoop
+public sealed class RuntimeLoop : IRuntimeLoop
 {
     [Dependency] private readonly ITiming _timing = default!;
-    
-    public event EventHandler<FrameEventArgs>? Input;
-    public event EventHandler<FrameEventArgs>? Tick;
-    public event EventHandler<FrameEventArgs>? Update;
-    public event EventHandler<FrameEventArgs>? Render;
+    [Dependency] private readonly IEventBus _eventBus = default!;
     
     public bool Running { get; private set; }
-
+    
     public void Run()
     {
         Running = true;
         while (Running)
         {
             _timing.StartFrame();
-            var realFrameEvent = _timing.FrameEventArgs; 
-            
-            Input?.Invoke(this, realFrameEvent);
-            Tick?.Invoke(this, realFrameEvent);
-            Update?.Invoke(this, realFrameEvent);
-            Render?.Invoke(this, realFrameEvent);
+
+            var deltaTime = (float)_timing.RealFrameTime.TotalSeconds;
+            _eventBus.Invoke(new InputFrameEvent(deltaTime));
+            _eventBus.Invoke(new TickFrameEvent(deltaTime));
+            _eventBus.Invoke(new UpdateFrameEvent(deltaTime));
+            _eventBus.Invoke(new RenderFrameEvent(deltaTime));
         }
     }
 

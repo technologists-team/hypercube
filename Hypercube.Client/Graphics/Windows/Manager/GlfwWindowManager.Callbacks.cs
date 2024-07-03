@@ -41,7 +41,7 @@ public sealed unsafe partial class GlfwWindowManager
                 throw new ArgumentOutOfRangeException(nameof(action), action, null);
         }
         
-        _inputHandler.SendKeyState(new KeyStateArgs(
+        _inputHandler.SendKeyState(new KeyStateChangedArgs(
             key,
             pressed,
             repeat,

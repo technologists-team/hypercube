@@ -1,4 +1,5 @@
-﻿using Hypercube.Client.Graphics.Windows;
+﻿using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Graphics.Windows;
 
 namespace Hypercube.Client.Graphics;
 
@@ -37,11 +38,11 @@ public sealed partial class Renderer
 
     public void CloseWindow(WindowRegistration registration)
     {
-        WindowClosed?.Invoke(registration);
-
+        _eventBus.Invoke(new WindowClosedEvent(registration));
+        
         if (registration.Id == _mainWindowId)
         {
-            MainWindowClosed?.Invoke(registration);
+            _eventBus.Invoke(new MainWindowClosedEvent(registration));
             return;
         }
         
@@ -66,9 +67,11 @@ public sealed partial class Renderer
 
     private (WindowRegistration? registration, string? error) CreateWindow(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? share)
     {
-        var (registration, error) = _windowManager.WindowCreate(context, settings, share);
-        if (registration is null)
-            return (null, error);
+        var result = _windowManager.WindowCreate(context, settings, share);
+        if (result.Failed)
+            return (null, result.Error);
+
+        var registration = result.Registration;
         
         _windowManager.MakeContextCurrent(registration);
         _windows.Add(registration.Id, registration);
