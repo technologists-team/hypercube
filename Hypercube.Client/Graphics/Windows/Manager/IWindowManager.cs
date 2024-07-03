@@ -21,7 +21,7 @@ public interface IWindowManager : IDisposable
     void WindowSetMonitor();
     void WindowRequestAttention();
     void WindowSetVisible();
-    void WindowSwapBuffers();
+    void WindowSwapBuffers(WindowRegistration window);
 
     nint GetProcAddress(string procName);
 }

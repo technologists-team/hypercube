@@ -77,7 +77,7 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
 
             var reg = (GlfwWindowRegistration)window;
 
-            GLFW.MakeContextCurrent(reg.GlfwWindow);
+            GLFW.MakeContextCurrent(reg.Pointer);
             return;
         }
 
@@ -109,9 +109,12 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         throw new NotImplementedException();
     }
 
-    public void WindowSwapBuffers()
+    public void WindowSwapBuffers(WindowRegistration window)
     {
-        throw new NotImplementedException();
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.SwapBuffers(glfwWindow.Pointer);
     }
 
     public void Dispose()

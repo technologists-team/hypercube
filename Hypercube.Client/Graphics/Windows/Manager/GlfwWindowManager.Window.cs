@@ -54,7 +54,7 @@ public sealed unsafe partial class GlfwWindowManager
         
         Window* share = null;
         if (contextShare is GlfwWindowRegistration glfwShare)
-            share = glfwShare.GlfwWindow;
+            share = glfwShare.Pointer;
         
         Monitor* monitor = null;
         if (settings.Monitor is null || !_threadMonitors.TryGetValue(settings.Monitor.Id, out var threadMonitorRegistration)) {
@@ -109,7 +109,7 @@ public sealed unsafe partial class GlfwWindowManager
      {
          var registration = new GlfwWindowRegistration
          {
-             GlfwWindow = window,
+             Pointer = window,
              Id = new WindowId(_nextWindowId++)
          };
 
@@ -127,7 +127,7 @@ public sealed unsafe partial class GlfwWindowManager
          if (registration is not GlfwWindowRegistration glfwRegistration)
              return;
 
-         var window = glfwRegistration.GlfwWindow;
+         var window = glfwRegistration.Pointer;
          if (OperatingSystem.IsWindows() && glfwRegistration.Owner is not null)
          {
              // On Windows, closing the child window causes the owner to be minimized, apparently.
@@ -160,7 +160,7 @@ public sealed unsafe partial class GlfwWindowManager
              if (registration is not GlfwWindowRegistration glfwRegistration)
                  continue;
              
-             if (glfwRegistration.GlfwWindow != window)
+             if (glfwRegistration.Pointer != window)
                  continue;
 
              return glfwRegistration;

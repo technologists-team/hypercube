@@ -4,5 +4,5 @@ namespace Hypercube.Client.Graphics.Windows.Manager.Registrations;
 
 public class GlfwWindowRegistration : WindowRegistration
 {
-    public unsafe Window* GlfwWindow;
+    public unsafe Window* Pointer;
 }

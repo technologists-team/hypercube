@@ -1,5 +1,4 @@
-﻿using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics;
@@ -27,10 +26,5 @@ public sealed partial class Renderer
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
         
         _loggerOpenGL.EngineInfo("Initialized");
-    }
-
-    public void FrameUpdate(object? sender, FrameEventArgs args)
-    {
-
     }
 }

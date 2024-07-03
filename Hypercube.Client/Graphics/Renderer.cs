@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using System.Drawing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Client.Runtimes.Event;
@@ -9,6 +10,8 @@ using Hypercube.Shared.Logging;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit;
+using OpenToolkit.Graphics.OpenGL4;
+using GL = OpenToolkit.Graphics.OpenGL4.GL;
 
 namespace Hypercube.Client.Graphics;
 
@@ -104,7 +107,10 @@ public sealed partial class Renderer : IRenderer, IPostInject
 
     private void OnFrameRender(RenderFrameEvent args)
     {
-
+        GL.Clear(ClearBufferMask.ColorBufferBit);
+        GL.ClearColor(Color.Chartreuse);
+        
+        _windowManager.WindowSwapBuffers(MainWindow);
     }
     
     private IWindowManager CreateWindowManager()
