@@ -48,4 +48,12 @@ public sealed unsafe partial class GlfwWindowManager
             (KeyModifiers)mods,
             scanCode));
     }
+
+    private void OnWindowResized(Window* window, int width, int height)
+    {
+        if (!TryGetWindow(window, out var registration))
+            return;
+
+        registration.SetSize(width, height);
+    }
 }

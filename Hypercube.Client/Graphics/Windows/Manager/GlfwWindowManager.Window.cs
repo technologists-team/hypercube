@@ -12,7 +12,7 @@ public sealed unsafe partial class GlfwWindowManager
 {
     public WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare)
     { 
- GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
+        GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
         GLFW.WindowHint(WindowHintString.X11InstanceName, "Hypercube");
 
         if (context is null)
@@ -126,6 +126,7 @@ public sealed unsafe partial class GlfwWindowManager
          // Setting callbacks
          GLFW.SetKeyCallback(window, OnWindowKeyHandled);
          GLFW.SetWindowCloseCallback(window, OnWindowClosed);
+         GLFW.SetWindowSizeCallback(window, OnWindowResized);
          
          return registration;
      }

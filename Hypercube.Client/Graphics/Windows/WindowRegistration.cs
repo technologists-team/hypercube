@@ -13,6 +13,11 @@ public abstract class WindowRegistration
     
     public float Ratio { get; init; }
     
-    public Vector2Int Size { get; init; }
+    public Vector2Int Size { get; set; }
     public Vector2Int FramebufferSize { get; init; }
-}
+
+    public void SetSize(int width, int height)
+    {
+        Size = new Vector2Int(width, height);
+    }
+} 
