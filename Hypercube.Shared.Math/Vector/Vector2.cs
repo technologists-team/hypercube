@@ -53,4 +53,28 @@ public readonly partial struct Vector2(float x, float y)
     {
         return new Vector2(a.X - b, a.Y - b);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator *(Vector2 a, Vector2 b)
+    {
+        return new Vector2(a.X * b.X, a.Y * b.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator *(Vector2 a, float b)
+    {
+        return new Vector2(a.X * b, a.Y * b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator /(Vector2 a, Vector2 b)
+    {
+        return new Vector2(a.X / b.X, a.Y / b.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator /(Vector2 a, float b)
+    {
+        return new Vector2(a.X / b, a.Y / b);
+    }
 }

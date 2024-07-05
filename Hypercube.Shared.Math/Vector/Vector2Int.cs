@@ -1,6 +1,6 @@
 ﻿namespace Hypercube.Math.Vector;
 
-public readonly struct Vector2Int(int x, int y)
+public readonly partial struct Vector2Int(int x, int y)
 {
     public static readonly Vector2Int Zero = new(0, 0);
     public static readonly Vector2Int One = new(1, 1);
@@ -11,6 +11,7 @@ public readonly struct Vector2Int(int x, int y)
     
     public readonly int X = x;
     public readonly int Y = y;
+    public readonly float Ratio = x / (float)y;
 
     public static Vector2Int operator +(Vector2Int a, Vector2Int b)
     {

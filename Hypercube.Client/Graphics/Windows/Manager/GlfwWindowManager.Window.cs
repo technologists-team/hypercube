@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
+using Hypercube.Math.Vector;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
@@ -107,10 +108,17 @@ public sealed unsafe partial class GlfwWindowManager
 
      private GlfwWindowRegistration WindowSetup(Window* window)
      {
+         GLFWHelper.GetFramebufferSize(window, out var framebufferSize);
+         GLFWHelper.GetWindowSize(window, out var size);
+         
          var registration = new GlfwWindowRegistration
          {
              Pointer = window,
-             Id = new WindowId(_nextWindowId++)
+             Id = new WindowId(_nextWindowId++),
+             
+             Ratio = framebufferSize.Ratio,
+             Size = size,
+             FramebufferSize = framebufferSize
          };
 
          registration.Handle = new WindowHandle(_renderer, registration);

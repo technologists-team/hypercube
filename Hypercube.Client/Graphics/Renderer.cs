@@ -18,54 +18,58 @@ namespace Hypercube.Client.Graphics;
 public sealed partial class Renderer : IRenderer, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
-    
+
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
-    private readonly ILogger _loggerOpenGL =  LoggingManager.GetLogger("open_gl")!;
-    
+    private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
+
     private IWindowManager _windowManager = default!;
     private IBindingsContext _bindingsContext = default!;
     private Thread _currentThread = default!;
 
     private RendererOpenGLVersion _version = RendererOpenGLVersion.GL33;
-    private readonly FrozenDictionary<RendererOpenGLVersion, ContextInfo> _contextInfos = new Dictionary<RendererOpenGLVersion, ContextInfo>
-    {
+
+    private readonly FrozenDictionary<RendererOpenGLVersion, ContextInfo> _contextInfos =
+        new Dictionary<RendererOpenGLVersion, ContextInfo>
         {
-            RendererOpenGLVersion.GL33,
-            new ContextInfo
             {
-                Version = new Version(3, 3),
-                Profile = ContextProfile.Core,
-                Api =  ContextApi.NativeContextApi
-            }
-        },
-        {
-            RendererOpenGLVersion.GL31,
-            new ContextInfo
+                RendererOpenGLVersion.GL33,
+                new ContextInfo
+                {
+                    Version = new Version(3, 3),
+                    Profile = ContextProfile.Core,
+                    Api = ContextApi.NativeContextApi
+                }
+            },
             {
-                Version = new Version(3, 1),
-                Profile = ContextProfile.Compatability,
-                Api =  ContextApi.NativeContextApi
-            }
-        },
-        {
-            RendererOpenGLVersion.GLES3,
-            new ContextInfo
+                RendererOpenGLVersion.GL31,
+                new ContextInfo
+                {
+                    Version = new Version(3, 1),
+                    Profile = ContextProfile.Compatability,
+                    Api = ContextApi.NativeContextApi
+                }
+            },
             {
-                Version = new Version(3, 0),
-                Profile = ContextProfile.Any, // Because ES
-                Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
-            }
-        },
-        {
-            RendererOpenGLVersion.GLES2,
-            new ContextInfo
+                RendererOpenGLVersion.GLES3,
+                new ContextInfo
+                {
+                    Version = new Version(3, 0),
+                    Profile = ContextProfile.Any, // Because ES
+                    Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
+                }
+            },
             {
-                Version = new Version(2, 0),
-                Profile = ContextProfile.Any, // Because ES
-                Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
+                RendererOpenGLVersion.GLES2,
+                new ContextInfo
+                {
+                    Version = new Version(2, 0),
+                    Profile = ContextProfile.Any, // Because ES
+                    Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
+                }
             }
-        }
-    }.ToFrozenDictionary();
+        }.ToFrozenDictionary();
+
+    private IShader _baseShader = default!;
     
     public void PostInject()
     {
@@ -85,7 +89,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
     {
         _currentThread = Thread.CurrentThread;
         _logger.EngineInfo($"Working thread {_currentThread.Name}");
-        
+
         var settings = new WindowCreateSettings();
         foreach (var (version, contextInfo) in _contextInfos)
         {
@@ -96,21 +100,10 @@ public sealed partial class Renderer : IRenderer, IPostInject
             _logger.EngineInfo($"Initialize main window, {contextInfo}");
             break;
         }
-        
+
         InitOpenGL();
-    }
 
-    private void OnFrameUpdate(UpdateFrameEvent args)
-    {
-        _windowManager.PollEvents();
-    }
-
-    private void OnFrameRender(RenderFrameEvent args)
-    {
-        GL.Clear(ClearBufferMask.ColorBufferBit);
-        GL.ClearColor(Color.Chartreuse);
-        
-        _windowManager.WindowSwapBuffers(MainWindow);
+        OnLoad();
     }
     
     private IWindowManager CreateWindowManager()
