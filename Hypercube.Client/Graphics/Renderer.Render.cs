@@ -68,6 +68,7 @@ public sealed partial class Renderer
         _baseShader.Use();
         
         GL.BindVertexArray(_vao);
+        GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
         GL.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         GL.BindVertexArray(0);
   
