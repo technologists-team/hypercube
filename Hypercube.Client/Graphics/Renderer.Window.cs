@@ -23,7 +23,7 @@ public sealed partial class Renderer
 
     public WindowRegistration CreateWindow(WindowCreateSettings settings)
     {
-        var (registration, error) = CreateWindow(_contextInfos[_version], settings, MainWindow);
+        var (registration, error) = CreateWindow(_context, settings, MainWindow);
         if (registration is null)
             throw new Exception(error);
 

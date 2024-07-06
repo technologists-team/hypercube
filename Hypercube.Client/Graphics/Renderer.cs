@@ -1,5 +1,4 @@
 ﻿using System.Collections.Frozen;
-using System.Drawing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Client.Runtimes.Event;
@@ -7,16 +6,16 @@ using Hypercube.Client.Runtimes.Loop.Event;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Timing;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit;
-using OpenToolkit.Graphics.OpenGL4;
-using GL = OpenToolkit.Graphics.OpenGL4.GL;
 
 namespace Hypercube.Client.Graphics;
 
 public sealed partial class Renderer : IRenderer, IPostInject
 {
+    [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
@@ -26,48 +25,39 @@ public sealed partial class Renderer : IRenderer, IPostInject
     private IBindingsContext _bindingsContext = default!;
     private Thread _currentThread = default!;
 
-    private RendererOpenGLVersion _version = RendererOpenGLVersion.GL33;
+    private ContextInfo _context = default!;
 
-    private readonly FrozenDictionary<RendererOpenGLVersion, ContextInfo> _contextInfos =
-        new Dictionary<RendererOpenGLVersion, ContextInfo>
+    private readonly FrozenSet<ContextInfo> _contextInfos =
+        new HashSet<ContextInfo>
         {
+            new()
             {
-                RendererOpenGLVersion.GL33,
-                new ContextInfo
-                {
-                    Version = new Version(3, 3),
-                    Profile = ContextProfile.Core,
-                    Api = ContextApi.NativeContextApi
-                }
+                Version = new Version(4, 6),
+                Profile = ContextProfile.Core,
+                Api = ContextApi.NativeContextApi,
             },
+            new()
             {
-                RendererOpenGLVersion.GL31,
-                new ContextInfo
-                {
-                    Version = new Version(3, 1),
-                    Profile = ContextProfile.Compatability,
-                    Api = ContextApi.NativeContextApi
-                }
+                Version = new Version(3, 3),
+                Profile = ContextProfile.Core,
+                Api = ContextApi.NativeContextApi
             },
-            {
-                RendererOpenGLVersion.GLES3,
-                new ContextInfo
-                {
-                    Version = new Version(3, 0),
-                    Profile = ContextProfile.Any, // Because ES
-                    Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
-                }
+            new() {
+                Version = new Version(3, 1),
+                Profile = ContextProfile.Compatability,
+                Api = ContextApi.NativeContextApi
             },
-            {
-                RendererOpenGLVersion.GLES2,
-                new ContextInfo
-                {
-                    Version = new Version(2, 0),
-                    Profile = ContextProfile.Any, // Because ES
-                    Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
-                }
+            new() {
+                Version = new Version(3, 0),
+                Profile = ContextProfile.Any, // Because ES
+                Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
+            },
+            new() {
+                Version = new Version(2, 0),
+                Profile = ContextProfile.Any, // Because ES
+                Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
             }
-        }.ToFrozenDictionary();
+        }.ToFrozenSet();
 
     private IShader _baseShader = default!;
     
@@ -91,12 +81,12 @@ public sealed partial class Renderer : IRenderer, IPostInject
         _logger.EngineInfo($"Working thread {_currentThread.Name}");
 
         var settings = new WindowCreateSettings();
-        foreach (var (version, contextInfo) in _contextInfos)
+        foreach (var contextInfo in _contextInfos)
         {
             if (!InitMainWindow(contextInfo, settings))
                 continue;
 
-            _version = version;
+            _context = contextInfo;
             _logger.EngineInfo($"Initialize main window, {contextInfo}");
             break;
         }
