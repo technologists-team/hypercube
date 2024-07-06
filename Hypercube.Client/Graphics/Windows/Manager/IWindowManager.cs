@@ -19,7 +19,7 @@ public interface IWindowManager : IDisposable
     void WindowDestroy(WindowRegistration window);
     void WindowSetTitle();
     void WindowSetMonitor();
-    void WindowRequestAttention();
+    void WindowRequestAttention(WindowRegistration window);
     void WindowSetVisible();
     void WindowSwapBuffers(WindowRegistration window);
 

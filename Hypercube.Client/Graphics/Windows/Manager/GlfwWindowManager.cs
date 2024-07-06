@@ -99,9 +99,12 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         throw new NotImplementedException();
     }
 
-    public void WindowRequestAttention()
+    public void WindowRequestAttention(WindowRegistration window)
     {
-        throw new NotImplementedException();
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.RequestWindowAttention(glfwWindow.Pointer);
     }
 
     public void WindowSetVisible()
