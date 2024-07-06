@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using Hypercube.Client.Graphics.Shaders.Program;
 using Hypercube.Client.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -26,7 +27,7 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShader = new Shader("Resources/Shaders/base");
+        _baseShaderProgram = new ShaderProgram("Resources/Shaders/base");
 
         _viewports.Add(new Viewport());
 
@@ -44,12 +45,11 @@ public sealed partial class Renderer
         
         GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
         GL.EnableVertexAttribArray(0);
-
     }
 
     private void OnFrameUpdate(UpdateFrameEvent args)
     {
-        _windowManager.PollEvents();
+       _windowManager.PollEvents();
     }
 
     private void OnFrameRender(RenderFrameEvent args)
@@ -64,8 +64,8 @@ public sealed partial class Renderer
         {
             RenderEntities(viewport);
         }
-
-        _baseShader.Use();
+        
+        _baseShaderProgram.Use();
         
         GL.BindVertexArray(_vao);
         GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using Hypercube.Client.Graphics.Shaders.Program;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Client.Runtimes.Event;
@@ -59,7 +60,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
             }
         }.ToFrozenSet();
 
-    private IShader _baseShader = default!;
+    private IShaderProgram _baseShaderProgram = default!;
     
     public void PostInject()
     {
