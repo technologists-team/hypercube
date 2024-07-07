@@ -5,7 +5,7 @@ namespace Hypercube.Client.Graphics.Shading;
 
 public class Shader : IShader
 {
-    private readonly int _handle;
+    public readonly int _handle;
     private readonly Dictionary<string, int> _uniformLocations = new();
     
     public Shader(string path) : this($"{path}.vert", $"{path}.frag")
@@ -108,4 +108,6 @@ public class Shader : IShader
         
         throw new Exception($"Error occurred whilst linking Program({program})");
     }
+    
+    //private readonly record struct AttributeInfo
 }
