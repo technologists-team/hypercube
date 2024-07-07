@@ -5,5 +5,5 @@ public interface ITextureManager
     ITexture Create(string path);
     
     ITextureHandle CreateHandler(string path);
-    ITextureHandle CrateHandler(ITexture texture);
+    ITextureHandle CreateHandler(ITexture texture);
 }

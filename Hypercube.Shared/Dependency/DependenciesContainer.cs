@@ -106,6 +106,17 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
         Inject(instance, false);
     }
 
+    public void InstantiateAll()
+    {
+        lock (_lock)
+        {
+            foreach (var (type, _) in _factories)
+            {
+                Instantiate(type);
+            }
+        }
+    }
+    
     public object Instantiate<T>()
     {
         return Instantiate(typeof(T));

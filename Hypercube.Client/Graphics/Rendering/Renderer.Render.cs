@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Text;
 using Hypercube.Client.Graphics.Shading;
+using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
@@ -10,13 +11,16 @@ namespace Hypercube.Client.Graphics.Rendering;
 public sealed partial class Renderer
 {
     private readonly HashSet<Viewport> _viewports = new();
-   
+    
+    private IShader _baseShader = default!;
+    private ITextureHandle _baseTexture = default!;
+    
     private readonly float[] _vertices = {
          // positions         // colors (rgba)         // texture coords
-         0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  0.0f, 1.0f    // top left 
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 1.0f    // top left 
     };
     
     private readonly uint[] _indices = {  // note that we start from 0!
@@ -30,18 +34,8 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        var shader = new Shader("Resources/Shaders/base");
-        _baseShader = shader;
-        
-        GL.GetProgram(shader._handle, GetProgramParameterName.ActiveAttributes, out var attributes);
-        for (var i = 0; i < attributes; i++)
-        {
-            GL.GetActiveAttrib(shader._handle, i, 256, out var length, out var size, out var type, out var name);
-            var index = GL.GetAttribLocation(shader._handle, name);
-            _logger.EngineInfo($"Attrib {index} name({name}) type({type}) size({size}) length({length})");
-        }
-        
-        _logger.EngineInfo(attributes.ToString());
+        _baseShader = new Shader("Resources/Shaders/base");
+        _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
         
         _viewports.Add(new Viewport());
 
@@ -49,6 +43,7 @@ public sealed partial class Renderer
         _ebo = GL.GenBuffer();
         _vao = GL.GenVertexArray();
 
+        GL.BindTexture(TextureTarget.Texture2D, _baseTexture.Handle);
         GL.BindVertexArray(_vao);
         
         GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
@@ -65,6 +60,8 @@ public sealed partial class Renderer
         
         GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, 9 * sizeof(float), 7 * sizeof(float)); 
         GL.EnableVertexAttribArray(2);
+        
+        _logger.EngineInfo("Loaded");
     }
 
     private void OnFrameUpdate(UpdateFrameEvent args)
@@ -89,9 +86,9 @@ public sealed partial class Renderer
         }
 
         _baseShader.Use();
+        //_baseShader.SetUniform("uTexture", _baseTexture.Handle);
         
         GL.BindVertexArray(_vao);
-        // GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
         GL.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         GL.BindVertexArray(0);
   

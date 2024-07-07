@@ -12,7 +12,6 @@ namespace Hypercube.Client.Runtimes;
 public sealed partial class Runtime(DependenciesContainer dependenciesContainer) : IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
-    [Dependency] private readonly IRenderer _renderer = default!;
     [Dependency] private readonly IRuntimeLoop _loop = default!;
 
     private readonly ILogger _logger =  LoggingManager.GetLogger("runtime");

@@ -45,5 +45,7 @@ public static class Dependencies
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
         rootContainer.Register<Runtime>(_ => new Runtime(rootContainer));
+        
+        rootContainer.InstantiateAll();
     }
 }

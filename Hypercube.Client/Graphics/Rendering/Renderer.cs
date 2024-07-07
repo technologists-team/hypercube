@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Client.Graphics.OpenGL;
-using Hypercube.Client.Graphics.Shading;
+using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
@@ -17,8 +17,9 @@ namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer : IRenderer, IPostInject
 {
-    [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
+    [Dependency] private readonly ITextureManager _textureManager = default!;
+    [Dependency] private readonly ITiming _timing = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
@@ -60,8 +61,6 @@ public sealed partial class Renderer : IRenderer, IPostInject
                 Api = OperatingSystem.IsWindows() ? ContextApi.EglContextApi : ContextApi.NativeContextApi
             }
         }.ToFrozenSet();
-
-    private IShader _baseShader = default!;
     
     public void PostInject()
     {

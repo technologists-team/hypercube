@@ -4,5 +4,5 @@ public interface ITexture
 {
     int Width { get; }
     int Height { get; }
-    int[,] Data { get; }
+    byte[] Data { get; }
 }
