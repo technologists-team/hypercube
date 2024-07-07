@@ -13,9 +13,9 @@ public sealed partial class Renderer
    
     private readonly float[] _vertices = {
          // positions         // colors (rgba)         // texture coords
-         0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.5f,   1.0f, 1.0f,   // top right
+         0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // top right
          0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.5f,  0.0f, 0.0f,   // bottom left
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 0.0f,  0.0f, 0.0f,   // bottom left
         -0.5f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,  0.0f, 1.0f    // top left 
     };
     
@@ -77,10 +77,11 @@ public sealed partial class Renderer
         var window = MainWindow;
 
         GL.Viewport(window.Size);
+        
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         GL.Enable(EnableCap.Blend);
-        GL.ClearColor(0, 1, 0, 0);
+        GL.ClearColor(0, 0, 0, 0);
 
         foreach (var viewport in _viewports)
         {
