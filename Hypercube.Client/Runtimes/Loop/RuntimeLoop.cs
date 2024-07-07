@@ -1,6 +1,6 @@
-﻿using Hypercube.Client.Runtimes.Loop.Event;
-using Hypercube.Shared.Dependency;
+﻿using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client.Runtimes.Loop;

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
-using Hypercube.Client.Runtimes.Event;
-using Hypercube.Client.Runtimes.Loop.Event;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Runtimes.Event;
+using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -63,19 +63,19 @@ public sealed partial class Renderer : IRenderer, IPostInject
     
     public void PostInject()
     {
-        _eventBus.Subscribe<InitializationEvent>(OnInitialization);
-        _eventBus.Subscribe<StartupEvent>(OnStartup);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialization);
+        _eventBus.Subscribe<RuntimeStartupEvent>(OnStartup);
         _eventBus.Subscribe<UpdateFrameEvent>(OnFrameUpdate);
         _eventBus.Subscribe<RenderFrameEvent>(OnFrameRender);
     }
 
-    private void OnInitialization(InitializationEvent args)
+    private void OnInitialization(RuntimeInitializationEvent args)
     {
         _windowManager = CreateWindowManager();
         _bindingsContext = new BindingsContext(_windowManager);
     }
 
-    private void OnStartup(StartupEvent args)
+    private void OnStartup(RuntimeStartupEvent args)
     {
         _currentThread = Thread.CurrentThread;
         _logger.EngineInfo($"Working thread {_currentThread.Name}");

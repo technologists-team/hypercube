@@ -36,7 +36,7 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
     
     public void Register<T>()
     {
-        Register<T, T>();
+        Register(typeof(T));
     }
     
     public void Register<TType, TImpl>()
@@ -44,6 +44,11 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
         Register(typeof(TType), typeof(TImpl));
     }
 
+    public void Register(Type type)
+    {
+        Register(type, type);
+    }
+    
     public void Register(Type type, Type impl)
     {
         object DefaultFactory(DependenciesContainer container)
@@ -79,7 +84,7 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
     
     public void Register<T>(Func<DependenciesContainer, T> factory)
     {
-       Register(typeof(T), container=> factory.Invoke(container) ?? throw new InvalidOperationException());
+       Register(typeof(T), container => factory.Invoke(container) ?? throw new InvalidOperationException());
     }
 
     public void Register(Type type, Func<DependenciesContainer, object> factory)
@@ -99,6 +104,22 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
     {
         // Encapsulate system method arguments
         Inject(instance, false);
+    }
+
+    public object Instantiate<T>()
+    {
+        return Instantiate(typeof(T));
+    }
+    
+    public object Instantiate(Type type)
+    {
+        lock (_lock)
+        {
+            var instance = _factories[type].Invoke(this);
+            _instances[type] = instance;
+            Inject(instance, true);
+            return instance;
+        }
     }
     
     private void Inject(object instance, bool autoInject)
@@ -155,16 +176,9 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
                 if (_instances.TryGetValue(type, out var instance))
                     return instance;
 
-                if (_factories.TryGetValue(type, out var factory))
-                {
-                    var newInstance = factory.Invoke(this);
-                    _instances[type] = newInstance;
-                    
-                    Inject(newInstance, true);
-                    
-                    return newInstance;
-                }
-
+                if (_factories.ContainsKey(type))
+                    return Instantiate(type);
+                
                 if (_parent is not null)
                     return _parent.Resolve(type);
 

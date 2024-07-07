@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using Hypercube.Client.Runtimes.Loop.Event;
+using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics;

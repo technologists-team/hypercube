@@ -1,10 +1,10 @@
 ﻿using Hypercube.Client.Graphics;
 using Hypercube.Client.Graphics.Event;
-using Hypercube.Client.Runtimes.Event;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Runtimes.Event;
 
 namespace Hypercube.Client.Runtimes;
 
@@ -40,21 +40,24 @@ public sealed partial class Runtime(DependenciesContainer dependenciesContainer)
         if (!_loop.Running)
             return;
 
-        _logger.EngineInfo(reason is null ? "Shutting down" : $"Shutting down, reason: {reason}");
+        reason = reason is null ? "Shutting down" : $"Shutting down, reason: {reason}";
+        
+        _logger.EngineInfo(reason);
+        _eventBus.Invoke(new RuntimeShutdownEvent(reason));
         _loop.Shutdown();
     }
     
     private void RunLoop()
     {
         _logger.EngineInfo("Startup");
-        _eventBus.Invoke(new StartupEvent());
+        _eventBus.Invoke(new RuntimeStartupEvent());
         _loop.Run();
     }
     
     private void Initialize()
     {
         _logger.EngineInfo("Initialize");
-        _eventBus.Invoke(new InitializationEvent());
+        _eventBus.Invoke(new RuntimeInitializationEvent());
     }
     
     private void OnMainWindowClosed(MainWindowClosedEvent obj)
