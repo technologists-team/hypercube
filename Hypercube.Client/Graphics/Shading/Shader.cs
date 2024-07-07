@@ -1,5 +1,6 @@
-﻿using Hypercube.Math.Vector;
+﻿using Hypercube.Shared.Math.Vector;
 using OpenToolkit.Graphics.OpenGL4;
+using Vector2 = Hypercube.Shared.Math.Vector.Vector2;
 
 namespace Hypercube.Client.Graphics.Shading;
 

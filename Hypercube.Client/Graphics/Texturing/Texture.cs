@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Vector;
+﻿using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Texturing;
 

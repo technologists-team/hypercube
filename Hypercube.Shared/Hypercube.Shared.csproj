@@ -10,4 +10,8 @@
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Shared.Math\Hypercube.Shared.Math.csproj" />
+    </ItemGroup>
+
 </Project>
