@@ -1,7 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Windows;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {

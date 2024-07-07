@@ -1,8 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Windows;
-using Hypercube.Shared.Timing;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Rendering;
 
 public interface IRenderer
 {

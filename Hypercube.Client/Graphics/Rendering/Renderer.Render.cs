@@ -1,8 +1,10 @@
 ﻿using System.Drawing;
+using Hypercube.Client.Graphics.Shading;
+using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {

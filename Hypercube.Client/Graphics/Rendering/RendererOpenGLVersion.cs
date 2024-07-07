@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Graphics;
+﻿namespace Hypercube.Client.Graphics.Rendering;
 
 public enum RendererOpenGLVersion : byte
 {

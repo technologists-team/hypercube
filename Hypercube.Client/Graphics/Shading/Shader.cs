@@ -1,7 +1,7 @@
 ﻿using Hypercube.Math.Vector;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Shading;
 
 public class Shader : IShader
 {

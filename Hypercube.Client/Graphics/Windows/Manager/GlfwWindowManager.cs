@@ -1,4 +1,5 @@
-﻿using Hypercube.Client.Graphics.Windows.Manager.Registrations;
+﻿using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;

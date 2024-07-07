@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Client.Graphics.Windows.Manager;
+﻿using Hypercube.Client.Graphics.OpenGL;
+
+namespace Hypercube.Client.Graphics.Windows.Manager;
 
 public interface IWindowManager : IDisposable
 {

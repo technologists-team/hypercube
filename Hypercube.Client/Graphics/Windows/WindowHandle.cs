@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Client.Graphics.Windows;
+﻿using Hypercube.Client.Graphics.Rendering;
+
+namespace Hypercube.Client.Graphics.Windows;
 
 public class WindowHandle(IRenderer renderer, WindowRegistration registration) : IDisposable
 {

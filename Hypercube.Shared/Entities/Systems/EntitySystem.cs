@@ -58,9 +58,4 @@ public abstract class EntitySystem : IEntitySystem
 
         return $"system.{name}";
     }
-
-    public void PostInject()
-    {
-        throw new NotImplementedException();
-    }
 }

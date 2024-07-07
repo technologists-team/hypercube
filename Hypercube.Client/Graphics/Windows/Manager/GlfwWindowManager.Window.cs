@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
 using Hypercube.Math.Vector;

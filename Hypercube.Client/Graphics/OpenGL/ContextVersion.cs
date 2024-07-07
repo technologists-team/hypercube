@@ -1,7 +1,7 @@
 ﻿using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.OpenGL;
 
 public struct ContextInfo
 {

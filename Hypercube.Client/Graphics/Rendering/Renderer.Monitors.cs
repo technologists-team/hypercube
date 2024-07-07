@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Frozen;
+using Hypercube.Client.Graphics.OpenGL;
+using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
@@ -11,7 +13,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit;
 
-namespace Hypercube.Client.Graphics;
+namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer : IRenderer, IPostInject
 {
