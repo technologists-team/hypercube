@@ -121,6 +121,7 @@ public sealed partial class Renderer
     private void BatchClear()
     {
         _batchVertexIndex = 0;
+        _batchIndexIndex = 0;
         
         Array.Clear(_batchVertices, 0, _batchVertices.Length);
         Array.Clear(_batchVerticesRaw, 0, _batchVerticesRaw.Length);
