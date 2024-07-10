@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.OpenGL;
+using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using GlfwImage = OpenTK.Windowing.GraphicsLibraryFramework.Image;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
 namespace Hypercube.Client.Graphics.Windows.Manager;
@@ -103,10 +106,10 @@ public sealed unsafe partial class GlfwWindowManager
         if (settings.NoTitleBar)
             GLFW.WindowHint(WindowHintBool.Decorated, false);
 
-        return new WindowCreateResult(WindowSetup(window), null);
+        return new WindowCreateResult(WindowSetup(window, settings), null);
     }
 
-     private GlfwWindowRegistration WindowSetup(Window* window)
+     private GlfwWindowRegistration WindowSetup(Window* window, WindowCreateSettings settings)
      {
          GLFWHelper.GetFramebufferSize(window, out var framebufferSize);
          GLFWHelper.GetWindowSize(window, out var size);
@@ -122,13 +125,16 @@ public sealed unsafe partial class GlfwWindowManager
          };
 
          registration.Handle = new WindowHandle(_renderer, registration);
-
+        
+         // Setting icons
+         if (settings.WindowImages != null)
+             SetWindowIcons(registration, settings.WindowImages.ToList());
+         
          // Setting callbacks
          GLFW.SetKeyCallback(window, OnWindowKeyHandled);
          GLFW.SetWindowCloseCallback(window, OnWindowClosed);
          GLFW.SetWindowSizeCallback(window, OnWindowResized);
          GLFW.SetWindowFocusCallback(window, OnWindowFocusChanged);
-         
          
          return registration;
      }
@@ -179,5 +185,36 @@ public sealed unsafe partial class GlfwWindowManager
 
          return null;
      }
-    
+
+     public IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, string resPath)
+     {
+         var files = Directory.EnumerateFiles(resPath, "*.png");
+         
+         foreach (var file in files)
+         {
+             yield return textureMan.Create(file, true);
+         }
+     }
+
+     public void SetWindowIcons(WindowRegistration window, List<ITexture> images)
+     {
+         if (window is not GlfwWindowRegistration glfwWindow)
+             return;
+
+         var count = images.Count;
+         
+         // ReSharper disable once SuggestVarOrType_Elsewhere
+         Span<GCHandle> handles = stackalloc GCHandle[count];
+         Span<GlfwImage> glfwImages = stackalloc GlfwImage[count];
+         
+         for (var i = 0; i < count; i++)
+         {
+             var image = images[i];
+             handles[i] = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
+             var addrOfPinnedObject = (byte*) handles[i].AddrOfPinnedObject();
+             glfwImages[i] = new GlfwImage(image.Width, image.Height, addrOfPinnedObject);
+         }
+         
+         GLFW.SetWindowIcon(glfwWindow.Pointer, glfwImages);
+     }
 }
