@@ -8,17 +8,16 @@ public class WindowCreateSettings
 {
     public int Width => Size.X;
     public int Height => Size.Y;
-
-    public bool NoTitleBar => Styles.HasFlag(WindowStyles.NoTitleBar);
-    public bool NoTitleOptions => Styles.HasFlag(WindowStyles.NoTitleOptions);
     
     public string Title = "Hypercube Window";
     public Vector2Int Size = new(1280, 720);
-    public WindowStyles Styles;
-    public Version Version;
     public ITexture[]? WindowImages = null;
 
     public IMonitorHandle? Monitor;
+
+    public bool Resizable = true;
+    public bool TransparentFramebuffer = false;
+    public bool Decorated = true;
     
     public int? RedBits = 8;
     public int? GreenBits = 8;
