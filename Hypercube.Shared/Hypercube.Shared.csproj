@@ -13,9 +13,13 @@
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Shared.Math\Hypercube.Shared.Math.csproj" />
     </ItemGroup>
-
     <ItemGroup>
       <Folder Include="Entities\Systems\" />
     </ItemGroup>
-
+    <ItemGroup>
+        <ContentWithTargetPath Include="..\Resources\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Resources\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
+    </ItemGroup>
 </Project>
