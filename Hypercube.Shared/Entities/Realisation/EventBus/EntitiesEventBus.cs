@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Shared.Entities.EventBus;
+﻿namespace Hypercube.Shared.Entities.Realisation.EventBus;
 
 public sealed class EntitiesEventBus : IEntitiesEventBus
 {

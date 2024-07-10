@@ -6,8 +6,8 @@ using Hypercube.Client.Input.Manager;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Entities.EventBus;
-using Hypercube.Shared.Entities.Manager;
+using Hypercube.Shared.Entities.Realisation.EventBus;
+using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Timing;
 
@@ -38,9 +38,10 @@ public static class Dependencies
         rootContainer.Register<IRenderer, Renderer>();
         
         // ECS
-        rootContainer.Register<IEntitiesManager, EntitiesManager>();
-        rootContainer.Register<IEntitySystemManager, EntitySystemManager>();
+        rootContainer.Register<IEntitiesComponentManager, EntitiesComponentManager>();
+        rootContainer.Register<IEntitiesSystemManager, EntitiesSystemManager>();
         rootContainer.Register<IEntitiesEventBus, EntitiesEventBus>();
+        rootContainer.Register<IEntitiesManager, EntitiesManager>();
         
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();

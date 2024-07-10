@@ -1,8 +1,8 @@
-﻿using System.Drawing;
-using System.Text;
-using Hypercube.Client.Graphics.Shading;
+﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
+using Hypercube.Shared.Math;
+using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -15,50 +15,45 @@ public sealed partial class Renderer
     private IShader _baseShader = default!;
     private ITextureHandle _baseTexture = default!;
     
-    private readonly float[] _vertices = {
-         // positions         // colors (rgba)         // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 1.0f, 1.0f,  0.0f, 1.0f    // top left 
-    };
+    private const int MaxBatchVertices = 65532;
+    private const int IndicesPerVertex = 6;
+    private const int MaxBatchIndices = MaxBatchVertices * IndicesPerVertex;
     
-    private readonly uint[] _indices = {  // note that we start from 0!
-        0, 1, 3, // first triangle
-        1, 2, 3  // second triangle
-    };  
-
-    private int _vbo;
-    private int _vao;
-    private int _ebo;
+    private readonly Vertex[] _batchVertices = new Vertex[MaxBatchVertices];
+    private readonly float[] _batchVerticesRaw = new float[MaxBatchVertices * Vertex.Size];
+    private readonly uint[] _batchIndices = new uint[MaxBatchIndices];
+    
+    private uint _batchVertexIndex;
+    private uint _batchIndexIndex; // Haha name it's fun
+    
+    private BufferObject _vbo = default!;
+    private ArrayObject _vao = default!;
+    private BufferObject _ebo = default!;
     
     private void OnLoad()
     {
         _baseShader = new Shader("Resources/Shaders/base");
         _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
+        _baseTexture.Bind();
         
         _viewports.Add(new Viewport());
 
-        _vbo = GL.GenBuffer();
-        _ebo = GL.GenBuffer();
-        _vao = GL.GenVertexArray();
+        _vbo = new BufferObject(BufferTarget.ArrayBuffer);
+        _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
+        _vao = new ArrayObject();
 
-        GL.BindTexture(TextureTarget.Texture2D, _baseTexture.Handle);
-        GL.BindVertexArray(_vao);
+        BatchUpdate();
         
-        GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-        GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-        
-        GL.BindBuffer(BufferTarget.ElementArrayBuffer, _ebo);
-        GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(float), _indices, BufferUsageHint.StaticDraw);
-        
-        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 9 * sizeof(float), 0);
+        // aPos
+        GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 0);
         GL.EnableVertexAttribArray(0);
         
-        GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, 9 * sizeof(float), 3 * sizeof(float));
+        // aColor
+        GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 3 * sizeof(float));
         GL.EnableVertexAttribArray(1);
         
-        GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, 9 * sizeof(float), 7 * sizeof(float)); 
+        // aTexCoords
+        GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 7 * sizeof(float)); 
         GL.EnableVertexAttribArray(2);
         
         _logger.EngineInfo("Loaded");
@@ -71,26 +66,35 @@ public sealed partial class Renderer
 
     private void OnFrameRender(RenderFrameEvent args)
     {
+        BatchClear();
+        
         var window = MainWindow;
 
         GL.Viewport(window.Size);
-        
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.Enable(EnableCap.Blend);
-        GL.ClearColor(0, 0, 0, 0);
-
+        
         foreach (var viewport in _viewports)
         {
             RenderEntities(viewport);
         }
 
-        _baseShader.Use();
-        //_baseShader.SetUniform("uTexture", _baseTexture.Handle);
+        var sin = (float)Math.Abs(Math.Sin(_timing.RealTime.TotalMilliseconds / 1000f));
+        var colorR = new Color(sin, 0f, 0f);
+        var colorG = new Color(0f, sin, 0f);
+        var colorB = new Color(0f, 0f, sin);
         
-        GL.BindVertexArray(_vao);
-        GL.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedInt, 0);
-        GL.BindVertexArray(0);
+        DrawTexture(_baseTexture, new Box2(-1.0f, 1.0f, 0.0f, 0.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), Color.White);
+        DrawTexture(_baseTexture, new Box2(0.0f, 1.0f, 1.0f, 0.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorR);
+        DrawTexture(_baseTexture, new Box2(-1.0f, 0.0f, 0.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorG);
+        DrawTexture(_baseTexture, new Box2(0.0f, 0.0f, 1.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorB);
+
+        BatchUpdate();
+        
+        _baseShader.Use();
+        
+        _vao.Bind();
+        GL.DrawElements(BeginMode.Triangles, (int) _batchIndexIndex, DrawElementsType.UnsignedInt, 0);
+        _vao.Unbind();
   
         _windowManager.WindowSwapBuffers(MainWindow);
     }
@@ -98,5 +102,37 @@ public sealed partial class Renderer
     private void RenderEntities(Viewport viewport)
     {
         
+    }
+
+    private void BatchUpdate()
+    {
+        _vao.Bind();
+        
+        BatchConvert();
+        
+        _vbo.SetData(_batchVerticesRaw);
+        _ebo.SetData(_batchIndices);
+    }
+    
+    private void BatchConvert()
+    {
+        var indexRaw = 0;
+        for (var i = 0; i < _batchVertexIndex; i++)
+        {
+            var vertex = _batchVertices[i];
+            foreach (var vertexValue in vertex.ToVertices())
+            {
+                _batchVerticesRaw[indexRaw++] = vertexValue;
+            }
+        }
+    }
+    
+    private void BatchClear()
+    {
+        _batchVertexIndex = 0;
+        
+        Array.Clear(_batchVertices, 0, _batchVertices.Length);
+        Array.Clear(_batchVerticesRaw, 0, _batchVerticesRaw.Length);
+        Array.Clear(_batchIndices, 0, _batchIndices.Length);
     }
 }

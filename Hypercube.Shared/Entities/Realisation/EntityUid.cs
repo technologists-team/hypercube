@@ -1,8 +1,13 @@
-﻿namespace Hypercube.Shared.Entities;
+﻿namespace Hypercube.Shared.Entities.Realisation;
 
 public readonly struct EntityUid(int id)
 {
+    /// <summary>
+    /// All Ids equals or less than -1 are Invalid.
+    /// </summary>
     public static readonly EntityUid Invalid = new(-1);
+
+    public bool Valid => Id > Invalid.Id;
     
     public readonly int Id = id;
     

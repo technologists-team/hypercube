@@ -1,21 +1,21 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Entities.Systems;
+using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
-namespace Hypercube.Shared.Entities.Manager;
+namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public class EntitySystemManager : IEntitySystemManager, IPostInject
+public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
 
     private readonly Type _baseSystemType = typeof(IEntitySystem);
     private readonly DependenciesContainer _systemContainer = DependencyManager.Create();
 
-    private FrozenSet< IEntitySystem> _system = FrozenSet<IEntitySystem>.Empty; 
+    private FrozenSet<IEntitySystem> _system = FrozenSet<IEntitySystem>.Empty; 
     
     public void PostInject()
     {

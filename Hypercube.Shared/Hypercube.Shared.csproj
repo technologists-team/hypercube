@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Hypercube.Shared.Math\Hypercube.Shared.Math.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Entities\Systems\" />
+    </ItemGroup>
+
 </Project>

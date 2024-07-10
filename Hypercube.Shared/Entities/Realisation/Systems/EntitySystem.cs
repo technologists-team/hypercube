@@ -1,18 +1,20 @@
 ﻿using System.Globalization;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Entities.EventBus;
-using Hypercube.Shared.Entities.Manager;
+using Hypercube.Shared.Entities.Realisation.Components;
+using Hypercube.Shared.Entities.Realisation.EventBus;
+using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
 
-namespace Hypercube.Shared.Entities.Systems;
+namespace Hypercube.Shared.Entities.Realisation.Systems;
 
 public abstract class EntitySystem : IEntitySystem
 {
-    [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
+    [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
     [Dependency] private readonly IEntitiesEventBus _entitiesEventBus = default!;
-    [Dependency] private readonly IEntitySystemManager _entitySystemManager = default!;
+    [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
+    [Dependency] private readonly IEntitiesSystemManager _entitiesSystemManager = default!;
 
     protected readonly ILogger Logger;
 
@@ -36,6 +38,21 @@ public abstract class EntitySystem : IEntitySystem
 
     }
 
+    protected T AddComponent<T>(EntityUid entityUid) where T : IComponent
+    {
+        return _entitiesComponentManager.AddComponent<T>(entityUid);
+    }
+    
+    protected T GetComponent<T>(EntityUid entityUid) where T : IComponent
+    {
+        return _entitiesComponentManager.GetComponent<T>(entityUid);
+    }
+    
+    protected bool HasComponent<T>(EntityUid entityUid) where T : IComponent
+    {
+        return _entitiesComponentManager.HasComponent<T>(entityUid);
+    }
+    
     private string GetLoggerName()
     {
         var name = GetType().Name;

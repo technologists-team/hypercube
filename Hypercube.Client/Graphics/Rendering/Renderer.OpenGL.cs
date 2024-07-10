@@ -1,4 +1,6 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using System.Runtime.InteropServices;
+using Hypercube.Shared.Logging;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Rendering;
@@ -6,7 +8,7 @@ namespace Hypercube.Client.Graphics.Rendering;
 public sealed partial class Renderer
 {
     private const int SwapInterval = 1;
-    
+
     private void InitOpenGL()
     {
         GL.LoadBindings(_bindingsContext);
@@ -24,7 +26,35 @@ public sealed partial class Renderer
         
         GLFW.SwapInterval(SwapInterval);
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
+       
+        GL.DebugMessageCallback(DebugMessageCallback, IntPtr.Zero);
+        
+        GL.Enable(EnableCap.Blend);
+        GL.Enable(EnableCap.DebugOutput);
+        
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        GL.ClearColor(0, 0, 0, 0);
         
         _loggerOpenGL.EngineInfo("Initialized");
+    }
+
+    private void DebugMessageCallback(DebugSource source, DebugType type, int id, DebugSeverity severity, int length, IntPtr messagePointer, IntPtr userparam)
+    {
+        // In order to access the string pointed to by pMessage, you can use Marshal
+        // class to copy its contents to a C# string without unsafe code. You can
+        // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
+        string message = Marshal.PtrToStringAnsi(messagePointer, length);
+
+        // The rest of the function is up to you to implement, however a debug output
+        // is always useful.
+        var logger = LoggingManager.GetLogger("open_gl_debug");
+        logger.EngineInfo($"{severity} source={source} type={id} {message}");
+
+        // Potentially, you may want to throw from the function for certain severity
+        // messages.
+        if (type == DebugType.DebugTypeError)
+        {
+            throw new Exception(message);
+        }
     }
 }
