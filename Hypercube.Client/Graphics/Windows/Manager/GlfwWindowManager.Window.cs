@@ -105,7 +105,7 @@ public sealed unsafe partial class GlfwWindowManager
             return new WindowCreateResult(null, GLFWHelper.GetError());
         }
         
-        return new WindowCreateResult(WindowSetup(window), null);
+        return new WindowCreateResult(WindowSetup(window, settings), null);
     }
 
      private GlfwWindowRegistration WindowSetup(Window* window, WindowCreateSettings settings)
