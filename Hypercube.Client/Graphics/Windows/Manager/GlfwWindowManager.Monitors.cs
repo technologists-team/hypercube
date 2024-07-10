@@ -63,7 +63,7 @@ public sealed unsafe partial class GlfwWindowManager
             modes
         );
         
-        var registration = new GlfwMonitorRegistration(id, handle);;
+        var registration = new GlfwMonitorRegistration(monitor, handle);;
         _monitors[id] = registration;
         
         _renderer.AddMonitor(registration);

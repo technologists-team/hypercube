@@ -20,6 +20,8 @@ public interface IRenderer
 
     void AddMonitor(MonitorRegistration monitor);
     
+    void OnFocusChanged(WindowRegistration window, bool focused);
+    
     // Drawing
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color);
 }

@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
+using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Runtimes.Loop.Event;
@@ -57,6 +58,9 @@ public sealed partial class Renderer
 
     private void OnFrameUpdate(UpdateFrameEvent args)
     {
+#if DEBUG
+        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime}");
+#endif
         _windowManager.PollEvents();
     }
 

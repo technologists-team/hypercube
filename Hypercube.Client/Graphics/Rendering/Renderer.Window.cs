@@ -81,4 +81,9 @@ public sealed partial class Renderer
         
         return (registration, null);
     }
+
+    public void OnFocusChanged(WindowRegistration window, bool focused)
+    {
+        _eventBus.Invoke(new WindowFocusChangedEvent(window, focused));
+    }
 }

@@ -1,4 +1,5 @@
-﻿using Hypercube.Client.Input;
+﻿using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Input;
 using Hypercube.Client.Utilities;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;
@@ -55,5 +56,13 @@ public sealed unsafe partial class GlfwWindowManager
             return;
 
         registration.SetSize(width, height);
+    }
+
+    private void OnWindowFocusChanged(Window* window, bool focused)
+    {
+        if (!TryGetWindow(window, out var registration))
+            return;
+        
+        _renderer.OnFocusChanged(registration, focused);
     }
 }
