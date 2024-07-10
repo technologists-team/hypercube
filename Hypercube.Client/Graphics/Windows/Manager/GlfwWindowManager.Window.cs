@@ -127,6 +127,8 @@ public sealed unsafe partial class GlfwWindowManager
          GLFW.SetKeyCallback(window, OnWindowKeyHandled);
          GLFW.SetWindowCloseCallback(window, OnWindowClosed);
          GLFW.SetWindowSizeCallback(window, OnWindowResized);
+         GLFW.SetWindowFocusCallback(window, OnWindowFocusChanged);
+         
          
          return registration;
      }

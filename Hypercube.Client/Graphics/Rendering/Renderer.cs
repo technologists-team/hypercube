@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using Hypercube.Client.Graphics.Event;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;

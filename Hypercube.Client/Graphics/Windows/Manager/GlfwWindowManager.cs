@@ -1,8 +1,10 @@
-﻿using Hypercube.Client.Graphics.Rendering;
+﻿using Hypercube.Client.Graphics.Monitors;
+using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Math.Vector;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Hypercube.Client.Graphics.Windows.Manager;
@@ -90,14 +92,33 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         return GLFW.GetProcAddress(procName);
     }
     
-    public void WindowSetTitle()
+    public void WindowSetTitle(WindowRegistration window, string title)
     {
-        throw new NotImplementedException();
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.SetWindowTitle(glfwWindow.Pointer, title);
     }
 
-    public void WindowSetMonitor()
+    public void WindowSetMonitor(WindowRegistration window, MonitorRegistration monitor, Vector2Int vector)
     {
-        throw new NotImplementedException();
+        if (monitor is not GlfwMonitorRegistration glfwMonitor)
+            return;
+        
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.SetWindowMonitor(
+            glfwWindow.Pointer, 
+            glfwMonitor.Pointer, 
+            vector.X, vector.Y, 
+            monitor.Handle.Size.X, monitor.Handle.Size.Y, 
+            monitor.Handle.RefreshRate);
+    }
+
+    public void WindowSetMonitor(WindowRegistration window, MonitorRegistration registration)
+    {
+        WindowSetMonitor(window, registration, Vector2Int.Zero);
     }
 
     public void WindowRequestAttention(WindowRegistration window)
@@ -108,9 +129,34 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         GLFW.RequestWindowAttention(glfwWindow.Pointer);
     }
 
-    public void WindowSetVisible()
+    public void WindowSetSize(WindowRegistration window, Vector2Int size)
     {
-        throw new NotImplementedException();
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.SetWindowSize(glfwWindow.Pointer, size.X, size.Y);
+    }
+
+    public void WindowSetVisible(WindowRegistration registration, bool visible)
+    {
+        if (registration is not GlfwWindowRegistration glfwWindow)
+            return;
+
+        if (visible)
+        {
+            GLFW.ShowWindow(glfwWindow.Pointer);
+            return;
+        }
+            
+        GLFW.HideWindow(glfwWindow.Pointer);
+    }
+
+    public void WindowSetOpacity(WindowRegistration window, float opacity)
+    {
+        if (window is not GlfwWindowRegistration glfwWindow)
+            return;
+        
+        GLFW.SetWindowOpacity(glfwWindow.Pointer, opacity);
     }
 
     public void WindowSwapBuffers(WindowRegistration window)
