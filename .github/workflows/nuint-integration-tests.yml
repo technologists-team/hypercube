@@ -2,9 +2,7 @@ name: NUnit integration test
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
   workflow_dispatch:
   
 env:
@@ -37,7 +35,7 @@ jobs:
       run: dotnet tool restore
 
     - name: 🔨 Build and Test (Release)
-      run: dotnet test --no-build --configuration=Release Hypercube.UnitTests/Hypercube.UnitTests.csproj
+      run: dotnet test --configuration=Release Hypercube.UnitTests/Hypercube.UnitTests.csproj
 
     - name: 🔨 Build and Test (Debug)
-      run: dotnet test --no-build --configuration=Debug Hypercube.UnitTests/Hypercube.UnitTests.csproj
+      run: dotnet test --configuration=Debug Hypercube.UnitTests/Hypercube.UnitTests.csproj
