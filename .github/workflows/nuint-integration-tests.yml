@@ -1,0 +1,42 @@
+name: NUnit integration test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build-windows:
+    name: Windows Build
+    runs-on: windows-latest
+
+    steps:
+    - name: ⤵️ Checkout Source
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🛠️ Setup Submodules
+      run: git submodule update --init --recursive
+
+    - name: 🛠️ Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+    
+    - name: 🛠️ Install dotnet dependencies
+      run: dotnet restore
+
+    - name: 🛠️ Install dotnet tools
+      run: dotnet tool restore
+
+    - name: 🔨 Build and Test (Release)
+      run: dotnet test --no-build --configuration=Release Hypercube.UnitTests/Hypercube.UnitTests.csproj
+
+    - name: 🔨 Build and Test (Debug)
+      run: dotnet test --no-build --configuration=Debug Hypercube.UnitTests/Hypercube.UnitTests.csproj
