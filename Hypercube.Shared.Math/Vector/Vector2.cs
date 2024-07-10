@@ -2,7 +2,7 @@
 
 namespace Hypercube.Shared.Math.Vector;
 
-public readonly partial struct Vector2(float x, float y)
+public readonly partial struct Vector2(float x, float y) : IEquatable<Vector2>
 {
     public static readonly Vector2 Zero = new(0, 0);
     public static readonly Vector2 One = new(1, 1);
@@ -15,8 +15,13 @@ public readonly partial struct Vector2(float x, float y)
     
     public readonly float X = x;
     public readonly float Y = y;
-    public readonly float Length = MathF.Sqrt(x * x + y * y);
 
+    public float Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Sqrt(x * x + y * y);
+    }
+    
     public Vector2(float value) : this(value, value)
     {
     }
@@ -35,6 +40,30 @@ public readonly partial struct Vector2(float x, float y)
     public Vector2 WithY(float value)
     {
         return new Vector2(X, value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(Vector2 other)
+    {
+        return X.Equals(other.X) && Y.Equals(other.Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool Equals(object? obj)
+    {
+        return obj is Vector2 other && Equals(other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(X, Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        return $"{x}, {y}";
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,8 +121,14 @@ public readonly partial struct Vector2(float x, float y)
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString()
+    public static bool operator ==(Vector2 a, Vector2 b)
     {
-        return $"{x}, {y}";
+        return a.Equals(b);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Vector2 a, Vector2 b)
+    {
+        return !a.Equals(b);
     }
 }
