@@ -3,7 +3,7 @@ using Hypercube.Shared.Math.Extensions;
 
 namespace Hypercube.Shared.Math.Vector;
 
-public readonly struct Vector4(float x, float y, float z, float w) : IEquatable<Vector4>
+public readonly partial struct Vector4(float x, float y, float z, float w) : IEquatable<Vector4>
 {
     public static readonly Vector4 Zero = new(0, 0, 0, 0);
     public static readonly Vector4 One = new(1, 1, 1, 1);
@@ -25,7 +25,7 @@ public readonly struct Vector4(float x, float y, float z, float w) : IEquatable<
     {
     }
 
-    public Vector4(Vector4 Vector4, float w) : this(Vector4.X, Vector4.Y, Vector4.Z, w)
+    public Vector4(Vector4 vector4, float w) : this(vector4.X, vector4.Y, vector4.Z, w)
     {
     }
 

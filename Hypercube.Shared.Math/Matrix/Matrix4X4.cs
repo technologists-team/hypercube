@@ -4,26 +4,27 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
-public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable<Matrix4X4>
+public partial struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable<Matrix4X4>
 {
     public static Matrix4X4 Zero => new(Vector4.Zero);
     public static Matrix4X4 One => new(Vector4.One);
+
     public static Matrix4X4 Identity => new(
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, 0, 1);
-    
+
     public Vector4 Raw0 = x;
     public Vector4 Raw1 = y;
     public Vector4 Raw2 = z;
     public Vector4 Raw3 = w;
 
-    public Vector4 Colum0 => new(M00, M10, M20, M30);
-    public Vector4 Colum1 => new(M01, M11, M21, M31);
-    public Vector4 Colum2 => new(M02, M12, M22, M32);
-    public Vector4 Colum3 => new(M03, M13, M23, M33);
-    
+    public Vector4 Column0 => new(M00, M10, M20, M30);
+    public Vector4 Column1 => new(M01, M11, M21, M31);
+    public Vector4 Column2 => new(M02, M12, M22, M32);
+    public Vector4 Column3 => new(M03, M13, M23, M33);
+
     /// <summary>
     /// Matrix x: 0, y: 0 element.
     /// </summary>
@@ -34,7 +35,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw0 = Raw0.WithX(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 1, y: 0 element.
     /// </summary>
@@ -67,7 +68,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw0 = Raw0.WithW(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 0, y: 1 element.
     /// </summary>
@@ -78,7 +79,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw1 = Raw1.WithX(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 1, y: 1 element.
     /// </summary>
@@ -89,7 +90,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw1 = Raw1.WithY(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 2, y: 1 element.
     /// </summary>
@@ -100,7 +101,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw1 = Raw1.WithZ(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 3, y: 1 element.
     /// </summary>
@@ -111,7 +112,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw1 = Raw1.WithW(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 0, y: 2 element.
     /// </summary>
@@ -122,7 +123,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw2 = Raw2.WithX(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 1, y: 2 element.
     /// </summary>
@@ -133,7 +134,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw2 = Raw2.WithY(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 2, y: 2 element.
     /// </summary>
@@ -144,7 +145,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw2 = Raw2.WithZ(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 3, y: 2 element.
     /// </summary>
@@ -155,7 +156,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw2 = Raw2.WithW(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 0, y: 3 element.
     /// </summary>
@@ -166,7 +167,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw3 = Raw3.WithX(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 1, y: 3 element.
     /// </summary>
@@ -177,18 +178,18 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw3 = Raw3.WithY(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 2, y: 3 element.
     /// </summary>
-    public float M32 
+    public float M32
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw3.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw3 = Raw3.WithZ(value);
     }
-    
+
     /// <summary>
     /// Matrix x: 3, y: 3 element.
     /// </summary>
@@ -199,11 +200,11 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Raw3 = Raw3.WithW(value);
     }
-    
+
     public Matrix4X4(Vector4 value) : this(value, value, value, value)
     {
     }
-    
+
     /// <summary>
     /// Creating matrix
     /// <code>
@@ -226,7 +227,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     public Matrix4X4(Matrix4X4 matrix4X4) : this(matrix4X4.Raw0, matrix4X4.Raw1, matrix4X4.Raw2, matrix4X4.Raw3)
     {
     }
-    
+
     public bool Equals(Matrix4X4 other)
     {
         return Raw0.Equals(other.Raw0) &&
@@ -244,7 +245,7 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     {
         return HashCode.Combine(Raw0, Raw1, Raw2, Raw3);
     }
-    
+
     public override string ToString()
     {
         return $"{Raw0}\n{Raw1}\n{Raw2}\n{Raw3}";
@@ -254,29 +255,29 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     {
         var result = Zero;
 
-        result.M00 = (a.Raw0 * b.Colum0).Sum();
-        result.M01 = (a.Raw0 * b.Colum1).Sum();
-        result.M02 = (a.Raw0 * b.Colum2).Sum();
-        result.M03 = (a.Raw0 * b.Colum3).Sum();
+        result.M00 = (a.Raw0 * b.Column0).Sum();
+        result.M01 = (a.Raw0 * b.Column1).Sum();
+        result.M02 = (a.Raw0 * b.Column2).Sum();
+        result.M03 = (a.Raw0 * b.Column3).Sum();
 
-        result.M10 = (a.Raw1 * b.Colum0).Sum();
-        result.M11 = (a.Raw1 * b.Colum1).Sum();
-        result.M12 = (a.Raw1 * b.Colum2).Sum();
-        result.M13 = (a.Raw1 * b.Colum3).Sum();
-        
-        result.M20 = (a.Raw2 * b.Colum0).Sum();
-        result.M21 = (a.Raw2 * b.Colum1).Sum();
-        result.M22 = (a.Raw2 * b.Colum2).Sum();
-        result.M23 = (a.Raw2 * b.Colum3).Sum();
-        
-        result.M30 = (a.Raw3 * b.Colum0).Sum();
-        result.M31 = (a.Raw3 * b.Colum1).Sum();
-        result.M32 = (a.Raw3 * b.Colum2).Sum();
-        result.M33 = (a.Raw3 * b.Colum3).Sum();
-        
+        result.M10 = (a.Raw1 * b.Column0).Sum();
+        result.M11 = (a.Raw1 * b.Column1).Sum();
+        result.M12 = (a.Raw1 * b.Column2).Sum();
+        result.M13 = (a.Raw1 * b.Column3).Sum();
+
+        result.M20 = (a.Raw2 * b.Column0).Sum();
+        result.M21 = (a.Raw2 * b.Column1).Sum();
+        result.M22 = (a.Raw2 * b.Column2).Sum();
+        result.M23 = (a.Raw2 * b.Column3).Sum();
+
+        result.M30 = (a.Raw3 * b.Column0).Sum();
+        result.M31 = (a.Raw3 * b.Column1).Sum();
+        result.M32 = (a.Raw3 * b.Column2).Sum();
+        result.M33 = (a.Raw3 * b.Column3).Sum();
+
         return result;
     }
-    
+
     public static Vector4 operator *(Matrix4X4 a, Vector4 b)
     {
         return new Vector4(
@@ -296,20 +297,26 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         return !a.Equals(b);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 Transpose(Matrix4X4 matrix4X4)
+    {
+        return new Matrix4X4(matrix4X4.Column0, matrix4X4.Column1, matrix4X4.Column2, matrix4X4.Column3);
+    }
+
     /// <summary>
     /// Creating scale matrix
     /// <code>
     ///  v  |  0  |  0  |  0 
     ///  0  |  v  |  0  |  0
     ///  0  |  0  |  v  |  0
-    ///  0  |  0  |  0  |  v
+    ///  0  |  0  |  0  |  1
     /// </code>
     /// </summary>
     public static Matrix4X4 CreateScale(float value)
     {
-        return CreateScale(value, value, value, value);
+        return CreateScale(value, value, value);
     }
-    
+
     /// <summary>
     /// Creating scale matrix
     /// <code>
@@ -321,9 +328,9 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     /// </summary>
     public static Matrix4X4 CreateScale(Vector2 scale)
     {
-        return CreateScale(scale.X, scale.Y, 1f, 1f);
+        return CreateScale(scale.X, scale.Y, 1f);
     }
-    
+
     /// <summary>
     /// Creating scale matrix
     /// <code>
@@ -335,9 +342,9 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     /// </summary>
     public static Matrix4X4 CreateScale(Vector3 scale)
     {
-        return CreateScale(scale.X, scale.Y, scale.Z, 1f);
+        return CreateScale(scale.X, scale.Y, scale.Z);
     }
-    
+
     /// <summary>
     /// Creating scale matrix
     /// <code>
@@ -347,18 +354,64 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
     ///  0  |  0  |  0  |  1
     /// </code>
     /// </summary>
-    public static Matrix4X4 CreateScale(float x, float y, float z, float w)
+    public static Matrix4X4 CreateScale(float x, float y, float z)
     {
         var result = Identity;
 
         result.M00 = x;
         result.M11 = y;
         result.M22 = z;
-        result.M33 = w;
 
         return result;
     }
     
+    /// <summary>
+    /// Creating translate matrix
+    /// <code>
+    ///  1  |  0  |  0  |  x 
+    ///  0  |  1  |  0  |  y
+    ///  0  |  0  |  1  |  0
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateTranslate(Vector2 vector2)
+    {
+        return CreateTranslate(vector2.X, vector2.Y, 0f);
+    }
+    
+    /// <summary>
+    /// Creating translate matrix
+    /// <code>
+    ///  1  |  0  |  0  |  x 
+    ///  0  |  1  |  0  |  y
+    ///  0  |  0  |  1  |  z
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateTranslate(Vector3 vector3)
+    {
+        return CreateTranslate(vector3.X, vector3.Y, vector3.Z);
+    }
+    
+    /// <summary>
+    /// Creating translate matrix
+    /// <code>
+    ///  1  |  0  |  0  |  x 
+    ///  0  |  1  |  0  |  y
+    ///  0  |  0  |  1  |  z
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateTranslate(float x, float y, float z)
+    {
+        var result = Identity;
+
+        result.M03 = x;
+        result.M13 = y;
+        result.M23 = z;
+
+        return result;
+    }
     /// <summary>
     /// Creating orthographic matrix
     /// <code>
@@ -379,10 +432,10 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         result.M03 = -(box2.Right + box2.Left) / (box2.Right - box2.Left);
         result.M13 = -(box2.Top + box2.Bottom) / (box2.Top - box2.Bottom);
         result.M23 = -(zFar + zNear) / (zFar - zNear);
-        
+
         return result;
     }
-    
+
     /// <summary>
     /// Creating perspective matrix
     /// <code>
@@ -407,13 +460,13 @@ public struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable
         var halfFov = fov / 2;
         var tanHalfFov = (float)System.Math.Tan(halfFov);
         var zDelta = zFar - zNear;
-        
+
         result.M00 = 1 / (aspect * tanHalfFov);
         result.M11 = 1 / tanHalfFov;
         result.M22 = zFar / zDelta;
         result.M23 = 1;
         result.M32 = zFar * zNear / zDelta;
-        
+
         return result;
     }
 }

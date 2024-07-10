@@ -1,9 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
+using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -35,6 +35,8 @@ public sealed partial class Renderer
         _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
         _baseTexture.Bind();
 
+        //_cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
+        
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
         _vao = new ArrayObject();
@@ -59,7 +61,7 @@ public sealed partial class Renderer
     private void OnFrameUpdate(UpdateFrameEvent args)
     {
 #if DEBUG
-        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime}");
+        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null}");
 #endif
         _windowManager.PollEvents();
     }
@@ -86,6 +88,8 @@ public sealed partial class Renderer
         BatchUpdate();
         
         _baseShader.Use();
+        _baseShader.SetUniform(_baseShader.GetUniformLocation("model"), Matrix4X4.Identity);
+        _baseShader.SetUniform(_baseShader.GetUniformLocation("projection"), _cameraManager.Projection);
         
         _vao.Bind();
         GL.DrawElements(BeginMode.Triangles, (int) _batchIndexIndex, DrawElementsType.UnsignedInt, 0);

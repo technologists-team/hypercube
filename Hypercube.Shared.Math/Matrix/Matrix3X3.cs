@@ -9,9 +9,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     private const int IndexRaw1 = 1;
     private const int IndexRaw2 = 2;
 
-    private const int IndexColum0 = 0;
-    private const int IndexColum1 = 1;
-    private const int IndexColum2 = 2;
+    private const int IndexColumn0 = 0;
+    private const int IndexColumn1 = 1;
+    private const int IndexColumn2 = 2;
     
     public static Matrix3X3 Zero => new(Vector3.Zero);
     public static Matrix3X3 One => new(Vector3.One);
@@ -126,23 +126,23 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         {
             IndexRaw0 => colum switch
             {
-                IndexColum0 => M00,
-                IndexColum1 => M01,
-                IndexColum2 => M02,
+                IndexColumn0 => M00,
+                IndexColumn1 => M01,
+                IndexColumn2 => M02,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
             IndexRaw1 => colum switch
             {
-                IndexColum0 => M10,
-                IndexColum1 => M11,
-                IndexColum2 => M12,
+                IndexColumn0 => M10,
+                IndexColumn1 => M11,
+                IndexColumn2 => M12,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
             IndexRaw2 => colum switch
             {
-                IndexColum0 => M20,
-                IndexColum1 => M21,
-                IndexColum2 => M22,
+                IndexColumn0 => M20,
+                IndexColumn1 => M21,
+                IndexColumn2 => M22,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
             _ => throw new ArgumentOutOfRangeException(nameof(raw), raw, null)
@@ -154,15 +154,15 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
                 case IndexRaw0:
                     switch (colum)
                     {
-                        case IndexColum0:
+                        case IndexColumn0:
                             M00 = value;
                             break;
                         
-                        case IndexColum1:
+                        case IndexColumn1:
                             M01 = value;
                             break;
                         
-                        case IndexColum2:
+                        case IndexColumn2:
                             M02 = value;
                             break;
                         
@@ -174,15 +174,15 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
                 case IndexRaw1:
                     switch (colum)
                     {
-                        case IndexColum0:
+                        case IndexColumn0:
                             M10 = value;
                             break;
                         
-                        case IndexColum1:
+                        case IndexColumn1:
                             M11 = value;
                             break;
                         
-                        case IndexColum2:
+                        case IndexColumn2:
                             M12 = value;
                             break;
                         
@@ -194,15 +194,15 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
                 case IndexRaw2:
                     switch (colum)
                     {
-                        case IndexColum0:
+                        case IndexColumn0:
                             M20 = value;
                             break;
                         
-                        case IndexColum1:
+                        case IndexColumn1:
                             M21 = value;
                             break;
                         
-                        case IndexColum2:
+                        case IndexColumn2:
                             M22 = value;
                             break;
                         

@@ -1,6 +1,6 @@
-﻿using Hypercube.Shared.Math.Vector;
+﻿using Hypercube.Shared.Math.Matrix;
+using Hypercube.Shared.Math.Vector;
 using OpenToolkit.Graphics.OpenGL4;
-using Vector2 = Hypercube.Shared.Math.Vector.Vector2;
 
 namespace Hypercube.Client.Graphics.Shading;
 
@@ -51,12 +51,17 @@ public class Shader : IShader
         GL.UseProgram(_handle);
     }
 
+    public int GetUniformLocation(string name)
+    {
+        return GL.GetUniformLocation(_handle, name);
+    }
+
     public void SetUniform(string name, int value)
     {
         GL.UseProgram(_handle);
         GL.Uniform1(_uniformLocations[name], value);
     }
-    
+
     public void SetUniform(string name, Vector2Int value)
     {
         GL.UseProgram(_handle);
@@ -73,6 +78,21 @@ public class Shader : IShader
     {
         GL.UseProgram(_handle);
         GL.Uniform2(_uniformLocations[name], value.X, value.Y);
+    }
+
+    public void SetUniform(string name, Matrix4X4 value, bool transpose = false)
+    {
+        SetUniform(GL.GetUniformLocation(_handle, name), value, transpose);
+    }
+    
+    public void SetUniform(int index, Matrix4X4 value, bool transpose = false)
+    {
+        unsafe
+        {
+            var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
+            GL.UseProgram(_handle);
+            GL.UniformMatrix4(index, 1, false, (float*) &matrix);
+        }
     }
     
     private int CreateShader(string path, ShaderType type)
