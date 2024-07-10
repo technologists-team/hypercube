@@ -12,6 +12,9 @@ public readonly struct Vector3(float x, float y, float z)
     public static readonly Vector3 Down = new(0, -1, 0);
     public static readonly Vector3 Right = new(1, 0, 0);
     public static readonly Vector3 Left = new(-1, 0, 0);
+    public static readonly Vector3 UnitX = new(1, 0, 0);
+    public static readonly Vector3 UnitY = new(0, 1, 0);
+    public static readonly Vector3 UnitZ = new(0, 0, 1);
     
     public readonly float X = x;
     public readonly float Y = y;
@@ -27,6 +30,12 @@ public readonly struct Vector3(float x, float y, float z)
 
     public Vector3(Vector3 vector3) : this(vector3.X, vector3.Y, vector3.Z)
     {
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Sum()
+    {
+        return X + Y + Z;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

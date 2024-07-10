@@ -10,6 +10,8 @@ public readonly partial struct Vector2(float x, float y)
     public static readonly Vector2 Down = new(0, -1);
     public static readonly Vector2 Right = new(1, 0);
     public static readonly Vector2 Left = new(-1, 0);
+    public static readonly Vector2 UnitX = new(1, 0);
+    public static readonly Vector2 UnitY = new(0, 1);
     
     public readonly float X = x;
     public readonly float Y = y;

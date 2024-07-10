@@ -29,7 +29,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw0.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0.WithX(value);
+        set => Raw0 = Raw0.WithX(value);
     }
     
     /// <summary>
@@ -40,7 +40,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw0.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0.WithY(value);
+        set => Raw0 = Raw0.WithY(value);
     }
     
     /// <summary>
@@ -51,7 +51,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw0.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0.WithZ(value);
+        set => Raw0 = Raw0.WithZ(value);
     }
     
     /// <summary>
@@ -62,7 +62,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw1.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1.WithX(value);
+        set => Raw1 = Raw1.WithX(value);
     }
     
     /// <summary>
@@ -73,7 +73,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw1.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1.WithY(value);
+        set => Raw1 = Raw1.WithY(value);
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw1.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1.WithZ(value);
+        set => Raw1 = Raw1.WithZ(value);
     }
     
     /// <summary>
@@ -95,7 +95,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw2.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2.WithX(value);
+        set => Raw2 = Raw2.WithX(value);
     }
     
     /// <summary>
@@ -106,7 +106,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw2.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2.WithY(value);
+        set => Raw2 = Raw2.WithY(value);
     }
     
     /// <summary>
@@ -117,7 +117,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Raw2.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2.WithZ(value);
+        set => Raw2 = Raw2.WithZ(value);
     }
 
     public float this[int raw, int colum]

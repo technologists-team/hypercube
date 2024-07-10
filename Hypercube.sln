@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Shared.Math", "Hy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Shared", "Hypercube.Shared\Hypercube.Shared.csproj", "{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.UnitTests", "Hypercube.UnitTests\Hypercube.UnitTests.csproj", "{6901E456-957F-4CC8-880F-B6A5DBD2862E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
