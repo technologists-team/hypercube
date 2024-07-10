@@ -85,6 +85,10 @@ public sealed unsafe partial class GlfwWindowManager
         if (settings.StencilBits is not null)
             GLFW.WindowHint(WindowHintInt.StencilBits, settings.StencilBits.Value);
         
+        GLFW.WindowHint(WindowHintBool.Resizable, settings.Resizable);
+        GLFW.WindowHint(WindowHintBool.TransparentFramebuffer, settings.TransparentFramebuffer);
+        GLFW.WindowHint(WindowHintBool.Decorated, settings.Decorated);
+        
         var window = GLFW.CreateWindow(
             settings.Width,
             settings.Height,
@@ -97,12 +101,7 @@ public sealed unsafe partial class GlfwWindowManager
             Terminate();
             return new WindowCreateResult(null, GLFWHelper.GetError());
         }
-
         
-        // Apply GLFW WindowStyle
-        if (settings.NoTitleBar)
-            GLFW.WindowHint(WindowHintBool.Decorated, false);
-
         return new WindowCreateResult(WindowSetup(window), null);
     }
 
