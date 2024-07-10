@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
+[StructLayout(LayoutKind.Sequential)]
 public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
 {
     private const int IndexRaw0 = 0;

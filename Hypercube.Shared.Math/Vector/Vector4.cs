@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Extensions;
 
 namespace Hypercube.Shared.Math.Vector;
 
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector4(float x, float y, float z, float w) : IEquatable<Vector4>
 {
     public static readonly Vector4 Zero = new(0, 0, 0, 0);

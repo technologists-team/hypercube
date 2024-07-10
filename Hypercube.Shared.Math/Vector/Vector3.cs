@@ -1,7 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Hypercube.Shared.Math.Vector;
 
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector3(float x, float y, float z)
 {
     public static readonly Vector3 Zero = new(0, 0, 0);
@@ -20,9 +22,18 @@ public readonly partial struct Vector3(float x, float y, float z)
     public readonly float Y = y;
     public readonly float Z = z;
 
-    public float Length => (float)System.Math.Sqrt(X * X + Y * Y + Z * Z);
-    public Vector3 Normalized => this / Length;
-    
+    public float Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Sqrt(X * X + Y * Y + Z * Z);
+    }
+
+    public Vector3 Normalized
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => this / Length;
+    }
+
     public Vector3(float value) : this(value, value, value)
     {
     }

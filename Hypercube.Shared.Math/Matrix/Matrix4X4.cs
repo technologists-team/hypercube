@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
+[StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w) : IEquatable<Matrix4X4>
 {
     public static Matrix4X4 Zero => new(Vector4.Zero);

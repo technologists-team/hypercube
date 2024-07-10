@@ -12,8 +12,8 @@ public readonly struct Vertex
     private static readonly Color DefaultColor = Color.White;
 
     public readonly Vector3 Position;
-    public readonly Vector2 UVCoords;
     public readonly Color Color;
+    public readonly Vector2 UVCoords;
     
     public Vertex(Vector3 position, Vector2 uvCoords, Color color)
     {
