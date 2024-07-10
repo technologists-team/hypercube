@@ -10,8 +10,6 @@ namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {
-    private readonly HashSet<Viewport> _viewports = new();
-    
     private IShader _baseShader = default!;
     private ITextureHandle _baseTexture = default!;
     
@@ -35,8 +33,6 @@ public sealed partial class Renderer
         _baseShader = new Shader("Resources/Shaders/base");
         _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
         _baseTexture.Bind();
-        
-        _viewports.Add(new Viewport());
 
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
@@ -72,11 +68,6 @@ public sealed partial class Renderer
 
         GL.Viewport(window.Size);
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        
-        foreach (var viewport in _viewports)
-        {
-            RenderEntities(viewport);
-        }
 
         var sin = (float)Math.Abs(Math.Sin(_timing.RealTime.TotalMilliseconds / 1000f));
         var colorR = new Color(sin, 0f, 0f);
@@ -99,7 +90,7 @@ public sealed partial class Renderer
         _windowManager.WindowSwapBuffers(MainWindow);
     }
 
-    private void RenderEntities(Viewport viewport)
+    private void RenderEntities(ICamera camera)
     {
         
     }
