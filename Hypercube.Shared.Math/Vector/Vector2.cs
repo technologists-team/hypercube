@@ -18,6 +18,22 @@ public readonly partial struct Vector2(float x, float y)
     public Vector2(float value) : this(value, value)
     {
     }
+
+    public Vector2(Vector2 vector2) : this(vector2.X, vector2.Y)
+    {
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 WithX(float value)
+    {
+        return new Vector2(value, Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 WithY(float value)
+    {
+        return new Vector2(X, value);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 operator +(Vector2 a, Vector2 b)
