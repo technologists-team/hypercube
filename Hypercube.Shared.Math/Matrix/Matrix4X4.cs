@@ -204,7 +204,19 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Row3 = Row3.WithW(value);
     }
-
+    /// <summary>
+    /// Creates new matrix 4x4
+    /// <code>
+    /// Row0.X  |  Row0.Y  |  Row0.Z  |  Row0.W 
+    /// Row1.X  |  Row1.Y  |  Row1.Z  |  Row1.W 
+    /// Row2.X  |  Row2.Y  |  Row2.Z  |  Row2.W 
+    /// Row2.X  |  Row2.Y  |  Row2.Z  |  Row2.W
+    /// </code>
+    /// </summary>
+    /// <param name="x">Row 0</param>
+    /// <param name="y">Row 1</param>
+    /// <param name="z">Row 2</param>
+    /// <param name="w">Row 3</param>
     public Matrix4X4(Vector4 x, Vector4 y, Vector4 z, Vector4 w)
     {
         Row0 = x;
@@ -212,7 +224,10 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         Row2 = z;
         Row3 = w;
     }
-    
+    /// <summary>
+    /// Creates new matrix with all rows is "<paramref name="value"/>"
+    /// </summary>
+    /// <param name="value">Vector4 to make rows out of</param>
     public Matrix4X4(Vector4 value) : this(value, value, value, value)
     {
     }
