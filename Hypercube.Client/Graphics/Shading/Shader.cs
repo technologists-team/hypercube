@@ -93,9 +93,12 @@ public class Shader : IShader
     
     public void SetUniform(int index, Matrix4X4 value, bool transpose = false)
     {
-        var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
-        GL.UseProgram(_handle);
-        GL.UniformMatrix4(index, 1, false, matrix.ToArray());
+        unsafe
+        {
+            var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
+            GL.UseProgram(_handle);
+            GL.UniformMatrix4(index, 1, false, (float*) &matrix);
+        }
     }
     
     private int CreateShader(string source, ShaderType type)

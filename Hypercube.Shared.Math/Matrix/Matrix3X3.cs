@@ -4,7 +4,7 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
-// TODO: May be it's can be immutable, and also layout broken
+// TODO: May be it's can be immutable
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix3X3
 {
