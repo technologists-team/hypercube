@@ -42,7 +42,7 @@ public readonly struct ResourcePath
         get
         {
             var sepIndex = Path.LastIndexOf('/') + 1;
-            return sepIndex == -1 ? "" : Path[sepIndex..];
+            return sepIndex == -1 ? string.Empty : Path[sepIndex..];
         }
     }
 
@@ -77,10 +77,8 @@ public readonly struct ResourcePath
         get
         {
             if (IsSelf)
-            {
                 return Self;
-            }
-
+            
             var idx = Path.Length > 1 && Path[^1] == '/'
                 ? Path[..^1].LastIndexOf('/')
                 : Path.LastIndexOf('/');
@@ -107,17 +105,18 @@ public readonly struct ResourcePath
     {
         if (r.IsSelf)
             return l;
+        
         if (r.Rooted)
             return r;
-        if (l.Path == "")
+        
+        if (l.Path == string.Empty)
             return new ResourcePath("/" + r.Path);
 
         if (l.Path.EndsWith("/"))
-        {
             return new ResourcePath(l.Path + r.Path);
-        }
+        
 
-        return new ResourcePath(l.Path + "/" + r.Path);
+        return new ResourcePath($"{l.Path}/{r.Path}");
     }
     public bool TryRelativeTo(ResourcePath basePath, [NotNullWhen(true)] out ResourcePath? relative)
     {
@@ -136,7 +135,7 @@ public readonly struct ResourcePath
         if (Path.StartsWith(basePath.Path))
         {
             var x = Path[basePath.Path.Length..].Trim('/');
-            relative = x == "" ? Self : new ResourcePath(x);
+            relative = x == string.Empty ? Self : new ResourcePath(x);
             return true;
         }
 
