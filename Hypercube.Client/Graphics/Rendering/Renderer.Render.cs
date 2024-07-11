@@ -31,12 +31,14 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
+        // mount directories
+        _resourceManager.MountContentFolder(".", "/");
         _resourceManager.MountContentFolder("Resources", "/");
-        var read = _resourceManager.WrapStream(_resourceManager.ReadFileContent("/Debug/test.txt")!).ReadToEnd();
-        Console.WriteLine(read);
-        Console.WriteLine(read);
-        _baseShader = new Shader("/Shaders/base/", _resourceManager);
-        _baseTexture = _textureManager.CreateHandler("/Textures/icon.png");
+        _resourceManager.MountContentFolder("Resources/Textures", "/");
+        _resourceManager.MountContentFolder("Resources/Shaders", "/");
+        
+        _baseShader = new Shader("/base/", _resourceManager);
+        _baseTexture = _textureManager.CreateHandler("/icon.png");
         _baseTexture.Bind();
 
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
