@@ -8,16 +8,9 @@ namespace Hypercube.Shared.Math.Matrix;
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4 : IEquatable<Matrix4X4>
 {
-    public const int Size = 4 * Vector4.Size;
-    
     public static Matrix4X4 Zero => new(Vector4.Zero);
     public static Matrix4X4 One => new(Vector4.One);
-
-    public static Matrix4X4 Identity => new(
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1);
+    public static Matrix4X4 Identity => new(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
 
     public Vector4 Row0;
     public Vector4 Row1;

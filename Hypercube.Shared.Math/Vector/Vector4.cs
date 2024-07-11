@@ -7,10 +7,9 @@ namespace Hypercube.Shared.Math.Vector;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector4 : IEquatable<Vector4>
 {
-    public const int Size = 4 * sizeof(float);
-    
     public static readonly Vector4 Zero = new(0, 0, 0, 0);
     public static readonly Vector4 One = new(1, 1, 1, 1);
+    
     public static readonly Vector4 UnitX = new(1, 0, 0, 0);
     public static readonly Vector4 UnitY = new(0, 1, 0, 0);
     public static readonly Vector4 UnitZ = new(0, 0, 1, 0);

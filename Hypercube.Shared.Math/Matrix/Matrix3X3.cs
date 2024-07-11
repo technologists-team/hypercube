@@ -4,12 +4,13 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
+// TODO: May be it's can be immutable, and also layout broken
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix3X3
 {
-    private const int IndexRaw0 = 0;
-    private const int IndexRaw1 = 1;
-    private const int IndexRaw2 = 2;
+    private const int IndexRow0 = 0;
+    private const int IndexRow1 = 1;
+    private const int IndexRow2 = 2;
 
     private const int IndexColumn0 = 0;
     private const int IndexColumn1 = 1;
@@ -17,7 +18,7 @@ public partial struct Matrix3X3
     
     public static Matrix3X3 Zero => new(Vector3.Zero);
     public static Matrix3X3 One => new(Vector3.One);
-    public static Matrix3X3 Identity => new(Vector3.Right, Vector3.Up, Vector3.Forward);
+    public static Matrix3X3 Identity => new(Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ);
     
     public Vector3 Row0;
     public Vector3 Row1;
@@ -126,21 +127,21 @@ public partial struct Matrix3X3
     {
         get => raw switch
         {
-            IndexRaw0 => colum switch
+            IndexRow0 => colum switch
             {
                 IndexColumn0 => M00,
                 IndexColumn1 => M01,
                 IndexColumn2 => M02,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
-            IndexRaw1 => colum switch
+            IndexRow1 => colum switch
             {
                 IndexColumn0 => M10,
                 IndexColumn1 => M11,
                 IndexColumn2 => M12,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
-            IndexRaw2 => colum switch
+            IndexRow2 => colum switch
             {
                 IndexColumn0 => M20,
                 IndexColumn1 => M21,
@@ -153,7 +154,7 @@ public partial struct Matrix3X3
         {
             switch (raw)
             {
-                case IndexRaw0:
+                case IndexRow0:
                     switch (colum)
                     {
                         case IndexColumn0:
@@ -173,7 +174,7 @@ public partial struct Matrix3X3
                     }
                     break;
                     
-                case IndexRaw1:
+                case IndexRow1:
                     switch (colum)
                     {
                         case IndexColumn0:
@@ -193,7 +194,7 @@ public partial struct Matrix3X3
                     }
                     break;
                 
-                case IndexRaw2:
+                case IndexRow2:
                     switch (colum)
                     {
                         case IndexColumn0:

@@ -5,13 +5,35 @@ namespace Hypercube.Shared.Math.Vector;
 public readonly partial struct Vector3
 {
     /*
-     * Vector2 Compatibility
+     * Self Compatibility
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Vector2(Vector3 vector)
     {
         return new Vector2(vector.X, vector.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector2Int(Vector3 vector)
+    {
+        return new Vector2Int((int)vector.X, (int)vector.Y);
+    }
+    
+    /*
+     * Tuple Compatibility
+     */
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector3((float x, float y, float z) a)
+    {
+        return new Vector3(a.x, a.y, a.z);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator (float x, float y, float z)(Vector3 a)
+    {
+        return (a.X, a.Y, a.Z);
     }
     
     /*

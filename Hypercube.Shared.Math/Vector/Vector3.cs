@@ -1,19 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Hypercube.Shared.Math.Extensions;
 
 namespace Hypercube.Shared.Math.Vector;
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector3(float x, float y, float z)
+public readonly partial struct Vector3(float x, float y, float z) : IEquatable<Vector3>
 {
     public static readonly Vector3 Zero = new(0, 0, 0);
     public static readonly Vector3 One = new(1, 1, 1);
-    public static readonly Vector3 Forward = new(0, 0, 1); 
-    public static readonly Vector3 Back = new(0, 0, -1);
-    public static readonly Vector3 Up = new(0, 1, 0);
-    public static readonly Vector3 Down = new(0, -1, 0);
-    public static readonly Vector3 Right = new(1, 0, 0);
-    public static readonly Vector3 Left = new(-1, 0, 0);
+
     public static readonly Vector3 UnitX = new(1, 0, 0);
     public static readonly Vector3 UnitY = new(0, 1, 0);
     public static readonly Vector3 UnitZ = new(0, 0, 1);
@@ -79,7 +75,27 @@ public readonly partial struct Vector3(float x, float y, float z)
     {
         return Vector3.Cross(this, other);
     }
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(Vector3 other)
+    {
+        return X.AboutEquals(other.X) &&
+               Y.AboutEquals(other.Y) &&
+               Z.AboutEquals(other.Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool Equals(object? obj)
+    {
+        return obj is Vector3 other && Equals(other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(X, Y, Z);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
@@ -162,6 +178,18 @@ public readonly partial struct Vector3(float x, float y, float z)
     public static Vector3 operator /(Vector3 a, float b)
     {
         return new Vector3(a.X / b, a.Y / b, a.Z / b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(Vector3 a, Vector3 b)
+    {
+        return a.Equals(b);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Vector3 a, Vector3 b)
+    {
+        return !a.Equals(b);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
