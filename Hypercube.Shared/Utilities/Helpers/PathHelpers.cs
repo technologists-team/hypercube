@@ -19,7 +19,8 @@ public static class PathHelpers
         return Directory.EnumerateFiles(path, "*", SearchOption.AllDirectories);
     }
     
-    public static bool IsFileSystemCaseSensitive() =>
-        !OperatingSystem.IsWindows()
-        && !OperatingSystem.IsMacOS();
+    public static bool IsFileSystemCaseSensitive()
+    {
+        return !OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS();
+    }
 }

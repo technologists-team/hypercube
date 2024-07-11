@@ -36,7 +36,7 @@ public sealed partial class Renderer
         _resourceManager.MountContentFolder("Resources/Textures", "/");
         _resourceManager.MountContentFolder("Resources/Shaders", "/");
         
-        _baseShader = new Shader("base", _resourceManager);
+        _baseShader = new Shader("/base", _resourceManager);
         _baseTexture = _textureManager.CreateHandler("/icon.png");
         _baseTexture.Bind();
 

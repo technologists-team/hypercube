@@ -13,7 +13,12 @@ public readonly struct ResourcePath
 
     public static readonly ResourcePath Self = ".";
     
-
+    static ResourcePath()
+    {
+        SystemSeparator = OperatingSystem.IsWindows() ? '\\' : '/';
+        SystemSeparatorStr = OperatingSystem.IsWindows() ? "\\" : "/";
+    }
+    
     public ResourcePath(string path)
     {
         if (OperatingSystem.IsWindows())
@@ -23,12 +28,6 @@ public readonly struct ResourcePath
         }
 
         Path = path;
-    }
-
-    static ResourcePath()
-    {
-        SystemSeparator = OperatingSystem.IsWindows() ? '\\' : '/';
-        SystemSeparatorStr = OperatingSystem.IsWindows() ? "\\" : "/";
     }
 
     public readonly string Path { get; }

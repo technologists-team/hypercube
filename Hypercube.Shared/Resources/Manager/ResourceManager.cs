@@ -94,7 +94,6 @@ public class ResourceManager : IResourceManager
                 
                 if (returned.Add(newPath))
                     yield return newPath;
-                
             }
         }
     }
@@ -103,7 +102,7 @@ public class ResourceManager : IResourceManager
     {
         var stream = ReadFileContent(path);
         if (stream is null)
-            throw new ArgumentException("File not found");
+            throw new ArgumentException($"File not found: {path.Path}");
 
         return WrapStream(stream).ReadToEnd();
     }
@@ -118,12 +117,10 @@ public class ResourceManager : IResourceManager
 
     private ResourcePath ValidatePrefix(ResourcePath? prefix)
     {
-        if (prefix is null)
-            prefix = "/";
-        else if (!prefix.Value.Rooted)
-            throw new ArgumentException("Prefix must be rooted.", nameof(prefix));
-        
-        return prefix.Value;
+        if (prefix.HasValue && !prefix.Value.Rooted)
+            throw new ArgumentException("Prefix must be rooted", nameof(prefix));
+
+        return prefix ?? "/";
     }
 
     public StreamReader WrapStream(Stream stream)
