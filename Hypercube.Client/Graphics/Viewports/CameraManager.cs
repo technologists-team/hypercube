@@ -21,18 +21,21 @@ public class CameraManager : ICameraManager
         // Debug camera controls
         var position = camera.Position;
         var rotation = camera.Rotation;
+        var scale = camera.Scale;
+        
+        var speed = 20f;
         
         if (_inputHandler.IsKeyDown(Key.W))
-            position -= Vector3.UnitY * delta;
+            position -= Vector3.UnitY * speed * delta;
 
         if (_inputHandler.IsKeyDown(Key.S))
-            position += Vector3.UnitY * delta; 
+            position += Vector3.UnitY * speed * delta; 
 
         if (_inputHandler.IsKeyDown(Key.A))
-            position -= Vector3.UnitX * delta;
+            position += Vector3.UnitX * speed * delta;
 
         if (_inputHandler.IsKeyDown(Key.D))
-            position += Vector3.UnitX * delta;
+            position -= Vector3.UnitX * speed * delta;
         
         if (_inputHandler.IsKeyDown(Key.Q))
             rotation -= Vector3.UnitZ * delta;
@@ -40,8 +43,15 @@ public class CameraManager : ICameraManager
         if (_inputHandler.IsKeyDown(Key.E))
             rotation += Vector3.UnitZ * delta;
         
+        if (_inputHandler.IsKeyDown(Key.T))
+            scale -= Vector3.One * delta;
+
+        if (_inputHandler.IsKeyDown(Key.Y))
+            scale += Vector3.One * delta;
+        
         camera.SetPosition(position);
         camera.SetRotation(rotation);
+        camera.SetScale(scale);
     }
 
     public void SetMainCamera(ICamera camera)
