@@ -4,6 +4,8 @@ using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
+using Hypercube.Shared.Resources;
+using Hypercube.Shared.Resources.Manager;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using GlfwImage = OpenTK.Windowing.GraphicsLibraryFramework.Image;
@@ -186,9 +188,9 @@ public sealed unsafe partial class GlfwWindowManager
          return null;
      }
 
-     public IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, string resPath)
+     public IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, IResourceManager resourceMan, ResourcePath path)
      {
-         var files = Directory.EnumerateFiles(resPath, "*.png");
+         var files = resourceMan.FindContentFiles(path);
          
          foreach (var file in files)
          {

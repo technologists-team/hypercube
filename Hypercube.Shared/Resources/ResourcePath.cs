@@ -2,12 +2,14 @@
 
 namespace Hypercube.Shared.Resources;
 
-public struct ResourcePath
+public readonly struct ResourcePath
 {
     public const char Separator = '/';
     public const string SeparatorStr = "/";
     public const char WinSeparator = '\\';
     public const string WinSeparatorStr = @"\";
+    public static readonly char SystemSeparator;
+    public static readonly string SystemSeparatorStr;
 
     public static readonly ResourcePath Self = ".";
     
@@ -21,6 +23,12 @@ public struct ResourcePath
         }
 
         Path = path;
+    }
+
+    static ResourcePath()
+    {
+        SystemSeparator = OperatingSystem.IsWindows() ? '\\' : '/';
+        SystemSeparatorStr = OperatingSystem.IsWindows() ? "\\" : "/";
     }
 
     public readonly string Path { get; }
@@ -90,6 +98,10 @@ public struct ResourcePath
     {
         return new ResourcePath(path);
     }
+    public static implicit operator string(ResourcePath path)
+    {
+        return path.Path;
+    }
     
     public static ResourcePath operator +(ResourcePath l, ResourcePath r)
     {
@@ -106,6 +118,36 @@ public struct ResourcePath
         }
 
         return new ResourcePath(l.Path + "/" + r.Path);
+    }
+    public bool TryRelativeTo(ResourcePath basePath, [NotNullWhen(true)] out ResourcePath? relative)
+    {
+        if (this == basePath)
+        {
+            relative = Self;
+            return true;
+        }
+
+        if (basePath == Self && Relative)
+        {
+            relative = this;
+            return true;
+        }
+
+        if (Path.StartsWith(basePath.Path))
+        {
+            var x = Path[basePath.Path.Length..].Trim('/');
+            relative = x == "" ? Self : new ResourcePath(x);
+            return true;
+        }
+
+        relative = null;
+        return false;
+    }
+    
+    public static ResourcePath FromRelativeSystemPath(string path, char newSeparator)
+    {
+        // ReSharper disable once RedundantArgumentDefaultValue
+        return new ResourcePath(path.Replace(newSeparator, '/'));
     }
 
     public static bool Equals(ResourcePath a, ResourcePath b)

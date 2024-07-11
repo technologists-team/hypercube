@@ -31,8 +31,12 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShader = new Shader("Resources/Shaders/base");
-        _baseTexture = _textureManager.CreateHandler("Resources/Textures/icon.png");
+        _resourceManager.MountContentFolder("Resources", "/");
+        var read = _resourceManager.WrapStream(_resourceManager.ReadFileContent("/Debug/test.txt")!).ReadToEnd();
+        Console.WriteLine(read);
+        Console.WriteLine(read);
+        _baseShader = new Shader("/Shaders/base/", _resourceManager);
+        _baseTexture = _textureManager.CreateHandler("/Textures/icon.png");
         _baseTexture.Bind();
 
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);

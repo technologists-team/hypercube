@@ -30,6 +30,14 @@ public class ResourcePathTest
     }
 
     [Test]
+    public void ParentDirTest()
+    {
+        var resPath = new ResourcePath("/Rooted/path.txt");
+        Assert.That(resPath.ParentDirectory.Path == "/Rooted");
+        Assert.Pass("Parent directory passed");
+    }
+
+    [Test]
     public void PathConcatTest()
     {
         var resPath = new ResourcePath("/Rooted/");

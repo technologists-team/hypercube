@@ -7,6 +7,7 @@ using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;
@@ -21,6 +22,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly ITextureManager _textureManager = default!;
     [Dependency] private readonly ITiming _timing = default!;
+    [Dependency] private readonly IResourceManager _resourceManager = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
@@ -93,7 +95,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
             break;
         }
 
-        var windowIcons = _windowManager.LoadWindowIcon(_textureManager, "Resources/Icons").ToList();
+        var windowIcons = _windowManager.LoadWindowIcon(_textureManager, _resourceManager, "/Icons").ToList();
         _windowManager.SetWindowIcons(MainWindow, windowIcons);
         
         
