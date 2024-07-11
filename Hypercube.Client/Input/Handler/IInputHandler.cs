@@ -13,4 +13,5 @@ public interface IInputHandler
     
     // TODO: Create Analyzer to allow access only for IWindowManager implementation
     void SendKeyState(KeyStateChangedArgs changedArgs);
+    bool IsKeyDown(Key key);
 }

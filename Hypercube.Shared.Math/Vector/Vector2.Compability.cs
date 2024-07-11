@@ -5,6 +5,12 @@ namespace Hypercube.Shared.Math.Vector;
 public readonly partial struct Vector2
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector3(Vector2 vector)
+    {
+        return new Vector3(vector.X, vector.Y, 0f);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Vector2(System.Numerics.Vector2 vector)
     {
         return new Vector2(vector.X, vector.Y);

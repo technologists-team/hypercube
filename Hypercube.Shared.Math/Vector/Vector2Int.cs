@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Shared.Math.Vector;
+﻿using System.Runtime.InteropServices;
 
+namespace Hypercube.Shared.Math.Vector;
+
+[StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector2Int(int x, int y)
 {
     public static readonly Vector2Int Zero = new(0, 0);
@@ -11,7 +14,8 @@ public readonly partial struct Vector2Int(int x, int y)
     
     public readonly int X = x;
     public readonly int Y = y;
-    public readonly float Ratio = x / (float)y;
+    
+    public float Ratio => x / (float)y;
 
     public static Vector2Int operator +(Vector2Int a, Vector2Int b)
     {
