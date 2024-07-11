@@ -7,7 +7,7 @@ namespace Hypercube.Client.Graphics.Texturing;
 
 public sealed class TextureManager : ITextureManager
 {
-    [Dependency] private readonly IResourceManager _resMan = default!;
+    [Dependency] private readonly IResourceManager _resourceManager = default!;
     
     public TextureManager()
     {
@@ -16,7 +16,7 @@ public sealed class TextureManager : ITextureManager
     
     public ITexture Create(ResourcePath path)
     {
-        return Create(ImageResult.FromStream(_resMan.ReadFileContent(path) ?? throw new FileNotFoundException(), ColorComponents.RedGreenBlueAlpha));
+        return Create(ImageResult.FromStream(_resourceManager.ReadFileContent(path) ?? throw new FileNotFoundException(), ColorComponents.RedGreenBlueAlpha));
     }
 
     public ITexture Create(ResourcePath path, bool doFlip)

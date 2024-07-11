@@ -188,9 +188,9 @@ public sealed unsafe partial class GlfwWindowManager
          return null;
      }
 
-     public IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, IResourceManager resourceMan, ResourcePath path)
+     public IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, IResourceManager resourceManager, ResourcePath path)
      {
-         var files = resourceMan.FindContentFiles(path);
+         var files = resourceManager.FindContentFiles(path);
          
          foreach (var file in files)
          {

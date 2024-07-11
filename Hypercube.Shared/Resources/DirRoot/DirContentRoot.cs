@@ -35,11 +35,13 @@ public class DirContentRoot : IContentRoot
         }
         return false;
     }
+    
     private bool FileExists(ResourcePath relPath)
     {
         var path = GetPath(relPath);
         return File.Exists(path);
     }
+    
     private string GetPath(ResourcePath path)
     {
         return Path.GetFullPath(Path.Combine(_directory.FullName, path));
@@ -49,9 +51,8 @@ public class DirContentRoot : IContentRoot
     {
         var fullPath = GetPath(path);
         if (!Directory.Exists(fullPath))
-        {
             yield break;
-        }
+        
         var paths = PathHelpers.GetFiles(fullPath);
         
         foreach (var filePath in paths)

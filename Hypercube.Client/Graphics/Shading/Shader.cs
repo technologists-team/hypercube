@@ -11,18 +11,13 @@ public class Shader : IShader
     public readonly int _handle;
     private readonly Dictionary<string, int> _uniformLocations = new();
 
-    public Shader(ResourcePath folderPath, IResourceManager resourceManager)
+    public Shader(string path, IResourceManager manager) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
+        manager)
     {
-        var files = resourceManager.FindContentFiles(folderPath).ToArray();
-        Console.WriteLine(files.Length);
-        if (files.Length != 2)
-            throw new ArgumentException($"Shader folder contains more than 2 files: {folderPath.Path}");
-        var vertPath = files.FirstOrDefault(f => f.Extension == ".vert");
-        var fragPath = files.FirstOrDefault(f => f.Extension == ".frag");
-        
-        if (vertPath.Path == null || fragPath.Path == null)
-            throw new ArgumentException("Shader folder doesn't contain one of the shaders");
-
+    }
+    
+    private Shader(ResourcePath vertPath, ResourcePath fragPath, IResourceManager resourceManager)
+    {
         var vertSource = resourceManager.ReadFileContentAllText(vertPath);
         var fragSource = resourceManager.ReadFileContentAllText(fragPath);
         

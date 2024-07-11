@@ -32,7 +32,7 @@ public interface IWindowManager : IDisposable
     void WindowSetVisible(WindowRegistration registration, bool visible);
     void WindowSetSize(WindowRegistration registration, Vector2Int size);
     void WindowSwapBuffers(WindowRegistration window);
-    IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, IResourceManager resourceManager, ResourcePath resPath);
+    IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureManager, IResourceManager resourceManager, ResourcePath resPath);
     void SetWindowIcons(WindowRegistration window, List<ITexture> images);
 
     nint GetProcAddress(string procName);

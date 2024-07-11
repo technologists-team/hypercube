@@ -1,7 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Runtimes.Loop.Event;
@@ -37,7 +36,7 @@ public sealed partial class Renderer
         _resourceManager.MountContentFolder("Resources/Textures", "/");
         _resourceManager.MountContentFolder("Resources/Shaders", "/");
         
-        _baseShader = new Shader("/base/", _resourceManager);
+        _baseShader = new Shader("base", _resourceManager);
         _baseTexture = _textureManager.CreateHandler("/icon.png");
         _baseTexture.Bind();
 
