@@ -11,7 +11,7 @@ public class Camera2D : ICamera
     private readonly float _zFar;
     private readonly float _zNear;
     private Vector2Int Size { get; set; }
-    private float Zoom { get; set; } = 10f;
+    private float Zoom { get; set; } = 1f;
     
     private Vector2 HalfSize => Size / 2f;
     public Matrix4X4 Projection { get; private set; }
