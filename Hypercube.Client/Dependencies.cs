@@ -9,6 +9,7 @@ using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client;
@@ -30,6 +31,9 @@ public static class Dependencies
         // Input
         rootContainer.Register<IInputHandler, InputHandler>();
         rootContainer.Register<IInputManager, InputManager>();
+        
+        // Resources
+        rootContainer.Register<IResourceManager, ResourceManager>();
         
         // Texturing
         rootContainer.Register<ITextureManager, TextureManager>();
