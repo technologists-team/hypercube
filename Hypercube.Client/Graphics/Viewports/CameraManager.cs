@@ -19,20 +19,21 @@ public class CameraManager : ICameraManager
             return;
         
         // Debug camera controls
+        var speed = 30f;
         var position = camera.Position;
         var rotation = camera.Rotation;
         
         if (_inputHandler.IsKeyDown(Key.W))
-            position -= Vector3.UnitY * delta;
+            position -= Vector3.UnitY * delta * speed;
 
         if (_inputHandler.IsKeyDown(Key.S))
-            position += Vector3.UnitY * delta; 
+            position += Vector3.UnitY * delta * speed; 
 
         if (_inputHandler.IsKeyDown(Key.A))
-            position -= Vector3.UnitX * delta;
+            position += Vector3.UnitX * delta * speed;
 
         if (_inputHandler.IsKeyDown(Key.D))
-            position += Vector3.UnitX * delta;
+            position -= Vector3.UnitX * delta * speed;
         
         if (_inputHandler.IsKeyDown(Key.Q))
             rotation -= Vector3.UnitZ * delta;
