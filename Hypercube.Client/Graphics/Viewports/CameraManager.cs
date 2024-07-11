@@ -1,10 +1,8 @@
 ﻿using Hypercube.Client.Input;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Vector;
-using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Client.Graphics.Viewports;
 

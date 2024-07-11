@@ -6,6 +6,9 @@ namespace Hypercube.Client.Graphics.Viewports;
 public interface ICamera
 {
     Matrix4X4 Projection { get; }
+    
     Vector3 Position { get; }
+
+    void SetPosition(Vector2 position);
     void SetPosition(Vector3 position);
 }

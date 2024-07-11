@@ -1,5 +1,4 @@
-﻿using Hypercube.Shared.Math.Box;
-using Hypercube.Shared.Math.Matrix;
+﻿using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Viewports;
@@ -29,6 +28,12 @@ public class Camera2D : ICamera
     public void SetSize(Vector2Int size)
     {
         Size = size;
+        UpdateProjection();
+    }
+
+    public void SetPosition(Vector2 position)
+    {
+        Position = position;
         UpdateProjection();
     }
     
