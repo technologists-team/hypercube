@@ -48,7 +48,7 @@ public class Camera2D : ICamera
     {
         var projection = Matrix4X4.CreateOrthographic(HalfSize, _zNear, _zFar);
         var scale = Matrix4X4.CreateScale(Zoom);
-        var translate = Matrix4X4.CreateTranslate(Position);
+        var translate = Matrix4X4.CreateTranslation(Position);
         
         Projection = projection * scale * translate;
     }

@@ -397,9 +397,9 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     ///  0  |  0  |  0  |  1
     /// </code>
     /// </summary>
-    public static Matrix4X4 CreateTranslate(Vector2 vector2)
+    public static Matrix4X4 CreateTranslation(Vector2 vector2)
     {
-        return CreateTranslate(vector2.X, vector2.Y, 0f);
+        return CreateTranslation(vector2.X, vector2.Y, 0f);
     }
     
     /// <summary>
@@ -411,9 +411,9 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     ///  0  |  0  |  0  |  1
     /// </code>
     /// </summary>
-    public static Matrix4X4 CreateTranslate(Vector3 vector3)
+    public static Matrix4X4 CreateTranslation(Vector3 vector3)
     {
-        return CreateTranslate(vector3.X, vector3.Y, vector3.Z);
+        return CreateTranslation(vector3.X, vector3.Y, vector3.Z);
     }
     
     /// <summary>
@@ -425,7 +425,7 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     ///  0  |  0  |  0  |  1
     /// </code>
     /// </summary>
-    public static Matrix4X4 CreateTranslate(float x, float y, float z)
+    public static Matrix4X4 CreateTranslation(float x, float y, float z)
     {
         var result = Identity;
 
@@ -480,15 +480,14 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     {
         var result = Zero;
 
-        var halfFov = fov / 2;
-        var tanHalfFov = (float)System.Math.Tan(halfFov);
-        var zDelta = zFar - zNear;
-
-        result.M00 = 1 / (aspect * tanHalfFov);
-        result.M11 = 1 / tanHalfFov;
-        result.M22 = zFar / zDelta;
-        result.M23 = 1;
-        result.M32 = zFar * zNear / zDelta;
+        var height = 1.0f / MathF.Tan(fov * 0.5f);
+        var width = height / aspect;
+        var range = float.IsPositiveInfinity(zFar) ? -1.0f : zFar / (zNear - zFar);
+        
+        result.Row0 = new Vector4(width, 0, 0, 0);
+        result.Row1 = new Vector4(0, height, 0, 0);
+        result.Row2 = new Vector4(0, 0, range, -1.0f);
+        result.Row3 = new Vector4(0, 0, range * zNear, 0);
 
         return result;
     }

@@ -54,7 +54,7 @@ public class CameraManager : ICameraManager
         return CreateCamera2D(size, Vector2.Zero);
     }
     
-    public ICamera CreateCamera2D(Vector2Int size, Vector2 position, float zNear = 0.01f, float zFar = 100f)
+    public ICamera CreateCamera2D(Vector2Int size, Vector2 position, float zNear = 0.1f, float zFar = 100f)
     {
         return new Camera2D(size, position, zNear, zFar);
     }
