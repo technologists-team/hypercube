@@ -14,17 +14,12 @@ public sealed partial class GlfwWindowManager
         }
         
         // Set callback to handle errors
-        GLFW.SetErrorCallback(OnErrorHandled);
+        GLFW.SetErrorCallback(_errorCallback);
         
         _initialized = true;
         
         var version = GLFW.GetVersionString();
         _logger.EngineInfo($"Initialize, version: {version}");
         return true;
-    }
-    
-    private void OnErrorHandled(ErrorCode error, string description)
-    {
-        _logger.Error(GLFWHelper.FormatError(error, description));
     }
 }

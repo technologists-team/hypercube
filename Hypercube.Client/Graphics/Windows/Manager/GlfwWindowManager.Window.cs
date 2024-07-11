@@ -130,10 +130,10 @@ public sealed unsafe partial class GlfwWindowManager
              SetWindowIcons(registration, settings.WindowImages.ToList());
          
          // Setting callbacks
-         GLFW.SetKeyCallback(window, OnWindowKeyHandled);
-         GLFW.SetWindowCloseCallback(window, OnWindowClosed);
-         GLFW.SetWindowSizeCallback(window, OnWindowResized);
-         GLFW.SetWindowFocusCallback(window, OnWindowFocusChanged);
+         GLFW.SetKeyCallback(window, _keyCallback);
+         GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
+         GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
+         GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
          
          return registration;
      }
