@@ -31,12 +31,6 @@ public class Camera2D : ICamera
         Size = size;
         UpdateProjection();
     }
-
-    public void SetPosition(Vector2 position)
-    {
-        Position = position;
-        UpdateProjection();
-    }
     
     public void SetPosition(Vector3 position)
     {

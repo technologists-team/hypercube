@@ -10,7 +10,6 @@ public interface ICamera
     Vector3 Position { get; }
     Vector3 Rotation { get; }
 
-    void SetPosition(Vector2 position);
     void SetPosition(Vector3 position);
     void SetRotation(Vector3 rotation);
 }
