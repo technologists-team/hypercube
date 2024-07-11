@@ -118,7 +118,7 @@ public sealed unsafe partial class GlfwWindowManager
              Pointer = window,
              Id = new WindowId(_nextWindowId++),
              
-             Ratio = framebufferSize.Ratio,
+             Ratio = framebufferSize.AspectRatio,
              Size = size,
              FramebufferSize = framebufferSize
          };

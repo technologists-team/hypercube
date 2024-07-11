@@ -4,12 +4,13 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
 
+// TODO: May be it's can be immutable, and also layout broken
 [StructLayout(LayoutKind.Sequential)]
-public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
+public partial struct Matrix3X3
 {
-    private const int IndexRaw0 = 0;
-    private const int IndexRaw1 = 1;
-    private const int IndexRaw2 = 2;
+    private const int IndexRow0 = 0;
+    private const int IndexRow1 = 1;
+    private const int IndexRow2 = 2;
 
     private const int IndexColumn0 = 0;
     private const int IndexColumn1 = 1;
@@ -17,11 +18,11 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     
     public static Matrix3X3 Zero => new(Vector3.Zero);
     public static Matrix3X3 One => new(Vector3.One);
-    public static Matrix3X3 Identity => new(Vector3.Right, Vector3.Up, Vector3.Forward);
+    public static Matrix3X3 Identity => new(Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ);
     
-    public Vector3 Raw0 = x;
-    public Vector3 Raw1 = y;
-    public Vector3 Raw2 = z;
+    public Vector3 Row0;
+    public Vector3 Row1;
+    public Vector3 Row2;
 
     /// <summary>
     /// Matrix x: 0, y: 0 element.
@@ -29,9 +30,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M00
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw0.X;
+        get => Row0.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0 = Raw0.WithX(value);
+        set => Row0 = Row0.WithX(value);
     }
     
     /// <summary>
@@ -40,9 +41,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M01
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw0.Y;
+        get => Row0.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0 = Raw0.WithY(value);
+        set => Row0 = Row0.WithY(value);
     }
     
     /// <summary>
@@ -51,9 +52,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M02
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw0.Z;
+        get => Row0.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw0 = Raw0.WithZ(value);
+        set => Row0 = Row0.WithZ(value);
     }
     
     /// <summary>
@@ -62,9 +63,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M10 
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw1.X;
+        get => Row1.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1 = Raw1.WithX(value);
+        set => Row1 = Row1.WithX(value);
     }
     
     /// <summary>
@@ -73,9 +74,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M11
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw1.Y;
+        get => Row1.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1 = Raw1.WithY(value);
+        set => Row1 = Row1.WithY(value);
     }
 
     /// <summary>
@@ -84,9 +85,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M12
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw1.Z;
+        get => Row1.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw1 = Raw1.WithZ(value);
+        set => Row1 = Row1.WithZ(value);
     }
     
     /// <summary>
@@ -95,9 +96,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M20
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw2.X;
+        get => Row2.X;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2 = Raw2.WithX(value);
+        set => Row2 = Row2.WithX(value);
     }
     
     /// <summary>
@@ -106,9 +107,9 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M21
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw2.Y;
+        get => Row2.Y;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2 = Raw2.WithY(value);
+        set => Row2 = Row2.WithY(value);
     }
     
     /// <summary>
@@ -117,30 +118,30 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
     public float M22
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Raw2.Z;
+        get => Row2.Z;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => Raw2 = Raw2.WithZ(value);
+        set => Row2 = Row2.WithZ(value);
     }
 
     public float this[int raw, int colum]
     {
         get => raw switch
         {
-            IndexRaw0 => colum switch
+            IndexRow0 => colum switch
             {
                 IndexColumn0 => M00,
                 IndexColumn1 => M01,
                 IndexColumn2 => M02,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
-            IndexRaw1 => colum switch
+            IndexRow1 => colum switch
             {
                 IndexColumn0 => M10,
                 IndexColumn1 => M11,
                 IndexColumn2 => M12,
                 _ => throw new ArgumentOutOfRangeException(nameof(colum), colum, null)
             },
-            IndexRaw2 => colum switch
+            IndexRow2 => colum switch
             {
                 IndexColumn0 => M20,
                 IndexColumn1 => M21,
@@ -153,7 +154,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
         {
             switch (raw)
             {
-                case IndexRaw0:
+                case IndexRow0:
                     switch (colum)
                     {
                         case IndexColumn0:
@@ -173,7 +174,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
                     }
                     break;
                     
-                case IndexRaw1:
+                case IndexRow1:
                     switch (colum)
                     {
                         case IndexColumn0:
@@ -193,7 +194,7 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
                     }
                     break;
                 
-                case IndexRaw2:
+                case IndexRow2:
                     switch (colum)
                     {
                         case IndexColumn0:
@@ -218,11 +219,33 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
             }
         }
     }
+    /// <summary>
+    /// Creates 3x3 matrix
+    /// <code>
+    ///  x.X | x.Y | x.Z
+    ///  y.X | y.Y | y.Z
+    ///  z.X | z.Y | z.Z
+    /// </code>
+    /// </summary>
+    public Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
+    {
+        Row0 = x;
+        Row1 = y;
+        Row2 = z;
+    }
     
     public Matrix3X3(Vector3 value) : this(value, value, value)
     {
     }
     
+    /// <summary>
+    /// Creates 3x3 matrix
+    /// <code>
+    ///  m00 | m01 | m02
+    ///  m10 | m11 | m12
+    ///  m20 | m21 | m22
+    /// </code>
+    /// </summary>
     public Matrix3X3(float m00, float m01, float m02,
         float m10, float m11, float m12,
         float m20, float m21, float m22) : this(new Vector3(m00, m01, m02),
@@ -379,6 +402,6 @@ public struct Matrix3X3(Vector3 x, Vector3 y, Vector3 z)
 
     public static Vector3 operator *(Matrix3X3 a, Vector3 b)
     {
-        return a.Raw0 * b.X + a.Raw1 * b.Y + a.Raw2 * b.Z;
+        return a.Row0 * b.X + a.Row1 * b.Y + a.Row2 * b.Z;
     }
 }
