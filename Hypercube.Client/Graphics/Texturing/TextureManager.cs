@@ -1,21 +1,25 @@
-﻿using StbImageSharp;
+﻿using Hypercube.Shared.Dependency;
+using Hypercube.Shared.Resources;
+using Hypercube.Shared.Resources.Manager;
+using StbImageSharp;
 
 namespace Hypercube.Client.Graphics.Texturing;
 
 public sealed class TextureManager : ITextureManager
 {
+    [Dependency] private readonly IResourceManager _resourceManager = default!;
+    
     public TextureManager()
     {
         StbImage.stbi_set_flip_vertically_on_load(1);
     }
     
-    public ITexture Create(string path)
+    public ITexture Create(ResourcePath path)
     {
-        using var stream = File.OpenRead(path);
-        return Create(ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha));
+        return Create(ImageResult.FromStream(_resourceManager.ReadFileContent(path) ?? throw new FileNotFoundException(), ColorComponents.RedGreenBlueAlpha));
     }
 
-    public ITexture Create(string path, bool doFlip)
+    public ITexture Create(ResourcePath path, bool doFlip)
     {
         if (doFlip)
             StbImage.stbi_set_flip_vertically_on_load(0);
@@ -30,7 +34,7 @@ public sealed class TextureManager : ITextureManager
         return new TextureHandle(texture);
     }
     
-    public ITextureHandle CreateHandler(string path)
+    public ITextureHandle CreateHandler(ResourcePath path)
     {
         return CreateHandler(Create(path));
     }

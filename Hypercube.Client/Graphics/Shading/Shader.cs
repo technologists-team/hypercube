@@ -1,5 +1,7 @@
-﻿using Hypercube.Shared.Math.Matrix;
+using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Vector;
+using Hypercube.Shared.Resources;
+using Hypercube.Shared.Resources.Manager;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Shading;
@@ -8,15 +10,19 @@ public class Shader : IShader
 {
     public readonly int _handle;
     private readonly Dictionary<string, int> _uniformLocations = new();
-    
-    public Shader(string path) : this($"{path}.vert", $"{path}.frag")
+
+    public Shader(string path, IResourceManager manager) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
+        manager)
     {
     }
-
-    private Shader(string vertPath, string fragPath)
+    
+    private Shader(ResourcePath vertPath, ResourcePath fragPath, IResourceManager resourceManager)
     {
-        var vertexShader = CreateShader(vertPath, ShaderType.VertexShader);
-        var fragmentShader = CreateShader(fragPath, ShaderType.FragmentShader);
+        var vertSource = resourceManager.ReadFileContentAllText(vertPath);
+        var fragSource = resourceManager.ReadFileContentAllText(fragPath);
+        
+        var vertexShader = CreateShader(vertSource, ShaderType.VertexShader);
+        var fragmentShader = CreateShader(fragSource, ShaderType.FragmentShader);
 
         _handle = GL.CreateProgram();
 
@@ -92,9 +98,8 @@ public class Shader : IShader
         GL.UniformMatrix4(index, 1, false, matrix.ToArray());
     }
     
-    private int CreateShader(string path, ShaderType type)
+    private int CreateShader(string source, ShaderType type)
     {
-        var source = File.ReadAllText(path);
         var shader = GL.CreateShader(type);
 
         GL.ShaderSource(shader, source);

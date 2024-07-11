@@ -2,6 +2,8 @@
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Shared.Math.Vector;
+using Hypercube.Shared.Resources;
+using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Graphics.Windows.Manager;
 
@@ -30,7 +32,7 @@ public interface IWindowManager : IDisposable
     void WindowSetVisible(WindowRegistration registration, bool visible);
     void WindowSetSize(WindowRegistration registration, Vector2Int size);
     void WindowSwapBuffers(WindowRegistration window);
-    IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureMan, string resPath);
+    IEnumerable<ITexture> LoadWindowIcon(ITextureManager textureManager, IResourceManager resourceManager, ResourcePath resPath);
     void SetWindowIcons(WindowRegistration window, List<ITexture> images);
 
     nint GetProcAddress(string procName);

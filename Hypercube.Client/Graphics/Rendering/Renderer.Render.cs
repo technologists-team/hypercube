@@ -32,8 +32,14 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShader = new Shader("Resources/Shaders/base");
-        _baseTexture = _textureManager.CreateHandler("Resources/Textures/icon.png");
+        // mount directories
+        _resourceManager.MountContentFolder(".", "/");
+        _resourceManager.MountContentFolder("Resources", "/");
+        _resourceManager.MountContentFolder("Resources/Textures", "/");
+        _resourceManager.MountContentFolder("Resources/Shaders", "/");
+        
+        _baseShader = new Shader("/base", _resourceManager);
+        _baseTexture = _textureManager.CreateHandler("/icon.png");
         _baseTexture.Bind();
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
