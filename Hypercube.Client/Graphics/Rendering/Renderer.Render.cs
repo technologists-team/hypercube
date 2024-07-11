@@ -1,4 +1,5 @@
-﻿using Hypercube.Client.Graphics.Shading;
+﻿using System.Numerics;
+using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Math;
@@ -35,7 +36,7 @@ public sealed partial class Renderer
         _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
         _baseTexture.Bind();
 
-        //_cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
+        _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
         
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
@@ -64,6 +65,7 @@ public sealed partial class Renderer
         _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null}");
 #endif
         _windowManager.PollEvents();
+        _cameraManager.UpdateInput(_cameraManager.MainCamera, args.DeltaSeconds);
     }
 
     private void OnFrameRender(RenderFrameEvent args)
@@ -80,16 +82,16 @@ public sealed partial class Renderer
         var colorG = new Color(0f, sin, 0f);
         var colorB = new Color(0f, 0f, sin);
         
-        DrawTexture(_baseTexture, new Box2(-1.0f, 1.0f, 0.0f, 0.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), Color.White);
-        DrawTexture(_baseTexture, new Box2(0.0f, 1.0f, 1.0f, 0.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorR);
-        DrawTexture(_baseTexture, new Box2(-1.0f, 0.0f, 0.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorG);
-        DrawTexture(_baseTexture, new Box2(0.0f, 0.0f, 1.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorB);
+        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(Vector2.Zero), new Box2(0.0f, 1.0f, 1.0f, 0.0f), Color.White);
+        //DrawTexture(_baseTexture, new Box2(0.0f, 1.0f, 1.0f, 0.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorR);
+        //DrawTexture(_baseTexture, new Box2(-1.0f, 0.0f, 0.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorG);
+       // DrawTexture(_baseTexture, new Box2(0.0f, 0.0f, 1.0f, -1.0f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorB);
 
         BatchUpdate();
         
         _baseShader.Use();
-        _baseShader.SetUniform(_baseShader.GetUniformLocation("model"), Matrix4X4.Identity);
-        _baseShader.SetUniform(_baseShader.GetUniformLocation("projection"), _cameraManager.Projection);
+        _baseShader.SetUniform("model", Matrix4X4.CreateScale(0.1f));
+        _baseShader.SetUniform("projection", _cameraManager.Projection);
         
         _vao.Bind();
         GL.DrawElements(BeginMode.Triangles, (int) _batchIndexIndex, DrawElementsType.UnsignedInt, 0);

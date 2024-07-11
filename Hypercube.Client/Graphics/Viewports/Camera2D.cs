@@ -11,7 +11,7 @@ public class Camera2D : ICamera
     private readonly float _zFar;
     private readonly float _zNear;
     private Vector2Int Size { get; set; }
-    private float Zoom { get; set; } = 1f;
+    private float Zoom { get; set; } = 10f;
     
     private Vector2 HalfSize => Size / 2f;
     public Matrix4X4 Projection { get; private set; }
@@ -46,11 +46,10 @@ public class Camera2D : ICamera
 
     private void UpdateProjection()
     {
-        var position = (Vector2)Position;
-        var box2 = new Box2(position - HalfSize, position + HalfSize);
-        var projection = Matrix4X4.CreateOrthographic(box2, _zNear, _zFar);
-        var scale  = Matrix4X4.CreateScale(Zoom);
-
-        Projection = projection * scale;
+        var projection = Matrix4X4.CreateOrthographic(HalfSize, _zNear, _zFar);
+        var scale = Matrix4X4.CreateScale(Zoom);
+        var translate = Matrix4X4.CreateTranslate(Position);
+        
+        Projection = projection * scale * translate;
     }
 }

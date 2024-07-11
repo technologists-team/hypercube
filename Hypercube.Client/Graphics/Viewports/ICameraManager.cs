@@ -9,4 +9,5 @@ public interface ICameraManager
     Matrix4X4 Projection { get; }
     void SetMainCamera(ICamera camera);
     ICamera CreateCamera2D(Vector2Int size);
+    void UpdateInput(ICamera? camera, float delta);
 }

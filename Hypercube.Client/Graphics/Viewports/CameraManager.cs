@@ -8,47 +8,40 @@ using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
-public class CameraManager : ICameraManager, IPostInject
+public class CameraManager : ICameraManager
 {
-    [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IInputHandler _inputHandler = default!;
     
     public ICamera? MainCamera { get; private set; }
-
     public Matrix4X4 Projection => MainCamera?.Projection ?? Matrix4X4.Identity;
     
-    public void PostInject()
+    public void UpdateInput(ICamera? camera, float delta)
     {
-        _eventBus.Subscribe<UpdateFrameEvent>(OnUpdate);
-    }
-
-    private void OnUpdate(UpdateFrameEvent args)
-    {
-        if (MainCamera is null)
+        if (camera is null)
             return;
         
         // Debug camera controls
-        var position = MainCamera.Position;
+        var position = camera.Position;
         
         if (_inputHandler.IsKeyDown(Key.W))
-            position += Vector3.Forward;
+            position += Vector3.Forward * delta;
 
         if (_inputHandler.IsKeyDown(Key.S))
-            position -= Vector3.Back; 
+            position -= Vector3.Forward * delta; 
 
         if (_inputHandler.IsKeyDown(Key.A))
-            position -= Vector3.Forward.Cross(Vector3.Up).Normalized;
+            position -= Vector3.Right * delta;
 
         if (_inputHandler.IsKeyDown(Key.D))
-            position += Vector3.Forward.Cross(Vector3.Up).Normalized;
+            position += Vector3.Right * delta;
 
         if (_inputHandler.IsKeyDown(Key.Space))
-            position += Vector3.Up;
+            position += Vector3.Up * delta;
 
         if (_inputHandler.IsKeyDown(Key.LeftShift))
-            position -= Vector3.Up;
+            position -= Vector3.Up * delta;
         
-        MainCamera.SetPosition(position);
+        camera.SetPosition(position);
     }
 
     public void SetMainCamera(ICamera camera)
