@@ -6,6 +6,7 @@ namespace Hypercube.Client.Graphics.Viewports;
 public class Camera2D : ICamera
 {
     public Vector3 Position { get; private set; }
+    public Vector3 Rotation { get; private set; }
     
     private readonly float _zFar;
     private readonly float _zNear;
@@ -43,6 +44,12 @@ public class Camera2D : ICamera
         UpdateProjection();
     }
 
+    public void SetRotation(Vector3 rotation)
+    {
+        Rotation = Rotation.WithZ(rotation.Z);
+        UpdateProjection();
+    }
+    
     public void SetZoom(float zoom)
     {
         Zoom = zoom;
@@ -51,10 +58,12 @@ public class Camera2D : ICamera
 
     private void UpdateProjection()
     {
-        var projection = Matrix4X4.CreateOrthographic(HalfSize, _zNear, _zFar);
-        var scale = Matrix4X4.CreateScale(Zoom);
-        var translate = Matrix4X4.CreateTranslation(Position);
+        var projection = Matrix4X4.CreateOrthographic(Size, _zNear, _zFar);
         
-        Projection = projection * scale * translate;
+        var translate = Matrix4X4.CreateTranslation(Position);
+        var rotation = Matrix4X4.CreateRotationZ(Rotation.Z);
+        var scale = Matrix4X4.CreateScale(Zoom);
+        
+        Projection = projection * translate * rotation * scale;
     }
 }

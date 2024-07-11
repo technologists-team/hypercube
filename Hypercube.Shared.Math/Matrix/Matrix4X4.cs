@@ -388,6 +388,118 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return result;
     }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotation(Vector3 direction, float angle)
+    {
+        var cos = MathF.Cos(-angle);
+        var sin = MathF.Sin(-angle);
+        var t = 1.0f - cos;
+        
+        direction = direction.Normalized;
+
+        return new Matrix4X4(
+            t * direction.X * direction.X + cos,
+            t * direction.X * direction.Y - sin * direction.Z,
+            t * direction.X * direction.Z + sin * direction.Y,
+            0,
+            t * direction.X * direction.Y + sin * direction.Z,
+            t * direction.Y * direction.Y + cos,
+            t * direction.Y * direction.Z - sin * direction.X,
+            0,
+            t * direction.X * direction.Z - sin * direction.Y,
+            t * direction.Y * direction.Z + sin * direction.X,
+            t * direction.Z * direction.Z + cos,
+            0,
+            0,
+            0,
+            0,
+            1
+        );
+    }
+
+    /// <summary>
+    /// Creating rotation axis X matrix
+    /// <code>
+    ///   1  |   0  |  0  |  0 
+    ///   0  |  cos | sin |  0
+    ///   0  | -sin | cos |  0
+    ///   0  |   0  |  0  |  1
+    /// </code>
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotationX(float angle)
+    {
+        var cos = MathF.Cos(angle);
+        var sin = MathF.Sin(angle);
+
+        return new Matrix4X4(
+            Vector4.UnitX,
+            new Vector4(0, cos, sin, 0),
+            new Vector4(0, -sin, cos, 0),
+            Vector4.UnitW
+        );
+    }
+    
+    /// <summary>
+    /// Creating rotation axis Y matrix
+    /// <code>
+    ///  cos |  0  | -sin  |  0 
+    ///   0  |  1  |   0   |  0
+    ///  sin |  0  |  cos  |  0
+    ///   0  |  0  |   0   |  1
+    /// </code>
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotationY(float angle)
+    {
+        var cos = MathF.Cos(angle);
+        var sin = MathF.Sin(angle);
+
+        return new Matrix4X4(
+            new Vector4(cos, 0, -sin, 0),
+            Vector4.UnitY,
+            new Vector4(sin, 0, cos, 0),
+            Vector4.UnitW
+        );
+    }
+    
+    /// <summary>
+    /// Creating rotation axis Z matrix
+    /// <code>
+    ///  cos | sin |  0  |  0 
+    /// -sin | cos |  0  |  0
+    ///   0  |  0  |  1  |  0
+    ///   0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotationZ(float angle)
+    {
+        var cos = MathF.Cos(angle);
+        var sin = MathF.Sin(angle);
+
+        return new Matrix4X4(
+            new Vector4(cos, sin, 0, 0),
+            new Vector4(-sin, cos, 0, 0),
+            Vector4.UnitZ,
+            Vector4.UnitW
+        );
+    }
+
+    /// <summary>
+    /// Creating translate matrix
+    /// <code>
+    ///  1  |  0  |  0  |  v 
+    ///  0  |  1  |  0  |  v
+    ///  0  |  0  |  1  |  v
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateTranslation(float value)
+    {
+        return CreateTranslation(value, value, value);
+    }
+    
     /// <summary>
     /// Creating translate matrix
     /// <code>

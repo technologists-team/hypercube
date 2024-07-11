@@ -1,10 +1,10 @@
-﻿using System.Numerics;
-using Hypercube.Client.Graphics.Shading;
+﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Math.Matrix;
+using Hypercube.Shared.Math.Vector;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -62,7 +62,7 @@ public sealed partial class Renderer
     private void OnFrameUpdate(UpdateFrameEvent args)
     {
 #if DEBUG
-        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null}");
+        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null} | cRot: {_cameraManager.MainCamera?.Rotation ?? null}");
 #endif
         _windowManager.PollEvents();
         _cameraManager.UpdateInput(_cameraManager.MainCamera, args.DeltaSeconds);
@@ -82,17 +82,18 @@ public sealed partial class Renderer
         var colorG = new Color(0f, sin, 0f);
         var colorB = new Color(0f, 0f, sin);
         
-        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(-Vector2.UnitY), new Box2(0.0f, 1.0f, 1.0f, 0.0f), Color.White);
-        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(Vector2.UnitX), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorR);
-        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(-Vector2.UnitX), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorG);
-        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(Vector2.UnitY), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorB);
+        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(-Vector2.UnitY * 60f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), Color.White);
+        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(Vector2.UnitX * 60f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorR);
+        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(-Vector2.UnitX * 60f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorG);
+        DrawTexture(_baseTexture, _baseTexture.Texture.QuadCrateTranslated(Vector2.UnitY * 60f), new Box2(0.0f, 1.0f, 1.0f, 0.0f), colorB);
 
         BatchUpdate();
-        
+
+        var model = Matrix4X4.CreateTranslation(Vector2.Zero) * Matrix4X4.CreateRotationZ(0) * Matrix4X4.CreateScale(Vector2.One);
         var view = Matrix4X4.CreateTranslation(0.0f, 0.0f, -3.0f);
         
         _baseShader.Use();
-        _baseShader.SetUniform("model", Matrix4X4.CreateScale(1f));
+        _baseShader.SetUniform("model", model);
         _baseShader.SetUniform("view", view);
         _baseShader.SetUniform("projection", _cameraManager.Projection);
         

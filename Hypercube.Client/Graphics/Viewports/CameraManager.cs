@@ -20,26 +20,28 @@ public class CameraManager : ICameraManager
         
         // Debug camera controls
         var position = camera.Position;
+        var rotation = camera.Rotation;
         
         if (_inputHandler.IsKeyDown(Key.W))
-            position += Vector3.Forward * delta;
+            position -= Vector3.UnitY * delta;
 
         if (_inputHandler.IsKeyDown(Key.S))
-            position -= Vector3.Forward * delta; 
+            position += Vector3.UnitY * delta; 
 
         if (_inputHandler.IsKeyDown(Key.A))
-            position -= Vector3.Right * delta;
+            position -= Vector3.UnitX * delta;
 
         if (_inputHandler.IsKeyDown(Key.D))
-            position += Vector3.Right * delta;
+            position += Vector3.UnitX * delta;
+        
+        if (_inputHandler.IsKeyDown(Key.Q))
+            rotation -= Vector3.UnitZ * delta;
 
-        if (_inputHandler.IsKeyDown(Key.Space))
-            position += Vector3.Up * delta;
-
-        if (_inputHandler.IsKeyDown(Key.LeftShift))
-            position -= Vector3.Up * delta;
+        if (_inputHandler.IsKeyDown(Key.E))
+            rotation += Vector3.UnitZ * delta;
         
         camera.SetPosition(position);
+        camera.SetRotation(rotation);
     }
 
     public void SetMainCamera(ICamera camera)
