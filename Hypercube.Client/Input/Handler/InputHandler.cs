@@ -6,7 +6,8 @@ public sealed class InputHandler : IInputHandler
 {
     public event Action<KeyStateChangedArgs>? KeyUp;
     public event Action<KeyStateChangedArgs>? KeyDown;
-    
+
+    private readonly HashSet<Key> _keysDown = new();
     private readonly ILogger _logger = LoggingManager.GetLogger("input_handler");
 
     public void SendKeyState(KeyStateChangedArgs changedArgs)
@@ -23,10 +24,17 @@ public sealed class InputHandler : IInputHandler
         
         if (changedArgs.Pressed)
         {
-            KeyUp?.Invoke(changedArgs);
+            KeyDown?.Invoke(changedArgs);
+            _keysDown.Add(changedArgs.Key);
             return;
         }
         
-        KeyDown?.Invoke(changedArgs);
+        _keysDown.Remove(changedArgs.Key);
+        KeyUp?.Invoke(changedArgs);
+    }
+
+    public bool IsKeyDown(Key key)
+    {
+        return _keysDown.Contains(key);
     }
 }

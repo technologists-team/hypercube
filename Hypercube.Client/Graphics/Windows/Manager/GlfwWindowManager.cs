@@ -26,6 +26,9 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
     {
         DependencyManager.Inject(this);
 
+        // We don't let GC take our callbacks
+        HandleCallbacks();
+        
         if (!GlfwInit())
             return false;
 

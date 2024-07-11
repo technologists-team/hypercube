@@ -1,17 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Hypercube.Shared.Math.Extensions;
 
 namespace Hypercube.Shared.Math.Vector;
 
-public readonly struct Vector3(float x, float y, float z)
+[StructLayout(LayoutKind.Sequential)]
+public readonly partial struct Vector3(float x, float y, float z) : IEquatable<Vector3>
 {
     public static readonly Vector3 Zero = new(0, 0, 0);
     public static readonly Vector3 One = new(1, 1, 1);
-    public static readonly Vector3 Forward = new(0, 0, 1); 
-    public static readonly Vector3 Back = new(0, 0, -1);
-    public static readonly Vector3 Up = new(0, 1, 0);
-    public static readonly Vector3 Down = new(0, -1, 0);
-    public static readonly Vector3 Right = new(1, 0, 0);
-    public static readonly Vector3 Left = new(-1, 0, 0);
+
     public static readonly Vector3 UnitX = new(1, 0, 0);
     public static readonly Vector3 UnitY = new(0, 1, 0);
     public static readonly Vector3 UnitZ = new(0, 0, 1);
@@ -20,7 +18,23 @@ public readonly struct Vector3(float x, float y, float z)
     public readonly float Y = y;
     public readonly float Z = z;
 
+    public float Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Sqrt(X * X + Y * Y + Z * Z);
+    }
+
+    public Vector3 Normalized
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => this / Length;
+    }
+
     public Vector3(float value) : this(value, value, value)
+    {
+    }
+    
+    public Vector3(Vector2 vector2) : this(vector2.X, vector2.Y, 0)
     {
     }
     
@@ -56,6 +70,38 @@ public readonly struct Vector3(float x, float y, float z)
         return new Vector3(X, Y, value);
     }    
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Cross(Vector3 other)
+    {
+        return Vector3.Cross(this, other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(Vector3 other)
+    {
+        return X.AboutEquals(other.X) &&
+               Y.AboutEquals(other.Y) &&
+               Z.AboutEquals(other.Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool Equals(object? obj)
+    {
+        return obj is Vector3 other && Equals(other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(X, Y, Z);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        return $"{x}, {y}, {z}";
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 operator +(Vector3 a, Vector3 b)
     {
@@ -135,8 +181,23 @@ public readonly struct Vector3(float x, float y, float z)
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString()
+    public static bool operator ==(Vector3 a, Vector3 b)
     {
-        return $"{x}, {y}, {z}";
+        return a.Equals(b);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Vector3 a, Vector3 b)
+    {
+        return !a.Equals(b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Cross(Vector3 left, Vector3 right)
+    {
+        return new Vector3(
+            left.Y * right.Z - left.Z * right.Y,
+            left.Z * right.X - left.X * right.Z,
+            left.X * right.Y - left.Y * right.X);
     }
 }

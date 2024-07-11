@@ -1,7 +1,7 @@
-﻿using System.Collections.Frozen;
-using Hypercube.Client.Graphics.Event;
+using System.Collections.Frozen;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
@@ -22,6 +22,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly ITextureManager _textureManager = default!;
     [Dependency] private readonly ITiming _timing = default!;
+    [Dependency] private readonly ICameraManager _cameraManager = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");

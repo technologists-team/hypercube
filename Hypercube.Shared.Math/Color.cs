@@ -1,8 +1,10 @@
 ﻿using System.Globalization;
+using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math;
 
+[StructLayout(LayoutKind.Sequential)]
 public readonly struct Color
 {
     public static readonly Color White = new(1f, 1f, 1f);

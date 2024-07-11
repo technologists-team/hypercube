@@ -1,25 +1,36 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Hypercube.Shared.Math.Vector;
 
-public readonly partial struct Vector2(float x, float y) : IEquatable<Vector2>
+[StructLayout(LayoutKind.Sequential)]
+public readonly partial struct Vector2 : IEquatable<Vector2>
 {
     public static readonly Vector2 Zero = new(0, 0);
     public static readonly Vector2 One = new(1, 1);
-    public static readonly Vector2 Up = new(0, 1);
-    public static readonly Vector2 Down = new(0, -1);
-    public static readonly Vector2 Right = new(1, 0);
-    public static readonly Vector2 Left = new(-1, 0);
+    
     public static readonly Vector2 UnitX = new(1, 0);
     public static readonly Vector2 UnitY = new(0, 1);
     
-    public readonly float X = x;
-    public readonly float Y = y;
+    public readonly float X;
+    public readonly float Y;
 
+    public float AspectRatio
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X / Y;
+    }
+    
     public float Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MathF.Sqrt(x * x + y * y);
+        get => MathF.Sqrt(X * X + Y * Y);
+    }
+    
+    public Vector2(float x, float y)
+    {
+        X = x;
+        Y = y;
     }
     
     public Vector2(float value) : this(value, value)
@@ -63,7 +74,7 @@ public readonly partial struct Vector2(float x, float y) : IEquatable<Vector2>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return $"{x}, {y}";
+        return $"{X}, {Y}";
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
