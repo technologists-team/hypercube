@@ -7,11 +7,12 @@ public class Camera2D : ICamera
 {
     public Vector3 Position { get; private set; }
     public Vector3 Rotation { get; private set; }
+    public Vector3 Scale { get; private set; } = Vector3.One;
     
     private readonly float _zFar;
     private readonly float _zNear;
     private Vector2Int Size { get; set; }
-    private float Zoom { get; set; } = 1f;
+
     
     private Vector2 HalfSize => Size / 2f;
     public Matrix4X4 Projection { get; private set; }
@@ -44,9 +45,9 @@ public class Camera2D : ICamera
         UpdateProjection();
     }
     
-    public void SetZoom(float zoom)
+    public void SetScale(Vector3 scale)
     {
-        Zoom = zoom;
+        Scale = scale;
         UpdateProjection();
     }
 
@@ -56,7 +57,7 @@ public class Camera2D : ICamera
         
         var translate = Matrix4X4.CreateTranslation(Position);
         var rotation = Matrix4X4.CreateRotationZ(Rotation.Z);
-        var scale = Matrix4X4.CreateScale(Zoom);
+        var scale = Matrix4X4.CreateScale(Scale);
         
         Projection = projection * translate * rotation * scale;
     }
