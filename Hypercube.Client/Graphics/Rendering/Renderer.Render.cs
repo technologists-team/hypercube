@@ -33,7 +33,7 @@ public sealed partial class Renderer
     private void OnLoad()
     {
         _baseShader = new Shader("Resources/Shaders/base");
-        _baseTexture = _textureManager.CreateHandler("Resources/Textures/opengl_logo.png");
+        _baseTexture = _textureManager.CreateHandler("Resources/Textures/icon.png");
         _baseTexture.Bind();
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
