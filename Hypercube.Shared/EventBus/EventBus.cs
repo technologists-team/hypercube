@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
+using Hypercube.Shared.EventBus.Broadcast;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Events.Broadcast;
-using Hypercube.Shared.EventBus.Events.Events;
-using Hypercube.Shared.EventBus.Events.Exceptions;
-using Hypercube.Shared.EventBus.Events.Handlers;
+using Hypercube.Shared.EventBus.Exceptions;
+using Hypercube.Shared.EventBus.Handlers;
 
 namespace Hypercube.Shared.EventBus;
 

@@ -1,6 +1,6 @@
-﻿using Hypercube.Shared.EventBus.Events.Broadcast;
+﻿using Hypercube.Shared.EventBus.Broadcast;
 
-namespace Hypercube.Shared.EventBus.Events;
+namespace Hypercube.Shared.EventBus;
 
 /// <summary>
 /// Saves information about a specific event.

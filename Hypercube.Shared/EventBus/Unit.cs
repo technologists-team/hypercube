@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Hypercube.Shared.EventBus.Events;
+namespace Hypercube.Shared.EventBus;
 
 public readonly struct Unit;
 
