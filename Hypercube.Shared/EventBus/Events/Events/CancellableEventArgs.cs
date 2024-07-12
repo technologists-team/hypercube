@@ -1,8 +1,4 @@
-﻿namespace Hypercube.Shared.EventBus.Events;
-
-public interface IEventArgs;
-
-public abstract class EventArgs : IEventArgs;
+﻿namespace Hypercube.Shared.EventBus.Events.Events;
 
 public abstract class CancellableEventArgs : EventArgs
 {

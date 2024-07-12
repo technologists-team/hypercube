@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Shared.EventBus.Events.Broadcast;
+﻿using Hypercube.Shared.EventBus.Events.Handlers;
+
+namespace Hypercube.Shared.EventBus.Events.Broadcast;
 
 public sealed class BroadcastRegistration : IEquatable<BroadcastRegistration>
 {

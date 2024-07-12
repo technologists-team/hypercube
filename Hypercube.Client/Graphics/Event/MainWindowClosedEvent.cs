@@ -1,5 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Windows;
-using Hypercube.Shared.EventBus.Events;
+using Hypercube.Shared.EventBus.Events.Events;
 
 namespace Hypercube.Client.Graphics.Event;
 

@@ -1,3 +1,5 @@
-﻿namespace Hypercube.Shared.Entities.Realisation.Events;
+﻿using Hypercube.Shared.EventBus.Events.Events;
 
-public readonly record struct EntityAdded(EntityUid EntityUid);
+namespace Hypercube.Shared.Entities.Realisation.Events;
+
+public readonly record struct EntityAdded(EntityUid EntityUid) : IEventArgs;

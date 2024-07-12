@@ -1,4 +1,6 @@
 ﻿using Hypercube.Shared.EventBus.Events;
+using Hypercube.Shared.EventBus.Events.Events;
+using Hypercube.Shared.EventBus.Events.Handlers;
 
 namespace Hypercube.Shared.Entities.Realisation.EventBus;
 
@@ -14,7 +16,7 @@ public sealed class EntitiesEventBus : IEntitiesEventBus
         throw new NotImplementedException();
     }
 
-    public void Raise(object receiver)
+    public void Raise(IEventArgs receiver)
     {
         throw new NotImplementedException();
     }

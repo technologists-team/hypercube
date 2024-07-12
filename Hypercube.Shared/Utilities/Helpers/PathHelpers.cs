@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace Hypercube.Shared.Utilities.Helpers;
+﻿namespace Hypercube.Shared.Utilities.Helpers;
 
 public static class PathHelpers
 {
