@@ -20,6 +20,27 @@ public readonly partial struct Vector4 : IEquatable<Vector4>
     public readonly float Z;
     public readonly float W;
 
+    public Vector2 XY => new(X, Y);
+    public Vector3 XYZ => new(X, Y, Z);
+
+    public float LengthSquared
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X * X + Y * Y + Z * Z + W * W;
+    }
+    
+    public float Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Sqrt(LengthSquared);
+    }
+
+    public Vector4 Normalized
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => this / Length;
+    }
+    
     public Vector4(float x, float y, float z, float w)
     {
         X = x;
@@ -35,6 +56,10 @@ public readonly partial struct Vector4 : IEquatable<Vector4>
     public Vector4(Vector2 vector2, float z, float w) : this(vector2.X, vector2.Y, z, w)
     {
     }
+    
+    public Vector4(Vector3 vector3, float w) : this(vector3.X, vector3.Y, vector3.Z, w)
+    {
+    }
 
     public Vector4(Vector4 vector4, float w) : this(vector4.X, vector4.Y, vector4.Z, w)
     {
@@ -45,6 +70,13 @@ public readonly partial struct Vector4 : IEquatable<Vector4>
     public float Sum()
     {
         return X + Y + Z + W;
+    }
+    
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Prod()
+    {
+        return X * Y * Z * W;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
