@@ -2,10 +2,10 @@
 
 namespace Hypercube.UnitTests.Math;
 
-public class FloatingPointTest
+public static class FloatingPointTest
 {
     [Test]
-    public void Equals()
+    public static void Equals()
     {
         Assert.Multiple(() =>
         {

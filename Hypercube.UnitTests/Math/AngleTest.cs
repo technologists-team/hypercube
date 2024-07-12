@@ -20,6 +20,7 @@ public static class AngleTest
             Assert.That(Angle.FromDegrees(45d), Is.EqualTo(new Angle(HyperMath.PIOver4)));
             Assert.That(Angle.FromDegrees(30d), Is.EqualTo(new Angle(HyperMath.PIOver6)));
         });
+        
         Assert.Pass($"{nameof(Angle)} degrees passed");
     }
 
