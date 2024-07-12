@@ -96,7 +96,7 @@ public sealed partial class Renderer : IRenderer, IPostInject
             break;
         }
 
-        var windowIcons = _windowManager.LoadWindowIcon(_textureManager, _resourceManager, "/Icons").ToList();
+        var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceManager, "/Icons").ToList();
         _windowManager.SetWindowIcons(MainWindow, windowIcons);
         
         

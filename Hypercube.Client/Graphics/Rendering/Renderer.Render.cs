@@ -32,12 +32,6 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        // mount directories
-        _resourceManager.MountContentFolder(".", "/");
-        _resourceManager.MountContentFolder("Resources", "/");
-        _resourceManager.MountContentFolder("Resources/Textures", "/");
-        _resourceManager.MountContentFolder("Resources/Shaders", "/");
-        
         _baseShader = new Shader("/base", _resourceManager);
         _baseTexture = _textureManager.CreateHandler("/icon.png");
         _baseTexture.Bind();
