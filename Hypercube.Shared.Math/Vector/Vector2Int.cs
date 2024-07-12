@@ -21,10 +21,16 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>
         get => X / (float)Y;
     }
     
+    public float LengthSquared
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X * X + Y * Y;
+    }
+    
     public float Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MathF.Sqrt(X * X + Y * Y);
+        get => MathF.Sqrt(LengthSquared);
     }
 
     public Vector2Int(int x, int y)
