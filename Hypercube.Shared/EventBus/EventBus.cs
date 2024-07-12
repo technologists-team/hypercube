@@ -5,6 +5,7 @@ using EventArgs = Hypercube.Shared.EventBus.Events.EventArgs;
 
 namespace Hypercube.Shared.EventBus;
 
+// TODO: BURNING IN HELL SHIT!!!! Rewrite it
 public class EventBus : IEventBus
 {
     private readonly Dictionary<Type, EventData> _eventData = new();
@@ -46,7 +47,6 @@ public class EventBus : IEventBus
         
         if (!inverseSubs.TryAdd(evType, subscription))
             throw new InvalidOperationException();
-        
     }
 
     private void RegisterCommon(Type evType, out EventData data)
