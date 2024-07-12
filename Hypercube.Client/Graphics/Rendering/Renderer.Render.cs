@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
@@ -39,7 +40,7 @@ public sealed partial class Renderer
         _resourceManager.MountContentFolder("Resources/Shaders", "/");
         
         _baseShader = new Shader("/base", _resourceManager);
-        _baseTexture = _textureManager.CreateHandler("/icon.png");
+        _baseTexture = _textureManager.CreateHandler("/icon.png", new Texture2DCreationSettings());
         _baseTexture.Bind();
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));

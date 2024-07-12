@@ -1,4 +1,5 @@
-﻿using OpenToolkit.Graphics.OpenGL4;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
+using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Texturing;
 
@@ -7,20 +8,22 @@ public class TextureHandle : ITextureHandle
     public int Handle { get; init; }
     public ITexture Texture { get; init; }
 
-    public TextureHandle(ITexture texture)
+    public TextureHandle(ITexture texture, ITextureCreationSettings settings)
     {
         Handle = GL.GenTexture();
         Texture = texture;
         
-        GL.BindTexture(TextureTarget.Texture2D, Handle);
+        GL.BindTexture(settings.TextureTarget, Handle);
+
+        foreach (var param in settings.Parameters)
+        {
+            GL.TexParameter(settings.TextureTarget, param.ParameterName, param.ParameterValue);
+        }
         
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        GL.TexImage2D(settings.TextureTarget, settings.Level, settings.PixelInternalFormat, texture.Width, texture.Height, settings.Border, settings.PixelFormat, settings.PixelType, texture.Data);
         
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, texture.Width, texture.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, texture.Data);
-        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+        // there should more elegant way
+        GL.GenerateMipmap((GenerateMipmapTarget)(int)settings.TextureTarget);
     }
     
     public void Bind()

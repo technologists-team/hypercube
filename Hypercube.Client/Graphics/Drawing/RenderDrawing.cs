@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
@@ -28,6 +29,6 @@ public sealed class RenderDrawing : IRenderDrawing
 
     public void DrawTexture(ITexture texture, Box2 quad, Box2 uv, Color color)
     {
-        _renderer.DrawTexture(new TextureHandle(texture), quad, uv, color);
+        _renderer.DrawTexture(new TextureHandle(texture, new Texture2DCreationSettings()), quad, uv, color);
     }
 }

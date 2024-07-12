@@ -1,4 +1,5 @@
-﻿using Hypercube.Shared.Resources;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
+using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;
 
@@ -13,6 +14,6 @@ public interface ITextureManager
     /// <returns>ITexture</returns>
     ITexture Create(ResourcePath path, bool doFlip);
     
-    ITextureHandle CreateHandler(ResourcePath path);
-    ITextureHandle CreateHandler(ITexture texture);
+    ITextureHandle CreateHandler(ResourcePath path, ITextureCreationSettings settings);
+    ITextureHandle CreateHandler(ITexture texture, ITextureCreationSettings settings);
 }
