@@ -1,41 +1,36 @@
 ﻿using System.Runtime.CompilerServices;
 using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.EventBus.Events.Broadcast;
-using EventArgs = Hypercube.Shared.EventBus.Events.EventArgs;
 
 namespace Hypercube.Shared.EventBus;
 
-public class EventBus : IEventBus
+public sealed class EventBus : IEventBus
 {
     private readonly Dictionary<Type, EventData> _eventData = new();
-    private readonly Dictionary<IEventSubscriber, Dictionary<Type, BroadcastRegistration>> _inverseEventSubscriptions
-        = new();
-
-
-    public void SubscribeEvent<T>(
-        IEventSubscriber subscriber, 
-        EventRefHandler<T> refHandler) where T : notnull
+    private readonly Dictionary<IEventSubscriber, Dictionary<Type, BroadcastRegistration>> _inverseEventSubscriptions = new();
+    
+    public void Subscribe<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : IEventArgs
     {
-        SubscribeEventCommon<T>(subscriber, ((ref Unit ev) =>
+        SubscribeEventCommon<T>(subscriber, (ref Unit ev) =>
         {
             ref var tev = ref Unsafe.As<Unit, T>(ref ev);
             refHandler(ref tev);
-        }), refHandler);
+        }, refHandler);
     }
     
-    private void SubscribeEventCommon<T>(
-        IEventSubscriber subscriber, 
-        RefHandler refHandler, 
-        object equality) where T : notnull
+    private void SubscribeEventCommon<T>(IEventSubscriber subscriber, RefHandler refHandler, object equality)
+        where T : IEventArgs
     {
         ArgumentNullException.ThrowIfNull(subscriber);
-        var evType = typeof(T);
         
+        var eventType = typeof(T);
         var subscription = new BroadcastRegistration(refHandler, equality);
         
-        RegisterCommon(evType, out var subs);
-        if (!subs.BroadcastRegistrations.Contains(subscription))
-            subs.BroadcastRegistrations.Add(subscription);
+        var subscriptions = GetEventData(eventType);
+        if (subscriptions.BroadcastRegistrations.Contains(subscription))
+            throw new InvalidOperationException();
+            
+        subscriptions.BroadcastRegistrations.Add(subscription);
 
         Dictionary<Type, BroadcastRegistration>? inverseSubs;
         if (!_inverseEventSubscriptions.TryGetValue(subscriber, out inverseSubs))
@@ -44,23 +39,22 @@ public class EventBus : IEventBus
             _inverseEventSubscriptions[subscriber] = inverseSubs;
         }
         
-        if (!inverseSubs.TryAdd(evType, subscription))
+        if (!inverseSubs.TryAdd(eventType, subscription))
             throw new InvalidOperationException();
     }
 
-    private void RegisterCommon(Type evType, out EventData data)
+    private EventData GetEventData(Type eventType)
     {
-        if (!_eventData.TryGetValue(evType, out var found))
-        {
-            var list = new List<BroadcastRegistration>();
-            data = new EventData(list);
-            _eventData[evType] = data;
-            return;
-        }
-        data = found;
+        if (_eventData.TryGetValue(eventType, out var found))
+            return found;
+        
+        var list = new List<BroadcastRegistration>();
+        var data = new EventData(list);
+
+        return _eventData[eventType] = data;
     }
 
-    public void UnsubscribeEvent<T>(IEventSubscriber subscriber)
+    public void Unsubscribe<T>(IEventSubscriber subscriber) where T : IEventArgs
     {
         ArgumentNullException.ThrowIfNull(subscriber);
         var eventType = typeof(T);
@@ -82,23 +76,23 @@ public class EventBus : IEventBus
             inverse.Remove(evType);
     }
 
-    public void RaiseEvent(object toRaise)
+    public void Raise(object receiver)
     {
-        ArgumentNullException.ThrowIfNull(toRaise);
+        ArgumentNullException.ThrowIfNull(receiver);
 
-        var evType = toRaise.GetType();
-        ref var unitRef = ref ExtractUnitRef(ref toRaise, evType);
+        var evType = receiver.GetType();
+        ref var unitRef = ref ExtractUnitRef(ref receiver, evType);
         
         ProcessEvent(ref unitRef, evType);
     }
-    public void RaiseEvent<T>(ref T toRaise) where T : notnull
+    public void Raise<T>(ref T receiver) where T : IEventArgs
     {
-        ProcessEvent(ref Unsafe.As<T, Unit>(ref toRaise), typeof(T));
+        ProcessEvent(ref Unsafe.As<T, Unit>(ref receiver), typeof(T));
     }
     
-    public void RaiseEvent<T>(T toRaise) where T : notnull
+    public void Raise<T>(T receiver) where T : IEventArgs
     {
-        ProcessEvent(ref Unsafe.As<T, Unit>(ref toRaise), typeof(T));
+        ProcessEvent(ref Unsafe.As<T, Unit>(ref receiver), typeof(T));
     }
     
     private void ProcessEvent(ref Unit unitRef, Type evType)

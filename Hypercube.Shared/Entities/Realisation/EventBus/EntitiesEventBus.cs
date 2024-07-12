@@ -4,27 +4,27 @@ namespace Hypercube.Shared.Entities.Realisation.EventBus;
 
 public sealed class EntitiesEventBus : IEntitiesEventBus
 {
-    public void UnsubscribeEvent<T>(IEventSubscriber subscriber)
+    public void Unsubscribe<T>(IEventSubscriber subscriber)
     {
         throw new NotImplementedException();
     }
 
-    public void SubscribeEvent<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : notnull
+    public void Subscribe<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : notnull
     {
         throw new NotImplementedException();
     }
 
-    public void RaiseEvent(object toRaise)
+    public void Raise(object receiver)
     {
         throw new NotImplementedException();
     }
 
-    public void RaiseEvent<T>(ref T toRaise) where T : notnull
+    public void Raise<T>(ref T receiver) where T : notnull
     {
         throw new NotImplementedException();
     }
 
-    public void RaiseEvent<T>(T toRaise) where T : notnull
+    public void Raise<T>(T receiver) where T : notnull
     {
         throw new NotImplementedException();
     }

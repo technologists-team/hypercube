@@ -1,6 +1,6 @@
 ﻿namespace Hypercube.Shared.EventBus.Events.Broadcast;
 
-public class BroadcastRegistration : IEquatable<BroadcastRegistration>
+public sealed class BroadcastRegistration : IEquatable<BroadcastRegistration>
 {
     public RefHandler Handler { get; }
     public object Equality { get; }
@@ -18,7 +18,7 @@ public class BroadcastRegistration : IEquatable<BroadcastRegistration>
 
     public override bool Equals(object? obj)
     {
-        return obj is not null && obj is BroadcastRegistration registration && Equals(registration.Equality, Equality);
+        return obj is BroadcastRegistration registration && Equals(registration);
     }
 
     public override int GetHashCode()

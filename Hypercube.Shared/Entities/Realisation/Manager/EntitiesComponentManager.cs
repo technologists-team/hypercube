@@ -21,7 +21,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     
     public void PostInject()
     {
-        _eventBus.SubscribeEvent<RuntimeInitializationEvent>(this, OnInitialized);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialized);
     }
 
     private void OnInitialized(ref RuntimeInitializationEvent args)
@@ -73,7 +73,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         var instance = (IComponent)constructor.Invoke(Array.Empty<object>()) ?? throw new NullReferenceException();
 
         components.Add(entityUid, instance);
-        _eventBus.RaiseEvent(new ComponentAdded(entityUid, instance));
+        _eventBus.Raise(new ComponentAdded(entityUid, instance));
 
         return instance;
     }

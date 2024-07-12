@@ -13,8 +13,8 @@ public static class EventBusRaiseTests
         var subscriber = new TestEventSubscriber(eventBus);
         subscriber.Subscribe();
         
-        eventBus.RaiseEvent(new TestSubEventClass());
-        eventBus.RaiseEvent(new TestSubEventStruct());
+        eventBus.Raise(new TestSubEventClass());
+        eventBus.Raise(new TestSubEventStruct());
         
         subscriber.AssertPassed();
     }
@@ -26,8 +26,8 @@ public static class EventBusRaiseTests
         
         public void Subscribe()
         {
-            eventBus.SubscribeEvent<TestSubEventClass>(this, OnClass);
-            eventBus.SubscribeEvent<TestSubEventStruct>(this, OnStruct);
+            eventBus.Subscribe<TestSubEventClass>(this, OnClass);
+            eventBus.Subscribe<TestSubEventStruct>(this, OnStruct);
         }
 
         private void OnClass(ref TestSubEventClass args)

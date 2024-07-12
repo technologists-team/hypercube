@@ -13,13 +13,13 @@ public class EventBusUnsubscribeTests
         
         subscriber.Subscribe();
        
-        eventBus.RaiseEvent(new TestUnsubEventClass());
-        eventBus.RaiseEvent(new TestUnsubEventStruct());
+        eventBus.Raise(new TestUnsubEventClass());
+        eventBus.Raise(new TestUnsubEventStruct());
         
         subscriber.Unsubscribe();
         
-        eventBus.RaiseEvent(new TestUnsubEventClass());
-        eventBus.RaiseEvent(new TestUnsubEventStruct());
+        eventBus.Raise(new TestUnsubEventClass());
+        eventBus.Raise(new TestUnsubEventStruct());
         
         subscriber.AssertPassed();
     }
@@ -31,14 +31,14 @@ public class EventBusUnsubscribeTests
         
         public void Subscribe()
         {
-            eventBus.SubscribeEvent<TestUnsubEventClass>(this, OnClass);
-            eventBus.SubscribeEvent<TestUnsubEventStruct>(this, OnStruct);
+            eventBus.Subscribe<TestUnsubEventClass>(this, OnClass);
+            eventBus.Subscribe<TestUnsubEventStruct>(this, OnStruct);
         }
 
         public void Unsubscribe()
         {
-            eventBus.UnsubscribeEvent<TestUnsubEventClass>(this);
-            eventBus.UnsubscribeEvent<TestUnsubEventStruct>(this);
+            eventBus.Unsubscribe<TestUnsubEventClass>(this);
+            eventBus.Unsubscribe<TestUnsubEventStruct>(this);
         }
 
         private void OnClass(ref TestUnsubEventClass args)

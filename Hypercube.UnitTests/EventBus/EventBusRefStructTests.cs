@@ -17,7 +17,7 @@ public static class EventBusRefStructTests
         subscriber2.Subscribe();
         
         var args = new TestEventStruct();
-        eventBus.RaiseEvent(ref args);
+        eventBus.Raise(ref args);
         
         Assert.That(args.Counter, Is.EqualTo(2));
         Assert.Pass("All subscribers handled correctly");
@@ -27,7 +27,7 @@ public static class EventBusRefStructTests
     {
         public void Subscribe()
         {
-            eventBus.SubscribeEvent<TestEventStruct>(this, RefMethod);
+            eventBus.Subscribe<TestEventStruct>(this, RefMethod);
         }
 
         private void RefMethod(ref TestEventStruct args)
@@ -40,7 +40,7 @@ public static class EventBusRefStructTests
     {
         public void Subscribe()
         {
-            eventBus.SubscribeEvent<TestEventStruct>(this, RefMethod);
+            eventBus.Subscribe<TestEventStruct>(this, RefMethod);
         }
         
         private void RefMethod(ref TestEventStruct args)

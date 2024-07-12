@@ -19,7 +19,7 @@ public sealed partial class Runtime(DependenciesContainer dependenciesContainer)
 
     public void PostInject()
     {
-        _eventBus.SubscribeEvent<MainWindowClosedEvent>(this, OnMainWindowClosed);
+        _eventBus.Subscribe<MainWindowClosedEvent>(this, OnMainWindowClosed);
     }
 
     /// <summary>
@@ -44,21 +44,21 @@ public sealed partial class Runtime(DependenciesContainer dependenciesContainer)
         reason = reason is null ? "Shutting down" : $"Shutting down, reason: {reason}";
         
         _logger.EngineInfo(reason);
-        _eventBus.RaiseEvent(new RuntimeShutdownEvent(reason));
+        _eventBus.Raise(new RuntimeShutdownEvent(reason));
         _loop.Shutdown();
     }
     
     private void RunLoop()
     {
         _logger.EngineInfo("Startup");
-        _eventBus.RaiseEvent(new RuntimeStartupEvent());
+        _eventBus.Raise(new RuntimeStartupEvent());
         _loop.Run();
     }
     
     private void Initialize()
     {
         _logger.EngineInfo("Initialize");
-        _eventBus.RaiseEvent(new RuntimeInitializationEvent());
+        _eventBus.Raise(new RuntimeInitializationEvent());
     }
     
     private void OnMainWindowClosed(ref MainWindowClosedEvent obj)

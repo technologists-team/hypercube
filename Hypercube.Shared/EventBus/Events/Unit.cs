@@ -2,9 +2,8 @@
 
 namespace Hypercube.Shared.EventBus.Events;
 
-public readonly struct Unit
-{
-}
+public readonly struct Unit;
+
 [StructLayout(LayoutKind.Sequential)]
 public sealed class UnitBox
 {

@@ -20,11 +20,11 @@ public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject, IEvent
     
     public void PostInject()
     {
-        _eventBus.SubscribeEvent<RuntimeInitializationEvent>(this, OnInitialization);
-        _eventBus.SubscribeEvent<RuntimeStartupEvent>(this, OnStartup);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
+        _eventBus.Subscribe<RuntimeStartupEvent>(this, OnStartup);
         
-        _eventBus.SubscribeEvent<UpdateFrameEvent>(this, OnFrameUpdate);
-        _eventBus.SubscribeEvent<RuntimeShutdownEvent>(this, OnShutdown);
+        _eventBus.Subscribe<UpdateFrameEvent>(this, OnFrameUpdate);
+        _eventBus.Subscribe<RuntimeShutdownEvent>(this, OnShutdown);
     }
 
     private void OnInitialization(ref RuntimeInitializationEvent args)

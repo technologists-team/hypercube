@@ -18,7 +18,7 @@ public sealed class EventBusRefClassTests
         subscriber2.Subscribe();
 
         var args = new TestEventClass();
-        eventBus.RaiseEvent(args);
+        eventBus.Raise(args);
         
         Assert.That(args.Counter, Is.EqualTo(2));
         Assert.Pass("All subscribers handled correctly");
@@ -33,7 +33,7 @@ public sealed class EventBusRefClassTests
     {
         public void Subscribe()
         {
-            bus.SubscribeEvent<TestEventClass>(this, RefMethod2);
+            bus.Subscribe<TestEventClass>(this, RefMethod2);
         }
 
         private void RefMethod2(ref TestEventClass args)
@@ -46,7 +46,7 @@ public sealed class EventBusRefClassTests
     {
         public void Subscribe()
         {
-            bus.SubscribeEvent<TestEventClass>(this, RefMethod1);
+            bus.Subscribe<TestEventClass>(this, RefMethod1);
         }
         
         private void RefMethod1(ref TestEventClass args)
