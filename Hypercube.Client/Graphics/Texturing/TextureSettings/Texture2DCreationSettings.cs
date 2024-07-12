@@ -6,7 +6,7 @@ public class Texture2DCreationSettings : ITextureCreationSettings
 {
     public Texture2DCreationSettings(
         TextureTarget textureTarget, 
-        HashSet<ITextureParameter> parameters, 
+        HashSet<TextureParameter> parameters, 
         PixelInternalFormat pixelInternalFormat, 
         int level, 
         int border, 
@@ -42,7 +42,7 @@ public class Texture2DCreationSettings : ITextureCreationSettings
         Flip = true;
     }
     public TextureTarget TextureTarget { get; }
-    public HashSet<ITextureParameter> Parameters { get; }
+    public HashSet<TextureParameter> Parameters { get; }
     public PixelInternalFormat PixelInternalFormat { get; }
     public int Level { get; }
     public int Border { get; }

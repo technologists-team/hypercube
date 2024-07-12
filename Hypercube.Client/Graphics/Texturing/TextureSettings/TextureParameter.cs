@@ -1,8 +1,6 @@
-﻿using OpenToolkit.Graphics.OpenGL4;
+﻿namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 
-namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
-
-public class TextureParameter : ITextureParameter
+public class TextureParameter
 {
     public TextureParameterName ParameterName { get; }
     public int ParameterValue { get; }
