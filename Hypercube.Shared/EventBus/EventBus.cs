@@ -60,7 +60,7 @@ public class EventBus : IEventBus
         data = found;
     }
 
-    private void UnsubscribeEvent<T>(IEventSubscriber subscriber)
+    public void UnsubscribeEvent<T>(IEventSubscriber subscriber)
     {
         ArgumentNullException.ThrowIfNull(subscriber);
         var eventType = typeof(T);

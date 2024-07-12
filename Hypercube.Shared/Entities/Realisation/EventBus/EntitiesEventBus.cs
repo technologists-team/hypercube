@@ -4,6 +4,11 @@ namespace Hypercube.Shared.Entities.Realisation.EventBus;
 
 public sealed class EntitiesEventBus : IEntitiesEventBus
 {
+    public void UnsubscribeEvent<T>(IEventSubscriber subscriber)
+    {
+        throw new NotImplementedException();
+    }
+
     public void SubscribeEvent<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : notnull
     {
         throw new NotImplementedException();
