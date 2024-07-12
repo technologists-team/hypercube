@@ -1,5 +1,3 @@
 ﻿namespace Hypercube.Shared.EventBus.Events;
 
-public interface IEventSubscriber
-{
-}
+public interface IEventSubscriber;
