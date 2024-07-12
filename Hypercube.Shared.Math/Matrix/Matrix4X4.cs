@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Box;
+using Hypercube.Shared.Math.Transform;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
@@ -394,6 +395,12 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         result.M22 = z;
 
         return result;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotation(Quaternion quaternion)
+    {
+        return CreateRotation(quaternion.Direction, (float)quaternion.Angle.Theta);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

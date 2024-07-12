@@ -70,6 +70,10 @@ public readonly struct Quaternion : IEquatable<Quaternion>
         Vector = vector;
     }
     
+    public Quaternion(Vector3 vector3) : this(FromEuler(vector3).Vector)
+    {
+    }
+    
     public Quaternion(Quaternion quaternion) : this(quaternion.Vector)
     {
     }
@@ -155,7 +159,13 @@ public readonly struct Quaternion : IEquatable<Quaternion>
     {
         return !a.Equals(b);
     }
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Quaternion FromEuler(float x, float y, float z)
+    {
+        return FromEuler(new Vector3(x, y, z));
+    }
+
     /// <summary>
     /// Created new <see cref="Quaternion"/> from given Euler angles in radians.
     /// <remarks>
