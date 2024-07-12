@@ -32,6 +32,12 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => MathF.Sqrt(LengthSquared);
     }
+    
+    public Vector2Int Normalized
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => this / Length;
+    }
 
     public Vector2Int(int x, int y)
     {

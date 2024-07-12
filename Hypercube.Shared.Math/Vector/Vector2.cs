@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Hypercube.Shared.Math.Extensions;
 
 namespace Hypercube.Shared.Math.Vector;
 
@@ -33,6 +34,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
         get => MathF.Sqrt(LengthSquared);
     }
     
+    public Vector2 Normalized
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => this / Length;
+    }
+    
     public Vector2(float x, float y)
     {
         X = x;
@@ -62,7 +69,8 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Vector2 other)
     {
-        return X.Equals(other.X) && Y.Equals(other.Y);
+        return X.AboutEquals(other.X) &&
+               Y.AboutEquals(other.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

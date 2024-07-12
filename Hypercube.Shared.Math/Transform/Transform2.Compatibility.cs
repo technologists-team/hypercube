@@ -12,6 +12,6 @@ public partial struct Transform2
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Transform3(Transform2 transform2)
     {
-        return new Transform3(transform2.Position, new Quaternion(Vector3.UnitZ * transform2.Rotation), transform2.Scale);
+        return new Transform3(transform2.Position, new Quaternion(Vector3.UnitZ * (float)transform2.Rotation), transform2.Scale);
     }
 }
