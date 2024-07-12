@@ -1,6 +1,5 @@
 ﻿using Hypercube.Shared.EventBus;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Events.Events;
 
 namespace Hypercube.UnitTests.EventBus;
 

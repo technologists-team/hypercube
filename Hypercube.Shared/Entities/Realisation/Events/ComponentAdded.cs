@@ -1,5 +1,5 @@
 ﻿using Hypercube.Shared.Entities.Realisation.Components;
-using Hypercube.Shared.EventBus.Events.Events;
+using Hypercube.Shared.EventBus.Events;
 
 namespace Hypercube.Shared.Entities.Realisation.Events;
 

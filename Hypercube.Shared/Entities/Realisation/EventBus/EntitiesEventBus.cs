@@ -1,6 +1,6 @@
-﻿using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Events.Events;
-using Hypercube.Shared.EventBus.Events.Handlers;
+﻿using Hypercube.Shared.EventBus;
+using Hypercube.Shared.EventBus.Events;
+using Hypercube.Shared.EventBus.Handlers;
 
 namespace Hypercube.Shared.Entities.Realisation.EventBus;
 

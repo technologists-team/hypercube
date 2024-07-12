@@ -1,6 +1,6 @@
 ﻿using Hypercube.Shared.EventBus;
 using Hypercube.Shared.EventBus.Events;
-using EventArgs = Hypercube.Shared.EventBus.Events.Events.EventArgs;
+using EventArgs = Hypercube.Shared.EventBus.Events.EventArgs;
 
 namespace Hypercube.UnitTests.EventBus;
 
@@ -24,7 +24,7 @@ public sealed class EventBusRefClassTests
         Assert.Pass("All subscribers handled correctly");
     }
     
-    private sealed class TestEventClass : EventArgs
+    private sealed class TestEventClass : Shared.EventBus.Events.EventArgs
     {
         public int Counter { get; set; }
     }
