@@ -50,7 +50,7 @@ public static class EventBusRaiseTests
         }
     }
 
-    private readonly record struct TestSubEventStruct;
+    private readonly record struct TestSubEventStruct : IEventArgs;
 
-    private sealed class TestSubEventClass;
+    private sealed class TestSubEventClass : IEventArgs;
 }

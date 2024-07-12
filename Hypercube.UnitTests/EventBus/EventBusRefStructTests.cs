@@ -50,5 +50,5 @@ public static class EventBusRefStructTests
         }
     }
 
-    private record struct TestEventStruct(int Counter = 0);
+    private record struct TestEventStruct(int Counter = 0) : IEventArgs;
 }

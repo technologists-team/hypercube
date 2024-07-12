@@ -1,3 +1,5 @@
-﻿namespace Hypercube.Shared.Runtimes.Event;
+﻿using Hypercube.Shared.EventBus.Events;
 
-public readonly record struct RuntimeStartupEvent;
+namespace Hypercube.Shared.Runtimes.Event;
+
+public readonly record struct RuntimeStartupEvent : IEventArgs;

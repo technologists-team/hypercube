@@ -61,7 +61,7 @@ public class EventBusUnsubscribeTests
         }
     }
 
-    private record struct TestUnsubEventStruct;
+    private record struct TestUnsubEventStruct : IEventArgs;
 
-    private sealed class TestUnsubEventClass;
+    private sealed class TestUnsubEventClass : IEventArgs;
 }

@@ -1,6 +1,8 @@
-﻿namespace Hypercube.Shared.Runtimes.Loop.Event;
+﻿using Hypercube.Shared.EventBus.Events;
 
-public readonly struct RenderFrameEvent(float deltaSeconds)
+namespace Hypercube.Shared.Runtimes.Loop.Event;
+
+public readonly struct RenderFrameEvent(float deltaSeconds) : IEventArgs
 {
     public readonly float DeltaSeconds = deltaSeconds;
 }
