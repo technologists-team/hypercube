@@ -4,6 +4,8 @@ using Hypercube.Shared.EventBus.Events.Broadcast;
 using Hypercube.Shared.EventBus.Events.Events;
 using Hypercube.Shared.EventBus.Events.Exceptions;
 using Hypercube.Shared.EventBus.Events.Handlers;
+using Hypercube.Shared.Utilities;
+using Hypercube.Shared.Utilities.Units;
 
 namespace Hypercube.Shared.EventBus;
 
@@ -25,7 +27,7 @@ public sealed class EventBus : IEventBus
     public void Raise(IEventArgs eventArgs)
     {
         var eventType = eventArgs.GetType();
-        ref var unitRef = ref ExtractUnitRef(ref eventArgs, eventType);
+        ref var unitRef = ref UnitHelper.ExtractUnitRef(ref eventArgs, eventType);
         
         ProcessEvent(ref unitRef, eventType);
     }
@@ -125,16 +127,5 @@ public sealed class EventBus : IEventBus
             throw new InvalidOperationException();
         
         return _inverseEventSubscriptions[subscriber] = new Dictionary<Type, BroadcastRegistration>();
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static ref Unit ExtractUnitRef(ref IEventArgs eventArgs, Type objType)
-    {
-        //return ref Unsafe.As<IEventArgs, Unit>(ref eventArgs);
-        
-        // Why not only unit?
-        return ref objType.IsValueType
-            ? ref Unsafe.As<IEventArgs, UnitBox>(ref eventArgs).Value
-            : ref Unsafe.As<IEventArgs, Unit>(ref eventArgs);
     }
 }
