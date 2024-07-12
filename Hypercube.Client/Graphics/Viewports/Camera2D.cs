@@ -1,7 +1,10 @@
-﻿using Hypercube.Shared.Math;
+﻿using System.Numerics;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Transform;
 using Hypercube.Shared.Math.Vector;
+using Quaternion = Hypercube.Shared.Math.Quaternion;
+using Vector2 = Hypercube.Shared.Math.Vector.Vector2;
+using Vector3 = Hypercube.Shared.Math.Vector.Vector3;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
@@ -18,7 +21,7 @@ public class Camera2D : ICamera
     private Vector2Int Size { get; set; }
     
     private Vector2 HalfSize => Size / 2f;
-    public Matrix4X4 Projection { get; private set; }
+    public Hypercube.Shared.Math.Matrix.Matrix4X4 Projection { get; private set; }
 
     public Camera2D(Vector2Int size, Vector2 position, float zNear, float zFar)
     {

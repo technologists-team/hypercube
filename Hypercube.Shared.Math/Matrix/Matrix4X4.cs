@@ -400,7 +400,39 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix4X4 CreateRotation(Quaternion quaternion)
     {
-        return CreateRotation(quaternion.Direction, (float)quaternion.Angle.Theta);
+        var xx = quaternion.X * quaternion.X;
+        var yy = quaternion.Y * quaternion.Y;
+        var zz = quaternion.Z * quaternion.Z;
+
+        var xy = quaternion.X * quaternion.Y;
+        var wz = quaternion.Z * quaternion.W;
+        var xz = quaternion.Z * quaternion.X;
+        var wy = quaternion.Y * quaternion.W;
+        var yz = quaternion.Y * quaternion.Z;
+        var wx = quaternion.X * quaternion.W;
+
+        var x = new Vector4(
+            1.0f - 2.0f * (yy + zz),
+            2.0f * (xy + wz),
+            2.0f * (xz - wy),
+            0
+        );
+        
+        var y = new Vector4(
+            2.0f * (xy - wz),
+            1.0f - 2.0f * (zz + xx),
+            2.0f * (yz + wx),
+            0
+        );
+        
+        var z = new Vector4(
+            2.0f * (xz + wy),
+            2.0f * (yz - wx),
+            1.0f - 2.0f * (yy + xx),
+            0
+        );
+        
+        return new Matrix4X4(x, y, z, Vector4.UnitW);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
