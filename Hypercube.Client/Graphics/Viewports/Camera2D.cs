@@ -1,10 +1,7 @@
-﻿using System.Numerics;
+﻿using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Transform;
 using Hypercube.Shared.Math.Vector;
-using Quaternion = Hypercube.Shared.Math.Quaternion;
-using Vector2 = Hypercube.Shared.Math.Vector.Vector2;
-using Vector3 = Hypercube.Shared.Math.Vector.Vector3;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
