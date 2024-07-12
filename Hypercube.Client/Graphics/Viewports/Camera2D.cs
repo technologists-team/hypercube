@@ -5,20 +5,19 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
-public class Camera2D : ICamera
+public sealed class Camera2D : ICamera
 {
-    private Transform3 _transform = new();
+    public Matrix4X4 Projection { get; private set; }
 
     public Vector3 Position => _transform.Position;
     public Vector3 Rotation => _transform.Rotation.ToEuler();
     public Vector3 Scale => _transform.Scale;
+    public Vector2Int Size { get; private set; }
     
     private readonly float _zFar;
     private readonly float _zNear;
-    private Vector2Int Size { get; set; }
-    
-    private Vector2 HalfSize => Size / 2f;
-    public Hypercube.Shared.Math.Matrix.Matrix4X4 Projection { get; private set; }
+
+    private Transform3 _transform = new();
 
     public Camera2D(Vector2Int size, Vector2 position, float zNear, float zFar)
     {

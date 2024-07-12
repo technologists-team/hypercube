@@ -3,7 +3,7 @@ using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Transform;
 
-public struct Transform3
+public partial struct Transform3 : ITransform
 {
     public Matrix4X4 Matrix { get; private set; }
     
