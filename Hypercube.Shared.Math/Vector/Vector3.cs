@@ -18,10 +18,16 @@ public readonly partial struct Vector3(float x, float y, float z) : IEquatable<V
     public readonly float Y = y;
     public readonly float Z = z;
 
+    public float LengthSquared
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X * X + Y * Y + Z * Z;
+    }
+    
     public float Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MathF.Sqrt(X * X + Y * Y + Z * Z);
+        get => MathF.Sqrt(LengthSquared);
     }
 
     public Vector3 Normalized

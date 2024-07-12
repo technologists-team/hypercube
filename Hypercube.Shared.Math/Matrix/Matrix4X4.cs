@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Shared.Math.Box;
+using Hypercube.Shared.Math.Transform;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Shared.Math.Matrix;
@@ -334,6 +335,47 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return new Matrix4X4(matrix4X4.Column0, matrix4X4.Column1, matrix4X4.Column2, matrix4X4.Column3);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateTransform(Transform3 transform3)
+    {
+        return CreateTransform(transform3.Position, transform3.Rotation, transform3.Scale);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateTransform(Vector3 position, Quaternion quaternion, Vector3 scale)
+    {
+        var xx = quaternion.X * quaternion.X;
+        var yy = quaternion.Y * quaternion.Y;
+        var zz = quaternion.Z * quaternion.Z;
+
+        var xy = quaternion.X * quaternion.Y;
+        var wz = quaternion.Z * quaternion.W;
+        var xz = quaternion.Z * quaternion.X;
+        var wy = quaternion.Y * quaternion.W;
+        var yz = quaternion.Y * quaternion.Z;
+        var wx = quaternion.X * quaternion.W;
+
+        var rx1 = (1.0f - 2.0f * (yy + zz)) * scale.X;
+        var rx2 = 2.0f * (xy + wz) * scale.X;
+        var rx3 = 2.0f * (xz - wy) * scale.X;
+        var rx4 = rx1 * position.X + rx2 * position.X + rx3 * position.X;
+        var ry1 = 2.0f * (xy - wz) * scale.Y;
+        var ry2 = (1.0f - 2.0f * (zz + xx)) * scale.Y;
+        var ry3 = 2.0f * (yz + wx) * scale.Y;
+        var ry4 = ry1 * position.Y + ry2 * position.Y + ry3 * position.Y;
+        var rz1 = 2.0f * (xz + wy) * scale.Z;
+        var rz2 = 2.0f * (yz - wx) * scale.Z;
+        var rz3 = (1.0f - 2.0f * (yy + xx)) * scale.Z;
+        var rz4 = rz1 * position.Z + rz2 * position.Z + rz3 * position.Z;
+        
+        return new Matrix4X4(
+            rx1, rx2, rx3, rx4,
+            ry1, ry2, ry3, ry4,
+            rz1, rz2, rz3, rz4,
+            0, 0, 0, 1
+        );
+    }
+    
     /// <summary>
     /// Creating scale matrix
     /// <code>
@@ -394,6 +436,44 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         result.M22 = z;
 
         return result;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateRotation(Quaternion quaternion)
+    {
+        var xx = quaternion.X * quaternion.X;
+        var yy = quaternion.Y * quaternion.Y;
+        var zz = quaternion.Z * quaternion.Z;
+
+        var xy = quaternion.X * quaternion.Y;
+        var wz = quaternion.Z * quaternion.W;
+        var xz = quaternion.Z * quaternion.X;
+        var wy = quaternion.Y * quaternion.W;
+        var yz = quaternion.Y * quaternion.Z;
+        var wx = quaternion.X * quaternion.W;
+
+        var x = new Vector4(
+            1.0f - 2.0f * (yy + zz),
+            2.0f * (xy + wz),
+            2.0f * (xz - wy),
+            0
+        );
+        
+        var y = new Vector4(
+            2.0f * (xy - wz),
+            1.0f - 2.0f * (zz + xx),
+            2.0f * (yz + wx),
+            0
+        );
+        
+        var z = new Vector4(
+            2.0f * (xz + wy),
+            2.0f * (yz - wx),
+            1.0f - 2.0f * (yy + xx),
+            0
+        );
+        
+        return new Matrix4X4(x, y, z, Vector4.UnitW);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

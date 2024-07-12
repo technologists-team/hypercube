@@ -1,64 +1,56 @@
-﻿using Hypercube.Shared.Math.Matrix;
+﻿using Hypercube.Shared.Math;
+using Hypercube.Shared.Math.Matrix;
+using Hypercube.Shared.Math.Transform;
 using Hypercube.Shared.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
-public class Camera2D : ICamera
+public sealed class Camera2D : ICamera
 {
-    public Vector3 Position { get; private set; }
-    public Vector3 Rotation { get; private set; }
-    public Vector3 Scale { get; private set; } = Vector3.One;
+    public Matrix4X4 Projection { get; private set; }
+
+    public Vector3 Position => _transform.Position;
+    public Vector3 Rotation => _transform.Rotation.ToEuler();
+    public Vector3 Scale => _transform.Scale;
+    public Vector2Int Size { get; private set; }
     
     private readonly float _zFar;
     private readonly float _zNear;
-    private Vector2Int Size { get; set; }
 
-    
-    private Vector2 HalfSize => Size / 2f;
-    public Matrix4X4 Projection { get; private set; }
+    private Transform3 _transform = new();
 
     public Camera2D(Vector2Int size, Vector2 position, float zNear, float zFar)
     {
         Size = size;
-        Position = new Vector3(position);
         _zNear = zNear;
         _zFar = zFar;
+        
+        SetPosition(new Vector3(position));
         
         UpdateProjection();
     }
 
-    public void SetSize(Vector2Int size)
+    public void SetPosition(Vector3 position)
     {
-        Size = size;
+        _transform.SetPosition(position);
         UpdateProjection();
     }
     
-    public void SetPosition(Vector3 position)
-    {
-        Position = position;
-        UpdateProjection();
-    }
-
     public void SetRotation(Vector3 rotation)
     {
-        Rotation = Rotation.WithZ(rotation.Z);
+        _transform.SetRotation(Quaternion.FromEuler(0, 0, rotation.Z));
         UpdateProjection();
     }
     
     public void SetScale(Vector3 scale)
     {
-        Scale = scale;
+        _transform.SetScale(scale);
         UpdateProjection();
     }
 
     private void UpdateProjection()
     {
         var projection = Matrix4X4.CreateOrthographic(Size, _zNear, _zFar);
-        
-        var translate = Matrix4X4.CreateTranslation(Position);
-        var rotation = Matrix4X4.CreateRotationZ(Rotation.Z);
-        var scale = Matrix4X4.CreateScale(Scale);
-        
-        Projection = projection * translate * rotation * scale;
+        Projection = projection * _transform.Matrix;
     }
 }
