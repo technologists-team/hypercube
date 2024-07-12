@@ -1,23 +1,33 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.DirRoot;
+using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Manager;
 
-public sealed class ResourceManager : IResourceManager
+public sealed class ResourceManager : IResourceManager, IPostInject
 {
+    [Dependency] private readonly IEventBus _eventBus = default!;
+    
     private readonly Logger _logger = LoggingManager.GetLogger("resources");
     private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
     private readonly object _rootLock = new();
-
-    public void Startup()
+    
+    public void PostInject()
     {
-        // mount directories
+        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialization);
+    }
+
+    private void OnInitialization(RuntimeInitializationEvent args)
+    {
         MountContentFolder(".", "/");
         MountContentFolder("Resources", "/");
         MountContentFolder("Resources/Textures", "/");
         MountContentFolder("Resources/Shaders", "/");
+        
         _logger.EngineInfo("Mounted resource directories");
     }
 
