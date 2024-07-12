@@ -10,7 +10,17 @@ public sealed class ResourceManager : IResourceManager
     private readonly Logger _logger = LoggingManager.GetLogger("resources");
     private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
     private readonly object _rootLock = new();
-    
+
+    public void Startup()
+    {
+        // mount directories
+        MountContentFolder(".", "/");
+        MountContentFolder("Resources", "/");
+        MountContentFolder("Resources/Textures", "/");
+        MountContentFolder("Resources/Shaders", "/");
+        _logger.EngineInfo("Mounted resource directories");
+    }
+
     public void AddRoot(ResourcePath prefix, IContentRoot root)
     {
         lock (_rootLock)

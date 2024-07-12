@@ -85,6 +85,8 @@ public sealed partial class Renderer : IRenderer, IPostInject
         _currentThread = Thread.CurrentThread;
         _logger.EngineInfo($"Working thread {_currentThread.Name}");
 
+        _resourceManager.Startup();
+        
         var settings = new WindowCreateSettings();
         foreach (var contextInfo in _contextInfos)
         {
