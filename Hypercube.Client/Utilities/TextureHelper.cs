@@ -7,6 +7,6 @@ public static class TextureHelper
     public static TextureParameterName ToOpenToolkit(
         this Graphics.Texturing.TextureSettings.TextureParameterName textureParameterName)
     {
-        return (TextureParameterName)(int)textureParameterName;
+        return (TextureParameterName)textureParameterName;
     }
 }
