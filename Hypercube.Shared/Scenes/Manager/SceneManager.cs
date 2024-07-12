@@ -21,7 +21,7 @@ public sealed class SceneManager : ISceneManager
         var scene = new Scene(id);
         
         _scenes.Add(id, scene);
-        _eventBus.Invoke(new SceneAdded(scene));
+        _eventBus.RaiseEvent(new SceneAdded(scene));
         
         return id;
     }
@@ -30,7 +30,7 @@ public sealed class SceneManager : ISceneManager
     {
         var scene = _scenes[sceneId];
         _scenes.Remove(sceneId);
-        _eventBus.Invoke(new SceneDeleted(scene));
+        _eventBus.RaiseEvent(new SceneDeleted(scene));
     }
     
     public bool HasScene(SceneId sceneId)

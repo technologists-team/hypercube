@@ -1,8 +1,12 @@
-﻿namespace Hypercube.Shared.EventBus;
+﻿using Hypercube.Shared.EventBus.Events;
+using EventArgs = Hypercube.Shared.EventBus.Events.EventArgs;
+
+namespace Hypercube.Shared.EventBus;
 
 public interface IEventBus
 {
-    void Subscribe<T>(Action<T> callback);
-    void Unsubscribe<T>(Action<T> callback);
-    void Invoke<T>(T signal);
+    public void SubscribeEvent<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : notnull;
+    void RaiseEvent(object toRaise);
+    void RaiseEvent<T>(ref T toRaise) where T : notnull;
+    void RaiseEvent<T>(T toRaise) where T : notnull;
 }

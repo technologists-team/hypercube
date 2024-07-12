@@ -2,13 +2,14 @@
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
+public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject, IEventSubscriber
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
 
@@ -19,14 +20,14 @@ public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
     
     public void PostInject()
     {
-        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialization);
-        _eventBus.Subscribe<RuntimeStartupEvent>(OnStartup);
+        _eventBus.SubscribeEvent<RuntimeInitializationEvent>(this, OnInitialization);
+        _eventBus.SubscribeEvent<RuntimeStartupEvent>(this, OnStartup);
         
-        _eventBus.Subscribe<UpdateFrameEvent>(OnFrameUpdate);
-        _eventBus.Subscribe<RuntimeShutdownEvent>(OnShutdown);
+        _eventBus.SubscribeEvent<UpdateFrameEvent>(this, OnFrameUpdate);
+        _eventBus.SubscribeEvent<RuntimeShutdownEvent>(this, OnShutdown);
     }
 
-    private void OnInitialization(RuntimeInitializationEvent args)
+    private void OnInitialization(ref RuntimeInitializationEvent args)
     {
         // Auto creating all systems
         var types = GetAllSystemTypes();
@@ -45,7 +46,7 @@ public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
         _system = system.ToFrozenSet();
     }
     
-    private void OnStartup(RuntimeStartupEvent args)
+    private void OnStartup(ref RuntimeStartupEvent args)
     {
         foreach (var instance in _system)
         {
@@ -53,7 +54,7 @@ public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
         }   
     }
 
-    private void OnFrameUpdate(UpdateFrameEvent args)
+    private void OnFrameUpdate(ref UpdateFrameEvent args)
     {
         foreach (var instance in _system)
         {
@@ -61,7 +62,7 @@ public class EntitiesSystemManager : IEntitiesSystemManager, IPostInject
         }
     }
     
-    private void OnShutdown(RuntimeShutdownEvent args)
+    private void OnShutdown(ref RuntimeShutdownEvent args)
     {
         foreach (var instance in _system)
         {

@@ -65,7 +65,7 @@ public sealed partial class Renderer
         _logger.EngineInfo("Loaded");
     }
 
-    private void OnFrameUpdate(UpdateFrameEvent args)
+    private void OnFrameUpdate(ref UpdateFrameEvent args)
     {
 #if DEBUG
         _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null} | cRot: {_cameraManager.MainCamera?.Rotation ?? null}");
@@ -74,7 +74,7 @@ public sealed partial class Renderer
         _cameraManager.UpdateInput(_cameraManager.MainCamera, args.DeltaSeconds);
     }
 
-    private void OnFrameRender(RenderFrameEvent args)
+    private void OnFrameRender(ref RenderFrameEvent args)
     {
         BatchClear();
         
