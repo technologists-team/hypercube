@@ -335,6 +335,50 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return new Matrix4X4(matrix4X4.Column0, matrix4X4.Column1, matrix4X4.Column2, matrix4X4.Column3);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateTransform(Transform3 transform3)
+    {
+        return CreateTransform(transform3.Position, transform3.Rotation, transform3.Scale);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateTransform(Vector3 position, Quaternion quaternion, Vector3 scale)
+    {
+        var xx = quaternion.X * quaternion.X;
+        var yy = quaternion.Y * quaternion.Y;
+        var zz = quaternion.Z * quaternion.Z;
+
+        var xy = quaternion.X * quaternion.Y;
+        var wz = quaternion.Z * quaternion.W;
+        var xz = quaternion.Z * quaternion.X;
+        var wy = quaternion.Y * quaternion.W;
+        var yz = quaternion.Y * quaternion.Z;
+        var wx = quaternion.X * quaternion.W;
+
+        var x3 = new Vector3(
+            1.0f - 2.0f * (yy + zz),
+            2.0f * (xy + wz),
+            2.0f * (xz - wy)
+        ) * scale.X;
+        var x = new Vector4(x3, (x3 * position.X).Sum());
+
+        var y3 = new Vector3(
+            2.0f * (xy - wz),
+            1.0f - 2.0f * (zz + xx),
+            2.0f * (yz + wx)
+        )* scale.Y;
+        var y = new Vector4(y3, (y3 * position.Y).Sum());
+        
+        var z3 = new Vector3(
+            2.0f * (xz + wy),
+            2.0f * (yz - wx),
+            1.0f - 2.0f * (yy + xx)
+        ) * scale.Z;
+        var z = new Vector4(z3, (z3 * position.Z).Sum());
+        
+        return new Matrix4X4(x, y, z, Vector4.UnitW);
+    }
+    
     /// <summary>
     /// Creating scale matrix
     /// <code>

@@ -56,6 +56,10 @@ public readonly partial struct Vector4 : IEquatable<Vector4>
     public Vector4(Vector2 vector2, float z, float w) : this(vector2.X, vector2.Y, z, w)
     {
     }
+    
+    public Vector4(Vector3 vector3, float w) : this(vector3.X, vector3.Y, vector3.Z, w)
+    {
+    }
 
     public Vector4(Vector4 vector4, float w) : this(vector4.X, vector4.Y, vector4.Z, w)
     {

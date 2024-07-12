@@ -61,8 +61,6 @@ public partial struct Transform3 : ITransform
 
     private void UpdateMatrix()
     {
-        Matrix = Matrix4X4.CreateTranslation(Position) *
-                 Matrix4X4.CreateRotation(Rotation) *
-                 Matrix4X4.CreateScale(Scale);
+        Matrix = Matrix4X4.CreateTransform(this);
     }
 }
