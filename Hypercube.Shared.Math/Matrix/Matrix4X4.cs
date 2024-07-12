@@ -355,28 +355,25 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         var yz = quaternion.Y * quaternion.Z;
         var wx = quaternion.X * quaternion.W;
 
-        var x3 = new Vector3(
-            1.0f - 2.0f * (yy + zz),
-            2.0f * (xy + wz),
-            2.0f * (xz - wy)
-        ) * scale.X;
-        var x = new Vector4(x3, (x3 * position.X).Sum());
-
-        var y3 = new Vector3(
-            2.0f * (xy - wz),
-            1.0f - 2.0f * (zz + xx),
-            2.0f * (yz + wx)
-        )* scale.Y;
-        var y = new Vector4(y3, (y3 * position.Y).Sum());
+        var rx1 = (1.0f - 2.0f * (yy + zz)) * scale.X;
+        var rx2 = 2.0f * (xy + wz) * scale.X;
+        var rx3 = 2.0f * (xz - wy) * scale.X;
+        var rx4 = rx1 * position.X + rx2 * position.X + rx3 * position.X;
+        var ry1 = 2.0f * (xy - wz) * scale.Y;
+        var ry2 = (1.0f - 2.0f * (zz + xx)) * scale.Y;
+        var ry3 = 2.0f * (yz + wx) * scale.Y;
+        var ry4 = ry1 * position.Y + ry2 * position.Y + ry3 * position.Y;
+        var rz1 = 2.0f * (xz + wy) * scale.Z;
+        var rz2 = 2.0f * (yz - wx) * scale.Z;
+        var rz3 = (1.0f - 2.0f * (yy + xx)) * scale.Z;
+        var rz4 = rz1 * position.Z + rz2 * position.Z + rz3 * position.Z;
         
-        var z3 = new Vector3(
-            2.0f * (xz + wy),
-            2.0f * (yz - wx),
-            1.0f - 2.0f * (yy + xx)
-        ) * scale.Z;
-        var z = new Vector4(z3, (z3 * position.Z).Sum());
-        
-        return new Matrix4X4(x, y, z, Vector4.UnitW);
+        return new Matrix4X4(
+            rx1, rx2, rx3, rx4,
+            ry1, ry2, ry3, ry4,
+            rz1, rz2, rz3, rz4,
+            0, 0, 0, 1
+        );
     }
     
     /// <summary>
