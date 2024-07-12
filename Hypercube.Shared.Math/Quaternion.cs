@@ -125,7 +125,13 @@ public readonly struct Quaternion : IEquatable<Quaternion>
     {
         return Vector.GetHashCode();
     }
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        return Vector.ToString();
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Quaternion operator *(Quaternion a, Quaternion b)
     {
@@ -149,17 +155,38 @@ public readonly struct Quaternion : IEquatable<Quaternion>
     {
         return !a.Equals(b);
     }
-
+    
+    /// <summary>
+    /// Created new <see cref="Quaternion"/> from given Euler angles in radians.
+    /// <remarks>
+    /// Taken from <a href="https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Data/Quaternion.cs#L77">OpenTK.Mathematics/Data/Quaternion.cs</a>
+    /// </remarks>
+    /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Quaternion FromEuler(Vector3 vector3)
     {
-        throw new NotImplementedException();
+        var axis = vector3 / 2f;
+        
+        var c1 = MathF.Cos(axis.X);
+        var c2 = MathF.Cos(axis.Y);
+        var c3 = MathF.Cos(axis.Z);
+        
+        var s1 = MathF.Sin(axis.X);
+        var s2 = MathF.Sin(axis.Y);
+        var s3 = MathF.Sin(axis.Z);
+
+        return new Quaternion(
+            s1 * c2 * c3 + c1 * s2 * s3,
+            c1 * s2 * c3 - s1 * c2 * s3,
+            c1 * c2 * s3 + s1 * s2 * c3,
+            c1 * c2 * c3 - s1 * s2 * s3
+        );
     } 
 
     /// <summary>
     /// Convert this instance to an Euler angle representation.
     /// <remarks>
-    /// Taken from <a href="https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Data/Quaterniond.cs#L190">OpenTK.Mathematics/Data/Quaterniond.cs</a>
+    /// Taken from <a href="https://github.com/opentk/opentk/blob/master/src/OpenTK.Mathematics/Data/Quaternion.cs#L194">OpenTK.Mathematics/Data/Quaternion.cs</a>
     /// </remarks>
     /// </summary>
     /// <returns>Euler angle in radians</returns>
