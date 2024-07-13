@@ -33,7 +33,7 @@ public class TextureHandle : ITextureHandle
             texture.Data);
         
         // there should more elegant way
-        GL.GenerateMipmap((GenerateMipmapTarget)(int)settings.TextureTarget);
+        GL.GenerateMipmap((GenerateMipmapTarget)settings.TextureTarget);
     }
     
     public void Bind()
