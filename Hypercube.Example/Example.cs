@@ -30,7 +30,7 @@ public sealed class Example : IEventSubscriber, IPostInject
 
     private void Startup(ref RuntimeStartupEvent args)
     {
-        for (var i = 0; i < 300; i++)
+        for (var i = 0; i < 1000; i++)
         {
             var x = _random.NextSingle() * 800 - 400;
             var y = _random.NextSingle() * 800 - 400;
@@ -46,7 +46,7 @@ public sealed class Example : IEventSubscriber, IPostInject
         var sprite = _entitiesComponentManager.AddComponent<SpriteComponent>(entity);
         var example = _entitiesComponentManager.AddComponent<ExampleComponent>(entity);
         
-        sprite.TexturePath = new ResourcePath("/icon.png");
+        sprite.TexturePath = new ResourcePath("/Textures/icon.png");
         example.Offset = _random.Next(0, 1000); 
     }
 }

@@ -12,4 +12,6 @@ public interface ICacheManager
 
     void CacheResource<T>(ResourcePath path, T resource)
         where T : BaseResource, new();
+
+    void PreloadTextures();
 }

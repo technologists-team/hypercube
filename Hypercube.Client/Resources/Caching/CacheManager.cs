@@ -8,7 +8,7 @@ using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public partial class CacheManager : ICacheManager, ICacheManagerInternal
+public partial class CacheManager : ICacheManager
 {
     [Dependency] private readonly IResourceManager _resourceManager = default!;
     
@@ -33,6 +33,7 @@ public partial class CacheManager : ICacheManager, ICacheManagerInternal
         if (typeDict.TryGetValue(path, out var cache))
             return (T) cache;
 
+        
         cache = new T();
         try
         {

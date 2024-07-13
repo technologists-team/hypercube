@@ -27,7 +27,6 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly ICameraManager _cameraManager = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
-    [Dependency] private readonly ICacheManagerInternal _cacheManagerInternal = default!;
     [Dependency] private readonly ICacheManager _cacheManager = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
@@ -73,23 +72,10 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     
     public void PostInject()
     {
-        _eventBus.Subscribe<TexturesPreloadEvent>(this, OnTexturesPreload);
-        _eventBus.Subscribe<HandlesPreloadEvent>(this, OnHandlesPreload);
         _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
         _eventBus.Subscribe<RuntimeStartupEvent>(this, OnStartup);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnFrameUpdate);
         _eventBus.Subscribe<RenderFrameEvent>(this, OnFrameRender);
-    }
-
-    private void OnTexturesPreload(ref TexturesPreloadEvent args)
-    {
-        args.Textures.Add("/Icons/image.png");
-        args.Textures.Add("/icon.png");
-    }
-
-    private void OnHandlesPreload(ref HandlesPreloadEvent args)
-    {
-        args.Handles.Add("/icon.png");
     }
     
     private void OnInitialization(ref RuntimeInitializationEvent args)
@@ -120,7 +106,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         
         InitOpenGL();
         
-        _cacheManagerInternal.PreloadTextures();
+        _cacheManager.PreloadTextures();
         
         OnLoad();
     }

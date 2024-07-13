@@ -43,7 +43,6 @@ public static class Dependencies
         
         // Caching
         rootContainer.Register<ICacheManager, CacheManager>();
-        rootContainer.Register<ICacheManagerInternal, CacheManager>();
         
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
