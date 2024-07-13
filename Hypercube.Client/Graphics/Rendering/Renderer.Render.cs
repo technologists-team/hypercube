@@ -1,14 +1,12 @@
 ﻿using Hypercube.Client.Graphics.Event;
 using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Graphics.Texturing.TextureSettings;
-using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Box;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
+using HTexTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
+
 
 namespace Hypercube.Client.Graphics.Rendering;
 
@@ -35,8 +33,8 @@ public sealed partial class Renderer
     private void OnLoad()
     {
         _baseShader = new Shader("/base", _resourceManager);
-        _baseTexture = _textureManager.GetHandler("/icon.png");
-        _baseTexture.Bind();
+        _baseTexture = _textureManager.GetTextureHandle("/icon.png");
+        _baseTexture.Bind(HTexTarget.Texture2D);
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
         

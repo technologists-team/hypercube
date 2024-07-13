@@ -36,7 +36,7 @@ public sealed class RenderDrawing : IRenderDrawing
 
     public void DrawTexture(ITexture texture, Box2 quad, Box2 uv, Color color)
     {
-        _renderer.DrawTexture(_textureManager.GetHandler(texture), quad, uv, color);
+        _renderer.DrawTexture(_textureManager.GetTextureHandle(texture, new Texture2DCreationSettings()), quad, uv, color);
     }
     
     public void DrawTexture(ITextureHandle texture, Vector2 position, Color color, Matrix4X4 model)

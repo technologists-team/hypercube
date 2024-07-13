@@ -171,6 +171,11 @@ public readonly struct ResourcePath
         return Path.GetHashCode();
     }
 
+    public override string ToString()
+    {
+        return Path;
+    }
+
     public static bool operator ==(ResourcePath a, ResourcePath b)
     {
         return a.Equals(b);
