@@ -1,19 +1,28 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
+using Hypercube.Shared.Math.Matrix;
+using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {
-    public void DrawTexture(ITextureHandle textureHandle, Box2 quad, Box2 uv, Color color)
+    public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color)
     {
+        DrawTexture(texture, quad, uv, color, Matrix4X4.Identity);
+    }
+
+    public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model)
+    {
+        var startIndex = (uint)_batchVertexIndex;
+        _batches.Add(new Batch(_batchIndexIndex, 6, texture.Handle, PrimitiveType.Triangles, model));
+        
         var bottomLeft = quad.BottomLeft;
         var bottomRight = quad.BottomRight;
         var topRight = quad.TopRight;
         var topLeft = quad.TopLeft;
-
-        var startIndex = _batchVertexIndex;
+        
         _batchVertices[_batchVertexIndex++] = new Vertex(topRight, uv.TopRight, color);
         _batchVertices[_batchVertexIndex++] = new Vertex(bottomRight, uv.BottomRight, color);
         _batchVertices[_batchVertexIndex++] = new Vertex(bottomLeft, uv.BottomLeft, color);

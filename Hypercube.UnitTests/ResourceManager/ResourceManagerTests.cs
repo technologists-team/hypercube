@@ -14,7 +14,7 @@ public class ResourceManagerTests
             return;
         }
 
-        var wrapped = resourceMan.WrapStream(stream);
+        using var wrapped = resourceMan.WrapStream(stream);
         var read = wrapped.ReadToEnd();
         Assert.That(read == "hey");
         Assert.Pass("Read file successfully");

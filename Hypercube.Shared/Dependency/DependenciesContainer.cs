@@ -112,6 +112,9 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
         {
             foreach (var (type, _) in _factories)
             {
+                if (_instances.ContainsKey(type))
+                    continue;
+                
                 Instantiate(type);
             }
         }
