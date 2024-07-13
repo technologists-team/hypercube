@@ -50,6 +50,7 @@ public sealed partial class Runtime(DependenciesContainer dependenciesContainer)
     {
         _logger.EngineInfo("Startup");
         _eventBus.Raise(new RuntimeStartupEvent());
+        _eventBus.Raise(new RuntimeAfterStartupEvent());
         _loop.Run();
     }
     

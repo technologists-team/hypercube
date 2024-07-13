@@ -1,20 +1,19 @@
 ﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Client.Utilities;
 using OpenToolkit.Graphics.OpenGL4;
+using TextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
 
 namespace Hypercube.Client.Graphics.Texturing;
 
 public sealed class TextureHandle : ITextureHandle
 {
-    public int Handle { get; init; }
-    public ITexture Texture { get; init; }
-
     public TextureHandle(ITexture texture, ITextureCreationSettings settings)
     {
         Handle = GL.GenTexture();
         Texture = texture;
+
         var target = settings.TextureTarget.ToOpenToolkit();
-        
+
         GL.BindTexture(target, Handle);
         
         foreach (var param in settings.Parameters)
@@ -23,7 +22,7 @@ public sealed class TextureHandle : ITextureHandle
         }
         
         GL.TexImage2D(
-            settings.TextureTarget.ToOpenToolkit(), 
+            target, 
             settings.Level, 
             settings.PixelInternalFormat.ToOpenToolkit(), 
             texture.Width, texture.Height, 
@@ -32,11 +31,23 @@ public sealed class TextureHandle : ITextureHandle
             settings.PixelType.ToOpenToolkit(), 
             texture.Data);
         
-        GL.GenerateMipmap((GenerateMipmapTarget)settings.TextureTarget);
+        GL.GenerateMipmap((GenerateMipmapTarget)target);
     }
-    
-    public void Bind()
+
+    public int Handle { get; }
+    public ITexture Texture { get; }
+    public void Bind(TextureTarget target)
     {
-        GL.BindTexture(TextureTarget.Texture2D, Handle);
+        GL.BindTexture(target.ToOpenToolkit(), Handle);
+    }
+
+    public void Unbind(TextureTarget target)
+    {
+        GL.BindTexture(target.ToOpenToolkit(), 0);
+    }
+
+    public void Dispose()
+    {
+        GL.DeleteTexture(Handle);
     }
 }

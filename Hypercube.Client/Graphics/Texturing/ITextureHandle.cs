@@ -1,9 +1,12 @@
-﻿namespace Hypercube.Client.Graphics.Texturing;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters;
 
-public interface ITextureHandle
+namespace Hypercube.Client.Graphics.Texturing;
+
+public interface ITextureHandle : IDisposable
 {
     int Handle { get; }
     ITexture Texture { get; }
 
-    void Bind();
+    void Bind(TextureTarget target);
+    void Unbind(TextureTarget target);
 }

@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.Events;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
@@ -69,12 +70,25 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     
     public void PostInject()
     {
+        _eventBus.Subscribe<TexturesPreloadEvent>(this, OnTexturesPreload);
+        _eventBus.Subscribe<HandlesPreloadEvent>(this, OnHandlesPreload);
         _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
         _eventBus.Subscribe<RuntimeStartupEvent>(this, OnStartup);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnFrameUpdate);
         _eventBus.Subscribe<RenderFrameEvent>(this, OnFrameRender);
     }
 
+    private void OnTexturesPreload(ref TexturesPreloadEvent args)
+    {
+        args.Textures.Add("/Icons/image.png");
+        args.Textures.Add("/icon.png");
+    }
+
+    private void OnHandlesPreload(ref HandlesPreloadEvent args)
+    {
+        args.Handles.Add("/icon.png");
+    }
+    
     private void OnInitialization(ref RuntimeInitializationEvent args)
     {
         _windowManager = CreateWindowManager();
@@ -102,7 +116,9 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         
         
         InitOpenGL();
-
+        
+        _textureManager.CacheHandles();
+        
         OnLoad();
     }
     
