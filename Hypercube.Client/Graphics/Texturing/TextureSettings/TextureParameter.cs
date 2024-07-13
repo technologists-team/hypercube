@@ -4,6 +4,6 @@ namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 
 public readonly struct TextureParameter(TextureParameterName name, int value)
 {
-    public TextureParameterName ParameterName { get; } = name;
-    public int ParameterValue { get; } = value;
+    public readonly TextureParameterName Name = name;
+    public readonly int Value = value;
 }

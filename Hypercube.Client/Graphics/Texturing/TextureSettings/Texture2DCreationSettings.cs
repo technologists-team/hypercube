@@ -7,7 +7,7 @@ using TextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.Textur
 
 namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 
-public class Texture2DCreationSettings : ITextureCreationSettings
+public struct Texture2DCreationSettings : ITextureCreationSettings
 {
     public Texture2DCreationSettings(
         TextureTarget textureTarget, 

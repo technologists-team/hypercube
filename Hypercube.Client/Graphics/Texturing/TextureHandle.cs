@@ -4,7 +4,7 @@ using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Texturing;
 
-public class TextureHandle : ITextureHandle
+public sealed class TextureHandle : ITextureHandle
 {
     public int Handle { get; init; }
     public ITexture Texture { get; init; }
@@ -19,7 +19,7 @@ public class TextureHandle : ITextureHandle
         
         foreach (var param in settings.Parameters)
         {
-            GL.TexParameter(target, param.ParameterName.ToOpenToolkit(), param.ParameterValue);
+            GL.TexParameter(target, param.Name.ToOpenToolkit(), param.Value);
         }
         
         GL.TexImage2D(

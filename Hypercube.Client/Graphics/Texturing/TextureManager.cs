@@ -34,7 +34,17 @@ public sealed class TextureManager : ITextureManager
     {
         return new TextureHandle(texture, settings);
     }
-    
+
+    public ITextureHandle CreateHandler(ResourcePath texture)
+    {
+        return CreateHandler(Create(texture), new Texture2DCreationSettings());
+    }
+
+    public ITextureHandle CreateHandler(ITexture texture)
+    {
+        return CreateHandler(texture, new Texture2DCreationSettings());
+    }
+
     public ITextureHandle CreateHandler(ResourcePath path, ITextureCreationSettings settings)
     {
         return CreateHandler(Create(path), settings);

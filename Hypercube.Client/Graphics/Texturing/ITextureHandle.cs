@@ -2,8 +2,8 @@
 
 public interface ITextureHandle
 {
-    public int Handle { get; }
-    public ITexture Texture { get; }
+    int Handle { get; }
+    ITexture Texture { get; }
 
     void Bind();
 }

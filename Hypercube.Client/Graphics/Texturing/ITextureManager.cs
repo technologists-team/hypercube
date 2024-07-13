@@ -16,4 +16,6 @@ public interface ITextureManager
     
     ITextureHandle CreateHandler(ResourcePath path, ITextureCreationSettings settings);
     ITextureHandle CreateHandler(ITexture texture, ITextureCreationSettings settings);
+    ITextureHandle CreateHandler(ResourcePath texture);
+    ITextureHandle CreateHandler(ITexture texture);
 }
