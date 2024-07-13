@@ -9,7 +9,7 @@ using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostInject
+public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostInject, IEventSubscriber
 {
     private static readonly Type BaseComponentType = typeof(IComponent);
     
@@ -20,10 +20,10 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     
     public void PostInject()
     {
-        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialized);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialized);
     }
 
-    private void OnInitialized(RuntimeInitializationEvent args)
+    private void OnInitialized(ref RuntimeInitializationEvent args)
     {
         _components = ReflectionHelper.GetAllInstantiableSubclassOf(BaseComponentType);
 
@@ -35,7 +35,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         
         _entitiesComponents = entitiesComponents.ToFrozenDictionary();
     }
-
+    
     public T AddComponent<T>(EntityUid entityUid) where T : IComponent
     {
         return (T)AddComponent(entityUid, typeof(T));
@@ -72,7 +72,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         var instance = (IComponent)constructor.Invoke(Array.Empty<object>()) ?? throw new NullReferenceException();
 
         components.Add(entityUid, instance);
-        _eventBus.Invoke(new ComponentAdded(entityUid, instance));
+        _eventBus.Raise(new ComponentAdded(entityUid, instance));
 
         return instance;
     }
@@ -101,6 +101,14 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     
     private bool Validate(Type type)
     {
-        return _components.Contains(type) && type.IsAssignableFrom(BaseComponentType);
+        return _components.Contains(type) && type.IsAssignableTo(BaseComponentType);
+    }
+
+    public IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent
+    {
+        foreach (var (entityUid, component) in _entitiesComponents[typeof(T)])
+        {
+            yield return new Entity<T>(entityUid, (T)component);
+        }
     }
 }

@@ -1,16 +1,39 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.DirRoot;
+using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Manager;
 
-public sealed class ResourceManager : IResourceManager
+public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubscriber
 {
+    [Dependency] private readonly IEventBus _eventBus = default!;
+    
     private readonly Logger _logger = LoggingManager.GetLogger("resources");
-    private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
+
+    private readonly Dictionary<ResourcePath, string> _cachedContent = new();
     private readonly object _rootLock = new();
     
+    private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
+    
+    public void PostInject()
+    {
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
+    }
+
+    private void OnInitialization(ref RuntimeInitializationEvent args)
+    {
+        MountContentFolder(".", "/");
+        MountContentFolder("Resources", "/");
+        MountContentFolder("Resources/Textures", "/");
+        MountContentFolder("Resources/Shaders", "/");
+        
+        _logger.EngineInfo("Mounted resource directories");
+    }
+
     public void AddRoot(ResourcePath prefix, IContentRoot root)
     {
         lock (_rootLock)
@@ -100,11 +123,19 @@ public sealed class ResourceManager : IResourceManager
 
     public string ReadFileContentAllText(ResourcePath path)
     {
-        var stream = ReadFileContent(path);
+        if (_cachedContent.TryGetValue(path, out var result))
+            return result;
+        
+        using var stream = ReadFileContent(path);
         if (stream is null)
             throw new ArgumentException($"File not found: {path.Path}");
 
-        return WrapStream(stream).ReadToEnd();
+        using var warped = WrapStream(stream);
+        
+        var content = warped.ReadToEnd();
+        _cachedContent[path] = content;
+
+        return content;
     }
 
     public Stream? ReadFileContent(ResourcePath path)

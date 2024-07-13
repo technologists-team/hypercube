@@ -6,9 +6,9 @@ using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Shading;
 
-public class Shader : IShader
+public sealed class Shader : IShader
 {
-    public readonly int _handle;
+    private readonly int _handle;
     private readonly Dictionary<string, int> _uniformLocations = new();
 
     public Shader(string path, IResourceManager manager) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
@@ -55,6 +55,11 @@ public class Shader : IShader
     public void Use()
     {
         GL.UseProgram(_handle);
+    }
+
+    public void Stop()
+    {
+        GL.UseProgram(0);
     }
 
     public int GetUniformLocation(string name)

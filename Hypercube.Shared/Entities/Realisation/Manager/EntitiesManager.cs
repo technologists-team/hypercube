@@ -29,9 +29,12 @@ public sealed class EntitiesManager : IEntitiesManager
 
         var metaDataComponent = _entitiesComponentManager.AddComponent<MetaDataComponent>(newEntity);
         var transformComponent = _entitiesComponentManager.AddComponent<TransformComponent>(newEntity);
+
+        transformComponent.SceneId = coordinates.Scene;
+        transformComponent.Transform.SetPosition(coordinates.Position);
         
         _entities.Add(newEntity);
-        _eventBus.Invoke(new EntityAdded(newEntity));
+        _eventBus.Raise(new EntityAdded(newEntity));
         
         return newEntity;
     }
@@ -39,6 +42,6 @@ public sealed class EntitiesManager : IEntitiesManager
     public void Delete(EntityUid entityUid)
     {
         _entities.Remove(entityUid);
-        _eventBus.Invoke(new EntityRemoved(entityUid));
+        _eventBus.Raise(new EntityRemoved(entityUid));
     }
 }

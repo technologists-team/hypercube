@@ -9,6 +9,9 @@ namespace Hypercube.Client.Graphics.Texturing;
 public sealed class TextureManager : ITextureManager
 {
     [Dependency] private readonly IResourceManager _resourceManager = default!;
+
+    private readonly Dictionary<ResourcePath, ITexture> _cachedTextures = new();
+    private readonly Dictionary<ITexture, ITextureHandle> _cachedHandles = new();
     
     public TextureManager()
     {
@@ -17,17 +20,28 @@ public sealed class TextureManager : ITextureManager
     
     public ITexture Create(ResourcePath path)
     {
-        return Create(ImageResult.FromStream(_resourceManager.ReadFileContent(path) ?? throw new FileNotFoundException(), ColorComponents.RedGreenBlueAlpha));
+        if (_cachedTextures.TryGetValue(path, out var value))
+            return value;
+        
+        using var stream = _resourceManager.ReadFileContent(path) ?? throw new FileNotFoundException();
+        var texture = Create(ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha));
+        _cachedTextures[path] = texture;
+        return texture;
     }
 
     public ITexture Create(ResourcePath path, bool doFlip)
     {
+        // TODO: Fix flip possible problems here
+        if (_cachedTextures.TryGetValue(path, out var result))
+            return result;
+        
         if (doFlip)
             StbImage.stbi_set_flip_vertically_on_load(0);
+        
         var texture = Create(path);
         
         StbImage.stbi_set_flip_vertically_on_load(1);
-        return texture;
+        return _cachedTextures[path] = texture;
     }
 
     public ITextureHandle CreateHandler(ITexture texture, ITextureCreationSettings settings)
@@ -35,19 +49,23 @@ public sealed class TextureManager : ITextureManager
         return new TextureHandle(texture, settings);
     }
 
-    public ITextureHandle CreateHandler(ResourcePath texture)
-    {
-        return CreateHandler(Create(texture), new Texture2DCreationSettings());
-    }
-
-    public ITextureHandle CreateHandler(ITexture texture)
-    {
-        return CreateHandler(texture, new Texture2DCreationSettings());
-    }
 
     public ITextureHandle CreateHandler(ResourcePath path, ITextureCreationSettings settings)
     {
         return CreateHandler(Create(path), settings);
+    }
+    
+    public ITextureHandle GetHandler(ITexture texture)
+    {
+        if (_cachedHandles.TryGetValue(texture, out var result))
+            return result;
+            
+        return _cachedHandles[texture] = new TextureHandle(texture);
+    }
+    
+    public ITextureHandle GetHandler(ResourcePath path)
+    {
+        return GetHandler(Create(path));
     }
 
     private ITexture Create(ImageResult image)

@@ -39,11 +39,11 @@ public sealed partial class Renderer
 
     public void CloseWindow(WindowRegistration registration)
     {
-        _eventBus.Invoke(new WindowClosedEvent(registration));
+        _eventBus.Raise(new WindowClosedEvent(registration));
         
         if (registration.Id == _mainWindowId)
         {
-            _eventBus.Invoke(new MainWindowClosedEvent(registration));
+            _eventBus.Raise(new MainWindowClosedEvent(registration));
             return;
         }
         
@@ -84,6 +84,6 @@ public sealed partial class Renderer
 
     public void OnFocusChanged(WindowRegistration window, bool focused)
     {
-        _eventBus.Invoke(new WindowFocusChangedEvent(window, focused));
+        _eventBus.Raise(new WindowFocusChangedEvent(window, focused));
     }
 }

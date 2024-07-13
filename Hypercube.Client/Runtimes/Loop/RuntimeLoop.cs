@@ -20,10 +20,10 @@ public sealed class RuntimeLoop : IRuntimeLoop
             _timing.StartFrame();
 
             var deltaTime = (float)_timing.RealFrameTime.TotalSeconds;
-            _eventBus.Invoke(new InputFrameEvent(deltaTime));
-            _eventBus.Invoke(new TickFrameEvent(deltaTime));
-            _eventBus.Invoke(new UpdateFrameEvent(deltaTime));
-            _eventBus.Invoke(new RenderFrameEvent(deltaTime));
+            _eventBus.Raise(new InputFrameEvent(deltaTime));
+            _eventBus.Raise(new TickFrameEvent(deltaTime));
+            _eventBus.Raise(new UpdateFrameEvent(deltaTime));
+            _eventBus.Raise(new RenderFrameEvent(deltaTime));
         }
     }
 

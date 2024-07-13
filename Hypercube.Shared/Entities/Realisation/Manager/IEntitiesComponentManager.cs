@@ -7,4 +7,5 @@ public interface IEntitiesComponentManager
     T AddComponent<T>(EntityUid entityUid) where T : IComponent;
     T GetComponent<T>(EntityUid entityUid) where T : IComponent;
     bool HasComponent<T>(EntityUid entityUid) where T : IComponent;
+    IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent;
 }

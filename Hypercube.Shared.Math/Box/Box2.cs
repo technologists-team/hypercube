@@ -6,6 +6,8 @@ namespace Hypercube.Shared.Math.Box;
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public readonly struct Box2
 {
+    public static readonly Box2 UV = new(0.0f, 1.0f, 1.0f, 0.0f);
+    
     public float Left => Point0.X;
     public float Top => Point0.Y;
     public float Right => Point1.X;

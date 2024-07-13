@@ -32,7 +32,7 @@ public static class ReflectionHelper
         {
             foreach (var type in assembly.GetTypes())
             {
-                if (!type.IsSubclassOf(parent) || type.IsAbstract || type.IsInterface)
+                if (!type.IsAssignableTo(parent) || type.IsAbstract || type.IsInterface)
                     continue;
 
                 types.Add(type);
