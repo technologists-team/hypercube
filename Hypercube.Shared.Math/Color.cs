@@ -81,4 +81,68 @@ public readonly struct Color
         
         A = int.Parse(hex.Substring(6, 4), NumberStyles.HexNumber);
     }
+
+    public static Color FromHSV(float hue, float saturation, float value, float alpha = 1f)
+    {
+        return FromHSV(new Vector4(hue, saturation, value, alpha));
+    }
+    
+    public static Color FromHSV(Vector4 hsv)
+    {
+        var hue = (hsv.X - MathF.Truncate(hsv.X)) * 360.0f;
+        var saturation = hsv.Y;
+        var value = hsv.Z;
+
+        var c = value * saturation;
+
+        var h = hue / 60.0f;
+        var x = c * (1.0f - MathF.Abs(h % 2.0f - 1.0f));
+
+        float r, g, b;
+        if (0.0f <= h && h < 1.0f)
+        {
+            r = c;
+            g = x;
+            b = 0.0f;
+        }
+        else if (1.0f <= h && h < 2.0f)
+        {
+            r = x;
+            g = c;
+            b = 0.0f;
+        }
+        else if (2.0f <= h && h < 3.0f)
+        {
+            r = 0.0f;
+            g = c;
+            b = x;
+        }
+        else if (3.0f <= h && h < 4.0f)
+        {
+            r = 0.0f;
+            g = x;
+            b = c;
+        }
+        else if (4.0f <= h && h < 5.0f)
+        {
+            r = x;
+            g = 0.0f;
+            b = c;
+        }
+        else if (5.0f <= h && h < 6.0f)
+        {
+            r = c;
+            g = 0.0f;
+            b = x;
+        }
+        else
+        {
+            r = 0.0f;
+            g = 0.0f;
+            b = 0.0f;
+        }
+
+        var m = value - c;
+        return new Color(r + m, g + m, b + m, hsv.W);
+    }
 }

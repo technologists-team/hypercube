@@ -13,6 +13,6 @@ public interface ITextureManager
     /// <returns>ITexture</returns>
     ITexture Create(ResourcePath path, bool doFlip);
     
-    ITextureHandle CreateHandler(ResourcePath path);
-    ITextureHandle CreateHandler(ITexture texture);
+    ITextureHandle GetHandler(ResourcePath path);
+    ITextureHandle GetHandler(ITexture texture);
 }

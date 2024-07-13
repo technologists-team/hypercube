@@ -5,6 +5,7 @@ namespace Hypercube.Client.Graphics.Shading;
 public interface IShader
 {
     void Use();
+    void Stop();
     int GetUniformLocation(string name);
     void SetUniform(string name, int value);
     void SetUniform(string name, Matrix4X4 value, bool transpose = false);

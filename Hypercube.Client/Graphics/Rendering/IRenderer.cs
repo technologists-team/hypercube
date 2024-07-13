@@ -3,6 +3,7 @@ using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
+using Hypercube.Shared.Math.Matrix;
 
 namespace Hypercube.Client.Graphics.Rendering;
 
@@ -24,4 +25,5 @@ public interface IRenderer
     
     // Drawing
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color);
+    void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model);
 }

@@ -4,7 +4,6 @@ using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.EventBus;
-using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
@@ -36,7 +35,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         
         _entitiesComponents = entitiesComponents.ToFrozenDictionary();
     }
-
+    
     public T AddComponent<T>(EntityUid entityUid) where T : IComponent
     {
         return (T)AddComponent(entityUid, typeof(T));
@@ -102,6 +101,14 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     
     private bool Validate(Type type)
     {
-        return _components.Contains(type) && type.IsAssignableFrom(BaseComponentType);
+        return _components.Contains(type) && type.IsAssignableTo(BaseComponentType);
+    }
+
+    public IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent
+    {
+        foreach (var (entityUid, component) in _entitiesComponents[typeof(T)])
+        {
+            yield return new Entity<T>(entityUid, (T)component);
+        }
     }
 }

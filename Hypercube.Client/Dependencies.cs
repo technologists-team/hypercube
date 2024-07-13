@@ -1,4 +1,4 @@
-﻿using Hypercube.Client.Graphics;
+﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
@@ -43,6 +43,7 @@ public static class Dependencies
         rootContainer.Register<ICameraManager, CameraManager>();
         
         // Rendering
+        rootContainer.Register<IRenderDrawing, RenderDrawing>();
         rootContainer.Register<IRenderer, Renderer>();
         
         // ECS

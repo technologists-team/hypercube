@@ -5,8 +5,5 @@ namespace Hypercube.Shared.Entities.Systems.Transform;
 
 public class TransformSystem : EntitySystem
 {
-    public Vector2 GetWorldPosition(TransformComponent transform)
-    {
-        return transform.LocalPosition;
-    }
+
 }

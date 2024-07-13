@@ -43,3 +43,11 @@ public readonly struct Entity<T>(EntityUid owner, T component) where T : ICompon
         return Owner.GetHashCode();
     }
 }
+
+public readonly struct Entity<T1, T2>(EntityUid owner, T1 component1, T2 component2)
+    where T1 : IComponent? where T2 : IComponent?
+{
+    public readonly EntityUid Owner = owner;
+    public readonly T1 Component1 = component1;
+    public readonly T2 Component2 = component2;
+}

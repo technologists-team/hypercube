@@ -13,8 +13,11 @@ public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubsc
     [Dependency] private readonly IEventBus _eventBus = default!;
     
     private readonly Logger _logger = LoggingManager.GetLogger("resources");
-    private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
+
+    private readonly Dictionary<ResourcePath, string> _cachedContent = new();
     private readonly object _rootLock = new();
+    
+    private (ResourcePath prefix, IContentRoot root)[] _roots = Array.Empty<(ResourcePath, IContentRoot)>();
     
     public void PostInject()
     {
@@ -120,11 +123,19 @@ public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubsc
 
     public string ReadFileContentAllText(ResourcePath path)
     {
-        var stream = ReadFileContent(path);
+        if (_cachedContent.TryGetValue(path, out var result))
+            return result;
+        
+        using var stream = ReadFileContent(path);
         if (stream is null)
             throw new ArgumentException($"File not found: {path.Path}");
 
-        return WrapStream(stream).ReadToEnd();
+        using var warped = WrapStream(stream);
+        
+        var content = warped.ReadToEnd();
+        _cachedContent[path] = content;
+
+        return content;
     }
 
     public Stream? ReadFileContent(ResourcePath path)
