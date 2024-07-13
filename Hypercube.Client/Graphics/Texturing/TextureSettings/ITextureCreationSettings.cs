@@ -1,7 +1,4 @@
-﻿using PixelInternalFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelInternalFormat;
-using PixelFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelFormat;
-using PixelType = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelType;
-using TextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters;
 
 namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 
