@@ -8,7 +8,7 @@ using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Manager;
 
-public sealed class ResourceManager : IResourceManager, IPostInject
+public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubscriber
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     
@@ -18,10 +18,10 @@ public sealed class ResourceManager : IResourceManager, IPostInject
     
     public void PostInject()
     {
-        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialization);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
     }
 
-    private void OnInitialization(RuntimeInitializationEvent args)
+    private void OnInitialization(ref RuntimeInitializationEvent args)
     {
         MountContentFolder(".", "/");
         MountContentFolder("Resources", "/");
