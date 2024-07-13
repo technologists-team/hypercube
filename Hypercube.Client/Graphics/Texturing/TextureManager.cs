@@ -60,7 +60,7 @@ public sealed class TextureManager : ITextureManager
         if (_cachedHandles.TryGetValue(texture, out var result))
             return result;
             
-        return _cachedHandles[texture] = new TextureHandle(texture);
+        return _cachedHandles[texture] = new TextureHandle(texture, new Texture2DCreationSettings());
     }
     
     public ITextureHandle GetHandler(ResourcePath path)
