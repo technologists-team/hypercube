@@ -94,4 +94,12 @@ public sealed unsafe partial class GlfwWindowManager
         
         _renderer.OnFocusChanged(registration, focused);
     }
+    private void OnWindowFocused(Window* window, bool focused)
+    {
+        if (!TryGetWindow(window, out var registration))
+            return;
+        
+        _renderer.OnFocusChanged(registration, focused);
+    }
+    
 }

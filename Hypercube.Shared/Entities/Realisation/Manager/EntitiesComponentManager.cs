@@ -4,12 +4,13 @@ using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostInject
+public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostInject, IEventSubscriber
 {
     private static readonly Type BaseComponentType = typeof(IComponent);
     
@@ -20,10 +21,10 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     
     public void PostInject()
     {
-        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialized);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialized);
     }
 
-    private void OnInitialized(RuntimeInitializationEvent args)
+    private void OnInitialized(ref RuntimeInitializationEvent args)
     {
         _components = ReflectionHelper.GetAllInstantiableSubclassOf(BaseComponentType);
 
@@ -72,7 +73,7 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         var instance = (IComponent)constructor.Invoke(Array.Empty<object>()) ?? throw new NullReferenceException();
 
         components.Add(entityUid, instance);
-        _eventBus.Invoke(new ComponentAdded(entityUid, instance));
+        _eventBus.Raise(new ComponentAdded(entityUid, instance));
 
         return instance;
     }

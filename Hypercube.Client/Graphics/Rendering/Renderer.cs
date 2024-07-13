@@ -6,6 +6,7 @@ using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;
@@ -17,7 +18,7 @@ using OpenToolkit;
 
 namespace Hypercube.Client.Graphics.Rendering;
 
-public sealed partial class Renderer : IRenderer, IPostInject
+public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly ITextureManager _textureManager = default!;
@@ -68,19 +69,19 @@ public sealed partial class Renderer : IRenderer, IPostInject
     
     public void PostInject()
     {
-        _eventBus.Subscribe<RuntimeInitializationEvent>(OnInitialization);
-        _eventBus.Subscribe<RuntimeStartupEvent>(OnStartup);
-        _eventBus.Subscribe<UpdateFrameEvent>(OnFrameUpdate);
-        _eventBus.Subscribe<RenderFrameEvent>(OnFrameRender);
+        _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
+        _eventBus.Subscribe<RuntimeStartupEvent>(this, OnStartup);
+        _eventBus.Subscribe<UpdateFrameEvent>(this, OnFrameUpdate);
+        _eventBus.Subscribe<RenderFrameEvent>(this, OnFrameRender);
     }
 
-    private void OnInitialization(RuntimeInitializationEvent args)
+    private void OnInitialization(ref RuntimeInitializationEvent args)
     {
         _windowManager = CreateWindowManager();
         _bindingsContext = new BindingsContext(_windowManager);
     }
 
-    private void OnStartup(RuntimeStartupEvent args)
+    private void OnStartup(ref RuntimeStartupEvent args)
     {
         _currentThread = Thread.CurrentThread;
         _logger.EngineInfo($"Working thread {_currentThread.Name}");

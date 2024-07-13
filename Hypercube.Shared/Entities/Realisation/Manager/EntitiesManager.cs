@@ -31,7 +31,7 @@ public sealed class EntitiesManager : IEntitiesManager
         var transformComponent = _entitiesComponentManager.AddComponent<TransformComponent>(newEntity);
         
         _entities.Add(newEntity);
-        _eventBus.Invoke(new EntityAdded(newEntity));
+        _eventBus.Raise(new EntityAdded(newEntity));
         
         return newEntity;
     }
@@ -39,6 +39,6 @@ public sealed class EntitiesManager : IEntitiesManager
     public void Delete(EntityUid entityUid)
     {
         _entities.Remove(entityUid);
-        _eventBus.Invoke(new EntityRemoved(entityUid));
+        _eventBus.Raise(new EntityRemoved(entityUid));
     }
 }
