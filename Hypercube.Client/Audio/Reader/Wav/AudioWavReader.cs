@@ -62,7 +62,7 @@ public sealed class AudioWavReader : IDisposable
         while (true)
         {
             ReadFullChunk(chunk, out length);
-            if (chunk.SequenceEqual(chunk))
+            if (chunk.SequenceEqual(target))
                 break;
 
             _stream.Position += length;
