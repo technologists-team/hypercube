@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
+﻿namespace Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters;
 
 public enum TextureParameterName
 {

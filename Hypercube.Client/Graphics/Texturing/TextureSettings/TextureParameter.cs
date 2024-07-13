@@ -1,13 +1,9 @@
-﻿namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters;
 
-public class TextureParameter
+namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
+
+public readonly struct TextureParameter(TextureParameterName name, int value)
 {
-    public TextureParameterName ParameterName { get; }
-    public int ParameterValue { get; }
-
-    public TextureParameter(TextureParameterName name, int value)
-    {
-        ParameterName = name;
-        ParameterValue = value;
-    }
+    public TextureParameterName ParameterName { get; } = name;
+    public int ParameterValue { get; } = value;
 }

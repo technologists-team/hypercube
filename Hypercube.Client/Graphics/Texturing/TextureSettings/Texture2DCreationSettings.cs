@@ -1,4 +1,9 @@
 ﻿using OpenToolkit.Graphics.OpenGL4;
+using PixelFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelFormat;
+using PixelInternalFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelInternalFormat;
+using PixelType = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelType;
+using TextureParameterName = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureParameterName;
+using TextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
 
 namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 

@@ -13,15 +13,24 @@ public class TextureHandle : ITextureHandle
     {
         Handle = GL.GenTexture();
         Texture = texture;
+        var target = settings.TextureTarget.ToOpenToolkit();
         
-        GL.BindTexture(settings.TextureTarget, Handle);
-
+        GL.BindTexture(target, Handle);
+        
         foreach (var param in settings.Parameters)
         {
-            GL.TexParameter(settings.TextureTarget, param.ParameterName.ToOpenToolkit(), param.ParameterValue);
+            GL.TexParameter(target, param.ParameterName.ToOpenToolkit(), param.ParameterValue);
         }
         
-        GL.TexImage2D(settings.TextureTarget, settings.Level, settings.PixelInternalFormat, texture.Width, texture.Height, settings.Border, settings.PixelFormat, settings.PixelType, texture.Data);
+        GL.TexImage2D(
+            settings.TextureTarget.ToOpenToolkit(), 
+            settings.Level, 
+            settings.PixelInternalFormat.ToOpenToolkit(), 
+            texture.Width, texture.Height, 
+            settings.Border, 
+            settings.PixelFormat.ToOpenToolkit(), 
+            settings.PixelType.ToOpenToolkit(), 
+            texture.Data);
         
         // there should more elegant way
         GL.GenerateMipmap((GenerateMipmapTarget)(int)settings.TextureTarget);
