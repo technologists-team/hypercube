@@ -19,8 +19,12 @@ public sealed class TextureManager : ITextureManager
     
     public ITexture Create(ResourcePath path)
     {
+        if (_cachedTextures.TryGetValue(path, out var value))
+            return value;
+        
         using var stream = _resourceManager.ReadFileContent(path) ?? throw new FileNotFoundException();
         var texture = Create(ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha));
+        _cachedTextures[path] = texture;
         return texture;
     }
 

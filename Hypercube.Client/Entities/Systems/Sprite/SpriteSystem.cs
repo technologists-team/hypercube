@@ -34,7 +34,6 @@ public sealed class SpriteSystem : EntitySystem
 
     public void Render(Entity<SpriteComponent> entity, Transform2 transform)
     {
-        var handle = _textureManager.GetHandler(entity.Component.TexturePath);
-        _drawing.DrawTexture(handle, Vector2.Zero, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
+        _drawing.DrawTexture(entity.Component.TextureHandle ??= _textureManager.GetHandler(entity.Component.TexturePath), Vector2.Zero, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }
 }
