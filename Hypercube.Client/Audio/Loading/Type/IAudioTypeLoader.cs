@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Audio.Loading;
+﻿namespace Hypercube.Client.Audio.Loading.Type;
 
 public interface IAudioTypeLoader
 {
