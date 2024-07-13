@@ -9,4 +9,9 @@ public static class TextureHelper
     {
         return (TextureParameterName)textureParameterName;
     }
+
+    public static Graphics.Texturing.TextureSettings.TextureParameterName ToHypercube(this TextureParameterName textureParameterName)
+    {
+        return (Graphics.Texturing.TextureSettings.TextureParameterName)textureParameterName;
+    }
 }
