@@ -1,18 +1,20 @@
 ﻿using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Texturing.TextureSettings;
+using Hypercube.Client.Resources.Caching;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Math.Vector;
+using Hypercube.Shared.Resources.Caching;
 
 namespace Hypercube.Client.Graphics.Drawing;
 
 public sealed class RenderDrawing : IRenderDrawing
 {
-    [Dependency] private readonly ITextureManager _textureManager = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
+    [Dependency] private readonly ICacheManager _cacheManager = default!;
     
     public void DrawTexture(ITexture texture, Vector2 position)
     {
@@ -36,7 +38,8 @@ public sealed class RenderDrawing : IRenderDrawing
 
     public void DrawTexture(ITexture texture, Box2 quad, Box2 uv, Color color)
     {
-        _renderer.DrawTexture(_textureManager.GetTextureHandle(texture, new Texture2DCreationSettings()), quad, uv, color);
+        var handle = _cacheManager.GetResource<TextureResource>(texture.Path).Texture;
+        _renderer.DrawTexture(handle, quad, uv, color);
     }
     
     public void DrawTexture(ITextureHandle texture, Vector2 position, Color color, Matrix4X4 model)

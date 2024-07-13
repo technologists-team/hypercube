@@ -2,6 +2,7 @@
 using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
+using Hypercube.Client.Resources.Caching;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
@@ -33,7 +34,7 @@ public sealed partial class Renderer
     private void OnLoad()
     {
         _baseShader = new Shader("/base", _resourceManager);
-        _baseTexture = _textureManager.GetTextureHandle("/icon.png");
+        _baseTexture = _cacheManager.GetResource<TextureResource>("/icon.png").Texture;
         _baseTexture.Bind(HTexTarget.Texture2D);
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));

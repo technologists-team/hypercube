@@ -4,12 +4,14 @@ using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Client.Input.Manager;
+using Hypercube.Client.Resources.Caching;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Timing;
 
@@ -38,6 +40,10 @@ public static class Dependencies
         
         // Texturing
         rootContainer.Register<ITextureManager, TextureManager>();
+        
+        // Caching
+        rootContainer.Register<ICacheManager, CacheManager>();
+        rootContainer.Register<ICacheManagerInternal, CacheManager>();
         
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
