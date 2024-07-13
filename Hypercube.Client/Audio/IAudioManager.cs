@@ -4,10 +4,11 @@ namespace Hypercube.Client.Audio;
 
 public interface IAudioManager
 {
-    IAudio CreateAudio(ResourcePath path, IAudioSettings settings);
-    IAudio CreateAudio(Stream stream, IAudioSettings settings);
-    
-    IAudio GetAudio(ResourcePath path, IAudioSettings settings);
+    IAudioSource CreateSource(ResourcePath path, AudioSettings settings);
+    IAudioSource CreateSource(AudioStream stream);
+    AudioStream GetAudio(ResourcePath path, AudioSettings settings);
+
+    void Initialize();
     
     /// <summary>
     /// Pause all audio sources.

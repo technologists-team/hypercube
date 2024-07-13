@@ -10,26 +10,28 @@
 public readonly struct AudioWavData : IAudioData
 {
     public AudioFormat Format { get; }
+    public ReadOnlyMemory<byte> Data { get; }
+    public int SampleRate { get; }
+    public TimeSpan Length { get; }
     
     public readonly short FormatType;
     public readonly short Channels;
-    public readonly int SampleRate;
     public readonly int ByteRate;
     public readonly short BlockAlign;
     public readonly short BitsPerSample;
-    public readonly byte[] Data;
     
-    public AudioWavData(short formatType, short channels, int sampleRate, int byteRate, short blockAlign, short bitsPerSample, byte[] data)
+    public AudioWavData(short formatType, short channels, int sampleRate, int byteRate, short blockAlign, short bitsPerSample, ReadOnlyMemory<byte> data)
     {
-        Format = GetFormat(channels, byteRate);
+        Format = GetFormat(channels, bitsPerSample);
+        Data = data;
+        SampleRate = sampleRate;
+        Length = TimeSpan.FromSeconds(data.Length / (double) blockAlign / sampleRate);
         
         FormatType = formatType;
         Channels = channels;
-        SampleRate = sampleRate;
         ByteRate = byteRate;
         BlockAlign = blockAlign;
         BitsPerSample = bitsPerSample;
-        Data = data;
     }
 
     public override string ToString()

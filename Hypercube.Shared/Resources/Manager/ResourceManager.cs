@@ -28,6 +28,7 @@ public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubsc
     {
         MountContentFolder(".", "/");
         MountContentFolder("Resources", "/");
+        MountContentFolder("Resources/Audio", "/");
         MountContentFolder("Resources/Textures", "/");
         MountContentFolder("Resources/Shaders", "/");
         
