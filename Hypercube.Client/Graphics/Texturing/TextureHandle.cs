@@ -32,7 +32,6 @@ public class TextureHandle : ITextureHandle
             settings.PixelType.ToOpenToolkit(), 
             texture.Data);
         
-        // there should more elegant way
         GL.GenerateMipmap((GenerateMipmapTarget)settings.TextureTarget);
     }
     
