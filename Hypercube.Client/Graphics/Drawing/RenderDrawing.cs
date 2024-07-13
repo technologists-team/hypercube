@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Math;
 using Hypercube.Shared.Math.Box;

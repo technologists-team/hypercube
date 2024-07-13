@@ -1,4 +1,5 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
+using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 using StbImageSharp;
@@ -43,12 +44,23 @@ public sealed class TextureManager : ITextureManager
         return _cachedTextures[path] = texture;
     }
 
+    public ITextureHandle CreateHandler(ITexture texture, ITextureCreationSettings settings)
+    {
+        return new TextureHandle(texture, settings);
+    }
+
+
+    public ITextureHandle CreateHandler(ResourcePath path, ITextureCreationSettings settings)
+    {
+        return CreateHandler(Create(path), settings);
+    }
+    
     public ITextureHandle GetHandler(ITexture texture)
     {
         if (_cachedHandles.TryGetValue(texture, out var result))
             return result;
             
-        return _cachedHandles[texture] = new TextureHandle(texture);
+        return _cachedHandles[texture] = new TextureHandle(texture, new Texture2DCreationSettings());
     }
     
     public ITextureHandle GetHandler(ResourcePath path)

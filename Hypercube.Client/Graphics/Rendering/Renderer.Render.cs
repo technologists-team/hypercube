@@ -1,6 +1,10 @@
 ﻿using Hypercube.Client.Graphics.Event;
 using Hypercube.Client.Graphics.Shading;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.TextureSettings;
+using Hypercube.Client.Graphics.Viewports;
+using Hypercube.Shared.Math;
+using Hypercube.Shared.Math.Box;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Shared.Math.Matrix;
 using Hypercube.Shared.Runtimes.Loop.Event;
