@@ -20,7 +20,6 @@ public sealed partial class Renderer
     private const int MaxBatchIndices = MaxBatchVertices * IndicesPerVertex;
     
     private readonly Vertex[] _batchVertices = new Vertex[MaxBatchVertices];
-    private readonly float[] _batchVerticesRaw = new float[MaxBatchVertices * Vertex.Size];
     private readonly uint[] _batchIndices = new uint[MaxBatchIndices];
     
     private uint _batchVertexIndex;
@@ -104,7 +103,7 @@ public sealed partial class Renderer
         _windowManager.WindowSwapBuffers(MainWindow);
     }
 
-    private void RenderEntities(ICamera camera)
+    public void Render()
     {
         
     }
@@ -112,24 +111,8 @@ public sealed partial class Renderer
     private void BatchUpdate()
     {
         _vao.Bind();
-        
-        BatchConvert();
-        
-        _vbo.SetData(_batchVerticesRaw);
+        _vbo.SetData(_batchVertices);
         _ebo.SetData(_batchIndices);
-    }
-    
-    private void BatchConvert()
-    {
-        var indexRaw = 0;
-        for (var i = 0; i < _batchVertexIndex; i++)
-        {
-            var vertex = _batchVertices[i];
-            foreach (var vertexValue in vertex.ToVertices())
-            {
-                _batchVerticesRaw[indexRaw++] = vertexValue;
-            }
-        }
     }
     
     private void BatchClear()
@@ -138,7 +121,6 @@ public sealed partial class Renderer
         _batchIndexIndex = 0;
         
         Array.Clear(_batchVertices, 0, _batchVertices.Length);
-        Array.Clear(_batchVerticesRaw, 0, _batchVerticesRaw.Length);
         Array.Clear(_batchIndices, 0, _batchIndices.Length);
     }
 }

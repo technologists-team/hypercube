@@ -5,7 +5,7 @@ using Hypercube.Shared.Math.Extensions;
 namespace Hypercube.Shared.Math.Vector;
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector3(float x, float y, float z) : IEquatable<Vector3>
+public readonly partial struct Vector3 : IEquatable<Vector3>
 {
     public static readonly Vector3 Zero = new(0, 0, 0);
     public static readonly Vector3 One = new(1, 1, 1);
@@ -14,9 +14,9 @@ public readonly partial struct Vector3(float x, float y, float z) : IEquatable<V
     public static readonly Vector3 UnitY = new(0, 1, 0);
     public static readonly Vector3 UnitZ = new(0, 0, 1);
     
-    public readonly float X = x;
-    public readonly float Y = y;
-    public readonly float Z = z;
+    public readonly float X;
+    public readonly float Y;
+    public readonly float Z;
 
     public float LengthSquared
     {
@@ -36,6 +36,13 @@ public readonly partial struct Vector3(float x, float y, float z) : IEquatable<V
         get => this / Length;
     }
 
+    public Vector3(float x, float y, float z)
+    {
+        X = x;
+        Y = y;
+        Z = z;
+    }
+    
     public Vector3(float value) : this(value, value, value)
     {
     }
@@ -105,7 +112,7 @@ public readonly partial struct Vector3(float x, float y, float z) : IEquatable<V
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        return $"{x}, {y}, {z}";
+        return $"{X}, {Y}, {Z}";
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
