@@ -36,8 +36,8 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         {
             new TextureParameter(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat),
             new TextureParameter(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat),
-            new TextureParameter(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear),
-            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear),
+            new TextureParameter(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest),
+            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest),
         };
         PixelInternalFormat = PixelInternalFormat.Rgba;
         Level = 0;
