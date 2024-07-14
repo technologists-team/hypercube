@@ -9,7 +9,7 @@ public class ResourceMetaData
 
     public ResourceMetaData(string toml)
     {
-        Table = Toml.ToModel(toml);;
+        Table = Toml.ToModel(toml);
     }
 }
 

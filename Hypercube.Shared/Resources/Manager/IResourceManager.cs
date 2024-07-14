@@ -11,4 +11,6 @@ public interface IResourceManager
     bool TryReadFileContent(ResourcePath path, [NotNullWhen(true)] out Stream? fileStream);
     IEnumerable<ResourcePath> FindContentFiles(ResourcePath? path);
     string ReadFileContentAllText(ResourcePath path);
+
+    Stream? CreateFile(ResourcePath path);
 }

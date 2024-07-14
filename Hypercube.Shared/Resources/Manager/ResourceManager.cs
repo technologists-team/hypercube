@@ -139,6 +139,22 @@ public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubsc
         return content;
     }
 
+    public Stream? CreateFile(ResourcePath path)
+    {
+        foreach (var (prefix, root) in _roots)
+        {
+            if (!path.TryRelativeTo(prefix, out var relative))
+                continue;
+
+            var stream = root.CreateFile(relative.Value);
+            if (stream == null)
+                continue;
+            return stream;
+        }
+
+        return null;
+    }
+
     public Stream? ReadFileContent(ResourcePath path)
     {
         if (!TryReadFileContent(path, out var stream))
