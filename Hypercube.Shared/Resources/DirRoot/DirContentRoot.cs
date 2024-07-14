@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Utilities.Helpers;
+using Exception = System.Exception;
 
 namespace Hypercube.Shared.Resources.DirRoot;
 
@@ -34,6 +35,21 @@ public class DirContentRoot : IContentRoot
             stream = null;
         }
         return false;
+    }
+
+    public Stream? CreateFile(ResourcePath path)
+    {
+        try
+        {
+            var stream = File.Open(GetPath(path), FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            return stream;
+        }
+        catch (Exception)
+        {
+            
+        }
+
+        return null;
     }
     
     private bool FileExists(ResourcePath relPath)

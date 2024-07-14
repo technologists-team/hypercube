@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.Resource;
 using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Shared.Dependency;

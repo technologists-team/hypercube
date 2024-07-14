@@ -18,7 +18,7 @@ public sealed class TextureHandle : ITextureHandle
         
         foreach (var param in settings.Parameters)
         {
-            GL.TexParameter(target, param.Name.ToOpenToolkit(), param.Value);
+            GL.TexParameter(target, param.Key.ToOpenToolkit(), param.Value);
         }
         
         GL.TexImage2D(

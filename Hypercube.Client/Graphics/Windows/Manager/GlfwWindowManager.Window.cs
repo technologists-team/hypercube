@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
 using Hypercube.Shared.Resources;
@@ -193,7 +194,10 @@ public sealed unsafe partial class GlfwWindowManager
          
          foreach (var file in files)
          {
-             yield return textureMan.GetTexture(file);
+             if (file.Extension == ".meta")
+                 continue;
+             
+             yield return textureMan.GetTexture(file, new Texture2DCreationSettings());
          }
      }
 

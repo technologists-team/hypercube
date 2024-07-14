@@ -5,12 +5,11 @@ namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 public interface ITextureCreationSettings
 {
     TextureTarget TextureTarget { get; }
-    HashSet<TextureParameter> Parameters { get; }
+    Dictionary<TextureParameterName, int> Parameters { get; }
     PixelInternalFormat PixelInternalFormat { get; }
     int Level { get; }
     int Border { get; }
     PixelFormat PixelFormat { get; }
     PixelType PixelType { get; }
-    
-    bool Flip { get; }
+    bool Flipped { get; }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Hypercube.Client.Audio.Event;
+using Hypercube.Client.Audio.Resource;
 using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Graphics.Texturing.Resource;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
 

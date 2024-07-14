@@ -11,7 +11,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
 {
     public Texture2DCreationSettings(
         TextureTarget textureTarget, 
-        HashSet<TextureParameter> parameters, 
+        Dictionary<TextureParameterName, int> parameters, 
         PixelInternalFormat pixelInternalFormat, 
         int level, 
         int border, 
@@ -26,7 +26,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         Border = border;
         PixelFormat = pixelFormat;
         PixelType = pixelType;
-        Flip = flip;
+        Flipped = flip;
     }
 
     public Texture2DCreationSettings()
@@ -34,25 +34,25 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         TextureTarget = TextureTarget.Texture2D;
         Parameters = new()
         {
-            new TextureParameter(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat),
-            new TextureParameter(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat),
-            new TextureParameter(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest),
-            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest),
+            { TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat },
+            { TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat },
+            { TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest },
+            { TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest },
         };
         PixelInternalFormat = PixelInternalFormat.Rgba;
         Level = 0;
         Border = 0;
         PixelFormat = PixelFormat.Rgba;
         PixelType = PixelType.UnsignedByte;
-        Flip = true;
+        Flipped = true;
     }
     public TextureTarget TextureTarget { get; }
-    public HashSet<TextureParameter> Parameters { get; }
+    public Dictionary<TextureParameterName, int> Parameters { get; }
     public PixelInternalFormat PixelInternalFormat { get; }
     public int Level { get; }
     public int Border { get; }
     public PixelFormat PixelFormat { get; }
     public PixelType PixelType { get; }
     
-    public bool Flip { get; }
+    public bool Flipped { get; init; }
 }
