@@ -141,4 +141,8 @@ public sealed class Shader : IShader
     }
     
     //private readonly record struct AttributeInfo
+    public void Dispose()
+    {
+        GL.DeleteProgram(_handle);
+    }
 }

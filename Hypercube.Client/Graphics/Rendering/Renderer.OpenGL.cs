@@ -27,7 +27,7 @@ public sealed partial class Renderer
         GLFW.SwapInterval(SwapInterval);
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
        
-        GL.DebugMessageCallback(DebugMessageCallback, IntPtr.Zero);
+        //GL.DebugMessageCallback(DebugMessageCallback, IntPtr.Zero);
         
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);

@@ -2,7 +2,7 @@
 
 namespace Hypercube.Client.Graphics.Shading;
 
-public interface IShader
+public interface IShader : IDisposable
 {
     void Use();
     void Stop();

@@ -2,7 +2,7 @@
 
 namespace Hypercube.Shared.Resources.Caching.Resource;
 
-public abstract class BaseResource : IDisposable
+public abstract class BaseResource
 {
     public abstract void Load(ResourcePath path, DependenciesContainer container);
 
@@ -12,8 +12,4 @@ public abstract class BaseResource : IDisposable
     }
     
     public ResourcePath? FallbackPath { get; }
-
-    public virtual void Dispose()
-    {
-    }
 }
