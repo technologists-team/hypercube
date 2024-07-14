@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math.Box;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Boxs;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Hypercube.Math;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Client.Graphics.Drawing;
 

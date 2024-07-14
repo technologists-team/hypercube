@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Audio;
 using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;

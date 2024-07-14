@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Math.Vector;
 using Hypercube.Math.Extensions;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Math;
 

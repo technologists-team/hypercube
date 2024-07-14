@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Hypercube.Math.Transform;
+namespace Hypercube.Math.Transforms;
 
 public partial struct Transform3
 {

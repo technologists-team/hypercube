@@ -3,9 +3,9 @@ using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Shared.Dependency;
 using Hypercube.Math;
-using Hypercube.Math.Box;
-using Hypercube.Math.Matrix;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Boxs;
+using Hypercube.Math.Matrixs;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources.Caching;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Drawing;

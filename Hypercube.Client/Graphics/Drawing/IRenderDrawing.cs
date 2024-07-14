@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Math;
-using Hypercube.Math.Box;
-using Hypercube.Math.Matrix;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Boxs;
+using Hypercube.Math.Matrixs;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Client.Graphics.Drawing;
 

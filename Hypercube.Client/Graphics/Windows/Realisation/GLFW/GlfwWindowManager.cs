@@ -1,9 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Input.Handler;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
-using Hypercube.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 

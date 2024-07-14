@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Realisation.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math.Vector;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 

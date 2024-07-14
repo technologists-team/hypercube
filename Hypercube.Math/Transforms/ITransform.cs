@@ -1,6 +1,6 @@
-﻿using Hypercube.Math.Matrix;
+﻿using Hypercube.Math.Matrixs;
 
-namespace Hypercube.Math.Transform;
+namespace Hypercube.Math.Transforms;
 
 public interface ITransform
 {

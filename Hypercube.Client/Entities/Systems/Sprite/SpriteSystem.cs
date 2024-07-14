@@ -1,12 +1,12 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Math.Transforms;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
-using Hypercube.Math.Transform;
-using Hypercube.Math.Vector;
 using Hypercube.Shared.Resources.Caching;
 
 namespace Hypercube.Client.Entities.Systems.Sprite;

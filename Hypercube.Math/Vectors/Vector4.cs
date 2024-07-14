@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Hypercube.Math.Extensions;
 
-namespace Hypercube.Math.Vector;
+namespace Hypercube.Math.Vectors;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector4 : IEquatable<Vector4>

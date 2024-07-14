@@ -2,8 +2,8 @@
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Math;
-using Hypercube.Math.Box;
-using Hypercube.Math.Matrix;
+using Hypercube.Math.Boxs;
+using Hypercube.Math.Matrixs;
 
 namespace Hypercube.Client.Graphics.Rendering;
 

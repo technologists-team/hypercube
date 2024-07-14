@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Input;
 using Hypercube.Client.Input.Handler;
+using Hypercube.Math.Matrixs;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
-using Hypercube.Math.Matrix;
-using Hypercube.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Viewports;
 
