@@ -11,7 +11,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
 {
     public Texture2DCreationSettings(
         TextureTarget textureTarget, 
-        HashSet<TextureParameter> parameters, 
+        Dictionary<TextureParameterName, int> parameters, 
         PixelInternalFormat pixelInternalFormat, 
         int level, 
         int border, 
@@ -34,10 +34,10 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         TextureTarget = TextureTarget.Texture2D;
         Parameters = new()
         {
-            new TextureParameter(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat),
-            new TextureParameter(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat),
-            new TextureParameter(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest),
-            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest),
+            { TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat },
+            { TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat },
+            { TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest },
+            { TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest },
         };
         PixelInternalFormat = PixelInternalFormat.Rgba;
         Level = 0;
@@ -47,7 +47,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         Flipped = true;
     }
     public TextureTarget TextureTarget { get; }
-    public HashSet<TextureParameter> Parameters { get; }
+    public Dictionary<TextureParameterName, int> Parameters { get; }
     public PixelInternalFormat PixelInternalFormat { get; }
     public int Level { get; }
     public int Border { get; }

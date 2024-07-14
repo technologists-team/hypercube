@@ -11,7 +11,7 @@ public sealed class TextureMetaData : ITextureCreationSettings
     public TextureTarget TextureTarget { get; set; } = TextureTarget.Texture2D;
     
     [DataMember(Name = "parameters")]
-    public HashSet<TextureParameter> Parameters { get; set; } = new();
+    public Dictionary<TextureParameterName, int> Parameters { get; set; } = new();
 
     [DataMember(Name = "pixelInternalFormat")]
     public PixelInternalFormat PixelInternalFormat { get; set; } = PixelInternalFormat.Rgba;

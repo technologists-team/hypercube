@@ -5,7 +5,7 @@ namespace Hypercube.Client.Graphics.Texturing.TextureSettings;
 public interface ITextureCreationSettings
 {
     TextureTarget TextureTarget { get; }
-    HashSet<TextureParameter> Parameters { get; }
+    Dictionary<TextureParameterName, int> Parameters { get; }
     PixelInternalFormat PixelInternalFormat { get; }
     int Level { get; }
     int Border { get; }
