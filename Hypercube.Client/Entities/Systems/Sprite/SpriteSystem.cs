@@ -36,10 +36,8 @@ public sealed class SpriteSystem : EntitySystem
 
     public void Render(Entity<SpriteComponent> entity, Transform2 transform)
     {
-        if (entity.Component.TextureHandle == null)
-            entity.Component.TextureHandle = 
-                _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture ?? throw new NullReferenceException();
-        
+        entity.Component.TextureHandle ??=
+            _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
         _drawing.DrawTexture(entity.Component.TextureHandle, Vector2.Zero, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }
 }
