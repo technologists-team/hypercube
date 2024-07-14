@@ -1,13 +1,11 @@
 using System.Collections.Frozen;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Graphics.Texturing.Events;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
-using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Resources.Manager;
@@ -103,13 +101,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceManager, "/Icons").ToList();
         _windowManager.SetWindowIcons(MainWindow, windowIcons);
         
-        
         InitOpenGL();
-        
-        _resourceCacher.PreloadTextures();
-        _resourceCacher.PreloadShaders();
-        _resourceCacher.PreloadAudio();
-        
         OnLoad();
     }
     

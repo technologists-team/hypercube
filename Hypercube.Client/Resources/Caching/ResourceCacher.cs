@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Hypercube.Client.Audio.Event;
+using Hypercube.Client.Graphics.Event;
 using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Caching;
@@ -8,15 +11,20 @@ using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public partial class ResourceCacher : IResourceCacher
+public partial class ResourceCacher : IResourceCacher, IEventSubscriber, IPostInject
 {
+    [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
     
-    private Dictionary<Type, Dictionary<ResourcePath, Resource>> _cachedResources = new();
-
-    private DependenciesContainer _container = DependencyManager.GetContainer();
-
+    private readonly Dictionary<Type, Dictionary<ResourcePath, Resource>> _cachedResources = new();
+    private readonly DependenciesContainer _container = DependencyManager.GetContainer();
     private readonly Logger _logger = LoggingManager.GetLogger("cache");
+    
+    public void PostInject()
+    {
+        _eventBus.Subscribe<AudioLibraryInitializedEvent>(this, OnAudioLibraryInitialized);
+        _eventBus.Subscribe<GraphicsLibraryInitializedEvent>(this, OnGraphicsLibraryInitialized);
+    }
     
     public T GetResource<T>(ResourcePath path, bool useFallback = true) where T : Resource, new()
     {

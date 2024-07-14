@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using Hypercube.Client.Audio.Event;
 using Hypercube.Client.Audio.Loading;
 using Hypercube.Client.Utilities.Helpers;
 using Hypercube.Shared.Dependency;
@@ -9,7 +10,7 @@ using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;
 using OpenTK.Audio.OpenAL;
 
-namespace Hypercube.Client.Audio.Realisations.OpenAL;
+namespace Hypercube.Client.Audio.Realisation.OpenAL;
 
 /// <remarks>
 /// For some reason, on my Windows 11 machine there is no <c>openal32.dll</c>
@@ -57,6 +58,9 @@ public sealed class OpenAlAudioManager : IAudioManager, IEventSubscriber, IPostI
             return;
         
         CreateContext();
+        
+        _logger.EngineInfo("Initialized");
+        _eventBus.Raise(new AudioLibraryInitializedEvent());
     }
     
     private AudioStream CreateAudio(ResourcePath path, AudioSettings settings)

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Shared.Resources.Caching.Resource;
 
 namespace Hypercube.Shared.Resources.Caching;
 
@@ -12,8 +11,4 @@ public interface IResourceCacher
 
     void CacheResource<T>(ResourcePath path, T resource)
         where T : Resource.Resource, new();
-
-    void PreloadTextures();
-    void PreloadShaders();
-    void PreloadAudio();
 }

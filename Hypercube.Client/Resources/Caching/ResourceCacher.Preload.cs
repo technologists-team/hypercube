@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using Hypercube.Client.Audio.Event;
+using Hypercube.Client.Graphics.Event;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
 
@@ -7,20 +9,18 @@ namespace Hypercube.Client.Resources.Caching;
 public partial class ResourceCacher
 {
     private readonly Logger _loggerPreload = LoggingManager.GetLogger("cache.preload");
-    
-    public void PreloadTextures()
-    {
-        PreloadTextures(_container);
-    }
-    public void PreloadShaders()
-    {
-        PreloadShaders(_container);
-    }
-    public void PreloadAudio()
+
+    private void OnAudioLibraryInitialized(ref AudioLibraryInitializedEvent ev)
     {
         PreloadAudio(_container);
     }
     
+    private void OnGraphicsLibraryInitialized(ref GraphicsLibraryInitializedEvent ev)
+    {
+        PreloadTextures(_container);
+        PreloadShaders(_container);
+    }
+
     private void PreloadTextures(DependenciesContainer container)
     {
         _loggerPreload.EngineInfo("Preloading textures...");
