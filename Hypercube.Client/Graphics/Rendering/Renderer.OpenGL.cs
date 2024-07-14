@@ -9,6 +9,12 @@ public sealed partial class Renderer
 {
     private const int SwapInterval = 1;
 
+    /// <summary>
+    /// This is where we store the callback
+    /// because otherwise GC will collect it.
+    /// </summary>
+    private DebugProc? _debugProc;
+    
     private void InitOpenGL()
     {
         GL.LoadBindings(_bindingsContext);
@@ -26,8 +32,9 @@ public sealed partial class Renderer
         
         GLFW.SwapInterval(SwapInterval);
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
-       
-        //GL.DebugMessageCallback(DebugMessageCallback, IntPtr.Zero);
+
+        _debugProc = DebugMessageCallback;
+        GL.DebugMessageCallback(_debugProc, IntPtr.Zero);
         
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);
