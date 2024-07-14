@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
-namespace Hypercube.Shared.Math.Transform;
+namespace Hypercube.Math.Transform;
 
 public partial struct Transform2
 {

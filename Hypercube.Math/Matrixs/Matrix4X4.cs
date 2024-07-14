@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Hypercube.Shared.Math.Box;
-using Hypercube.Shared.Math.Transform;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Box;
+using Hypercube.Math.Transform;
+using Hypercube.Math.Vector;
 
-namespace Hypercube.Shared.Math.Matrix;
+namespace Hypercube.Math.Matrix;
 
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4 : IEquatable<Matrix4X4>

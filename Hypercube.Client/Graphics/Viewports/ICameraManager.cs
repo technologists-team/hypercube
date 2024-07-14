@@ -1,5 +1,5 @@
-﻿using Hypercube.Shared.Math.Matrix;
-using Hypercube.Shared.Math.Vector;
+﻿using Hypercube.Math.Matrix;
+using Hypercube.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Viewports;
 

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Hypercube.Shared.Math.Matrix;
+namespace Hypercube.Math.Matrix;
 
 public partial struct Matrix4X4
 {

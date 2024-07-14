@@ -3,7 +3,7 @@ using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 

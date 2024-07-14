@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
-namespace Hypercube.Shared.Math.Matrix;
+namespace Hypercube.Math.Matrix;
 
 // TODO: May be it's can be immutable
 [StructLayout(LayoutKind.Sequential)]

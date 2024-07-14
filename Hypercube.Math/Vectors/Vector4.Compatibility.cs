@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Hypercube.Shared.Math.Vector;
+namespace Hypercube.Math.Vector;
 
 public readonly partial struct Vector4
 {

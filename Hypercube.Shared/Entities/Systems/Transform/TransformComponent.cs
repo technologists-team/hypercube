@@ -1,6 +1,6 @@
 ﻿using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
-using Hypercube.Shared.Math.Transform;
+using Hypercube.Math.Transform;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Entities.Systems.Transform;

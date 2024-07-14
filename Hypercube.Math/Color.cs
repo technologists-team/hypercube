@@ -1,8 +1,8 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
-namespace Hypercube.Shared.Math;
+namespace Hypercube.Math;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct Color

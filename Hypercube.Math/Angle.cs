@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Shared.Math.Extensions;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
+using Hypercube.Math.Extensions;
 
-namespace Hypercube.Shared.Math;
+namespace Hypercube.Math;
 
 public readonly struct Angle : IEquatable<Angle>, IEquatable<double>
 {

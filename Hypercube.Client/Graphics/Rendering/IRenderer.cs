@@ -1,9 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
-using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Box;
-using Hypercube.Shared.Math.Matrix;
+using Hypercube.Math;
+using Hypercube.Math.Box;
+using Hypercube.Math.Matrix;
 
 namespace Hypercube.Client.Graphics.Rendering;
 

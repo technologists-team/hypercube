@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
-namespace Hypercube.Shared.Math.Box;
+namespace Hypercube.Math.Box;
 
 [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public readonly struct Box2

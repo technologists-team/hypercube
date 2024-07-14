@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Shared.Math.Extensions;
+﻿namespace Hypercube.Math.Extensions;
 
 public static class FloatingPointEqualsExtension
 {

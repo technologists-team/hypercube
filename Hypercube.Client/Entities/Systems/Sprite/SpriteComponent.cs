@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Shared.Entities.Realisation.Components;
-using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Transform;
+using Hypercube.Math;
+using Hypercube.Math.Transform;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Entities.Systems.Sprite;

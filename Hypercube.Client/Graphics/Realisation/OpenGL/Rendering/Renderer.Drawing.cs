@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Box;
-using Hypercube.Shared.Math.Matrix;
+using Hypercube.Math;
+using Hypercube.Math.Box;
+using Hypercube.Math.Matrix;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;

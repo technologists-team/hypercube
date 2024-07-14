@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Hypercube.Shared.Math.Vector;
+namespace Hypercube.Math.Vector;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector2Int : IEquatable<Vector2Int>

@@ -2,10 +2,10 @@
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Box;
-using Hypercube.Shared.Math.Matrix;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math;
+using Hypercube.Math.Box;
+using Hypercube.Math.Matrix;
+using Hypercube.Math.Vector;
 using Hypercube.Shared.Resources.Caching;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Drawing;

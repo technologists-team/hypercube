@@ -4,7 +4,7 @@ using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
-using Hypercube.Shared.Math.Matrix;
+using Hypercube.Math.Matrix;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 

@@ -1,5 +1,5 @@
-﻿using Hypercube.Shared.Math;
-using Hypercube.Shared.Math.Vector;
+﻿using Hypercube.Math;
+using Hypercube.Math.Vector;
 
 namespace Hypercube.UnitTests.Math;
 

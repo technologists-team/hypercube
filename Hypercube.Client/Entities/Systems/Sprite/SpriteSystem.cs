@@ -5,8 +5,8 @@ using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
-using Hypercube.Shared.Math.Transform;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Transform;
+using Hypercube.Math.Vector;
 using Hypercube.Shared.Resources.Caching;
 
 namespace Hypercube.Client.Entities.Systems.Sprite;

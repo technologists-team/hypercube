@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Example", "Hyperc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Client", "Hypercube.Client\Hypercube.Client.csproj", "{5CC9824F-8B41-4594-BA5A-46B97133AF6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Shared.Math", "Hypercube.Shared.Math\Hypercube.Shared.Math.csproj", "{9B472CFF-DCB7-4AF6-8C07-F9ADD47CECBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Math", "Hypercube.Math\Hypercube.Math.csproj", "{9B472CFF-DCB7-4AF6-8C07-F9ADD47CECBC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Shared", "Hypercube.Shared\Hypercube.Shared.csproj", "{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}"
 EndProject

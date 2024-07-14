@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Shared.Math;
+﻿namespace Hypercube.Math;
 
 public static class HyperMath
 {

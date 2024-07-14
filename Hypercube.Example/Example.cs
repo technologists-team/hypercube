@@ -1,11 +1,11 @@
 ﻿using Hypercube.Client.Audio;
 using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
+using Hypercube.Math.Vector;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.EventBus;
-using Hypercube.Shared.Math.Vector;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Runtimes.Event;

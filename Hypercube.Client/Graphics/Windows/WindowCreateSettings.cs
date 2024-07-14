@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Shared.Math.Vector;
+using Hypercube.Math.Vector;
 
 namespace Hypercube.Client.Graphics.Windows;
 
