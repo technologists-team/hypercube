@@ -1,4 +1,5 @@
-﻿using Hypercube.Client.Entities.Systems.Sprite;
+﻿using Hypercube.Client.Audio;
+using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
@@ -12,6 +13,7 @@ namespace Hypercube.Example;
 
 public sealed class Example : IEventSubscriber, IPostInject
 {
+    [Dependency] private readonly IAudioManager _audioManager = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
     [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
@@ -38,6 +40,9 @@ public sealed class Example : IEventSubscriber, IPostInject
             var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
             CreateEntity(coord);
         }
+
+        var source = _audioManager.CreateSource("/game_boi_3.wav", new AudioSettings());
+        source.Start();
     }
 
     private void CreateEntity(SceneCoordinates coordinates)
