@@ -26,7 +26,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         Border = border;
         PixelFormat = pixelFormat;
         PixelType = pixelType;
-        Flip = flip;
+        Flipped = flip;
     }
 
     public Texture2DCreationSettings()
@@ -44,7 +44,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         Border = 0;
         PixelFormat = PixelFormat.Rgba;
         PixelType = PixelType.UnsignedByte;
-        Flip = true;
+        Flipped = true;
     }
     public TextureTarget TextureTarget { get; }
     public HashSet<TextureParameter> Parameters { get; }
@@ -54,5 +54,5 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
     public PixelFormat PixelFormat { get; }
     public PixelType PixelType { get; }
     
-    public bool Flip { get; }
+    public bool Flipped { get; init; }
 }

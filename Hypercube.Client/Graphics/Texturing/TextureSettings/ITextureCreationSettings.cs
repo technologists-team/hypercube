@@ -11,6 +11,5 @@ public interface ITextureCreationSettings
     int Border { get; }
     PixelFormat PixelFormat { get; }
     PixelType PixelType { get; }
-    
-    bool Flip { get; }
+    bool Flipped { get; }
 }

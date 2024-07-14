@@ -1,8 +1,4 @@
-﻿using System.Collections.Frozen;
-using System.Diagnostics;
-using System.Text;
-using Hypercube.Client.Graphics.Texturing.Events;
-using Hypercube.Client.Graphics.Texturing.TextureSettings;
+﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources;
@@ -32,9 +28,9 @@ public sealed class TextureManager : ITextureManager
         return GetTextureHandleInternal(path, new Texture2DCreationSettings());
     }
     
-    public ITexture GetTexture(ResourcePath path)
+    public ITexture GetTexture(ResourcePath path, ITextureCreationSettings settings)
     {
-        return GetTextureInternal(path);
+        return GetTextureInternal(path, settings);
     }
 
     public ITextureHandle GetTextureHandle(ITexture texture)
@@ -47,14 +43,15 @@ public sealed class TextureManager : ITextureManager
         return GetTextureHandleInternal(texture.Path, settings);
     }
 
-    internal ITexture GetTextureInternal(ResourcePath path)
+    private ITexture GetTextureInternal(ResourcePath path, ITextureCreationSettings settings)
     {
-        var texture = CreateTexture(path);
+        var texture = CreateTexture(path, settings);
         return texture;
     }
 
-    internal ITexture CreateTexture(ResourcePath path)
+    private ITexture CreateTexture(ResourcePath path, ITextureCreationSettings settings)
     {
+        StbImage.stbi_set_flip_vertically_on_load(settings.Flipped ? 0 : 1);
         using var stream = _resourceManager.ReadFileContent(path);
         
         var result = ImageResult.FromStream(stream);
@@ -63,20 +60,20 @@ public sealed class TextureManager : ITextureManager
         return texture;
     }
 
-    internal ITextureHandle GetTextureHandleInternal(ResourcePath path, ITextureCreationSettings settings)
+    private ITextureHandle GetTextureHandleInternal(ResourcePath path, ITextureCreationSettings settings)
     {
         return CreateTextureHandle(path, settings);
     }
 
-    internal ITextureHandle CreateTextureHandle(ResourcePath path, ITextureCreationSettings settings)
+    private ITextureHandle CreateTextureHandle(ResourcePath path, ITextureCreationSettings settings)
     {
-        var texture = GetTexture(path);
+        var texture = GetTexture(path, settings);
         var handle = new TextureHandle(texture, settings);
 
         return handle;
     }
     
-    internal ITextureHandle CreateTextureHandle(ITexture texture, ITextureCreationSettings settings)
+    private ITextureHandle CreateTextureHandle(ITexture texture, ITextureCreationSettings settings)
     {
         return new TextureHandle(texture, settings);
     }
