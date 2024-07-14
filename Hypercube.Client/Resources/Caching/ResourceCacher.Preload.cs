@@ -10,10 +10,15 @@ public partial class ResourceCacher
     
     public void PreloadTextures()
     {
-        var container = DependencyManager.GetContainer();
-        PreloadTextures(container);
-        PreloadShaders(container);
-        PreloadAudio(container);
+        PreloadTextures(_container);
+    }
+    public void PreloadShaders()
+    {
+        PreloadShaders(_container);
+    }
+    public void PreloadAudio()
+    {
+        PreloadAudio(_container);
     }
     
     private void PreloadTextures(DependenciesContainer container)

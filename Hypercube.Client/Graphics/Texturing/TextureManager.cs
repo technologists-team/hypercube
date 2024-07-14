@@ -22,9 +22,6 @@ public sealed class TextureManager : ITextureManager
         StbImage.stbi_set_flip_vertically_on_load(1);
     }
     
-
-    #region PublicAPI
-    
     public ITextureHandle GetTextureHandle(ResourcePath path, ITextureCreationSettings settings)
     {
         return GetTextureHandleInternal(path, settings);
@@ -49,10 +46,6 @@ public sealed class TextureManager : ITextureManager
     {
         return GetTextureHandleInternal(texture.Path, settings);
     }
-
-    #endregion
-
-    #region Internal
 
     internal ITexture GetTextureInternal(ResourcePath path)
     {
@@ -87,6 +80,4 @@ public sealed class TextureManager : ITextureManager
     {
         return new TextureHandle(texture, settings);
     }
-    
-    #endregion
 }

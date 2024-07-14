@@ -14,4 +14,6 @@ public interface IResourceCacher
         where T : Resource.Resource, new();
 
     void PreloadTextures();
+    void PreloadShaders();
+    void PreloadAudio();
 }

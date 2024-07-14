@@ -107,6 +107,8 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         InitOpenGL();
         
         _resourceCacher.PreloadTextures();
+        _resourceCacher.PreloadShaders();
+        _resourceCacher.PreloadAudio();
         
         OnLoad();
     }
