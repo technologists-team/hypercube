@@ -4,6 +4,7 @@ using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows.Manager.Registrations;
 using Hypercube.Client.Utilities;
+using Hypercube.Client.Utilities.Helpers;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 using OpenTK.Windowing.Common;

@@ -6,7 +6,7 @@ using HPixelInternalFormat = Hypercube.Client.Graphics.Texturing.TextureSettings
 using HTextureParameterName = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureParameterName;
 using HTextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
 
-namespace Hypercube.Client.Utilities;
+namespace Hypercube.Client.Utilities.Helpers;
 
 public static class TextureHelper
 {

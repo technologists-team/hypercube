@@ -2,7 +2,7 @@
 using Hypercube.Shared.Math.Vector;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Hypercube.Client.Utilities;
+namespace Hypercube.Client.Utilities.Helpers;
 
 public static unsafe class GLFWHelper
 {

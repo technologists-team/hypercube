@@ -1,4 +1,5 @@
 ﻿using Hypercube.Client.Utilities;
+using Hypercube.Client.Utilities.Helpers;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Hypercube.Client.Graphics.Windows.Manager;

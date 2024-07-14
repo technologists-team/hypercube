@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
 using Hypercube.Client.Utilities;
+using Hypercube.Client.Utilities.Helpers;
 using OpenToolkit.Graphics.OpenGL4;
 using TextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
 
