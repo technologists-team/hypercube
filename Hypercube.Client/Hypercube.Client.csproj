@@ -22,6 +22,7 @@
       <PackageReference Include="OpenTK" Version="5.0.0-pre.10" />
       <PackageReference Include="OpenToolkit.Graphics" Version="4.0.0-pre9.3" />
       <PackageReference Include="StbImageSharp" Version="2.27.14" />
+      <PackageReference Include="Tomlyn" Version="0.17.0" />
     </ItemGroup>
 
     <ItemGroup>
