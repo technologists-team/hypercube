@@ -1,5 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Event;
-using Hypercube.Client.Graphics.Shading;
+using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
@@ -13,7 +13,7 @@ namespace Hypercube.Client.Graphics.Rendering;
 
 public sealed partial class Renderer
 {
-    private IShader _baseShader = default!;
+    private IShaderProgram _baseShaderProgram = default!;
     private ITextureHandle _baseTexture = default!;
     
     private const int MaxBatchVertices = 65532;
@@ -33,7 +33,7 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShader = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base").Shader;
+        _baseShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base").ShaderProgram;
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
         
@@ -113,14 +113,14 @@ public sealed partial class Renderer
         GL.ActiveTexture(TextureUnit.Texture0);
         GL.BindTexture(TextureTarget.Texture2D, batch.TextureHandle);
         
-        _baseShader.Use();
+        _baseShaderProgram.Use();
         
-        _baseShader.SetUniform("model", batch.Model);
-        _baseShader.SetUniform("view", Matrix4X4.Identity);
-        _baseShader.SetUniform("projection", _cameraManager.Projection);
+        _baseShaderProgram.SetUniform("model", batch.Model);
+        _baseShaderProgram.SetUniform("view", Matrix4X4.Identity);
+        _baseShaderProgram.SetUniform("projection", _cameraManager.Projection);
 
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
         
-        _baseShader.Stop();
+        _baseShaderProgram.Stop();
     }
 }

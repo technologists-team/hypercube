@@ -24,6 +24,10 @@ public partial struct Matrix3X3
     public Vector3 Row1;
     public Vector3 Row2;
 
+    public Vector3 Column0 => new(M00, M10, M20);
+    public Vector3 Column1 => new(M01, M11, M21);
+    public Vector3 Column2 => new(M02, M12, M22);
+    
     /// <summary>
     /// Matrix x: 0, y: 0 element.
     /// </summary>
@@ -252,6 +256,12 @@ public partial struct Matrix3X3
         new Vector3(m10, m11, m12),
         new Vector3(m20, m21, m22))
     {
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix3X3 Transpose(Matrix3X3 matrix3X3)
+    {
+        return new Matrix3X3(matrix3X3.Column0, matrix3X3.Column1, matrix3X3.Column2);
     }
     
     /// <summary>

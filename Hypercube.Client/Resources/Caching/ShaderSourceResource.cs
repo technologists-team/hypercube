@@ -1,4 +1,7 @@
-﻿using Hypercube.Client.Graphics.Shading;
+﻿using Hypercube.Client.Graphics;
+using Hypercube.Client.Graphics.Realisation.OpenGL;
+using Hypercube.Client.Graphics.Realisation.OpenGL.Shaders;
+using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Caching.Resource;
@@ -8,18 +11,18 @@ namespace Hypercube.Client.Resources.Caching;
 
 public sealed class ShaderSourceResource : Resource, IDisposable
 {
-    public IShader Shader;
+    public IShaderProgram ShaderProgram;
     public string Base;
     public ResourcePath VertexPath;
     public ResourcePath FragmentPath;
     
     public override void Load(ResourcePath path, DependenciesContainer container)
     {
-        Shader = new Shader(path, container.Resolve<IResourceManager>());
+        ShaderProgram = new ShaderProgram(path, container.Resolve<IResourceManager>());
     }
 
     public void Dispose()
     {
-        Shader.Dispose();
+        ShaderProgram.Dispose();
     }
 }
