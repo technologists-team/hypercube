@@ -15,7 +15,7 @@ namespace Hypercube.Example;
 
 public sealed class Example : IEventSubscriber, IPostInject
 {
-    [Dependency] private readonly ICacheManager _cacheManager = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
     [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
@@ -43,7 +43,7 @@ public sealed class Example : IEventSubscriber, IPostInject
             CreateEntity(coord);
         }
 
-        var source = _cacheManager.GetResource<AudioSourceResource>("/game_boi_3.wav").Stream;
+        var source = _resourceCacher.GetResource<AudioSourceResource>("/game_boi_3.wav").Stream;
         // it's too loud :D
         source.Gain = 0.3f;
         source.Start();

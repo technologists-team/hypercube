@@ -49,7 +49,7 @@ public static class Dependencies
         rootContainer.Register<ITextureManager, TextureManager>();
         
         // Caching
-        rootContainer.Register<ICacheManager, CacheManager>();
+        rootContainer.Register<IResourceCacher, ResourceCacher>();
         
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();

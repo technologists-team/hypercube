@@ -33,8 +33,8 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShader = _cacheManager.GetResource<ShaderSourceResource>("/Shaders/base").Shader;
-        _baseTexture = _cacheManager.GetResource<TextureResource>("/Textures/icon.png").Texture;
+        _baseShader = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base").Shader;
+        _baseTexture = _resourceCacher.GetResource<TextureResource>("/Textures/icon.png").Texture;
         _baseTexture.Bind(HTexTarget.Texture2D);
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));

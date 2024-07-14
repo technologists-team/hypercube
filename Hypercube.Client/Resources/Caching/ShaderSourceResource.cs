@@ -6,7 +6,7 @@ using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public class ShaderSourceResource : BaseResource, IDisposable
+public sealed class ShaderSourceResource : Resource, IDisposable
 {
     public IShader Shader;
     public string Base;

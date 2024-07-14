@@ -5,7 +5,7 @@ using Hypercube.Shared.Resources.Caching.Resource;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public class AudioSourceResource : BaseResource, IDisposable
+public sealed class AudioSourceResource : Resource, IDisposable
 {
     public ResourcePath Path;
     public IAudioSource Stream;

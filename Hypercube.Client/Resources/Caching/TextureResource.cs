@@ -7,7 +7,7 @@ using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public class TextureResource : BaseResource, IDisposable
+public sealed class TextureResource : Resource, IDisposable
 {
     public ITextureHandle Texture;
     public ResourcePath Path;

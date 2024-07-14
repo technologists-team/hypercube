@@ -15,7 +15,7 @@ namespace Hypercube.Client.Entities.Systems.Sprite;
 public sealed class SpriteSystem : EntitySystem
 {
     [Dependency] private readonly IRenderDrawing _drawing = default!;
-    [Dependency] private readonly ICacheManager _cacheManager = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
         
     public override void Initialize()
     {
@@ -38,7 +38,7 @@ public sealed class SpriteSystem : EntitySystem
     {
         if (entity.Component.TextureHandle == null)
             entity.Component.TextureHandle = 
-                _cacheManager.GetResource<TextureResource>(entity.Component.TexturePath).Texture ?? throw new NullReferenceException();
+                _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture ?? throw new NullReferenceException();
         
         _drawing.DrawTexture(entity.Component.TextureHandle, Vector2.Zero, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }

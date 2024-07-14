@@ -27,7 +27,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly ICameraManager _cameraManager = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
-    [Dependency] private readonly ICacheManager _cacheManager = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
@@ -106,7 +106,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         
         InitOpenGL();
         
-        _cacheManager.PreloadTextures();
+        _resourceCacher.PreloadTextures();
         
         OnLoad();
     }

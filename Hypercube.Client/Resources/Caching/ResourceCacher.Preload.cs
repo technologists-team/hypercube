@@ -4,19 +4,21 @@ using Hypercube.Shared.Logging;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public partial class CacheManager
+public partial class ResourceCacher
 {
+    private readonly Logger _loggerPreload = LoggingManager.GetLogger("cache.preload");
+    
     public void PreloadTextures()
     {
-        var logger = LoggingManager.GetLogger("cache.preload");
         var container = DependencyManager.GetContainer();
-        PreloadTextures(logger, container);
-        PreloadShaders(logger, container);
-        PreloadAudio(logger, container);
+        PreloadTextures(container);
+        PreloadShaders(container);
+        PreloadAudio(container);
     }
-    private void PreloadTextures(Logger logger, DependenciesContainer container)
+    
+    private void PreloadTextures(DependenciesContainer container)
     {
-        logger.EngineInfo("Preloading textures...");
+        _loggerPreload.EngineInfo("Preloading textures...");
         var st = Stopwatch.StartNew();
 
         var texDict = GetTypeDict<TextureResource>();
@@ -37,9 +39,9 @@ public partial class CacheManager
         _logger.EngineInfo($"Preloaded {count} textures in {st.Elapsed}");
     }
 
-    private void PreloadShaders(Logger logger, DependenciesContainer container)
+    private void PreloadShaders(DependenciesContainer container)
     {
-        logger.EngineInfo("Preloading shaders...");
+        _loggerPreload.EngineInfo("Preloading shaders...");
         var st = Stopwatch.StartNew();
 
         var shDict = GetTypeDict<ShaderSourceResource>();
@@ -60,9 +62,9 @@ public partial class CacheManager
         _logger.EngineInfo($"Preloaded {count} shaders in {st.Elapsed}");
     }
 
-    private void PreloadAudio(Logger logger, DependenciesContainer container)
+    private void PreloadAudio(DependenciesContainer container)
     {
-        logger.EngineInfo("Preloading shaders...");
+        _loggerPreload.EngineInfo("Preloading shaders...");
         var st = Stopwatch.StartNew();
         
         var aDict = GetTypeDict<ShaderSourceResource>();

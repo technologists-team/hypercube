@@ -8,25 +8,17 @@ using Hypercube.Shared.Resources.Manager;
 
 namespace Hypercube.Client.Resources.Caching;
 
-public partial class CacheManager : ICacheManager
+public partial class ResourceCacher : IResourceCacher
 {
     [Dependency] private readonly IResourceManager _resourceManager = default!;
     
-    private Dictionary<Type, Dictionary<ResourcePath, BaseResource>> _cachedResources =
-        new Dictionary<Type, Dictionary<ResourcePath, BaseResource>>();
+    private Dictionary<Type, Dictionary<ResourcePath, Resource>> _cachedResources = new();
 
-    private DependenciesContainer _container = default!;
+    private DependenciesContainer _container = DependencyManager.GetContainer();
 
     private readonly Logger _logger = LoggingManager.GetLogger("cache");
     
-    #region PublicAPI
-
-    public CacheManager()
-    {
-        _container = DependencyManager.GetContainer();
-    }
-
-    public T GetResource<T>(ResourcePath path, bool useFallback = true) where T : BaseResource, new()
+    public T GetResource<T>(ResourcePath path, bool useFallback = true) where T : Resource, new()
     {
         var typeDict = GetTypeDict<T>();
 
@@ -46,12 +38,12 @@ public partial class CacheManager : ICacheManager
             if (useFallback && cache.FallbackPath is not null)
                 return GetResource<T>(cache.FallbackPath.Value, false);
             
-            _logger.Error($"Exception while loading resource {ex.Message}, Stack Trace: {ex.StackTrace}");
+            _logger.Fatal($"Exception while loading resource {ex.Message}, Stack Trace: {ex.StackTrace}");
             throw;
         }
     }
 
-    public bool TryGetResource<T>(ResourcePath path, [NotNullWhen(true)] out T? resource) where T : BaseResource, new()
+    public bool TryGetResource<T>(ResourcePath path, [NotNullWhen(true)] out T? resource) where T : Resource, new()
     {
         var cont = DependencyManager.GetContainer();
         var cache = GetTypeDict<T>();
@@ -77,35 +69,24 @@ public partial class CacheManager : ICacheManager
         }
         catch (Exception ex)
         {
-            _logger.Error($"Exception while loading resource: {ex.Message}, Stack Trace: {ex.StackTrace}");
+            _logger.Fatal($"Exception while loading resource: {ex.Message}, Stack Trace: {ex.StackTrace}");
             throw;
         }
     }
 
-    public void CacheResource<T>(ResourcePath path, T resource) where T : BaseResource, new()
+    public void CacheResource<T>(ResourcePath path, T resource) where T : Resource, new()
     {
         GetTypeDict<T>()[path] = resource;
     }
 
-    public T GetFallback<T>() where T : BaseResource, new()
-    {
-        throw new NotImplementedException();
-    }
-
-    #endregion
-
-    #region Private
-
-    private Dictionary<ResourcePath, BaseResource> GetTypeDict<T>()
+    private Dictionary<ResourcePath, Resource> GetTypeDict<T>()
     {
         if (_cachedResources.TryGetValue(typeof(T), out var dict)) 
             return dict;
         
-        dict = new Dictionary<ResourcePath, BaseResource>();
+        dict = new Dictionary<ResourcePath, Resource>();
         _cachedResources[typeof(T)] = dict;
 
         return dict;
     }
-    
-    #endregion
 }

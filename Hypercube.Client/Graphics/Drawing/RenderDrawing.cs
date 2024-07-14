@@ -14,7 +14,7 @@ namespace Hypercube.Client.Graphics.Drawing;
 public sealed class RenderDrawing : IRenderDrawing
 {
     [Dependency] private readonly IRenderer _renderer = default!;
-    [Dependency] private readonly ICacheManager _cacheManager = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
     
     public void DrawTexture(ITexture texture, Vector2 position)
     {
@@ -38,7 +38,7 @@ public sealed class RenderDrawing : IRenderDrawing
 
     public void DrawTexture(ITexture texture, Box2 quad, Box2 uv, Color color)
     {
-        var handle = _cacheManager.GetResource<TextureResource>(texture.Path).Texture;
+        var handle = _resourceCacher.GetResource<TextureResource>(texture.Path).Texture;
         _renderer.DrawTexture(handle, quad, uv, color);
     }
     
