@@ -1,4 +1,7 @@
-﻿using Hypercube.Client.Graphics.Drawing;
+﻿using Hypercube.Client.Audio;
+using Hypercube.Client.Audio.Loading;
+using Hypercube.Client.Audio.Realisations.OpenAL;
+using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
@@ -37,6 +40,10 @@ public static class Dependencies
         
         // Resources
         rootContainer.Register<IResourceManager, ResourceManager>();
+        
+        // Audio
+        rootContainer.Register<IAudioLoader, AudioLoader>();
+        rootContainer.Register<IAudioManager, OpenAlAudioManager>();
         
         // Texturing
         rootContainer.Register<ITextureManager, TextureManager>();
