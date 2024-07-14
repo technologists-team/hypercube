@@ -75,4 +75,10 @@ public static class DependencyManager
         Debug.Assert(_container.IsValueCreated);
         return new DependenciesContainer(_container.Value!);
     }
+
+    public static DependenciesContainer GetContainer()
+    {
+        Debug.Assert(_container.IsValueCreated);
+        return _container.Value!;
+    }
 }

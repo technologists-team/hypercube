@@ -1,14 +1,13 @@
 using System.Collections.Frozen;
 using Hypercube.Client.Graphics.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Graphics.Texturing.Events;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Manager;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
-using Hypercube.Shared.EventBus.Events;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
@@ -26,6 +25,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly ICameraManager _cameraManager = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
@@ -70,23 +70,10 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     
     public void PostInject()
     {
-        _eventBus.Subscribe<TexturesPreloadEvent>(this, OnTexturesPreload);
-        _eventBus.Subscribe<HandlesPreloadEvent>(this, OnHandlesPreload);
         _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialization);
         _eventBus.Subscribe<RuntimeStartupEvent>(this, OnStartup);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnFrameUpdate);
         _eventBus.Subscribe<RenderFrameEvent>(this, OnFrameRender);
-    }
-
-    private void OnTexturesPreload(ref TexturesPreloadEvent args)
-    {
-        args.Textures.Add("/Icons/image.png");
-        args.Textures.Add("/icon.png");
-    }
-
-    private void OnHandlesPreload(ref HandlesPreloadEvent args)
-    {
-        args.Handles.Add("/icon.png");
     }
     
     private void OnInitialization(ref RuntimeInitializationEvent args)
@@ -114,11 +101,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceManager, "/Icons").ToList();
         _windowManager.SetWindowIcons(MainWindow, windowIcons);
         
-        
         InitOpenGL();
-        
-        _textureManager.CacheHandles();
-        
         OnLoad();
     }
     
