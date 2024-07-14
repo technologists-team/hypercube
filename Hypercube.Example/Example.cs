@@ -24,7 +24,7 @@ public sealed class Example : IEventSubscriber, IPostInject
 
     private readonly Random _random = new();
     
-    public void Start(DependenciesContainer root)
+    public void Start(string[] args, DependenciesContainer root)
     {
         root.Inject(this);
     }

@@ -21,8 +21,7 @@ using Hypercube.Shared.Timing;
 namespace Hypercube.Client;
 
 /// <summary>
-/// Provide all client hypercube dependencies,
-/// for registration.
+/// Provide all client hypercube dependencies for registration.
 /// </summary>
 public static class Dependencies
 {
@@ -66,7 +65,7 @@ public static class Dependencies
         
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
-        rootContainer.Register<Runtime>(_ => new Runtime(rootContainer));
+        rootContainer.Register<IRuntime, Runtime>();
         
         rootContainer.InstantiateAll();
     }

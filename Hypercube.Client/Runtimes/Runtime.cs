@@ -8,21 +8,19 @@ using Hypercube.Shared.Runtimes.Event;
 
 namespace Hypercube.Client.Runtimes;
 
-public sealed partial class Runtime(DependenciesContainer dependenciesContainer) : IPostInject, IEventSubscriber
+public sealed class Runtime : IRuntime, IEventSubscriber, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IRuntimeLoop _loop = default!;
 
     private readonly ILogger _logger =  LoggingManager.GetLogger("runtime");
+    private bool _initialized;
 
     public void PostInject()
     {
         _eventBus.Subscribe<MainWindowClosedEvent>(this, OnMainWindowClosed);
     }
-
-    /// <summary>
-    /// Start Hypercube.
-    /// </summary>
+    
     public void Run()
     {
         Initialize();
@@ -50,14 +48,20 @@ public sealed partial class Runtime(DependenciesContainer dependenciesContainer)
     {
         _logger.EngineInfo("Startup");
         _eventBus.Raise(new RuntimeStartupEvent());
-        _eventBus.Raise(new RuntimeAfterStartupEvent());
+
         _loop.Run();
     }
     
     private void Initialize()
     {
-        _logger.EngineInfo("Initialize");
+        if (_initialized)
+            throw new InvalidOperationException("Unable to initialize, initialized runtime"); 
+        
+        _logger.EngineInfo("Initialization");
         _eventBus.Raise(new RuntimeInitializationEvent());
+        
+        _logger.EngineInfo("Initialized");
+        _initialized = true;
     }
     
     private void OnMainWindowClosed(ref MainWindowClosedEvent obj)
