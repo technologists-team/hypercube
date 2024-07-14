@@ -1,10 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using OpenToolkit.Graphics.OpenGL4;
-using HPixFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelFormat;
-using HPixelType = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelType;
-using HPixelInternalFormat = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.PixelInternalFormat;
-using HTextureParameterName = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureParameterName;
-using HTextureTarget = Hypercube.Client.Graphics.Texturing.TextureSettings.TextureParameters.TextureTarget;
+using HPixFormat = Hypercube.Client.Graphics.Texturing.Parameters.PixelFormat;
+using HPixelType = Hypercube.Client.Graphics.Texturing.Parameters.PixelType;
+using HPixelInternalFormat = Hypercube.Client.Graphics.Texturing.Parameters.PixelInternalFormat;
+using HTextureParameterName = Hypercube.Client.Graphics.Texturing.Parameters.TextureParameterName;
+using HTextureTarget = Hypercube.Client.Graphics.Texturing.Parameters.TextureTarget;
 
 namespace Hypercube.Client.Utilities.Helpers;
 

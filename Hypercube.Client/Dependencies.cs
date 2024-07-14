@@ -2,6 +2,9 @@
 using Hypercube.Client.Audio.Loading;
 using Hypercube.Client.Audio.Realisations.OpenAL;
 using Hypercube.Client.Graphics.Drawing;
+using Hypercube.Client.Graphics.Realisation.OpenGL.Drawing;
+using Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
+using Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;

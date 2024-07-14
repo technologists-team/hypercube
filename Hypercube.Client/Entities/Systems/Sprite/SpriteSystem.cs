@@ -1,7 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
-using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Resources.Caching;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Systems;

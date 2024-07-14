@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Client.Audio.Events;
-using Hypercube.Client.Graphics.Event;
+using Hypercube.Client.Graphics.Events;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;

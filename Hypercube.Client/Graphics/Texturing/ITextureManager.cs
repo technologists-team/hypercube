@@ -1,4 +1,4 @@
-﻿using Hypercube.Client.Graphics.Texturing.TextureSettings;
+﻿using Hypercube.Client.Graphics.Texturing.Settings;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;
