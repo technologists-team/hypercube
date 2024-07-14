@@ -1,0 +1,7 @@
+﻿settings:
+  flipped: true
+  parameters:
+    TextureMinFilter: TextureMinFilter.Nearest
+copyright:
+  author: Test
+  license: MIT
