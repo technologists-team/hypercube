@@ -1,5 +1,9 @@
 ﻿namespace Hypercube.Client.Audio;
 
+/// <summary>
+/// Formats in which the audio library can read <see cref="AudioStream"/>.
+/// some may require additional support from drivers and devices.
+/// </summary>
 public enum AudioFormat
 {
     Mono8 = 0x1100,

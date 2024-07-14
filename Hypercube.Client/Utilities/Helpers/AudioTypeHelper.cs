@@ -6,7 +6,7 @@ namespace Hypercube.Client.Utilities.Helpers;
 
 public static class AudioTypeHelper
 {
-    public static readonly FrozenDictionary<string, AudioType> TypesAssociation;
+    private static readonly FrozenDictionary<string, AudioType> TypesAssociation;
 
     static AudioTypeHelper()
     {
@@ -15,13 +15,20 @@ public static class AudioTypeHelper
         foreach (var value in Enum.GetValues(typeof(AudioType)))
         {
             var name = Enum.GetName((AudioType) value) ?? throw new InvalidOperationException();
-            
-            name = name.ToLower();
-            name = name.RemoveChar('_');
-            
-            typesAssociation.Add(name, (AudioType) value);
+            typesAssociation.Add($".{name.ToLower().RemoveChar('_')}", (AudioType) value);
         }
 
         TypesAssociation = typesAssociation.ToFrozenDictionary();
+    }
+    
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Throws an exception if the specified extension is not declared in <see cref="AudioType"/>.
+    /// </exception>
+    public static AudioType GetAudioType(string extension)
+    {
+        if (!TypesAssociation.TryGetValue(extension, out var audioType))
+            throw new ArgumentOutOfRangeException();
+
+        return audioType;
     }
 }

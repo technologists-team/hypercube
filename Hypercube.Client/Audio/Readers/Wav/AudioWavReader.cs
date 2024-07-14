@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Hypercube.Client.Audio.Reader.Wav;
+namespace Hypercube.Client.Audio.Readers.Wav;
 
 public sealed class AudioWavReader : IDisposable
 {

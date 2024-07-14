@@ -1,4 +1,5 @@
 ﻿using Hypercube.Client.Audio;
+using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Shared.Dependency;
@@ -44,7 +45,7 @@ public sealed class Example : IEventSubscriber, IPostInject
             CreateEntity(coord);
         }
 
-        var stream = _resourceCacher.GetResource<AudioSourceResource>("/game_boi_3.wav").Stream;
+        var stream = _resourceCacher.GetResource<AudioResource>("/game_boi_3.wav").Stream;
         var source = _audioManager.CreateSource(stream);
             
         // it's too loud :D

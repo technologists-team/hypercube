@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Audio.Realisation.OpenAL;
+﻿namespace Hypercube.Client.Audio.Realisations.OpenAL;
 
 public static class ContextExtension
 {

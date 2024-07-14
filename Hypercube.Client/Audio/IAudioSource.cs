@@ -1,5 +1,10 @@
 ﻿namespace Hypercube.Client.Audio;
 
+/// <summary>
+/// Source created from <see cref="AudioStream"/>,
+/// its implementation is the responsibility of the current
+/// <see cref="IAudioManager"/> implementation.
+/// </summary>
 public interface IAudioSource : IDisposable
 {
     IAudioGroup? Group { get; }

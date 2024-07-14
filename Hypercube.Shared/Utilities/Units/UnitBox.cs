@@ -7,7 +7,7 @@ namespace Hypercube.Shared.Utilities.Units;
 /// </summary>
 /// <remarks>
 /// Should be used whenever we want to pass value by ref
-/// </remarks>>
+/// </remarks>
 [StructLayout(LayoutKind.Sequential)]
 public sealed class UnitBox
 {

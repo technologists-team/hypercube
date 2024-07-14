@@ -1,8 +1,18 @@
-﻿namespace Hypercube.Client.Audio;
+﻿using Hypercube.Client.Audio.Loading;
+using Hypercube.Client.Audio.Loading.TypeLoaders;
 
+namespace Hypercube.Client.Audio;
+
+/// <summary>
+/// Displays all sound file types available on the engine side,
+/// they are only available, but not necessarily supported.
+/// Supported formats can be found in <see cref="IAudioLoader"/> implementation.
+/// </summary>
 /// <remarks>
 /// Taken from <a href="https://en.wikipedia.org/wiki/Audio_file_format">Wikipedia</a>.
 /// </remarks>
+/// <seealso cref="IAudioLoader"/>
+/// <seealso cref="IAudioTypeLoader"/>
 public enum AudioType
 {
     _3gp,

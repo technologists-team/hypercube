@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
-using Hypercube.Client.Audio.Event;
+using Hypercube.Client.Audio;
+using Hypercube.Client.Audio.Events;
+using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Graphics.Event;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
@@ -76,7 +78,7 @@ public partial class ResourceCacher
 
         var files = _resourceManager.FindContentFiles("/Audio/")
             .Where(p => !aDict.ContainsKey(p) && p.Extension == ".wav" || p.Extension == ".ogg")
-            .Select(p => new AudioSourceResource() {Path = p});
+            .Select(p => new AudioResource() {Path = p});
 
         var count = 0;
         foreach (var file in files)

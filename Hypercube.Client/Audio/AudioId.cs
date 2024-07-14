@@ -4,12 +4,12 @@ public readonly struct AudioId(int value) : IEquatable<AudioId>
 {
     public static readonly AudioId Invalid = new(-1);
     public static readonly AudioId Zero = new(0);
-    
-    public readonly int Value = value;
+
+    private readonly int _value = value;
     
     public bool Equals(AudioId other)
     {
-        return Value == other.Value;
+        return _value == other._value;
     }
 
     public override bool Equals(object? obj)
@@ -29,16 +29,16 @@ public readonly struct AudioId(int value) : IEquatable<AudioId>
     
     public static implicit operator int(AudioId id)
     {
-        return id.Value;
+        return id._value;
     }
     
     public override int GetHashCode()
     {
-        return Value;
+        return _value;
     }
     
     public override string ToString()
     {
-        return $"audio({Value})";
+        return $"audio({_value})";
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Client.Audio.Reader.Wav;
+﻿using Hypercube.Client.Audio.Loading;
+
+namespace Hypercube.Client.Audio.Readers.Wav;
 
 /// <summary>
 /// Read the <a href="http://soundfile.sapp.org/doc/WaveFormat/">specification</a> for more information
