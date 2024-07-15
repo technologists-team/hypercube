@@ -4,6 +4,7 @@ using Hypercube.Client.Graphics.Windows;
 using Hypercube.Math;
 using Hypercube.Math.Boxs;
 using Hypercube.Math.Matrixs;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Client.Graphics.Rendering;
 
@@ -24,6 +25,18 @@ public interface IRenderer
     void OnFocusChanged(WindowRegistration window, bool focused);
     
     // Drawing
+    void DrawPoint(Vector2 vector, Color color);
+    void DrawPoint(Vector2 vector, Color color, Matrix3X3 model);
+    void DrawPoint(Vector2 vector, Color color, Matrix4X4 model);
+    void DrawLine(Vector2 pointA, Vector2 pointB, Color color);
+    void DrawLine(Vector2 pointA, Vector2 pointB, Color color, Matrix3X3 model);
+    void DrawLine(Vector2 pointA, Vector2 pointB, Color color, Matrix4X4 model);
+    void DrawLine(Box2 box, Color color);
+    void DrawLine(Box2 box, Color color, Matrix3X3 model);
+    void DrawLine(Box2 box, Color color, Matrix4X4 model);
+    void DrawRectangle(Box2 box, Color color);
+    void DrawRectangle(Box2 box, Color color, Matrix3X3 model);
+    void DrawRectangle(Box2 box, Color color, Matrix4X4 model);
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color);
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model);
 }
