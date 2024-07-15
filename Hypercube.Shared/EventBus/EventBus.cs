@@ -1,16 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Shared.EventBus.Broadcast;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Handlers;
-using Hypercube.Shared.EventBus.Registrations;
+using Hypercube.Shared.Utilities.Ref;
 using Hypercube.Shared.Utilities.Units;
 
 namespace Hypercube.Shared.EventBus;
 
 public sealed class EventBus : IEventBus
 {
-    private readonly Dictionary<Type, EventRegistration> _eventRegistration = new();
-    private readonly Dictionary<IEventSubscriber, SubscriptionRegistration> _subscriptionRegistrations = new();
+    private readonly Dictionary<Type, HashSet<EventSubscription>> _eventRegistration = new();
+    private readonly Dictionary<IEventSubscriber, Dictionary<Type, EventSubscription>> _subscriptionRegistrations = new();
     
     public void Raise<T>(ref T eventArgs) where T : IEventArgs
     {
@@ -51,18 +49,18 @@ public sealed class EventBus : IEventBus
 
         if (!_eventRegistration.TryGetValue(eventType, out var eventRegistration))
         {
-            eventRegistration = new EventRegistration();
+            eventRegistration = new HashSet<EventSubscription>();
             _eventRegistration[eventType] = eventRegistration;
         }
 
         if (!_subscriptionRegistrations.TryGetValue(subscriber, out var subscriptionRegistration))
         {
-            subscriptionRegistration = new SubscriptionRegistration(subscriber);
+            subscriptionRegistration = new Dictionary<Type, EventSubscription>();
             _subscriptionRegistrations[subscriber] = subscriptionRegistration;
         }
         
         eventRegistration.Add(subscription);
-        subscriptionRegistration.Add<T>(subscription);
+        subscriptionRegistration.Add(typeof(T), subscription);
     }
     
     public void Unsubscribe<T>(IEventSubscriber subscriber) where T : IEventArgs
@@ -72,9 +70,12 @@ public sealed class EventBus : IEventBus
         
         if (!_eventRegistration.TryGetValue(typeof(T), out var eventRegistration))
             throw new InvalidOperationException();
+
+        if (!subscriptionRegistration.TryGetValue(typeof(T), out var eventSubscription))
+            throw new InvalidOperationException();
         
-        eventRegistration.Remove(subscriptionRegistration.Get<T>());
-        subscriptionRegistration.Remove<T>();
+        eventRegistration.Remove(eventSubscription);
+        subscriptionRegistration.Remove(typeof(T));
     }
 
     private void ProcessBroadcastEvent<T>(ref Unit unit) where T : IEventArgs
@@ -87,7 +88,7 @@ public sealed class EventBus : IEventBus
         if (!_eventRegistration.TryGetValue(eventType, out var registration))
             return;
         
-        foreach (var handler in registration.BroadcastRegistrations)
+        foreach (var handler in registration)
         {
             handler.Handler(ref unit);
         }
@@ -98,6 +99,9 @@ public sealed class EventBus : IEventBus
         if (!_subscriptionRegistrations.TryGetValue(target, out var subscriptionRegistration))
             throw new InvalidOperationException();
 
-        subscriptionRegistration.Get<T>().Handler(ref unit);
+        if (!subscriptionRegistration.TryGetValue(typeof(T), out var eventSubscription))
+            throw new InvalidOperationException();
+
+        eventSubscription.Handler(ref unit);
     }
 }

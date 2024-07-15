@@ -1,5 +1,4 @@
 ﻿using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Handlers;
 
 namespace Hypercube.Shared.EventBus;
 

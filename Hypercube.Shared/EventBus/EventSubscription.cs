@@ -1,11 +1,11 @@
-﻿using Hypercube.Shared.EventBus.Handlers;
+﻿using Hypercube.Shared.Utilities.Ref;
 
-namespace Hypercube.Shared.EventBus.Broadcast;
+namespace Hypercube.Shared.EventBus;
 
 public sealed class EventSubscription : IEquatable<EventSubscription>
 {
     public RefHandler Handler { get; }
-    public object Equality { get; }
+    private object Equality { get; }
 
     public EventSubscription(RefHandler refHandler, object equalityObj)
     {
