@@ -1,18 +1,18 @@
 ﻿using Hypercube.Shared.EventBus.Broadcast;
 
-namespace Hypercube.Shared.EventBus;
+namespace Hypercube.Shared.EventBus.Registrations;
 
 /// <summary>
 /// Saves information about a specific event.
 /// </summary>
 public readonly struct EventRegistration()
 {
-    private readonly HashSet<BroadcastRegistration> _broadcastRegistrations = new();
+    private readonly HashSet<EventSubscription> _broadcastRegistrations = new();
 
-    public IReadOnlySet<BroadcastRegistration> BroadcastRegistrations => _broadcastRegistrations;
+    public IReadOnlySet<EventSubscription> BroadcastRegistrations => _broadcastRegistrations;
     
     /// <exception cref="InvalidOperationException"></exception>
-    public void Add(BroadcastRegistration registration)
+    public void Add(EventSubscription registration)
     {
         if (_broadcastRegistrations.Contains(registration))
             throw new InvalidOperationException();
@@ -21,7 +21,7 @@ public readonly struct EventRegistration()
     }
 
     /// <exception cref="InvalidOperationException"></exception>
-    public void Remove(BroadcastRegistration registration)
+    public void Remove(EventSubscription registration)
     {
         if (!_broadcastRegistrations.Contains(registration))
             throw new InvalidOperationException();

@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using Hypercube.Shared.EventBus.Broadcast;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.EventBus.Exceptions;
 using Hypercube.Shared.EventBus.Handlers;
-using Hypercube.Shared.Utilities;
+using Hypercube.Shared.EventBus.Registrations;
 using Hypercube.Shared.Utilities.Units;
 
 namespace Hypercube.Shared.EventBus;
@@ -11,24 +10,26 @@ namespace Hypercube.Shared.EventBus;
 public sealed class EventBus : IEventBus
 {
     private readonly Dictionary<Type, EventRegistration> _eventRegistration = new();
-    private readonly Dictionary<IEventSubscriber, Dictionary<Type, BroadcastRegistration>> _inverseEventSubscriptions = new();
+    private readonly Dictionary<IEventSubscriber, SubscriptionRegistration> _subscriptionRegistrations = new();
     
-    public void Raise<T>(ref T receiver) where T : IEventArgs
+    public void Raise<T>(ref T eventArgs) where T : IEventArgs
     {
-        ProcessEvent(ref Unsafe.As<T, Unit>(ref receiver), typeof(T));
+        ProcessBroadcastEvent<T>(ref Unsafe.As<T, Unit>(ref eventArgs));
+    }
+
+    public void Raise<T>(IEventSubscriber subscriber, ref T eventArgs) where T : IEventArgs
+    {
+        ProcessDirectedEvent<T>(subscriber, ref Unsafe.As<T, Unit>(ref eventArgs));
     }
     
-    public void Raise<T>(T receiver) where T : IEventArgs
+    public void Raise<T>(T eventArgs) where T : IEventArgs
     {
-        ProcessEvent(ref Unsafe.As<T, Unit>(ref receiver), typeof(T));
+        ProcessBroadcastEvent<T>(ref Unsafe.As<T, Unit>(ref eventArgs));
     }
     
-    public void Raise(IEventArgs eventArgs)
+    public void Raise<T>(IEventSubscriber subscriber, T eventArgs) where T : IEventArgs
     {
-        var eventType = eventArgs.GetType();
-        ref var unitRef = ref UnitHelper.ExtractUnitRef(ref eventArgs, eventType);
-        
-        ProcessEvent(ref unitRef, eventType);
+        ProcessDirectedEvent<T>(subscriber, ref Unsafe.As<T, Unit>(ref eventArgs));
     }
     
     public void Subscribe<T>(IEventSubscriber subscriber, EventRefHandler<T> refHandler) where T : IEventArgs
@@ -45,86 +46,58 @@ public sealed class EventBus : IEventBus
     private void SubscribeEventCommon<T>(IEventSubscriber subscriber, RefHandler refHandler, object equality)
         where T : IEventArgs
     {
-        ArgumentNullException.ThrowIfNull(subscriber);
-        
         var eventType = typeof(T);
-        var subscription = new BroadcastRegistration(refHandler, equality);
-        
-        var subscriptions = GetEventRegistration(eventType);
-        subscriptions.Add(subscription);
-        
-        var inverseSubscriptions = GetEventInverseSubscription(subscriber);
-        if (inverseSubscriptions.TryAdd(eventType, subscription))
-            return;
-        
-        throw new InvalidOperationException();
-    }
+        var subscription = new EventSubscription(refHandler, equality);
 
-    /// <exception cref="ArgumentNullException">Throws when subscriber is null</exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    public void Unsubscribe<T>(IEventSubscriber subscriber) where T : IEventArgs
-    {
-        ArgumentNullException.ThrowIfNull(subscriber);
-        
-        var eventType = typeof(T);
-        
-        var inverseSubscriptions = GetEventInverseSubscription(subscriber);
-        if (!inverseSubscriptions.TryGetValue(eventType, out var registration))
-            throw new InvalidOperationException();
-        
-        Unsubscribe(eventType, registration, subscriber);
-    }
+        if (!_eventRegistration.TryGetValue(eventType, out var eventRegistration))
+        {
+            eventRegistration = new EventRegistration();
+            _eventRegistration[eventType] = eventRegistration;
+        }
 
-    /// <exception cref="UnregisteredEventException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    private void Unsubscribe(Type eventType, BroadcastRegistration registration, IEventSubscriber subscriber)
-    {
-        var eventRegistration = GetEventRegistration(eventType, false);
-        eventRegistration.Remove(registration);
+        if (!_subscriptionRegistrations.TryGetValue(subscriber, out var subscriptionRegistration))
+        {
+            subscriptionRegistration = new SubscriptionRegistration(subscriber);
+            _subscriptionRegistrations[subscriber] = subscriptionRegistration;
+        }
         
-        var inverseSubscriptions = GetEventInverseSubscription(subscriber, false);
-        inverseSubscriptions.Remove(eventType);
+        eventRegistration.Add(subscription);
+        subscriptionRegistration.Add<T>(subscription);
     }
     
-    private void ProcessEvent(ref Unit unitRef, Type eventType)
+    public void Unsubscribe<T>(IEventSubscriber subscriber) where T : IEventArgs
+    {
+        if (!_subscriptionRegistrations.TryGetValue(subscriber, out var subscriptionRegistration))
+            throw new InvalidOperationException();
+        
+        if (!_eventRegistration.TryGetValue(typeof(T), out var eventRegistration))
+            throw new InvalidOperationException();
+        
+        eventRegistration.Remove(subscriptionRegistration.Get<T>());
+        subscriptionRegistration.Remove<T>();
+    }
+
+    private void ProcessBroadcastEvent<T>(ref Unit unit) where T : IEventArgs
+    {
+        ProcessBroadcastEvent(ref unit, typeof(T));
+    }
+    
+    private void ProcessBroadcastEvent(ref Unit unit, Type eventType)
     {
         if (!_eventRegistration.TryGetValue(eventType, out var registration))
             return;
         
-        ProcessEventCore(ref unitRef, registration);
-    }
-    
-    private void ProcessEventCore(ref Unit unitRef, EventRegistration registration)
-    {
         foreach (var handler in registration.BroadcastRegistrations)
         {
-            handler.Handler(ref unitRef);
+            handler.Handler(ref unit);
         }
     }
-    
-    /// <param name="eventType">Type of event whose registration we want to receive.</param>
-    /// <param name="autoRegistration">Allows you to control the automatic registration of an event if it does not exist.</param>
-    /// <exception cref="UnregisteredEventException">If <c>autoRegistration</c> is <c>false</c>, it will throw an exception if registration is not found.</exception>
-    private EventRegistration GetEventRegistration(Type eventType, bool autoRegistration = true)
+
+    private void ProcessDirectedEvent<T>(IEventSubscriber target, ref Unit unit) where T : IEventArgs
     {
-        if (_eventRegistration.TryGetValue(eventType, out var found))
-            return found;
-
-        if (!autoRegistration)
-            throw new UnregisteredEventException(eventType);
-        
-        return _eventRegistration[eventType] = new EventRegistration();
-    }
-
-    /// <exception cref="InvalidOperationException"></exception>
-    private Dictionary<Type, BroadcastRegistration> GetEventInverseSubscription(IEventSubscriber subscriber, bool creating = true)
-    {
-        if (_inverseEventSubscriptions.TryGetValue(subscriber, out var subscriptions))
-            return subscriptions;
-
-        if (!creating)
+        if (!_subscriptionRegistrations.TryGetValue(target, out var subscriptionRegistration))
             throw new InvalidOperationException();
-        
-        return _inverseEventSubscriptions[subscriber] = new Dictionary<Type, BroadcastRegistration>();
+
+        subscriptionRegistration.Get<T>().Handler(ref unit);
     }
 }
