@@ -192,7 +192,7 @@ public sealed unsafe partial class GlfwWindowManager
          
          foreach (var file in files)
          {
-             yield return textureMan.GetTexture(file);
+             yield return textureMan.CreateTexture(file);
          }
      }
 

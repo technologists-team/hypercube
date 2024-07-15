@@ -7,9 +7,9 @@ using TextureTarget = Hypercube.Client.Graphics.Texturing.Parameters.TextureTarg
 
 namespace Hypercube.Client.Graphics.Texturing.Settings;
 
-public struct Texture2DCreationSettings : ITextureCreationSettings
+public struct TextureCreationSettings : ITextureCreationSettings
 {
-    public Texture2DCreationSettings(
+    public TextureCreationSettings(
         TextureTarget textureTarget, 
         HashSet<TextureParameter> parameters, 
         PixelInternalFormat pixelInternalFormat, 
@@ -29,7 +29,7 @@ public struct Texture2DCreationSettings : ITextureCreationSettings
         Flip = flip;
     }
 
-    public Texture2DCreationSettings()
+    public TextureCreationSettings()
     {
         TextureTarget = TextureTarget.Texture2D;
         Parameters = new()

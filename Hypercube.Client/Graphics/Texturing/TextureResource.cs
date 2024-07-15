@@ -13,7 +13,7 @@ public sealed class TextureResource : Resource, IDisposable
     public override void Load(ResourcePath path, DependenciesContainer container)
     {
         var textureManager = container.Resolve<ITextureManager>();
-        var handle = textureManager.GetTextureHandle(path, new Texture2DCreationSettings());
+        var handle = textureManager.CreateTextureHandle(path, new TextureCreationSettings());
         Texture = handle;
     }
 
