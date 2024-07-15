@@ -13,8 +13,8 @@ namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
 public sealed partial class Renderer
 {
-    private IShaderProgram _baseShaderProgram = default!;
-    private ITextureHandle _baseTexture = default!;
+    private IShaderProgram _primitiveShaderProgram = default!;
+    private IShaderProgram _texturingShaderProgram = default!;
     
     private const int MaxBatchVertices = 65532;
     private const int IndicesPerVertex = 6;
@@ -33,7 +33,8 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _baseShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base").ShaderProgram;
+        _primitiveShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_primitive").ShaderProgram;
+        _texturingShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_texturing").ShaderProgram;
 
         _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
         
@@ -110,17 +111,21 @@ public sealed partial class Renderer
 
     private void Render(Batch batch)
     {
-        GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, batch.TextureHandle);
+        var shader = _primitiveShaderProgram;
+        if (batch.TextureHandle is not null)
+        {
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, batch.TextureHandle.Value);
+            shader = _texturingShaderProgram;
+        }
         
-        _baseShaderProgram.Use();
-        
-        _baseShaderProgram.SetUniform("model", batch.Model);
-        _baseShaderProgram.SetUniform("view", Matrix4X4.Identity);
-        _baseShaderProgram.SetUniform("projection", _cameraManager.Projection);
+        shader.Use();
+        shader.SetUniform("model", batch.Model);
+        shader.SetUniform("view", Matrix4X4.Identity);
+        shader.SetUniform("projection", _cameraManager.Projection);
 
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
         
-        _baseShaderProgram.Stop();
+        shader.Stop();
     }
 }

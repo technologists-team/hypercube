@@ -9,8 +9,34 @@ namespace Hypercube.Math.Matrixs;
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4 : IEquatable<Matrix4X4>
 {
+    /// <summary>
+    /// <code>
+    ///   0  |  0  |  0  |  0
+    ///   0  |  0  |  0  |  0
+    ///   0  |  0  |  0  |  0
+    ///   0  |  0  |  0  |  0
+    /// </code>
+    /// </summary>
     public static Matrix4X4 Zero => new(Vector4.Zero);
+    
+    /// <summary>
+    /// <code>
+    ///   1  |  1  |  1  |  1
+    ///   1  |  1  |  1  |  1
+    ///   1  |  1  |  1  |  1
+    ///   1  |  1  |  1  |  1
+    /// </code>
+    /// </summary>
     public static Matrix4X4 One => new(Vector4.One);
+    
+    /// <summary>
+    /// <code>
+    ///   1  |  0  |  0  |  0
+    ///   0  |  1  |  0  |  0
+    ///   0  |  0  |  1  |  0
+    ///   0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
     public static Matrix4X4 Identity => new(Vector4.UnitX, Vector4.UnitY, Vector4.UnitZ, Vector4.UnitW);
 
     public Vector4 Row0;
@@ -245,6 +271,14 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     {
     }
 
+    public Matrix4X4(Matrix3X3 matrix3X3)
+    {
+        Row0 = new Vector4(matrix3X3.Row0, 0);
+        Row1 = new Vector4(matrix3X3.Row1, 0);
+        Row2 = new Vector4(matrix3X3.Row2, 0);
+        Row3 = Vector4.Zero;
+    }
+    
     public Matrix4X4(Matrix4X4 matrix4X4) : this(matrix4X4.Row0, matrix4X4.Row1, matrix4X4.Row2, matrix4X4.Row3)
     {
     }
@@ -329,6 +363,16 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return !a.Equals(b);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Matrix4X4 CreateIdentity(Matrix3X3 matrix3X3)
+    {
+        return new Matrix4X4(
+            new Vector4(matrix3X3.Row0, 0),
+            new Vector4(matrix3X3.Row1, 0),
+            new Vector4(matrix3X3.Row2, 0),
+            Vector4.UnitW);
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix4X4 Transpose(Matrix4X4 matrix4X4)
     {

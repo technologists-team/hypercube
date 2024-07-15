@@ -1,6 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
+using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Math.Boxs;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
@@ -13,7 +15,7 @@ namespace Hypercube.Client.Entities.Systems.Sprite;
 
 public sealed class SpriteSystem : EntitySystem
 {
-    [Dependency] private readonly IRenderDrawing _drawing = default!;
+    [Dependency] private readonly IRenderer _renderer = default!;
     [Dependency] private readonly IResourceCacher _resourceCacher = default!;
         
     public override void Initialize()
@@ -35,8 +37,9 @@ public sealed class SpriteSystem : EntitySystem
 
     public void Render(Entity<SpriteComponent> entity, Transform2 transform)
     {
-        entity.Component.TextureHandle ??=
-            _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
-        _drawing.DrawTexture(entity.Component.TextureHandle, Vector2.Zero, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
+        var textureHandle = _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
+        entity.Component.TextureHandle ??= textureHandle;
+        
+        _renderer.DrawTexture(textureHandle, textureHandle.Texture.QuadCrateTranslated(Vector2.Zero), Box2.UV, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }
 }

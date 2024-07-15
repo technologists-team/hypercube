@@ -1,6 +1,11 @@
 ﻿using Hypercube.Client.Audio;
 using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
+using Hypercube.Client.Graphics.Drawing;
+using Hypercube.Client.Graphics.Events;
+using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Math;
+using Hypercube.Math.Boxs;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
@@ -16,10 +21,11 @@ namespace Hypercube.Example;
 public sealed class Example : IEventSubscriber, IPostInject
 {
     [Dependency] private readonly IAudioManager _audioManager = default!;
-    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
     [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
+    [Dependency] private readonly IRenderer _renderer = default!;
+    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
 
     private readonly Random _random = new();
     
@@ -31,6 +37,15 @@ public sealed class Example : IEventSubscriber, IPostInject
     public void PostInject()
     {
         _eventBus.Subscribe<RuntimeStartupEvent>(this, Startup);
+        _eventBus.Subscribe<RenderDrawingEvent>(this, OnRenderDrawing);
+    }
+
+    private void OnRenderDrawing(ref RenderDrawingEvent ev)
+    {
+        //_renderer.DrawRectangle(new Box2(100, 100, 0, 0), Color.White);
+        //_renderer.DrawLine(new Box2(100, 100, 0, 0), Color.Red);
+        _renderer.DrawPoint(new Vector2(100, 100), Color.Green);
+        _renderer.DrawPoint(new Vector2(0, 0), Color.Green);
     }
 
     private void Startup(ref RuntimeStartupEvent args)
