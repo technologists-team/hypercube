@@ -2,6 +2,7 @@
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.EventBus;
+using Hypercube.Shared.Entities.Realisation.EventBus.EventArgs;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.EventBus.Events;
@@ -65,6 +66,13 @@ public abstract class EntitySystem : IEntitySystem, IEventSubscriber
     protected void Subscribe<T>(EventRefHandler<T> callback) where T : IEventArgs
     {
         _eventBus.Subscribe(this, callback);
+    }
+
+    protected void Subscribe<TComponent, TEvent>(EntitiesEventRefHandler<TComponent, TEvent> callback)
+        where TComponent : IComponent
+        where TEvent : IEntitiesEventArgs
+    {
+        _entitiesEventBus.Subscribe(this, callback);
     }
     
     protected void Unsubscribe<T>(EventRefHandler<T> callback) where T : IEventArgs

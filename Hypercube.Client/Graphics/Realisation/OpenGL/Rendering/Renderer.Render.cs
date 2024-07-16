@@ -4,6 +4,7 @@ using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
+using Hypercube.Math;
 using Hypercube.Math.Matrixs;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
@@ -64,7 +65,13 @@ public sealed partial class Renderer
     private void OnFrameUpdate(ref UpdateFrameEvent args)
     {
 #if DEBUG
-        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} | cPos: {_cameraManager.MainCamera?.Position ?? null} | cRot: {_cameraManager.MainCamera?.Rotation ?? null}");
+        var cameraTitle = string.Empty;
+        if (_cameraManager.MainCamera is not null)
+        {
+            cameraTitle = $"| cPos: {_cameraManager.MainCamera.Position} | cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees}";
+        }
+        
+        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle}");
 #endif
         _windowManager.PollEvents();
         _cameraManager.UpdateInput(_cameraManager.MainCamera, args.DeltaSeconds);

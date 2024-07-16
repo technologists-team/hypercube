@@ -7,6 +7,7 @@ using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation;
+using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.Resources.Caching;
@@ -23,9 +24,16 @@ public sealed class SpriteSystem : EntitySystem
         base.Initialize();
         
         Subscribe<RenderDrawingEvent>(OnRenderDrawing);
+        
+        Subscribe<SpriteComponent, ComponentAdded>(OnSpriteAdded);
     }
 
-    private void OnRenderDrawing(ref RenderDrawingEvent ev)
+    private void OnSpriteAdded(Entity<SpriteComponent> entity, ref ComponentAdded args)
+    {
+        entity.Component.TextureHandle = _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
+    }
+
+    private void OnRenderDrawing(ref RenderDrawingEvent args)
     {
         // TODO: Render entities in view space
         foreach (var entity in GetEntities<SpriteComponent>())
@@ -37,9 +45,6 @@ public sealed class SpriteSystem : EntitySystem
 
     public void Render(Entity<SpriteComponent> entity, Transform2 transform)
     {
-        var textureHandle = _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
-        entity.Component.TextureHandle ??= textureHandle;
-        
-        _renderer.DrawTexture(textureHandle, textureHandle.Texture.QuadCrateTranslated(Vector2.Zero), Box2.UV, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
+        _renderer.DrawTexture(entity.Component.TextureHandle, entity.Component.TextureHandle.Texture.QuadCrateTranslated(Vector2.Zero), Box2.UV, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }
 }

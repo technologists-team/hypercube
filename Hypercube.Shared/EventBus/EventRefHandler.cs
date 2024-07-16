@@ -2,5 +2,5 @@
 
 namespace Hypercube.Shared.EventBus;
 
-public delegate void EventRefHandler<T>(ref T ev)
+public delegate void EventRefHandler<T>(ref T args)
     where T : IEventArgs;

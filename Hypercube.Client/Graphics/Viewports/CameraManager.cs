@@ -23,19 +23,19 @@ public class CameraManager : ICameraManager
         var rotation = camera.Rotation;
         var scale = camera.Scale;
         
-        var speed = 20f;
+        var speed = 60f;
         
         if (_inputHandler.IsKeyDown(Key.W))
-            position -= Vector3.UnitY * speed * delta;
+            position += Vector3.UnitY * speed * delta;
 
         if (_inputHandler.IsKeyDown(Key.S))
-            position += Vector3.UnitY * speed * delta; 
+            position -= Vector3.UnitY * speed * delta; 
 
         if (_inputHandler.IsKeyDown(Key.A))
-            position += Vector3.UnitX * speed * delta;
+            position -= Vector3.UnitX * speed * delta;
 
         if (_inputHandler.IsKeyDown(Key.D))
-            position -= Vector3.UnitX * speed * delta;
+            position += Vector3.UnitX * speed * delta;
         
         if (_inputHandler.IsKeyDown(Key.Q))
             rotation -= Vector3.UnitZ * delta;
