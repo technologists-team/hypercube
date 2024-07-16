@@ -25,8 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\Systems\" />
-      <Folder Include="Input\Binding\" />
+        <ContentWithTargetPath Include=".\Libraries\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
     </ItemGroup>
-
 </Project>
