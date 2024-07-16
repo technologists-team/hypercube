@@ -21,7 +21,7 @@ public class Logger(string name) : ILogger
     {
         var normalColor = "\x1b[39m";
         var (levelName, levelColor) = LevelName[level];
-        Console.WriteLine($"{normalColor}[{levelColor}{levelName}{normalColor}] {name}: {message}");
+        Console.WriteLine($"{normalColor}[{levelColor}{levelName}{normalColor}] {Name}: {message}");
     }
 
     public void Debug(string message)
