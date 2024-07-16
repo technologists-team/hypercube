@@ -8,7 +8,7 @@ public sealed class PhysicsManager : IPhysicsManager, IEventSubscriber, IPostInj
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
 
-    private readonly HashSet<World> _worlds = new();
+    private readonly World _world = new();
     
     public void PostInject()
     {
@@ -17,7 +17,17 @@ public sealed class PhysicsManager : IPhysicsManager, IEventSubscriber, IPostInj
 
     private void OnTick(ref TickFrameEvent ev)
     {
-        UpdateSubSteps(ev.DeltaSeconds, 10);        
+        UpdateSubSteps(ev.DeltaSeconds, 1);        
+    }
+
+    public void AddBody(IBody body)
+    {
+        _world.AddBody(body);
+    }
+    
+    public void RemoveBody(IBody body)
+    {
+        _world.RemoveBody(body);
     }
     
     private void UpdateSubSteps(float deltaTime, int steps)
@@ -31,9 +41,6 @@ public sealed class PhysicsManager : IPhysicsManager, IEventSubscriber, IPostInj
 
     private void Update(float deltaTime)
     {
-        foreach (var world in _worlds)
-        {
-            world.Update(deltaTime);
-        }
+        _world.Update(deltaTime);
     }
 }

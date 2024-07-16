@@ -1,9 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Vectors;
 
-namespace Hypercube.Math.Boxs;
+namespace Hypercube.Math.Shapes;
 
-[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public readonly struct Box2
 {
     public static readonly Box2 UV = new(0.0f, 1.0f, 1.0f, 0.0f);

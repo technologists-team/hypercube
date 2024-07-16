@@ -3,5 +3,6 @@
 public enum BodyType
 {
     Static,
+    Kinematic,
     Dynamic
 }

@@ -65,6 +65,17 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     {
         return new Vector2(X, value);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Rotate(float angle)
+    {
+        var cos = MathF.Cos(angle);
+        var sin = MathF.Sin(angle);
+        
+        return new Vector2(
+            cos * X - sin * Y,
+            sin * X + cos * Y);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Vector2 other)
@@ -155,5 +166,23 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static bool operator !=(Vector2 a, Vector2 b)
     {
         return !a.Equals(b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float DistanceSquared(Vector2 a, Vector2 b)
+    {
+        return (a - b).LengthSquared;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Distance(Vector2 a, Vector2 b)
+    {
+        return MathF.Sqrt(DistanceSquared(a, b));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Dot(Vector2 a, Vector2 b)
+    {
+        return a.X * b.X + a.Y * b.Y;
     }
 }

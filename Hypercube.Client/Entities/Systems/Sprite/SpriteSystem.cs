@@ -2,7 +2,7 @@
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math.Boxs;
+using Hypercube.Math.Shapes;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;

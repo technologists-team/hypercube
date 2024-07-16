@@ -1,10 +1,18 @@
-﻿using Hypercube.Math;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Vectors;
+using Hypercube.Shared.Physics.Shapes;
 
 namespace Hypercube.Shared.Physics;
 
-public sealed class Body
+public sealed class Body : IBody
 {
-    public Vector2 Position;
-    public Angle Rotation;
+    public CircleShape Shape { get; private set; } = new CircleShape();
+    
+    public Vector2 Velocity { get; private set; }
+    public Vector2 Position { get; private set; }
+    public Vector2 PreviousPosition { get; private set; }
+    
+    public void Move(Vector2 position)
+    {
+        Position += position;
+    }
 }

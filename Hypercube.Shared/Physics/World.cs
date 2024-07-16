@@ -1,4 +1,5 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
@@ -11,15 +12,33 @@ namespace Hypercube.Shared.Physics;
 public sealed class World
 {
     private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
-
+    private readonly HashSet<IBody> _bodies = new();
+    
     public void Update(float deltaTime)
     {
-        ProcessChunkCollisions();
-    }
-
-    public void AddBody(Body body)
-    {
+        foreach (var bodyA in _bodies)
+        {
+            foreach (var bodyB in _bodies)
+            {
+                if (bodyA == bodyB)
+                    continue;
+                
+                ProcessCollision(bodyA, bodyB);
+            }
+        }
         
+        // TODO: Add works with chunks
+        // ProcessChunkCollisions();
+    }
+    
+    public void AddBody(IBody body)
+    {
+        _bodies.Add(body);
+    }
+    
+    public void RemoveBody(IBody body)
+    {
+        _bodies.Remove(body);
     }
     
     private void ProcessChunkCollisions()
@@ -61,8 +80,15 @@ public sealed class World
         }
     }
 
-    private void ProcessCollision(Body bodyA, Body bodyB)
+    private void ProcessCollision(IBody bodyA, IBody bodyB)
     {
+        var circleA = new Circle(bodyA.Position + bodyA.Shape.Position, bodyA.Shape.Radius); 
+        var circleB = new Circle(bodyB.Position + bodyB.Shape.Position, bodyB.Shape.Radius); 
         
+        if (!Collisions.IntersectsCircles(circleA, circleB, out var depth, out var normal))
+            return;
+        
+        bodyA.Move(normal * depth / 2f);
+        bodyB.Move(-normal * depth / 2f);
     }
 }

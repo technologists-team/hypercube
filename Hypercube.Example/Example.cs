@@ -5,10 +5,10 @@ using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Math;
-using Hypercube.Math.Boxs;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
+using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Resources;
@@ -50,7 +50,7 @@ public sealed class Example : IEventSubscriber, IPostInject
 
     private void Startup(ref RuntimeStartupEvent args)
     {
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < 400; i++)
         {
             var x = _random.NextSingle() * 800 - 400;
             var y = _random.NextSingle() * 800 - 400;
@@ -72,6 +72,8 @@ public sealed class Example : IEventSubscriber, IPostInject
     private void CreateEntity(SceneCoordinates coordinates)
     {
         var entityUid = _entitiesManager.Create("Fuck", coordinates);
+
+        _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid);
         
         _entitiesComponentManager.AddComponent<SpriteComponent>(entityUid, entity =>
         {

@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Boxs;
+﻿using Hypercube.Math.Shapes;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 

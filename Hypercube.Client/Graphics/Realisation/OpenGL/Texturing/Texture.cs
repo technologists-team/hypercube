@@ -1,18 +1,29 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math.Boxs;
+using Hypercube.Math.Shapes;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 
-public readonly struct Texture(ResourcePath path, Vector2Int size, byte[] data) : ITexture
+public readonly struct Texture : ITexture
 {
-    public ResourcePath Path { get; } = path;
-    public int Width { get; } = size.X;
-    public int Height { get; } = size.Y;
-    public byte[] Data { get; } = data;
+    public ResourcePath Path { get; }
+    public Vector2Int Size { get; }
+    public byte[] Data { get; }
+
+    public int Width => Size.X;
+    public int Height => Size.Y;
+    
+    public Texture(ResourcePath path, Vector2Int size, byte[] data)
+    {
+        Path = path;
+        Size = size;
+        Data = data;
+    }
+    
     public Box2 QuadCrateTranslated(Vector2 position)
     {
-        return new Box2(position, position + (Vector2)size);
+        var size = (Vector2)Size / 2;
+        return new Box2(position - size / 2, position + size / 2);
     }
 }

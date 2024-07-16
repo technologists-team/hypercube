@@ -2,8 +2,8 @@
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Math;
-using Hypercube.Math.Boxs;
 using Hypercube.Math.Matrixs;
+using Hypercube.Math.Shapes;
 using Hypercube.Math.Vectors;
 
 namespace Hypercube.Client.Graphics.Rendering;
@@ -34,6 +34,9 @@ public interface IRenderer
     void DrawLine(Box2 box, Color color);
     void DrawLine(Box2 box, Color color, Matrix3X3 model);
     void DrawLine(Box2 box, Color color, Matrix4X4 model);
+    void DrawCircle(Circle circle, Color color);
+    void DrawCircle(Circle circle, Color color, Matrix3X3 model);
+    void DrawCircle(Circle circle, Color color, Matrix4X4 model);
     void DrawRectangle(Box2 box, Color color);
     void DrawRectangle(Box2 box, Color color, Matrix3X3 model);
     void DrawRectangle(Box2 box, Color color, Matrix4X4 model);

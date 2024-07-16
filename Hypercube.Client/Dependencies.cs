@@ -15,6 +15,7 @@ using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Physics;
 using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Timing;
@@ -53,6 +54,9 @@ public static class Dependencies
         
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
+        
+        // Physics
+        rootContainer.Register<IPhysicsManager, PhysicsManager>();
         
         // Rendering
         rootContainer.Register<IRenderer, Renderer>();
