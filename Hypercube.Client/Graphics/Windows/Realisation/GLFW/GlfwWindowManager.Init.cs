@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Utilities.Helpers;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed partial class GlfwWindowManager
 {

@@ -4,7 +4,7 @@ using GlfwVideoMode = OpenTK.Windowing.GraphicsLibraryFramework.VideoMode;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 using VideoMode = Hypercube.Client.Graphics.Monitors.VideoMode;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed unsafe partial class GlfwWindowManager
 {

@@ -5,7 +5,7 @@ using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;
 using KeyModifiers = Hypercube.Client.Input.KeyModifiers;
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed unsafe partial class GlfwWindowManager
 {

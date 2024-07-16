@@ -10,48 +10,48 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using GlfwImage = OpenTK.Windowing.GraphicsLibraryFramework.Image;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed unsafe partial class GlfwWindowManager
 {
     public WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare)
     { 
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintString.X11InstanceName, "Hypercube");
+        GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
+        GLFW.WindowHint(WindowHintString.X11InstanceName, "Hypercube");
 
         if (context is null)
         {
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi);
+            GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi);
         }
         else
         {
 #if DEBUG
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.OpenGLDebugContext, true);
+            GLFW.WindowHint(WindowHintBool.OpenGLDebugContext, true);
 #endif
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.ContextVersionMajor, context.Value.Version.Major);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.ContextVersionMinor, context.Value.Version.Minor);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.OpenGLForwardCompat, context.Value.Compatibility);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.SrgbCapable, true);
+            GLFW.WindowHint(WindowHintInt.ContextVersionMajor, context.Value.Version.Major);
+            GLFW.WindowHint(WindowHintInt.ContextVersionMinor, context.Value.Version.Minor);
+            GLFW.WindowHint(WindowHintBool.OpenGLForwardCompat, context.Value.Compatibility);
+            GLFW.WindowHint(WindowHintBool.SrgbCapable, true);
             
             switch (context.Value.Profile)
             {
                 case ContextProfile.Compatability:
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Any);
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlApi);
+                    GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Any);
+                    GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlApi);
                     break;
                 
                 case ContextProfile.Core:
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core);
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlApi);
+                    GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core);
+                    GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlApi);
                     break;
                 
                 case ContextProfile.Any:
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Any);
-                    OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlEsApi);
+                    GLFW.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Any);
+                    GLFW.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGlEsApi);
                     break;
             }
             
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintContextApi.ContextCreationApi,
+            GLFW.WindowHint(WindowHintContextApi.ContextCreationApi,
                 context.Value.Api == ContextApi.EglContextApi
                     ? ContextApi.EglContextApi
                     : ContextApi.NativeContextApi);
@@ -64,36 +64,36 @@ public sealed unsafe partial class GlfwWindowManager
         Monitor* monitor = null;
         if (settings.Monitor is null || !_monitors.TryGetValue(settings.Monitor.Id, out var threadMonitorRegistration)) {
 
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.RedBits, settings.RedBits ?? 8);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.GreenBits, settings.GreenBits ?? 8);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.BlueBits, settings.BlueBits ?? 8);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.RefreshRate, -1);
+            GLFW.WindowHint(WindowHintInt.RedBits, settings.RedBits ?? 8);
+            GLFW.WindowHint(WindowHintInt.GreenBits, settings.GreenBits ?? 8);
+            GLFW.WindowHint(WindowHintInt.BlueBits, settings.BlueBits ?? 8);
+            GLFW.WindowHint(WindowHintInt.RefreshRate, -1);
         }
         else
         {
             monitor = threadMonitorRegistration.Pointer;
-            var modePointer = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetVideoMode(monitor);
+            var modePointer = GLFW.GetVideoMode(monitor);
             
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.RedBits, settings.RedBits ?? modePointer->RedBits);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.GreenBits, settings.GreenBits ?? modePointer->GreenBits);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.BlueBits, settings.BlueBits ?? modePointer->BlueBits);
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.BlueBits, modePointer->RefreshRate);
+            GLFW.WindowHint(WindowHintInt.RedBits, settings.RedBits ?? modePointer->RedBits);
+            GLFW.WindowHint(WindowHintInt.GreenBits, settings.GreenBits ?? modePointer->GreenBits);
+            GLFW.WindowHint(WindowHintInt.BlueBits, settings.BlueBits ?? modePointer->BlueBits);
+            GLFW.WindowHint(WindowHintInt.BlueBits, modePointer->RefreshRate);
         }
         
         if (settings.AlphaBits is not null)
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.AlphaBits, settings.AlphaBits.Value);
+            GLFW.WindowHint(WindowHintInt.AlphaBits, settings.AlphaBits.Value);
         
         if (settings.DepthBits is not null)
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.DepthBits, settings.DepthBits.Value);
+            GLFW.WindowHint(WindowHintInt.DepthBits, settings.DepthBits.Value);
         
         if (settings.StencilBits is not null)
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.StencilBits, settings.StencilBits.Value);
+            GLFW.WindowHint(WindowHintInt.StencilBits, settings.StencilBits.Value);
         
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.Resizable, settings.Resizable);
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.TransparentFramebuffer, settings.TransparentFramebuffer);
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintBool.Decorated, settings.Decorated);
+        GLFW.WindowHint(WindowHintBool.Resizable, settings.Resizable);
+        GLFW.WindowHint(WindowHintBool.TransparentFramebuffer, settings.TransparentFramebuffer);
+        GLFW.WindowHint(WindowHintBool.Decorated, settings.Decorated);
         
-        var window = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.CreateWindow(
+        var window = GLFW.CreateWindow(
             settings.Width,
             settings.Height,
             settings.Title,
@@ -131,10 +131,10 @@ public sealed unsafe partial class GlfwWindowManager
              SetWindowIcons(registration, settings.WindowImages.ToList());
          
          // Setting callbacks
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetKeyCallback(window, _keyCallback);
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
+         GLFW.SetKeyCallback(window, _keyCallback);
+         GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
+         GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
+         GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
          
          return registration;
      }
@@ -161,7 +161,7 @@ public sealed unsafe partial class GlfwWindowManager
              */
          }
 
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.DestroyWindow(window);
+         GLFW.DestroyWindow(window);
      }
 
      private bool TryGetWindow(Window* window, [NotNullWhen(true)] out GlfwWindowRegistration? registration)
@@ -215,7 +215,7 @@ public sealed unsafe partial class GlfwWindowManager
              glfwImages[i] = new GlfwImage(image.Width, image.Height, addrOfPinnedObject);
          }
          
-         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowIcon(glfwWindow.Pointer, glfwImages);
+         GLFW.SetWindowIcon(glfwWindow.Pointer, glfwImages);
      }
      
      private class GlfwWindowRegistration : WindowRegistration

@@ -5,7 +5,7 @@ using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed unsafe partial class GlfwWindowManager : IWindowManager
 {
