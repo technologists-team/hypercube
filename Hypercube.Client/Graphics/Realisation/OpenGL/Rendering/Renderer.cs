@@ -3,7 +3,7 @@ using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
-using Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+using Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
