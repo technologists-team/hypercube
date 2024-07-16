@@ -26,6 +26,7 @@ public sealed class Camera2D : ICamera
         _zFar = zFar;
         
         SetPosition(new Vector3(position));
+        SetRotation(Vector3.UnitZ * HyperMathF.PI);
         
         UpdateProjection();
     }
