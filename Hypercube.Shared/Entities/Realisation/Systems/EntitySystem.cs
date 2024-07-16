@@ -62,6 +62,16 @@ public abstract class EntitySystem : IEntitySystem, IEventSubscriber
     {
         return _entitiesComponentManager.GetEntities<T>();
     }
+    
+    protected IEnumerable<Entity<T1, T2>> GetEntities<T1, T2>() where T1 : IComponent where T2 : IComponent
+    {
+        return _entitiesComponentManager.GetEntities<T1, T2>();
+    }
+    
+    protected IEnumerable<Entity<T1, T2, T3>> GetEntities<T1, T2, T3>() where T1 : IComponent where T2 : IComponent where T3 : IComponent
+    {
+        return _entitiesComponentManager.GetEntities<T1, T2, T3>();
+    }
 
     protected void Subscribe<T>(EventRefHandler<T> callback) where T : IEventArgs
     {
