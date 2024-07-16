@@ -10,4 +10,6 @@ public interface IEntitiesComponentManager
     T GetComponent<T>(EntityUid entityUid) where T : IComponent;
     bool HasComponent<T>(EntityUid entityUid) where T : IComponent;
     IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent;
+    IEnumerable<Entity<T1, T2>> GetEntities<T1, T2>() where T1 : IComponent where T2 : IComponent;
+    IEnumerable<Entity<T1, T2, T3>> GetEntities<T1, T2, T3>() where T1 : IComponent where T2 : IComponent where T3 : IComponent;
 }

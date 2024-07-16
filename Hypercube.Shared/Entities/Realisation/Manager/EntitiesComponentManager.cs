@@ -12,7 +12,7 @@ using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public sealed class EntitiesComponentManager : IEntitiesComponentManager, IEventSubscriber, IPostInject 
+public sealed partial class EntitiesComponentManager : IEntitiesComponentManager, IEventSubscriber, IPostInject 
 {
     private static readonly Type BaseComponentType = typeof(IComponent);
     
@@ -99,14 +99,6 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IEvent
     public bool HasComponent<T>(EntityUid entityUid) where T : IComponent
     {
         return HasComponent(entityUid, typeof(T));
-    }
-    
-    public IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent
-    {
-        foreach (var (entityUid, component) in _entitiesComponents[typeof(T)])
-        {
-            yield return new Entity<T>(entityUid, (T)component);
-        }
     }
     
     private object AddComponent(EntityUid entityUid, Type type, Action<EntityUid, IComponent>? callback = null)
