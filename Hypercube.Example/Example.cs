@@ -71,11 +71,16 @@ public sealed class Example : IEventSubscriber, IPostInject
 
     private void CreateEntity(SceneCoordinates coordinates)
     {
-        var entity = _entitiesManager.Create("Fuck", coordinates);
-        var sprite = _entitiesComponentManager.AddComponent<SpriteComponent>(entity);
-        var example = _entitiesComponentManager.AddComponent<ExampleComponent>(entity);
+        var entityUid = _entitiesManager.Create("Fuck", coordinates);
         
-        sprite.TexturePath = new ResourcePath("/Textures/icon.png");
-        example.Offset = _random.Next(0, 1000); 
+        _entitiesComponentManager.AddComponent<SpriteComponent>(entityUid, entity =>
+        {
+            entity.Component.TexturePath = new ResourcePath("/Textures/icon.png");
+        });
+        
+        _entitiesComponentManager.AddComponent<ExampleComponent>(entityUid, entity =>
+        {
+            entity.Component.Offset = _random.Next(0, 1000);
+        });
     }
 }

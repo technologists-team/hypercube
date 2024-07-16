@@ -2,25 +2,62 @@
 using System.Reflection;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Components;
+using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Events;
+using Hypercube.Shared.Entities.Systems.MetaData;
+using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;
 
-public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostInject, IEventSubscriber
+public sealed class EntitiesComponentManager : IEntitiesComponentManager, IEventSubscriber, IPostInject 
 {
     private static readonly Type BaseComponentType = typeof(IComponent);
     
     [Dependency] private readonly IEventBus _eventBus = default!;
+    [Dependency] private readonly IEntitiesEventBus _entitiesEventBus = default!;
 
+    private readonly Dictionary<EntityUid, HashSet<Type>> _entitiesComponentSet = new();
+    
     private FrozenDictionary<Type, Dictionary<EntityUid, IComponent>> _entitiesComponents = FrozenDictionary<Type, Dictionary<EntityUid, IComponent>>.Empty;
     private FrozenSet<Type> _components = FrozenSet<Type>.Empty;
     
     public void PostInject()
     {
         _eventBus.Subscribe<RuntimeInitializationEvent>(this, OnInitialized);
+        
+        _eventBus.Subscribe<EntityAdded>(this, OnEntityAdded);
+        _eventBus.Subscribe<EntityRemoved>(this, OnEntityRemoved);
+    }
+
+    private void OnEntityAdded(ref EntityAdded args)
+    {
+        _entitiesComponentSet[args.EntityUid] = new HashSet<Type>();
+        
+        var added = args;
+        AddComponent<MetaDataComponent>(args.EntityUid, entity =>
+        {
+            entity.Component.Name = added.Name;
+        });
+        
+        AddComponent<TransformComponent>(args.EntityUid, entity =>
+        {
+            entity.Component.SceneId = added.Coordinates.Scene;
+            entity.Component.Transform.SetPosition(added.Coordinates.Position);
+        });
+    }
+    
+    private void OnEntityRemoved(ref EntityRemoved args)
+    {
+        var components = _entitiesComponentSet[args.EntityUid];
+        foreach (var component in components)
+        {
+            RemoveComponent(args.EntityUid, component, false);
+        }
+
+        _entitiesComponentSet.Remove(args.EntityUid);
     }
 
     private void OnInitialized(ref RuntimeInitializationEvent args)
@@ -41,6 +78,19 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         return (T)AddComponent(entityUid, typeof(T));
     }
 
+    public T AddComponent<T>(EntityUid entityUid, Action<Entity<T>> callback) where T : IComponent
+    {
+        return (T)AddComponent(entityUid, typeof(T), (uid, component) =>
+        {
+            callback(new Entity<T>(uid, (T)component));
+        });
+    }
+
+    public void RemoveComponent<T>(EntityUid entityUid) where T : IComponent
+    {
+        RemoveComponent(entityUid, typeof(T));
+    }
+    
     public T GetComponent<T>(EntityUid entityUid) where T : IComponent
     {
         return (T)GetComponent(entityUid, typeof(T));
@@ -51,7 +101,15 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         return HasComponent(entityUid, typeof(T));
     }
     
-    private object AddComponent(EntityUid entityUid, Type type)
+    public IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent
+    {
+        foreach (var (entityUid, component) in _entitiesComponents[typeof(T)])
+        {
+            yield return new Entity<T>(entityUid, (T)component);
+        }
+    }
+    
+    private object AddComponent(EntityUid entityUid, Type type, Action<EntityUid, IComponent>? callback = null)
     {
         if (!Validate(type))
             throw new InvalidOperationException();
@@ -72,9 +130,35 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
         var instance = (IComponent)constructor.Invoke(Array.Empty<object>()) ?? throw new NullReferenceException();
 
         components.Add(entityUid, instance);
+        _entitiesComponentSet[entityUid].Add(instance.GetType());
+        
+        callback?.Invoke(entityUid, instance);
         _eventBus.Raise(new ComponentAdded(entityUid, instance));
-
+        _entitiesEventBus.Raise(entityUid, instance, new ComponentAdded(entityUid, instance));
+        
         return instance;
+    }
+
+    private void RemoveComponent(EntityUid entityUid, Type type, bool removeFromSet = true)
+    {
+        if (!Validate(type))
+            throw new InvalidOperationException();
+
+        if (!_entitiesComponents.TryGetValue(type, out var components))
+            throw new InvalidOperationException();
+
+        if (!_entitiesComponentSet.TryGetValue(entityUid, out var componentSet))
+            throw new InvalidOperationException();
+
+        var instance = components[entityUid];
+        
+        components.Remove(entityUid);
+        
+        if (removeFromSet)
+            componentSet.Remove(type);
+        
+        _eventBus.Raise(new ComponentRemoved(entityUid, instance));
+        _entitiesEventBus.Raise(entityUid, instance, new ComponentRemoved(entityUid, instance));
     }
 
     private IComponent GetComponent(EntityUid entityUid, Type type)
@@ -102,13 +186,5 @@ public sealed class EntitiesComponentManager : IEntitiesComponentManager, IPostI
     private bool Validate(Type type)
     {
         return _components.Contains(type) && type.IsAssignableTo(BaseComponentType);
-    }
-
-    public IEnumerable<Entity<T>> GetEntities<T>() where T : IComponent
-    {
-        foreach (var (entityUid, component) in _entitiesComponents[typeof(T)])
-        {
-            yield return new Entity<T>(entityUid, (T)component);
-        }
     }
 }

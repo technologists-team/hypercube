@@ -8,7 +8,7 @@ namespace Hypercube.Client.Entities.Systems.Sprite;
 
 public sealed class SpriteComponent : Component
 {
-    public ITextureHandle? TextureHandle;
+    public ITextureHandle TextureHandle = default!;
     public ResourcePath TexturePath;
     public Transform2 Transform = new();
     
