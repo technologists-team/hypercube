@@ -4,6 +4,7 @@ using Hypercube.Client.Input.Handler;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
@@ -39,7 +40,7 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         if (!_initialized)
             return;
         
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.Terminate();
+        GLFW.Terminate();
     }
 
     public void EnterWindowLoop()
@@ -51,13 +52,13 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         _running = true;
         while (_running)
         {
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WaitEvents();
+            GLFW.WaitEvents();
         }
     }
 
     public void PollEvents()
     {
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.PollEvents();
+        GLFW.PollEvents();
     }
 
     public void Terminate()
@@ -81,24 +82,16 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
 
             var reg = (GlfwWindowRegistration)window;
 
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.MakeContextCurrent(reg.Pointer);
+            GLFW.MakeContextCurrent(reg.Pointer);
             return;
         }
 
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.MakeContextCurrent(null);
+        GLFW.MakeContextCurrent(null);
     }
     
     public nint GetProcAddress(string procName)
     {
-        return OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetProcAddress(procName);
-    }
-    
-    public void WindowSetTitle(WindowRegistration window, string title)
-    {
-        if (window is not GlfwWindowRegistration glfwWindow)
-            return;
-        
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowTitle(glfwWindow.Pointer, title);
+        return GLFW.GetProcAddress(procName);
     }
 
     public void WindowSetMonitor(WindowRegistration window, MonitorRegistration monitor, Vector2Int vector)
@@ -109,67 +102,16 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         if (window is not GlfwWindowRegistration glfwWindow)
             return;
         
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowMonitor(
+        GLFW.SetWindowMonitor(
             glfwWindow.Pointer, 
             glfwMonitor.Pointer, 
             vector.X, vector.Y, 
             monitor.Handle.Size.X, monitor.Handle.Size.Y, 
             monitor.Handle.RefreshRate);
     }
-
-    public void WindowSetMonitor(WindowRegistration window, MonitorRegistration registration)
-    {
-        WindowSetMonitor(window, registration, Vector2Int.Zero);
-    }
-
-    public void WindowRequestAttention(WindowRegistration window)
-    {
-        if (window is not GlfwWindowRegistration glfwWindow)
-            return;
-        
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.RequestWindowAttention(glfwWindow.Pointer);
-    }
-
-    public void WindowSetSize(WindowRegistration window, Vector2Int size)
-    {
-        if (window is not GlfwWindowRegistration glfwWindow)
-            return;
-        
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowSize(glfwWindow.Pointer, size.X, size.Y);
-    }
-
-    public void WindowSetVisible(WindowRegistration registration, bool visible)
-    {
-        if (registration is not GlfwWindowRegistration glfwWindow)
-            return;
-
-        if (visible)
-        {
-            OpenTK.Windowing.GraphicsLibraryFramework.GLFW.ShowWindow(glfwWindow.Pointer);
-            return;
-        }
-            
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.HideWindow(glfwWindow.Pointer);
-    }
-
-    public void WindowSetOpacity(WindowRegistration window, float opacity)
-    {
-        if (window is not GlfwWindowRegistration glfwWindow)
-            return;
-        
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowOpacity(glfwWindow.Pointer, opacity);
-    }
-
-    public void WindowSwapBuffers(WindowRegistration window)
-    {
-        if (window is not GlfwWindowRegistration glfwWindow)
-            return;
-        
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SwapBuffers(glfwWindow.Pointer);
-    }
-
+    
     public void Dispose()
     {
-        
+        Shutdown();
     }
 }

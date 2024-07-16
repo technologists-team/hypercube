@@ -9,21 +9,22 @@ public class WindowCreateSettings
     public int Width => Size.X;
     public int Height => Size.Y;
     
-    public string Title = "Hypercube Window";
-    public Vector2Int Size = new(1280, 720);
-    public ITexture[]? WindowImages = null;
-
-    public IMonitorHandle? Monitor;
-
-    public bool Resizable = true;
-    public bool TransparentFramebuffer = false;
-    public bool Decorated = true;
+    public string Title { get; init; } = "Hypercube Window";
+    public Vector2Int Size { get; init; } = new(1280, 720);
     
-    public int? RedBits = 8;
-    public int? GreenBits = 8;
-    public int? BlueBits = 8;
-    public int? AlphaBits = 8;
+    public ITexture[]? WindowImages { get; init; } = null;
+    public IMonitorHandle? Monitor { get; init; } = null;
 
-    public int? DepthBits = 24;
-    public int? StencilBits = 8;
+    public bool Resizable { get; init; } = true;
+    public bool TransparentFramebuffer { get; init; } = false;
+    public bool Decorated { get; init; } = true;
+    public bool Visible { get; init; } = true;
+    
+    public int? RedBits { get; init; } = 8;
+    public int? GreenBits { get; init; } = 8;
+    public int? BlueBits { get; init; } = 8;
+    public int? AlphaBits { get; init; } = 8;
+
+    public int? DepthBits { get; init; } = 24;
+    public int? StencilBits { get; init; } = 8;
 }

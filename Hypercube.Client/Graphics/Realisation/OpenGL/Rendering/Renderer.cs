@@ -3,7 +3,7 @@ using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
-using Hypercube.Client.Graphics.Windows.Realisation.GLFW;
+using Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
@@ -99,7 +99,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
         }
 
         var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceManager, "/Icons").ToList();
-        _windowManager.SetWindowIcons(MainWindow, windowIcons);
+        _windowManager.WindowSetIcons(MainWindow, windowIcons);
         
         InitOpenGL();
         OnLoad();
