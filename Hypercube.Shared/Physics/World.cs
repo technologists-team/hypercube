@@ -1,5 +1,6 @@
 ﻿using Hypercube.Math.Shapes;
 using Hypercube.Math.Vectors;
+using Hypercube.Shared.Physics.Shapes;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
@@ -82,13 +83,20 @@ public sealed class World
 
     private void ProcessCollision(IBody bodyA, IBody bodyB)
     {
-        var circleA = new Circle(bodyA.Position + bodyA.Shape.Position, bodyA.Shape.Radius); 
-        var circleB = new Circle(bodyB.Position + bodyB.Shape.Position, bodyB.Shape.Radius); 
-        
-        if (!Collisions.IntersectsCircles(circleA, circleB, out var depth, out var normal))
+        if (!TryProcessCircles(bodyA, bodyB))
             return;
+    }
+
+    private bool TryProcessCircles(IBody bodyA, IBody bodyB)
+    {
+        if (bodyA.Shape.Type != ShapeType.Circle || bodyB.Shape.Type != ShapeType.Circle)
+            return false;
+
+        if (!Collisions.IntersectsCircles(bodyA.ShapeCircle, bodyB.ShapeCircle, out var depth, out var normal))
+            return false;
         
         bodyA.Move(normal * depth / 2f);
         bodyB.Move(-normal * depth / 2f);
+        return true;
     }
 }

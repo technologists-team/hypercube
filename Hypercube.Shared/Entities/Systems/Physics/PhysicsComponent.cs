@@ -1,4 +1,5 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
+using Hypercube.Math.Vectors;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.Physics;
@@ -12,7 +13,7 @@ public sealed class PhysicsComponent : Component, IBody
     public TransformComponent TransformComponent;
     public TransformSystem TransformSystem;
     
-    public CircleShape Shape { get; private set; } = new();
+    public IShape Shape { get; set; } = new CircleShape();
     
     public Vector2 Velocity { get; private set; }
 
@@ -23,7 +24,8 @@ public sealed class PhysicsComponent : Component, IBody
     }
     
     public Vector2 PreviousPosition { get; private set; }
-    
+    public Circle ShapeCircle => ((CircleShape)Shape).Circle + Position;
+
     public void Move(Vector2 position)
     {
         Position += position;

@@ -11,6 +11,7 @@ using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Physics.Shapes;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Caching;
 using Hypercube.Shared.Runtimes.Event;
@@ -37,23 +38,14 @@ public sealed class Example : IEventSubscriber, IPostInject
     public void PostInject()
     {
         _eventBus.Subscribe<RuntimeStartupEvent>(this, Startup);
-        _eventBus.Subscribe<RenderDrawingEvent>(this, OnRenderDrawing);
-    }
-
-    private void OnRenderDrawing(ref RenderDrawingEvent ev)
-    {
-        //_renderer.DrawRectangle(new Box2(100, 100, 0, 0), Color.White);
-        //_renderer.DrawLine(new Box2(100, 100, 0, 0), Color.Red);
-        _renderer.DrawPoint(new Vector2(100, 100), Color.Green);
-        _renderer.DrawPoint(new Vector2(0, 0), Color.Green);
     }
 
     private void Startup(ref RuntimeStartupEvent args)
     {
         for (var i = 0; i < 400; i++)
         {
-            var x = _random.NextSingle() * 100 - 50;
-            var y = _random.NextSingle() * 100 - 50;
+            var x = _random.NextSingle() * 10 - 5;
+            var y = _random.NextSingle() * 10 - 5;
 
             var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
             CreateEntity(coord);
@@ -65,15 +57,16 @@ public sealed class Example : IEventSubscriber, IPostInject
         // it's too loud :D
         source.Gain = 0.1f;
         source.Start();
-        // var source = _audioManager.CreateSource("/game_boi_3.wav", new AudioSettings());
-        // source.Start();
     }
 
     private void CreateEntity(SceneCoordinates coordinates)
     {
         var entityUid = _entitiesManager.Create("Fuck", coordinates);
 
-        _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid);
+        _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid, entity =>
+        {
+            entity.Component.Shape = new CircleShape(1f);
+        });
         
         _entitiesComponentManager.AddComponent<SpriteComponent>(entityUid, entity =>
         {

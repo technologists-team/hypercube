@@ -4,6 +4,8 @@ using Hypercube.Math;
 using Hypercube.Math.Shapes;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Systems.Physics;
+using Hypercube.Shared.Physics;
+using Hypercube.Shared.Physics.Shapes;
 using SharedPhysicsSystem = Hypercube.Shared.Entities.Systems.Physics.PhysicsSystem;
 
 namespace Hypercube.Client.Entities.Systems.Physics;
@@ -23,10 +25,11 @@ public class PhysicsSystem : SharedPhysicsSystem
     {
         foreach (var entity in GetEntities<PhysicsComponent>())
         {
-            var shape = entity.Component.Shape;
-            var circle = new Circle(shape.Position + entity.Component.Position, shape.Radius);
-            
-            _renderer.DrawCircle(circle, Color.Green);
+            if (entity.Component.Shape.Type == ShapeType.Circle)
+            {
+                _renderer.DrawCircle(entity.Component.ShapeCircle, Color.Green);
+                continue;
+            }
         }
     }
 }

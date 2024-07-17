@@ -5,6 +5,11 @@ namespace Hypercube.Shared.Physics;
 
 public static class Collisions
 {
+    public static bool IntersectsPolygon(Vector2[] verticesA, Vector2[] verticesB, out float depth, out Vector2 normal)
+    {
+        throw new NotImplementedException();
+    }
+    
     public static bool IntersectsCircles(Circle a, Circle b)
     {
         var distance = Vector2.Distance(a.Position, b.Position);

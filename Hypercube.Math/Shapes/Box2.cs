@@ -5,6 +5,7 @@ namespace Hypercube.Math.Shapes;
 public readonly struct Box2
 {
     public static readonly Box2 UV = new(0.0f, 1.0f, 1.0f, 0.0f);
+    public static readonly Box2 Centered = new(-0.5f, -0.5f, 0.5f, 0.5f);
     
     public float Left => Point0.X;
     public float Top => Point0.Y;
