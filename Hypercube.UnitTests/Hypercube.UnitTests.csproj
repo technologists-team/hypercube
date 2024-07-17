@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Client\Hypercube.Client.csproj" />
       <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
       <ProjectReference Include="..\Hypercube.Shared\Hypercube.Shared.csproj" />
     </ItemGroup>
