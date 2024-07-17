@@ -20,10 +20,12 @@ public sealed partial class Renderer
     private const int MaxBatchVertices = 65532;
     private const int IndicesPerVertex = 6;
     private const int MaxBatchIndices = MaxBatchVertices * IndicesPerVertex;
-
+    
     private readonly List<Batch> _batches = new();
     private readonly Vertex[] _batchVertices = new Vertex[MaxBatchVertices];
     private readonly uint[] _batchIndices = new uint[MaxBatchIndices];
+    
+    private Matrix4X4 _view = Matrix4X4.CreateScale(32, 32, 1);
     
     private int _batchVertexIndex;
     private int _batchIndexIndex; // Haha name it's fun
@@ -128,7 +130,7 @@ public sealed partial class Renderer
         
         shader.Use();
         shader.SetUniform("model", batch.Model);
-        shader.SetUniform("view", Matrix4X4.Identity);
+        shader.SetUniform("view", _view);
         shader.SetUniform("projection", _cameraManager.Projection);
 
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));

@@ -52,8 +52,8 @@ public sealed class Example : IEventSubscriber, IPostInject
     {
         for (var i = 0; i < 400; i++)
         {
-            var x = _random.NextSingle() * 800 - 400;
-            var y = _random.NextSingle() * 800 - 400;
+            var x = _random.NextSingle() * 100 - 50;
+            var y = _random.NextSingle() * 100 - 50;
 
             var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
             CreateEntity(coord);

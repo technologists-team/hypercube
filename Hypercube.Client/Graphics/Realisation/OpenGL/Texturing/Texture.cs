@@ -7,6 +7,8 @@ namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 
 public readonly struct Texture : ITexture
 {
+    public const int PixelPerUnit = 32;
+    
     public ResourcePath Path { get; }
     public Vector2Int Size { get; }
     public byte[] Data { get; }
@@ -21,9 +23,9 @@ public readonly struct Texture : ITexture
         Data = data;
     }
     
-    public Box2 QuadCrateTranslated(Vector2 position)
+    public Box2 QuadCrateTranslated()
     {
-        var size = (Vector2)Size / 2;
-        return new Box2(position - size / 2, position + size / 2);
+        var size = (Vector2)Size / PixelPerUnit;
+        return new Box2(-size / 2, size / 2);
     }
 }
