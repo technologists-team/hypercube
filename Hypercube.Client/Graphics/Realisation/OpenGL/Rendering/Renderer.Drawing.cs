@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Math;
-using Hypercube.Math.Matrixs;
+using Hypercube.Math.Matrices;
 using Hypercube.Math.Shapes;
 using OpenTK.Mathematics;
 using OpenToolkit.Graphics.OpenGL4;

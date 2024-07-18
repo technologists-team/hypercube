@@ -1,6 +1,6 @@
 using System.Collections.Frozen;
 using Hypercube.Client.Graphics.Shaders;
-using Hypercube.Math.Matrixs;
+using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;

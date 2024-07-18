@@ -1,5 +1,5 @@
 ﻿using Hypercube.Math;
-using Hypercube.Math.Matrixs;
+using Hypercube.Math.Matrices;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 

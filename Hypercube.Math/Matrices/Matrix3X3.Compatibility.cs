@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using OpenTK.Mathematics;
 
-namespace Hypercube.Math.Matrixs;
+namespace Hypercube.Math.Matrices;
 
 public partial struct Matrix3X3
 {

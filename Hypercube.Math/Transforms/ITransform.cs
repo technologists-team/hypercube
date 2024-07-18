@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Matrixs;
+﻿using Hypercube.Math.Matrices;
 
 namespace Hypercube.Math.Transforms;
 

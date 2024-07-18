@@ -2,7 +2,7 @@
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Math;
-using Hypercube.Math.Matrixs;
+using Hypercube.Math.Matrices;
 using Hypercube.Math.Shapes;
 using Hypercube.Math.Vectors;
 

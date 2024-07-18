@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Matrixs;
+﻿using Hypercube.Math.Matrices;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Drawing;

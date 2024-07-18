@@ -4,7 +4,7 @@ using Hypercube.Math.Shapes;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 
-namespace Hypercube.Math.Matrixs;
+namespace Hypercube.Math.Matrices;
 
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4 : IEquatable<Matrix4X4>

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using Hypercube.Math.Vectors;
 
-namespace Hypercube.Math.Matrixs;
+namespace Hypercube.Math.Matrices;
 
 // TODO: May be it's can be immutable
 [StructLayout(LayoutKind.Sequential)]

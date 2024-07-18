@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Matrixs;
+﻿using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
 
 namespace Hypercube.Client.Graphics.Shaders;
