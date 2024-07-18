@@ -1,6 +1,4 @@
-﻿using Hypercube.Math.Shapes;
-using Hypercube.Math.Vectors;
-using Hypercube.Shared.Physics.Shapes;
+﻿using Hypercube.Math.Vectors;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
@@ -19,6 +17,8 @@ public sealed class World
     {
         foreach (var bodyA in _bodies)
         {
+            bodyA.Update(deltaTime);
+            
             foreach (var bodyB in _bodies)
             {
                 if (bodyA == bodyB)
@@ -83,7 +83,10 @@ public sealed class World
 
     private void ProcessCollision(IBody bodyA, IBody bodyB)
     {
-        if (!TryProcessCircles(bodyA, bodyB))
+        if (TryProcessCircles(bodyA, bodyB))
+            return;
+        
+        if (TryProcessRectangles(bodyA, bodyB))
             return;
     }
 
@@ -93,6 +96,19 @@ public sealed class World
             return false;
 
         if (!Collisions.IntersectsCircles(bodyA.ShapeCircle, bodyB.ShapeCircle, out var depth, out var normal))
+            return false;
+        
+        bodyA.Move(normal * depth / 2f);
+        bodyB.Move(-normal * depth / 2f);
+        return true;
+    }
+    
+    private bool TryProcessRectangles(IBody bodyA, IBody bodyB)
+    {
+        if (bodyA.Shape.Type != ShapeType.Rectangle || bodyB.Shape.Type != ShapeType.Rectangle)
+            return false;
+
+        if (!Collisions.IntersectsRectangles(bodyA.ShapeBox2, bodyB.ShapeBox2, out var depth, out var normal))
             return false;
         
         bodyA.Move(normal * depth / 2f);

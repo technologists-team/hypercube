@@ -7,6 +7,7 @@ namespace Hypercube.Math.Vectors;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector2 : IEquatable<Vector2>
 {
+    public static readonly Vector2 NaN = new(float.NaN, float.NaN);
     public static readonly Vector2 Zero = new(0, 0);
     public static readonly Vector2 One = new(1, 1);
     
@@ -178,6 +179,22 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static float Distance(Vector2 a, Vector2 b)
     {
         return MathF.Sqrt(DistanceSquared(a, b));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Max(Vector2 a, Vector2 b)
+    {
+        return new Vector2(
+            System.Math.Max(a.X, b.X),
+            System.Math.Max(a.Y, b.Y));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Min(Vector2 a, Vector2 b)
+    {
+        return new Vector2(
+            System.Math.Min(a.X, b.X),
+            System.Math.Min(a.Y, b.Y));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

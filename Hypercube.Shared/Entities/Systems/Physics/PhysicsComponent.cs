@@ -12,10 +12,12 @@ public sealed class PhysicsComponent : Component, IBody
     // Caching
     public TransformComponent TransformComponent;
     public TransformSystem TransformSystem;
+
+    public BodyType Type { get; set; } = BodyType.Dynamic;
+    public bool IsStatic => Type == BodyType.Static;
     
     public IShape Shape { get; set; } = new CircleShape();
-    
-    public Vector2 Velocity { get; private set; }
+    public Vector2 Velocity { get; set; }
 
     public Vector2 Position
     {
@@ -26,6 +28,25 @@ public sealed class PhysicsComponent : Component, IBody
     public Vector2 PreviousPosition { get; private set; }
     public Circle ShapeCircle => ((CircleShape)Shape).Circle + Position;
 
+    public Box2 ShapeBox2
+    {
+        get
+        {
+            var shape = ((RectangleShape)Shape);
+            return new Box2(Position - shape.Position - shape.Size / 2, Position + shape.Position + shape.Size / 2);
+        }   
+    }
+
+    public void Update(float deltaTime)
+    {
+        if (IsStatic)
+            return;
+        
+        //this.linearVelocity += gravity * time;
+        Position += Velocity * deltaTime;
+    }
+
+    
     public void Move(Vector2 position)
     {
         Position += position;

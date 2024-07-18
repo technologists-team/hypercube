@@ -80,20 +80,20 @@ public sealed partial class Renderer
         AddCircleBatch(startIndex, circle, color, 20);
     }
 
-    public void DrawRectangle(Box2 box, Color color)
+    public void DrawRectangle(Box2 box, Color color, bool outline = false)
     {
-        DrawRectangle(box, color, Matrix4X4.Identity);
+        DrawRectangle(box, color, Matrix4X4.Identity, outline);
     }
 
-    public void DrawRectangle(Box2 box, Color color, Matrix3X3 model)
+    public void DrawRectangle(Box2 box, Color color, Matrix3X3 model, bool outline = false)
     {
-        DrawRectangle(box, color, Matrix4X4.CreateIdentity(model));
+        DrawRectangle(box, color, Matrix4X4.CreateIdentity(model), outline);
     }
     
-    public void DrawRectangle(Box2 box, Color color, Matrix4X4 model)
+    public void DrawRectangle(Box2 box, Color color, Matrix4X4 model, bool outline = false)
     {
         var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 6, null, PrimitiveType.Triangles, model));
+        _batches.Add(new Batch(_batchIndexIndex, 6, null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, model));
         AddQuadBatch(startIndex, box, Box2.UV, color);
     }
     

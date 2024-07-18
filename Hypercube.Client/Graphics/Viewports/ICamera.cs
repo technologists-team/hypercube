@@ -6,6 +6,7 @@ namespace Hypercube.Client.Graphics.Viewports;
 public interface ICamera
 {
     Matrix4X4 Projection { get; }
+    Matrix4X4 View { get; }
     
     Vector3 Position { get; }
     Vector3 Rotation { get; }

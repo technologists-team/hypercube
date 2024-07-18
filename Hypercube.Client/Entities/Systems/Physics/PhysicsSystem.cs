@@ -30,6 +30,12 @@ public class PhysicsSystem : SharedPhysicsSystem
                 _renderer.DrawCircle(entity.Component.ShapeCircle, Color.Green);
                 continue;
             }
+            
+            if (entity.Component.Shape.Type == ShapeType.Rectangle)
+            {
+                _renderer.DrawRectangle(entity.Component.ShapeBox2, Color.Green, true);
+                continue;
+            }
         }
     }
 }
