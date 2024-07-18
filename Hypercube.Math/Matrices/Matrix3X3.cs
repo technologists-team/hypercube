@@ -223,6 +223,7 @@ public partial struct Matrix3X3
             }
         }
     }
+   
     /// <summary>
     /// Creates 3x3 matrix
     /// <code>
