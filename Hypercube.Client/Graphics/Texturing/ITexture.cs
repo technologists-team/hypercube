@@ -1,5 +1,4 @@
-﻿using Hypercube.Math.Boxs;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;
@@ -10,5 +9,5 @@ public interface ITexture
     int Width { get; }
     int Height { get; }
     byte[] Data { get; }
-    Box2 QuadCrateTranslated(Vector2 position);
+    Box2 QuadCrateTranslated();
 }

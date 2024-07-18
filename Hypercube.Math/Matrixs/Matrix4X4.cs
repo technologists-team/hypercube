@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Hypercube.Math.Boxs;
+using Hypercube.Math.Shapes;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 

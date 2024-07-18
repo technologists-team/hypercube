@@ -2,7 +2,7 @@
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math.Boxs;
+using Hypercube.Math.Shapes;
 using Hypercube.Math.Transforms;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
@@ -45,6 +45,6 @@ public sealed class SpriteSystem : EntitySystem
 
     public void Render(Entity<SpriteComponent> entity, Transform2 transform)
     {
-        _renderer.DrawTexture(entity.Component.TextureHandle, entity.Component.TextureHandle.Texture.QuadCrateTranslated(Vector2.Zero), Box2.UV, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
+        _renderer.DrawTexture(entity.Component.TextureHandle, entity.Component.TextureHandle.Texture.QuadCrateTranslated(), Box2.UV, entity.Component.Color, transform.Matrix * entity.Component.Transform.Matrix);
     }
 }

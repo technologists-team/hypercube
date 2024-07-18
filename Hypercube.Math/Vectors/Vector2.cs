@@ -7,6 +7,7 @@ namespace Hypercube.Math.Vectors;
 [StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector2 : IEquatable<Vector2>
 {
+    public static readonly Vector2 NaN = new(float.NaN, float.NaN);
     public static readonly Vector2 Zero = new(0, 0);
     public static readonly Vector2 One = new(1, 1);
     
@@ -64,6 +65,17 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public Vector2 WithY(float value)
     {
         return new Vector2(X, value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Rotate(float angle)
+    {
+        var cos = MathF.Cos(angle);
+        var sin = MathF.Sin(angle);
+        
+        return new Vector2(
+            cos * X - sin * Y,
+            sin * X + cos * Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,5 +167,39 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static bool operator !=(Vector2 a, Vector2 b)
     {
         return !a.Equals(b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float DistanceSquared(Vector2 a, Vector2 b)
+    {
+        return (a - b).LengthSquared;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Distance(Vector2 a, Vector2 b)
+    {
+        return MathF.Sqrt(DistanceSquared(a, b));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Max(Vector2 a, Vector2 b)
+    {
+        return new Vector2(
+            System.Math.Max(a.X, b.X),
+            System.Math.Max(a.Y, b.Y));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Min(Vector2 a, Vector2 b)
+    {
+        return new Vector2(
+            System.Math.Min(a.X, b.X),
+            System.Math.Min(a.Y, b.Y));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Dot(Vector2 a, Vector2 b)
+    {
+        return a.X * b.X + a.Y * b.Y;
     }
 }

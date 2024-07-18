@@ -1,10 +1,12 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Math;
-using Hypercube.Math.Boxs;
 using Hypercube.Math.Matrixs;
-using Hypercube.Math.Vectors;
+using Hypercube.Math.Shapes;
+using OpenTK.Mathematics;
 using OpenToolkit.Graphics.OpenGL4;
+using Box2 = Hypercube.Math.Shapes.Box2;
+using Vector2 = Hypercube.Math.Vectors.Vector2;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
@@ -61,20 +63,37 @@ public sealed partial class Renderer
         AddLineBatch(startIndex, box, color);
     }
 
-    public void DrawRectangle(Box2 box, Color color)
+    public void DrawCircle(Circle circle, Color color)
     {
-        DrawRectangle(box, color, Matrix4X4.Identity);
+        DrawCircle(circle, color, Matrix4X4.Identity);
     }
 
-    public void DrawRectangle(Box2 box, Color color, Matrix3X3 model)
+    public void DrawCircle(Circle circle, Color color, Matrix3X3 model)
     {
-        DrawRectangle(box, color, Matrix4X4.CreateIdentity(model));
+        DrawCircle(circle, color, Matrix4X4.CreateIdentity(model));
     }
-    
-    public void DrawRectangle(Box2 box, Color color, Matrix4X4 model)
+
+    public void DrawCircle(Circle circle, Color color, Matrix4X4 model)
     {
         var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 6, null, PrimitiveType.Triangles, model));
+        _batches.Add(new Batch(_batchIndexIndex, 20, null, PrimitiveType.LineLoop, model));
+        AddCircleBatch(startIndex, circle, color, 20);
+    }
+
+    public void DrawRectangle(Box2 box, Color color, bool outline = false)
+    {
+        DrawRectangle(box, color, Matrix4X4.Identity, outline);
+    }
+
+    public void DrawRectangle(Box2 box, Color color, Matrix3X3 model, bool outline = false)
+    {
+        DrawRectangle(box, color, Matrix4X4.CreateIdentity(model), outline);
+    }
+    
+    public void DrawRectangle(Box2 box, Color color, Matrix4X4 model, bool outline = false)
+    {
+        var startIndex = (uint)_batchVertexIndex;
+        _batches.Add(new Batch(_batchIndexIndex, 6, null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, model));
         AddQuadBatch(startIndex, box, Box2.UV, color);
     }
     
@@ -111,6 +130,20 @@ public sealed partial class Renderer
         _batchVertices[_batchVertexIndex++] = new Vertex(box2.BottomLeft, Vector2.Zero, color);
         _batchIndices[_batchIndexIndex++] = startIndex;
         _batchIndices[_batchIndexIndex++] = startIndex + 1;
+    }
+    
+    private void AddCircleBatch(uint startIndex, Circle circle, Color color, int segments)
+    {
+        var total = HyperMathF.TwoPI / segments;
+        for (var i = 0; i < segments; i++)
+        {
+            var theta = total * i;
+            var x = circle.Position.X + circle.Radius * MathF.Cos(theta);
+            var y = circle.Position.Y + circle.Radius * MathF.Sin(theta);
+            
+            _batchVertices[_batchVertexIndex++] = new Vertex(new Vector2(x, y), Vector2.Zero, color);
+            _batchIndices[_batchIndexIndex++] = startIndex + (uint)i;
+        }
     }
     
     private void AddQuadBatch(uint startIndex, Box2 quad, Box2 uv, Color color)

@@ -1,11 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Shaders;
-using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Math;
-using Hypercube.Math.Matrixs;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -20,7 +18,7 @@ public sealed partial class Renderer
     private const int MaxBatchVertices = 65532;
     private const int IndicesPerVertex = 6;
     private const int MaxBatchIndices = MaxBatchVertices * IndicesPerVertex;
-
+    
     private readonly List<Batch> _batches = new();
     private readonly Vertex[] _batchVertices = new Vertex[MaxBatchVertices];
     private readonly uint[] _batchIndices = new uint[MaxBatchIndices];
@@ -36,8 +34,6 @@ public sealed partial class Renderer
     {
         _primitiveShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_primitive").ShaderProgram;
         _texturingShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_texturing").ShaderProgram;
-
-        _cameraManager.SetMainCamera(_cameraManager.CreateCamera2D(MainWindow.Size));
         
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
@@ -68,13 +64,12 @@ public sealed partial class Renderer
         var cameraTitle = string.Empty;
         if (_cameraManager.MainCamera is not null)
         {
-            cameraTitle = $"| cPos: {_cameraManager.MainCamera.Position} | cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees}";
+            cameraTitle = $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
         }
         
         _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle}");
 #endif
         _windowManager.PollEvents();
-        _cameraManager.UpdateInput(_cameraManager.MainCamera, args.DeltaSeconds);
     }
 
     private void OnFrameRender(ref RenderFrameEvent args)
@@ -128,7 +123,7 @@ public sealed partial class Renderer
         
         shader.Use();
         shader.SetUniform("model", batch.Model);
-        shader.SetUniform("view", Matrix4X4.Identity);
+        shader.SetUniform("view", _cameraManager.View);
         shader.SetUniform("projection", _cameraManager.Projection);
 
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));

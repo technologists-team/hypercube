@@ -11,7 +11,9 @@ public class CameraManager : ICameraManager
     [Dependency] private readonly IInputHandler _inputHandler = default!;
     
     public ICamera? MainCamera { get; private set; }
+    
     public Matrix4X4 Projection => MainCamera?.Projection ?? Matrix4X4.Identity;
+    public Matrix4X4 View => MainCamera?.View ?? Matrix4X4.Identity;
     
     public void UpdateInput(ICamera? camera, float delta)
     {
