@@ -9,10 +9,22 @@ public interface IBody
     bool IsStatic { get; }
     
     IShape Shape { get; set; }
-    
-    Vector2 Velocity { get; }
+
     Vector2 Position { get; }
-    Vector2 PreviousPosition { get; }
+    Vector2 LinearVelocity { get; }
+    
+    float Angle { get; }
+    float AngularVelocity { get; }
+    
+    Vector2 Force { get; }
+    
+    float Density { get; }
+    float Mass { get; }
+    float InvMass { get; }
+    float Inertia { get; }
+    float InvInertia { get; }
+    float Restitution { get; }
+    float Friction { get; }
     
     Circle ShapeCircle { get; }
     Box2 ShapeBox2 { get; }

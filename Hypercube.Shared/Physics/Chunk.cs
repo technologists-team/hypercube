@@ -12,9 +12,9 @@ public sealed class Chunk
 {
     public readonly Vector2Int Position;
     
-    private HashSet<Body> _bodies = new();
+    private HashSet<IBody> _bodies = new();
     
-    public IReadOnlySet<Body> Bodies => _bodies;
+    public IReadOnlySet<IBody> Bodies => _bodies;
     public bool ContainBodes => _bodies.Count != 0;
     
     public Chunk(Vector2Int position)

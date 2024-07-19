@@ -17,22 +17,46 @@ public sealed class PhysicsComponent : Component, IBody
     public bool IsStatic => Type == BodyType.Static;
     
     public IShape Shape { get; set; } = new CircleShape();
-    public Vector2 Velocity { get; set; }
 
     public Vector2 Position
     {
         get => TransformComponent.Transform.Position;
         set => TransformSystem.SetPosition(TransformComponent, value);
     }
+
+    public Vector2 LinearVelocity { get; set; }
     
-    public Vector2 PreviousPosition { get; private set; }
-    public Circle ShapeCircle => ((CircleShape)Shape).Circle + Position;
+    public float Angle { get; }
+    public float AngularVelocity { get; }
+    
+    public Vector2 Force { get; }
+    
+    public float Density { get; }
+    
+    public float Mass { get; }
+    public float InvMass { get; }
+    
+    public float Inertia { get; }
+    public float InvInertia { get; }
+    
+    public float Restitution { get; }
+    
+    public float Friction { get; }
+    
+    public Circle ShapeCircle
+    {
+        get
+        {
+            var shape = (CircleShape)Shape;
+            return new Circle(Position + shape.Position, shape.Radius);
+        }
+    }
 
     public Box2 ShapeBox2
     {
         get
         {
-            var shape = ((RectangleShape)Shape);
+            var shape = (RectangleShape)Shape;
             return new Box2(Position - shape.Position - shape.Size / 2, Position + shape.Position + shape.Size / 2);
         }   
     }
@@ -43,7 +67,7 @@ public sealed class PhysicsComponent : Component, IBody
             return;
         
         //this.linearVelocity += gravity * time;
-        Position += Velocity * deltaTime;
+        Position += LinearVelocity * deltaTime;
     }
 
     

@@ -7,7 +7,61 @@ public static class Collisions
 {
     public static bool IntersectsPolygon(Vector2[] verticesA, Vector2[] verticesB, out float depth, out Vector2 normal)
     {
-        throw new NotImplementedException();
+        normal = Vector2.Zero;
+        depth = float.MaxValue;
+
+        for (var i = 0; i < verticesA.Length; i++)
+        {
+            var va = verticesA[i];
+            var vb = verticesA[(i + 1) % verticesA.Length];
+
+            var edge = vb - va;
+            var axis = new Vector2(-edge.Y, edge.X).Normalized;
+            
+            ProjectVertices(verticesA, axis, out var minA, out var maxA);
+            ProjectVertices(verticesB, axis, out var minB, out var maxB);
+
+            if (minA >= maxB || minB >= maxA)
+                return false;
+
+            var axisDepth = MathF.Min(maxB - minA, maxA - minB);
+            if (axisDepth >= depth)
+                continue;
+            
+            depth = axisDepth;
+            normal = axis;
+        }
+        
+        for (var i = 0; i < verticesB.Length; i++)
+        {
+            var va = verticesB[i];
+            var vb = verticesB[(i + 1) % verticesB.Length];
+
+            var edge = vb - va;
+            var axis = new Vector2(-edge.Y, edge.X).Normalized;
+
+            ProjectVertices(verticesA, axis, out var minA, out var maxA);
+            ProjectVertices(verticesB, axis, out var minB, out var maxB);
+
+            if (minA >= maxB || minB >= maxA)
+                return false;
+
+            var axisDepth = MathF.Min(maxB - minA, maxA - minB);
+            if (axisDepth >= depth)
+                continue;
+            
+            depth = axisDepth;
+            normal = axis;
+        }
+
+        var centerA = GetPolygonCenter(verticesA);
+        var centerB = GetPolygonCenter(verticesB);
+        var direction = centerB - centerA;
+        
+        if (Vector2.Dot(direction, normal) < 0f)
+            normal = -normal;
+
+        return true;
     }
     
     public static bool IntersectsCircles(Circle a, Circle b)
@@ -127,5 +181,34 @@ public static class Collisions
             lineA.Y + t0 * deltaLine.Y,
             lineA.X + t1 * deltaLine.X,
             lineA.Y + t1 * deltaLine.Y);
+    }
+    
+    private static void ProjectVertices(Vector2[] vertices, Vector2 axis, out float min, out float max)
+    {
+        min = float.MaxValue;
+        max = float.MinValue;
+
+        foreach (var v in vertices)
+        {
+            var proj = Vector2.Dot(v, axis);
+
+            if (proj < min)
+                min = proj;
+            
+            if (proj > max)
+                max = proj;
+        }
+    }
+
+    private static Vector2 GetPolygonCenter(Vector2[] vertices)
+    {
+        var sum = Vector2.Zero;
+        
+        foreach (var vertex in vertices)
+        {
+            sum += vertex;
+        }
+
+        return sum / vertices.Length;
     }
 }

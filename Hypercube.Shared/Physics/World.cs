@@ -108,11 +108,14 @@ public sealed class World
         if (bodyA.Shape.Type != ShapeType.Rectangle || bodyB.Shape.Type != ShapeType.Rectangle)
             return false;
 
-        if (!Collisions.IntersectsRectangles(bodyA.ShapeBox2, bodyB.ShapeBox2, out var depth, out var normal))
+        var shapeA = bodyA.ShapeBox2;
+        var shapeB = bodyB.ShapeBox2;
+        
+        if (!Collisions.IntersectsPolygon(shapeA.Vertices, shapeB.Vertices, out var depth, out var normal))
             return false;
         
-        bodyA.Move(normal * depth / 2f);
-        bodyB.Move(-normal * depth / 2f);
+        bodyA.Move(-normal * depth / 2f);
+        bodyB.Move(normal * depth / 2f);
         return true;
     }
 }

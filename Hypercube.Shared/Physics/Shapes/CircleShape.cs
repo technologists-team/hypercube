@@ -9,8 +9,6 @@ public sealed class CircleShape : IShape
 
     public float Radius { get; set; }
     public Vector2 Position { get; set; }
-    
-    public Circle Circle => new(Position, Radius);
 
     public CircleShape()
     {

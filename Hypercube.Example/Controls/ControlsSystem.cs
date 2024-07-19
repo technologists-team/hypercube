@@ -22,7 +22,7 @@ public sealed class ControlsSystem : EntitySystem
         foreach (var entity in GetEntities<ControlsComponent>())
         {
             var physics = GetComponent<PhysicsComponent>(entity);
-            physics.Velocity = new Vector2(inputX, inputY) * entity.Component.Speed;
+            physics.LinearVelocity = new Vector2(inputX, inputY) * entity.Component.Speed;
         }
     }
 }

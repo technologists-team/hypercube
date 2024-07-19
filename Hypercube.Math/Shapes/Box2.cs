@@ -44,6 +44,15 @@ public readonly struct Box2
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => MathF.Sqrt(LengthSquared);
     }
+
+    public Vector2[] Vertices
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => new[]
+        {
+            TopLeft, TopRight, BottomRight, BottomLeft
+        };
+    }
     
     public Box2(Vector2 point0, Vector2 point1)
     {
