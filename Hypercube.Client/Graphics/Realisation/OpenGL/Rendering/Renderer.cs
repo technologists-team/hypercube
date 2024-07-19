@@ -7,7 +7,7 @@ using Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
-using Hypercube.Shared.Resources.Caching;
+using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Runtimes.Loop.Event;
@@ -24,8 +24,8 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     [Dependency] private readonly ITextureManager _textureManager = default!;
     [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly ICameraManager _cameraManager = default!;
-    [Dependency] private readonly IResourceManager _resourceManager = default!;
-    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
+    [Dependency] private readonly IResourceLoader _resourceLoader = default!;
+    [Dependency] private readonly IResourceContainer _resourceContainer = default!;
 
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
@@ -98,7 +98,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
             break;
         }
 
-        var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceManager, "/Icons").ToList();
+        var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceLoader, "/Icons").ToList();
         _windowManager.WindowSetIcons(MainWindow, windowIcons);
         
         InitOpenGL();

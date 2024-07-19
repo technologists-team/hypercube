@@ -13,17 +13,17 @@ public sealed class ShaderProgram : IShaderProgram
     private readonly int _handle;
     private readonly FrozenDictionary<string, int> _uniformLocations;
 
-    public ShaderProgram(string path, IResourceManager manager) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
-        manager)
+    public ShaderProgram(string path, IResourceLoader loader) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
+        loader)
     {
     }
     
-    private ShaderProgram(ResourcePath vertPath, ResourcePath fragPath, IResourceManager resourceManager)
+    private ShaderProgram(ResourcePath vertPath, ResourcePath fragPath, IResourceLoader resourceLoader)
     {
         var shaders = new HashSet<IShader>
         {
-            CreateShader(vertPath, ShaderType.VertexShader, resourceManager),
-            CreateShader(fragPath, ShaderType.FragmentShader, resourceManager)
+            CreateShader(vertPath, ShaderType.VertexShader, resourceLoader),
+            CreateShader(fragPath, ShaderType.FragmentShader, resourceLoader)
         };
         
         _handle = GL.CreateProgram();
@@ -159,9 +159,9 @@ public sealed class ShaderProgram : IShaderProgram
         throw new Exception($"Error occurred whilst linking Program({_handle})");
     }
     
-    private IShader CreateShader(ResourcePath path, ShaderType type, IResourceManager resourceManager)
+    private IShader CreateShader(ResourcePath path, ShaderType type, IResourceLoader resourceLoader)
     {
-        var source = resourceManager.ReadFileContentAllText(path);
+        var source = resourceLoader.ReadFileContentAllText(path);
         var shader = new Shader(source, type);
         return shader;
     }

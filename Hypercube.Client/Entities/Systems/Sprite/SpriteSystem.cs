@@ -10,14 +10,14 @@ using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
-using Hypercube.Shared.Resources.Caching;
+using Hypercube.Shared.Resources.Container;
 
 namespace Hypercube.Client.Entities.Systems.Sprite;
 
 public sealed class SpriteSystem : EntitySystem
 {
     [Dependency] private readonly IRenderer _renderer = default!;
-    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
+    [Dependency] private readonly IResourceContainer _resourceContainer = default!;
         
     public override void Initialize()
     {
@@ -30,7 +30,7 @@ public sealed class SpriteSystem : EntitySystem
 
     private void OnSpriteAdded(Entity<SpriteComponent> entity, ref ComponentAdded args)
     {
-        entity.Component.TextureHandle = _resourceCacher.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
+        entity.Component.TextureHandle = _resourceContainer.GetResource<TextureResource>(entity.Component.TexturePath).Texture;
     }
 
     private void OnRenderDrawing(ref RenderDrawingEvent args)

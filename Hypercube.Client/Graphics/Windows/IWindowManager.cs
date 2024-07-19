@@ -44,7 +44,7 @@ public interface IWindowManager : IDisposable
     void WindowSetIcons(WindowRegistration window, List<ITexture> images);
     
     void MakeContextCurrent(WindowRegistration? window);
-    IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureManager, IResourceManager resourceManager, ResourcePath resPath);
+    IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureManager, IResourceLoader resourceLoader, ResourcePath resPath);
     
     nint GetProcAddress(string procName);
 }

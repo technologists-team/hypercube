@@ -27,7 +27,7 @@ public sealed partial class OpenAlAudioManager
     public AudioStream CreateStream(ResourcePath path, IAudioSettings settings)
     {
         var audioType = AudioTypeHelper.GetAudioType(path.Extension);
-        using var stream = _resourceManager.ReadFileContent(path) ?? throw new InvalidOperationException();
+        using var stream = _resourceLoader.ReadFileContent(path) ?? throw new InvalidOperationException();
         var audio = CreateAudio(stream, audioType, settings);
         return audio;
     }

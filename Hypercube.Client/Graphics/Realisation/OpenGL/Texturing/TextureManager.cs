@@ -11,7 +11,7 @@ namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 
 public sealed class TextureManager : ITextureManager
 {
-    [Dependency] private readonly IResourceManager _resourceManager = default!;
+    [Dependency] private readonly IResourceLoader _resourceLoader = default!;
 
     public ITexture CreateBlank(Vector2Int size, Color color)
     {
@@ -33,7 +33,7 @@ public sealed class TextureManager : ITextureManager
     
     public ITexture CreateTexture(ResourcePath path)
     {
-        using var stream = _resourceManager.ReadFileContent(path);
+        using var stream = _resourceLoader.ReadFileContent(path);
         var result = ImageResult.FromStream(stream);
         var texture = new Texture(path, (result.Width, result.Height), result.Data);
         return texture;

@@ -12,7 +12,7 @@ using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Physics.Shapes;
 using Hypercube.Shared.Resources;
-using Hypercube.Shared.Resources.Caching;
+using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Scenes;
 
@@ -26,7 +26,7 @@ public sealed class Example : IEventSubscriber, IPostInject
     [Dependency] private readonly IEntitiesManager _entitiesManager = default!;
     [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
-    [Dependency] private readonly IResourceCacher _resourceCacher = default!;
+    [Dependency] private readonly IResourceContainer _resourceContainer = default!;
 
     private readonly Random _random = new();
     
@@ -53,7 +53,7 @@ public sealed class Example : IEventSubscriber, IPostInject
 
         CreatePlayer();
 
-        var stream = _resourceCacher.GetResource<AudioResource>("/game_boi_3.wav").Stream;
+        var stream = _resourceContainer.GetResource<AudioResource>("/game_boi_3.wav").Stream;
         var source = _audioManager.CreateSource(stream);
             
         // it's too loud :D

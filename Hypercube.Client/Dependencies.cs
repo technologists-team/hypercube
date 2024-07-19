@@ -16,8 +16,9 @@ using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Physics;
-using Hypercube.Shared.Resources.Caching;
+using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;
+using Hypercube.Shared.Resources.Preloader;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client;
@@ -35,12 +36,14 @@ public static class Dependencies
         // EventBus
         rootContainer.Register<IEventBus, EventBus>();
         
+        // Resources
+        rootContainer.Register<IResourceLoader, ResourceLoader>();
+        rootContainer.Register<IResourceContainer, ResourceContainer>();
+        rootContainer.Register<IResourcePreloader, ResourcePreloader>();
+
         // Input
         rootContainer.Register<IInputHandler, InputHandler>();
         rootContainer.Register<IInputManager, InputManager>();
-        
-        // Resources
-        rootContainer.Register<IResourceManager, ResourceManager>();
         
         // Audio
         rootContainer.Register<IAudioLoader, AudioLoader>();
@@ -48,10 +51,7 @@ public static class Dependencies
         
         // Texturing
         rootContainer.Register<ITextureManager, TextureManager>();
-        
-        // Caching
-        rootContainer.Register<IResourceCacher, ResourceCacher>();
-        
+
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
         

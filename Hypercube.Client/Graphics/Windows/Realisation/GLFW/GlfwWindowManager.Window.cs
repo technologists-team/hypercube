@@ -280,9 +280,9 @@ public sealed unsafe partial class GlfwWindowManager
          GLFW.SetWindowIcon(glfwWindow.Pointer, glfwImages);
      }
      
-     public IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureMan, IResourceManager resourceManager, ResourcePath path)
+     public IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureMan, IResourceLoader resourceLoader, ResourcePath path)
      {
-         var files = resourceManager.FindContentFiles(path);
+         var files = resourceLoader.FindContentFiles(path);
          
          foreach (var file in files)
          {

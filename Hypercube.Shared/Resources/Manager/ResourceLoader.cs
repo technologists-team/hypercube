@@ -2,13 +2,12 @@
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
-using Hypercube.Shared.Resources.DirRoot;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Manager;
 
-public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubscriber
+public sealed class ResourceLoader : IResourceLoader, IPostInject, IEventSubscriber
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     
@@ -26,6 +25,7 @@ public sealed class ResourceManager : IResourceManager, IPostInject, IEventSubsc
 
     private void OnInitialization(ref RuntimeInitializationEvent args)
     {
+        // TODO: Move it in config
         MountContentFolder(".", "/");
         MountContentFolder("Resources", "/");
         MountContentFolder("Resources/Audio", "/");

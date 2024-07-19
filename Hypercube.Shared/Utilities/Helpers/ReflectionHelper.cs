@@ -1,26 +1,22 @@
 ﻿using System.Collections.Frozen;
+using System.Reflection;
 
 namespace Hypercube.Shared.Utilities.Helpers;
 
 public static class ReflectionHelper
 {
-    public static FrozenSet<Type> GetAllSubclassOf(Type parent)
+    public static T? GetAttribute<T>(MethodInfo method)
+        where T : Attribute
     {
-        var types = new HashSet<Type>();
-        
-        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-        foreach (var assembly in assemblies)
+        foreach (var customAttribute in method.GetCustomAttributes())
         {
-            foreach (var type in assembly.GetTypes())
-            {
-                if (!type.IsSubclassOf(parent))
-                    continue;
+            if (customAttribute is not T attribute)
+                continue;
 
-                types.Add(type);
-            }
+            return attribute;
         }
 
-        return types.ToFrozenSet();
+        return null;
     }
     
     public static FrozenSet<Type> GetAllInstantiableSubclassOf(Type parent)

@@ -21,7 +21,7 @@ public sealed partial class OpenAlAudioManager : IAudioManager, IEventSubscriber
 
     [Dependency] private readonly IAudioLoader _audioLoader = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
-    [Dependency] private readonly IResourceManager _resourceManager = default!;
+    [Dependency] private readonly IResourceLoader _resourceLoader = default!;
     
     private readonly Logger _logger = LoggingManager.GetLogger("audio_manager");
     private readonly Logger _loggerOpenAl = LoggingManager.GetLogger("open_al");

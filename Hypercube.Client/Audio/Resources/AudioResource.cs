@@ -1,7 +1,6 @@
 ﻿using Hypercube.Client.Audio.Settings;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
-using Hypercube.Shared.Resources.Caching.Resource;
 
 namespace Hypercube.Client.Audio.Resources;
 
@@ -10,7 +9,17 @@ public sealed class AudioResource : Resource, IDisposable
     public ResourcePath Path;
     public AudioStream Stream { get; private set; } = default!;
     
-    public override void Load(ResourcePath path, DependenciesContainer container)
+    public AudioResource()
+    {
+        Path = string.Empty;
+    }
+    
+    public AudioResource(ResourcePath path)
+    {
+        Path = path;
+    }
+    
+    protected override void OnLoad(ResourcePath path, DependenciesContainer container)
     {
         var audioMan = container.Resolve<IAudioManager>();
         Stream = audioMan.CreateStream(path, new AudioSettings());

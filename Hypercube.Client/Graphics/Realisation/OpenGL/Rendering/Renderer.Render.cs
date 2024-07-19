@@ -32,8 +32,8 @@ public sealed partial class Renderer
     
     private void OnLoad()
     {
-        _primitiveShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_primitive").ShaderProgram;
-        _texturingShaderProgram = _resourceCacher.GetResource<ShaderSourceResource>("/Shaders/base_texturing").ShaderProgram;
+        _primitiveShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_primitive").ShaderProgram;
+        _texturingShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_texturing").ShaderProgram;
         
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);

@@ -5,7 +5,7 @@ public class ResourceManagerTests
     [Test]
     public void ReadFileTest()
     {
-        var resourceMan = new Shared.Resources.Manager.ResourceManager();
+        var resourceMan = new Shared.Resources.Manager.ResourceLoader();
         resourceMan.MountContentFolder("Resources", "/");
 
         if (!resourceMan.TryReadFileContent("/Tests/testFile.txt", out var stream))

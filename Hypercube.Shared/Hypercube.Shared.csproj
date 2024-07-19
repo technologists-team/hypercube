@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final" />
+      <PackageReference Include="YamlDotNet" Version="16.0.0" />
     </ItemGroup>
 
     <ItemGroup>

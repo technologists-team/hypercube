@@ -2,7 +2,10 @@
 
 namespace Hypercube.Shared.Resources.Manager;
 
-public interface IResourceManager
+/// <summary>
+/// The main mechanism serving for work and management with game resource loading streams.
+/// </summary>
+public interface IResourceLoader
 {
     StreamReader WrapStream(Stream stream);
     void AddRoot(ResourcePath prefix, IContentRoot root);

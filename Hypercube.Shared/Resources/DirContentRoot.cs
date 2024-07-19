@@ -2,7 +2,7 @@
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Utilities.Helpers;
 
-namespace Hypercube.Shared.Resources.DirRoot;
+namespace Hypercube.Shared.Resources;
 
 public class DirContentRoot : IContentRoot
 {
