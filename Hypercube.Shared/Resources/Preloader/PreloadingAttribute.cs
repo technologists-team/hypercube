@@ -5,7 +5,7 @@ public sealed class PreloadingAttribute : Attribute
 {
     public readonly Type? Event;
 
-    public PreloadingAttribute(Type? @event)
+    public PreloadingAttribute(Type? @event = null)
     {
         Event = @event;
     }
