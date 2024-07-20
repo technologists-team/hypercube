@@ -3,6 +3,7 @@ using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
+using Hypercube.Example.Camera;
 using Hypercube.Example.Controls;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
@@ -53,6 +54,15 @@ public sealed class Example : IEventSubscriber, IPostInject
             CreateEntity(coord, new CircleShape(1f));
         }
 
+        CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(0, 11)),
+            new RectangleShape(new Vector2(40, 1)), BodyType.Static);
+        CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(0, -11)),
+            new RectangleShape(new Vector2(40, 1)), BodyType.Static);
+        CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(-20, 0)),
+            new RectangleShape(new Vector2(1, 21)), BodyType.Static);
+        CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(20, 0)),
+            new RectangleShape(new Vector2(1, 21)), BodyType.Static);
+        
         CreatePlayer();
 
         var stream = _resourceContainer.GetResource<AudioResource>("/game_boi_3.wav").Stream;
@@ -66,12 +76,13 @@ public sealed class Example : IEventSubscriber, IPostInject
         _cameraManager.SetMainCamera(camera);
     }
 
-    private void CreateEntity(SceneCoordinates coordinates, IShape shape)
+    private void CreateEntity(SceneCoordinates coordinates, IShape shape, BodyType type = BodyType.Dynamic)
     {
         var entityUid = _entitiesManager.Create("Fuck", coordinates);
 
         _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid, entity =>
         {
+            entity.Component.Type = type;
             entity.Component.Shape = shape;
         });
         
@@ -91,11 +102,10 @@ public sealed class Example : IEventSubscriber, IPostInject
         var entityUid = _entitiesManager.Create("Fuck", new SceneCoordinates(SceneId.Nullspace, new Vector2(0, 0)));
         
         _entitiesComponentManager.AddComponent<ControlsComponent>(entityUid);
-       // _entitiesComponentManager.AddComponent<CameraComponent>(entityUid);
-        
         _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid, entity =>
         {
-            entity.Component.Shape = new RectangleShape(Vector2.One * 2f);
+            entity.Component.Shape = new CircleShape(1f);
+            entity.Component.Mass = _random.NextSingle() * 2.0f + 0.5f;
         });
         
         _entitiesComponentManager.AddComponent<SpriteComponent>(entityUid, entity =>

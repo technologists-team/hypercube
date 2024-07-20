@@ -140,6 +140,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator *(float a, Vector2 b)
+    {
+        return new Vector2(b.X * a, b.Y * a);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 operator *(Vector2 a, float b)
     {
         return new Vector2(a.X * b, a.Y * b);

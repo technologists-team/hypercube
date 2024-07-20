@@ -17,7 +17,7 @@ public sealed class PhysicsManager : IPhysicsManager, IEventSubscriber, IPostInj
 
     private void OnTick(ref TickFrameEvent ev)
     {
-        UpdateSubSteps(ev.DeltaSeconds, 1);        
+        UpdateSubSteps(ev.DeltaSeconds, 3);        
     }
 
     public void AddBody(IBody body)

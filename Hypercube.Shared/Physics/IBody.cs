@@ -11,7 +11,7 @@ public interface IBody
     IShape Shape { get; set; }
 
     Vector2 Position { get; }
-    Vector2 LinearVelocity { get; }
+    Vector2 LinearVelocity { get; set; }
     
     float Angle { get; }
     float AngularVelocity { get; }

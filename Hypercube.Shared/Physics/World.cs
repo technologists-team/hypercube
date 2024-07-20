@@ -1,19 +1,18 @@
-﻿using Hypercube.Math.Shapes;
-using Hypercube.Math.Vectors;
-using Hypercube.Shared.Physics.Shapes;
+﻿using Hypercube.Math.Vectors;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
 
 /// <summary>
 /// Analogous to a <see cref="Scene"/> in a physical representation.
-/// Contains <see cref="Body"/> that will handle their physical interactions.
+/// Contains <see cref="IBody"/> that will handle their physical interactions.
 /// </summary>
 /// <seealso cref="Chunk"/>
 public sealed class World
 {
-    private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
     private readonly HashSet<IBody> _bodies = new();
+
+    private Vector2 _gravity = new();
     
     public void Update(float deltaTime)
     {
@@ -24,6 +23,9 @@ public sealed class World
             foreach (var bodyB in _bodies)
             {
                 if (bodyA == bodyB)
+                    continue;
+                
+                if (bodyA.IsStatic && bodyB.IsStatic)
                     continue;
                 
                 ProcessCollision(bodyA, bodyB);
@@ -44,52 +46,18 @@ public sealed class World
         _bodies.Remove(body);
     }
     
-    private void ProcessChunkCollisions()
-    {
-        foreach (var (position, chunk) in _chunks)
-        {
-            if (!chunk.ContainBodes)
-                continue;
-
-            for (var x = position.X; x < position.X + 3; x++)
-            {
-                for (var y = position.Y; y < position.Y + 3; y++)
-                {
-                    var otherPosition = new Vector2Int(x, y);
-                   
-                    if (!_chunks.TryGetValue(otherPosition, out var otherChunk))
-                        continue;
-
-                    if (!otherChunk.ContainBodes)
-                        continue;
-                    
-                    ProcessChunkCollision(chunk, otherChunk);
-                }
-            }
-        }
-    }
-    
-    private void ProcessChunkCollision(Chunk chunkA, Chunk chunkB)
-    {
-        foreach (var bodyA in chunkA.Bodies)
-        {
-            foreach (var bodyB in chunkB.Bodies)
-            {
-                if (bodyA == bodyB)
-                    continue;
-                
-                ProcessCollision(bodyA, bodyB);
-            }
-        }
-    }
-
     private void ProcessCollision(IBody bodyA, IBody bodyB)
     {
         if (!IntersectsCollision(bodyA, bodyB, out var depth, out var normal))
             return;
         
-        bodyA.Move(-normal * depth / 2f);
-        bodyB.Move(normal * depth / 2f);
+        if (!bodyA.IsStatic)
+            bodyA.Move(-normal * depth / 2f);
+        
+        if (!bodyB.IsStatic)
+            bodyB.Move(normal * depth / 2f);
+        
+        ResolveCollision(bodyA, bodyB, depth, normal);
     }
 
     private bool IntersectsCollision(IBody bodyA, IBody bodyB, out float depth, out Vector2 normal)
@@ -122,5 +90,21 @@ public sealed class World
             },
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+
+    private void ResolveCollision(IBody bodyA, IBody bodyB, float depth, Vector2 normal)
+    {
+        var relativeVelocity = bodyB.LinearVelocity - bodyA.LinearVelocity;
+        if (Vector2.Dot(relativeVelocity, normal) > 0f)
+            return;
+        
+        var e = MathF.Min(bodyA.Restitution, bodyB.Restitution);
+        var j = -(1f + e) * Vector2.Dot(relativeVelocity, normal);
+        
+        j /= bodyA.InvMass + bodyB.InvMass;
+
+        var impulse = j * normal;
+        bodyA.LinearVelocity -= impulse * bodyA.InvMass;
+        bodyB.LinearVelocity += impulse * bodyB.InvMass;
     }
 }

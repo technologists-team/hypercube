@@ -26,15 +26,15 @@ public sealed class PhysicsComponent : Component, IBody
 
     public Vector2 LinearVelocity { get; set; }
     
-    public float Angle { get; }
+    public float Angle { get; set; }
     public float AngularVelocity { get; }
     
-    public Vector2 Force { get; }
-    
-    public float Density { get; }
-    
-    public float Mass { get; }
-    public float InvMass { get; }
+    public Vector2 Force { get; set; }
+
+    public float Density { get; } = 0.5f;
+
+    public float Mass { get; set; } = 2f;
+    public float InvMass => 1f / Mass;
     
     public float Inertia { get; }
     public float InvInertia { get; }
@@ -52,9 +52,15 @@ public sealed class PhysicsComponent : Component, IBody
     {
         if (IsStatic)
             return;
+
+        var acceleration = Force / Mass; 
         
-        //this.linearVelocity += gravity * time;
+        LinearVelocity += acceleration * deltaTime;
+        
         Position += LinearVelocity * deltaTime;
+        Angle += AngularVelocity * deltaTime;
+        
+        Force = Vector2.Zero;
     }
 
     
