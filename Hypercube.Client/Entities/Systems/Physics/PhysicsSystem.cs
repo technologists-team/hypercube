@@ -27,13 +27,15 @@ public class PhysicsSystem : SharedPhysicsSystem
         {
             if (entity.Component.Shape.Type == ShapeType.Circle)
             {
-                _renderer.DrawCircle(entity.Component.ShapeCircle, Color.Green);
+                var circle = new Circle(entity.Component.Position + entity.Component.Shape.Position,
+                    entity.Component.Shape.Radius);
+                _renderer.DrawCircle(circle, Color.Green);
                 continue;
             }
             
-            if (entity.Component.Shape.Type == ShapeType.Rectangle)
+            if (entity.Component.Shape.Type == ShapeType.Polygon)
             {
-                _renderer.DrawRectangle(entity.Component.ShapeBox2, Color.Green, true);
+                _renderer.DrawPolygon(entity.Component.GetShapeVerticesTransformed(), Color.Green, true);
                 continue;
             }
         }

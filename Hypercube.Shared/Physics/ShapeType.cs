@@ -2,9 +2,6 @@
 
 public enum ShapeType : sbyte
 {
-    Unknown = -1,
     Circle,
-    Rectangle,
-    Polygon,
-    Capsule
+    Polygon
 }

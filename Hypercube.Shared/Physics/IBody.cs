@@ -26,8 +26,7 @@ public interface IBody
     float Restitution { get; }
     float Friction { get; }
     
-    Circle ShapeCircle { get; }
-    Box2 ShapeBox2 { get; }
+    Vector2[] GetShapeVerticesTransformed();
 
     void Update(float deltaTime);
     void Move(Vector2 position);

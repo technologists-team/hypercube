@@ -6,6 +6,7 @@ namespace Hypercube.Math.Shapes;
 public readonly struct Box2
 {
     public static readonly Box2 NaN = new(Vector2.NaN, Vector2.NaN);
+    public static readonly Box2 Zero = new(Vector2.Zero, Vector2.Zero);
     public static readonly Box2 UV = new(0.0f, 1.0f, 1.0f, 0.0f);
     public static readonly Box2 Centered = new(-0.5f, -0.5f, 0.5f, 0.5f);
     

@@ -43,22 +43,9 @@ public sealed class PhysicsComponent : Component, IBody
     
     public float Friction { get; }
     
-    public Circle ShapeCircle
+    public Vector2[] GetShapeVerticesTransformed()
     {
-        get
-        {
-            var shape = (CircleShape)Shape;
-            return new Circle(Position + shape.Position, shape.Radius);
-        }
-    }
-
-    public Box2 ShapeBox2
-    {
-        get
-        {
-            var shape = (RectangleShape)Shape;
-            return new Box2(Position - shape.Position - shape.Size / 2, Position + shape.Position + shape.Size / 2);
-        }   
+        return Shape.GetVerticesTransformed(Position, Angle);
     }
 
     public void Update(float deltaTime)

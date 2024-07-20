@@ -1,7 +1,16 @@
-﻿namespace Hypercube.Shared.Physics;
+﻿using Hypercube.Math.Vectors;
+
+namespace Hypercube.Shared.Physics;
 
 public interface IShape
 {
     ShapeType Type { get; }
-    float Radius { get; set; }
+    
+    float Radius { get; }
+    Vector2 Position { get; }
+    
+    int VerticesCount { get; }
+    Vector2[] Vertices { get; }
+    
+    Vector2[] GetVerticesTransformed(Vector2 position, float rotation);
 }

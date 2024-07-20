@@ -1,4 +1,6 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
+using Hypercube.Math.Vectors;
+using Hypercube.Shared.Physics.Shapes;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
@@ -83,39 +85,42 @@ public sealed class World
 
     private void ProcessCollision(IBody bodyA, IBody bodyB)
     {
-        if (TryProcessCircles(bodyA, bodyB))
+        if (!IntersectsCollision(bodyA, bodyB, out var depth, out var normal))
             return;
-        
-        if (TryProcessRectangles(bodyA, bodyB))
-            return;
-    }
-
-    private bool TryProcessCircles(IBody bodyA, IBody bodyB)
-    {
-        if (bodyA.Shape.Type != ShapeType.Circle || bodyB.Shape.Type != ShapeType.Circle)
-            return false;
-
-        if (!Collisions.IntersectsCircles(bodyA.ShapeCircle, bodyB.ShapeCircle, out var depth, out var normal))
-            return false;
-        
-        bodyA.Move(normal * depth / 2f);
-        bodyB.Move(-normal * depth / 2f);
-        return true;
-    }
-    
-    private bool TryProcessRectangles(IBody bodyA, IBody bodyB)
-    {
-        if (bodyA.Shape.Type != ShapeType.Rectangle || bodyB.Shape.Type != ShapeType.Rectangle)
-            return false;
-
-        var shapeA = bodyA.ShapeBox2;
-        var shapeB = bodyB.ShapeBox2;
-        
-        if (!Collisions.IntersectsPolygon(shapeA.Vertices, shapeB.Vertices, out var depth, out var normal))
-            return false;
         
         bodyA.Move(-normal * depth / 2f);
         bodyB.Move(normal * depth / 2f);
-        return true;
+    }
+
+    private bool IntersectsCollision(IBody bodyA, IBody bodyB, out float depth, out Vector2 normal)
+    {
+        return bodyA.Shape.Type switch
+        {
+            ShapeType.Circle => bodyB.Shape.Type switch
+            {
+                ShapeType.Circle => Collisions.IntersectsCircles(
+                    bodyA.Position + bodyA.Shape.Position, bodyA.Shape.Radius,
+                    bodyB.Position + bodyB.Shape.Position, bodyB.Shape.Radius,
+                    out depth, out normal),
+                ShapeType.Polygon => Collisions.IntersectCirclePolygon(
+                    bodyA.Position + bodyA.Shape.Position, bodyA.Shape.Radius,
+                    bodyB.Position, bodyB.GetShapeVerticesTransformed(),
+                    out depth, out normal),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            ShapeType.Polygon => bodyB.Shape.Type switch
+            {
+                ShapeType.Circle => Collisions.IntersectCirclePolygon(
+                    bodyB.Position + bodyB.Shape.Position, bodyB.Shape.Radius,
+                    bodyA.Position, bodyA.GetShapeVerticesTransformed(),
+                    out depth, out normal),
+                ShapeType.Polygon => Collisions.IntersectsPolygon(
+                    bodyA.Position, bodyA.GetShapeVerticesTransformed(),
+                    bodyB.Position, bodyB.GetShapeVerticesTransformed(),
+                    out depth, out normal),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 }

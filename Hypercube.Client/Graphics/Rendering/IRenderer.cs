@@ -40,6 +40,9 @@ public interface IRenderer
     void DrawRectangle(Box2 box, Color color, bool outline = false);
     void DrawRectangle(Box2 box, Color color, Matrix3X3 model, bool outline = false);
     void DrawRectangle(Box2 box, Color color, Matrix4X4 model, bool outline = false);
+    void DrawPolygon(Vector2[] vertices, Color color, bool outline = false);
+    void DrawPolygon(Vector2[] vertices, Color color, Matrix3X3 model, bool outline = false);
+    void DrawPolygon(Vector2[] vertices, Color color, Matrix4X4 model, bool outline = false);
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color);
     void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model);
 }

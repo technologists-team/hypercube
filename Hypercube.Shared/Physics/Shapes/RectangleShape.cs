@@ -5,27 +5,32 @@ namespace Hypercube.Shared.Physics.Shapes;
 
 public sealed class RectangleShape : IShape
 {
-    public ShapeType Type => ShapeType.Rectangle;
+    public ShapeType Type => ShapeType.Polygon;
 
-    public float Radius { get; set; } = 0f;
-    public Vector2 Size { get; set; }
-    public Vector2 Position { get; set; }
+    public float Radius => 0;
+    public Vector2 Position { get; }
+    public Vector2 Size { get; }
     
-    public RectangleShape()
+    public int VerticesCount => 4;
+    public Vector2[] Vertices { get; }
+
+    public RectangleShape() : this(Vector2.Zero, Vector2.One / 2f)
     {
-        Size = Vector2.One / 2f;
-        Position = Vector2.Zero;
     }
     
-    public RectangleShape(Vector2 size)
+    public RectangleShape(Vector2 size) : this(Vector2.Zero, size)
     {
-        Size = size;
-        Position = Vector2.Zero;
     }
     
-    public RectangleShape(Vector2 size, Vector2 position)
+    public RectangleShape(Vector2 position, Vector2 size)
     {
-        Size = size;
         Position = position;
+        Size = size;
+        Vertices = new Box2(position - size / 2, position + size / 2).Vertices;
+    }
+
+    public Vector2[] GetVerticesTransformed(Vector2 position, float rotation)
+    {
+        return new Box2(position + Position - Size / 2, position + Position + Size / 2).Vertices;
     }
 }

@@ -5,7 +5,76 @@ namespace Hypercube.Shared.Physics;
 
 public static class Collisions
 {
-    public static bool IntersectsPolygon(Vector2[] verticesA, Vector2[] verticesB, out float depth, out Vector2 normal)
+    public static bool IntersectCirclePolygon(Circle circle, 
+        Vector2 polygonCenter, Vector2[] vertices, out float depth, out Vector2 normal)
+    {
+        return IntersectCirclePolygon(circle.Position, circle.Radius, polygonCenter, vertices, out depth, out normal);
+    }
+    
+    public static bool IntersectCirclePolygon(Vector2 circlePosition, float circleRadius, 
+        Vector2 polygonCenter, Vector2[] vertices, out float depth, out Vector2 normal)
+    {
+        normal = Vector2.Zero;
+        depth = float.MaxValue;
+
+        Vector2 axis;
+        float axisDepth;
+        
+        float minA;
+        float maxA;
+        float minB;
+        float maxB;
+
+        for (var i = 0; i < vertices.Length; i++)
+        {
+            var va = vertices[i];
+            var vb = vertices[(i + 1) % vertices.Length];
+
+            var edge = vb - va;
+            axis = new Vector2(-edge.Y, edge.X).Normalized;
+
+            ProjectVertices(vertices, axis, out minA, out maxA);
+            ProjectCircle(circlePosition, circleRadius, axis, out minB, out maxB);
+
+            if (minA >= maxB || minB >= maxA)
+                return false;
+
+            axisDepth = MathF.Min(maxB - minA, maxA - minB);
+            if (axisDepth >= depth)
+                continue;
+            
+            depth = axisDepth;
+            normal = axis;
+        }
+
+        var cpIndex = FindClosestPointOnPolygon(circlePosition, vertices);
+        var cp = vertices[cpIndex];
+
+        axis = cp - circlePosition;
+        axis = axis.Normalized;
+
+        ProjectVertices(vertices, axis, out minA, out maxA);
+        ProjectCircle(circlePosition, circleRadius, axis, out minB, out maxB);
+
+        if (minA >= maxB || minB >= maxA)
+            return false;
+        
+
+        axisDepth = MathF.Min(maxB - minA, maxA - minB);
+        if (axisDepth < depth)
+        {
+            depth = axisDepth;
+            normal = axis;
+        }
+
+        var direction = polygonCenter - circlePosition;
+        if (Vector2.Dot(direction, normal) < 0f)
+            normal = -normal;
+
+        return true;
+    }
+    
+    public static bool IntersectsPolygon(Vector2 centerA, Vector2[] verticesA, Vector2 centerB, Vector2[] verticesB, out float depth, out Vector2 normal)
     {
         normal = Vector2.Zero;
         depth = float.MaxValue;
@@ -54,30 +123,34 @@ public static class Collisions
             normal = axis;
         }
 
-        var centerA = GetPolygonCenter(verticesA);
-        var centerB = GetPolygonCenter(verticesB);
         var direction = centerB - centerA;
-        
         if (Vector2.Dot(direction, normal) < 0f)
             normal = -normal;
 
         return true;
     }
     
-    public static bool IntersectsCircles(Circle a, Circle b)
+    public static bool IntersectsCircles(Circle circleA, Circle circleB)
     {
-        var distance = Vector2.Distance(a.Position, b.Position);
-        var radius = a.Radius + b.Radius;
+        var distance = Vector2.Distance(circleA.Position, circleB.Position);
+        var radius = circleA.Radius + circleB.Radius;
         return distance >= radius;
     }
     
-    public static bool IntersectsCircles(Circle a, Circle b, out float depth, out Vector2 normal)
+    public static bool IntersectsCircles(Circle circleA, Circle circleB, out float depth, out Vector2 normal)
     {
-        var distance = Vector2.Distance(a.Position, b.Position);
-        var radius = a.Radius + b.Radius;
+        return IntersectsCircles(circleA.Position, circleA.Radius, circleB.Position, circleB.Radius,
+            out depth, out normal);
+    }
+
+    public static bool IntersectsCircles(Vector2 positionA, float radiusA, Vector2 positionB, float radiusB,
+        out float depth, out Vector2 normal)
+    {
+        var distance = Vector2.Distance(positionA, positionB);
+        var radius = radiusA + radiusB;
         
         depth = radius - distance;
-        normal = (a.Position - b.Position).Normalized;
+        normal = -(positionA - positionB).Normalized;
         
         return distance < radius;
     }
@@ -123,7 +196,6 @@ public static class Collisions
         
         var p = 0f;
         var q = 0f;
-        var r = 0f;
 
         for(var edge = 0; edge < 4; edge++) {
             switch (edge)
@@ -150,30 +222,34 @@ public static class Collisions
                     break;
             }
 
-            r = q / p;
+            var r = q / p;
 
             if (p == 0 && q < 0)
                 return Box2.NaN;   // Don't draw line at all. (parallel line outside)
 
-            if(p < 0)
+            if (p < 0)
             {
                 if (r > t1)
-                    return Box2.NaN;     // Don't draw line at all.
+                    // Don't draw line at all
+                    return Box2.NaN;
                 
                 if (r > t0)
-                    t0 = r;     // Line is clipped!
+                    // Line is clipped
+                    t0 = r;
                 
                 continue;
             }
 
-            if (p > 0)
-            {
-                if(r < t0)
-                    return Box2.NaN;      // Don't draw line at all.
+            if (p <= 0)
+                continue;
+
+            if (r < t0)
+                // Don't draw line at all
+                return Box2.NaN;
                 
-                if (r < t1)
-                    t1 = r;     // Line is clipped!
-            }
+            if (r < t1)
+                // Line is clipped
+                t1 = r;
         }
 
         return new Box2(
@@ -181,6 +257,27 @@ public static class Collisions
             lineA.Y + t0 * deltaLine.Y,
             lineA.X + t1 * deltaLine.X,
             lineA.Y + t1 * deltaLine.Y);
+    }
+    
+    
+    private static int FindClosestPointOnPolygon(Vector2 circleCenter, Vector2[] vertices)
+    {
+        var result = -1;
+        var minDistance = float.MaxValue;
+
+        for (var i = 0; i < vertices.Length; i++)
+        {
+            var v = vertices[i];
+            var distance = Vector2.Distance(v, circleCenter);
+
+            if (distance >= minDistance)
+                continue;
+            
+            minDistance = distance;
+            result = i;
+        }
+
+        return result;
     }
     
     private static void ProjectVertices(Vector2[] vertices, Vector2 axis, out float min, out float max)
@@ -199,16 +296,24 @@ public static class Collisions
                 max = proj;
         }
     }
-
-    private static Vector2 GetPolygonCenter(Vector2[] vertices)
+    
+    private static void ProjectCircle(Circle circle, Vector2 axis, out float min, out float max)
     {
-        var sum = Vector2.Zero;
-        
-        foreach (var vertex in vertices)
-        {
-            sum += vertex;
-        }
+        ProjectCircle(circle.Position, circle.Radius, axis, out min, out max);
+    }
+    
+    private static void ProjectCircle(Vector2 position, float radius, Vector2 axis, out float min, out float max)
+    {
+        var direction = axis.Normalized;
+        var directionAndRadius = direction * radius;
 
-        return sum / vertices.Length;
+        min = Vector2.Dot(position + directionAndRadius, axis);
+        max = Vector2.Dot(position - directionAndRadius, axis);
+
+        if (min <= max)
+            return;
+        
+        // Swap the min and max values.
+        (min, max) = (max, min);
     }
 }

@@ -10,6 +10,7 @@ using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Physics;
 using Hypercube.Shared.Physics.Shapes;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Container;
@@ -48,7 +49,8 @@ public sealed class Example : IEventSubscriber, IPostInject
             var y = _random.NextSingle() * 10 - 5;
 
             var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
-            CreateEntity(coord);
+            CreateEntity(coord, new RectangleShape(Vector2.One * 2f));
+            CreateEntity(coord, new CircleShape(1f));
         }
 
         CreatePlayer();
@@ -64,13 +66,13 @@ public sealed class Example : IEventSubscriber, IPostInject
         _cameraManager.SetMainCamera(camera);
     }
 
-    private void CreateEntity(SceneCoordinates coordinates)
+    private void CreateEntity(SceneCoordinates coordinates, IShape shape)
     {
         var entityUid = _entitiesManager.Create("Fuck", coordinates);
 
         _entitiesComponentManager.AddComponent<PhysicsComponent>(entityUid, entity =>
         {
-            entity.Component.Shape = new RectangleShape(Vector2.One * 2f);
+            entity.Component.Shape = shape;
         });
         
         _entitiesComponentManager.AddComponent<SpriteComponent>(entityUid, entity =>

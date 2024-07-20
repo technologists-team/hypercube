@@ -97,6 +97,30 @@ public sealed partial class Renderer
         AddQuadBatch(startIndex, box, Box2.UV, color);
     }
     
+    public void DrawPolygon(Vector2[] vertices, Color color, bool outline = false)
+    {
+        DrawPolygon(vertices, color, Matrix4X4.Identity, outline);
+    }
+
+    public void DrawPolygon(Vector2[] vertices, Color color, Matrix3X3 model, bool outline = false)
+    {
+        DrawPolygon(vertices, color, Matrix4X4.CreateIdentity(model), outline);
+    }
+
+    public void DrawPolygon(Vector2[] vertices, Color color, Matrix4X4 model, bool outline = false)
+    {
+        var startIndex = (uint)_batchVertexIndex;
+        _batches.Add(new Batch(_batchIndexIndex, vertices.Length, null, outline ? PrimitiveType.LineLoop : PrimitiveType.TriangleFan, model));
+        
+        uint i = 0;
+        foreach (var vertex in vertices)
+        {
+            _batchVertices[_batchVertexIndex++] = new Vertex(vertex, Vector2.Zero, color);
+            _batchIndices[_batchIndexIndex++] = startIndex + i;
+            i++;
+        }
+    }
+    
     public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color)
     {
         DrawTexture(texture, quad, uv, color, Matrix4X4.Identity);
