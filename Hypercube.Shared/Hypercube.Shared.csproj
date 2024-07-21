@@ -4,29 +4,19 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final" />
-      <PackageReference Include="YamlDotNet" Version="16.0.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final"/>
+      <PackageReference Include="YamlDotNet" Version="16.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj"/>
     </ItemGroup>
+    
     <ItemGroup>
-      <Folder Include="Entities\Systems\" />
-    </ItemGroup>
-    <ItemGroup>
-        <ContentWithTargetPath Include="..\Resources\**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <TargetPath>Resources\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
-        </ContentWithTargetPath>
-        <ContentWithTargetPath Update="..\Resources\Shaders\base_primitive.frag">
-          <Link>Shaders\base_primitive.frag</Link>
-        </ContentWithTargetPath>
-        <ContentWithTargetPath Update="..\Resources\Shaders\base_primitive.frag">
-          <Link>Shaders\base_primitive.frag</Link>
-        </ContentWithTargetPath>
+        <None Include="..\Resources\**" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 </Project>
