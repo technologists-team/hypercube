@@ -51,13 +51,26 @@ public sealed class World
         if (!IntersectsCollision(bodyA, bodyB, out var depth, out var normal))
             return;
         
-        if (!bodyA.IsStatic)
-            bodyA.Move(-normal * depth / 2f);
-        
-        if (!bodyB.IsStatic)
-            bodyB.Move(normal * depth / 2f);
-        
+        MoveBodies(bodyA, bodyB, depth, normal);
         ResolveCollision(bodyA, bodyB, depth, normal);
+    }
+
+    private void MoveBodies(IBody bodyA, IBody bodyB, float depth, Vector2 normal)
+    {
+        if (bodyA.IsStatic)
+        {
+            bodyB.Move(normal * depth / 2f);
+            return;
+        }
+        
+        if (bodyB.IsStatic)
+        {
+            bodyA.Move(-normal * depth / 2f);
+            return;
+        }
+           
+        bodyA.Move(-normal * depth / 2f);
+        bodyB.Move(normal * depth / 2f);
     }
 
     private bool IntersectsCollision(IBody bodyA, IBody bodyB, out float depth, out Vector2 normal)

@@ -31,17 +31,34 @@ public sealed class PhysicsComponent : Component, IBody
     
     public Vector2 Force { get; set; }
 
-    public float Density { get; } = 0.5f;
+    public float Density
+    {
+        get => _density;
+        set => _density = value;
+    }
 
-    public float Mass { get; set; } = 2f;
-    public float InvMass => 1f / Mass;
+    public float Mass
+    {
+        get => _mass; 
+        set => _mass = value;
+    }
+    
+    public float InvMass => IsStatic ? 0 : 1f / Mass;
     
     public float Inertia { get; }
     public float InvInertia { get; }
     
-    public float Restitution { get; }
+    public float Restitution
+    {
+        get => _restitution;
+        set => _restitution = value;
+    }
     
     public float Friction { get; }
+
+    private float _density = 2f;
+    private float _mass = 8f;
+    private float _restitution = 0.5f;
     
     public Vector2[] GetShapeVerticesTransformed()
     {
