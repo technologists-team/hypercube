@@ -77,6 +77,30 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
             cos * X - sin * Y,
             sin * X + cos * Y);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float DistanceSquared(Vector2 other)
+    {
+        return (this - other).LengthSquared;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Distance(Vector2 other)
+    {
+        return MathF.Sqrt(DistanceSquared(this, other));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Dot(Vector2 other)
+    {
+        return Dot(this, other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Cross(Vector2 other)
+    {
+        return Cross(this, other);
+    }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Vector2 other)
@@ -110,6 +134,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator +(float a, Vector2 b)
+    {
+        return new Vector2(b.X + a, b.Y + a);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 operator +(Vector2 a, float b)
     {
         return new Vector2(a.X + b, a.Y + b);
@@ -125,6 +155,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static Vector2 operator -(Vector2 a, Vector2 b)
     {
         return new Vector2(a.X - b.X, a.Y - b.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator -(float a, Vector2 b)
+    {
+        return new Vector2(b.X - a, b.Y - a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,6 +191,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static Vector2 operator /(Vector2 a, Vector2 b)
     {
         return new Vector2(a.X / b.X, a.Y / b.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 operator /(float a, Vector2 b)
+    {
+        return new Vector2(b.X / a, b.Y / a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -191,21 +233,27 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static Vector2 Max(Vector2 a, Vector2 b)
     {
         return new Vector2(
-            System.Math.Max(a.X, b.X),
-            System.Math.Max(a.Y, b.Y));
+            MathF.Max(a.X, b.X),
+            MathF.Max(a.Y, b.Y));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Min(Vector2 a, Vector2 b)
     {
         return new Vector2(
-            System.Math.Min(a.X, b.X),
-            System.Math.Min(a.Y, b.Y));
+            MathF.Min(a.X, b.X),
+            MathF.Min(a.Y, b.Y));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Dot(Vector2 a, Vector2 b)
     {
         return a.X * b.X + a.Y * b.Y;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Cross(Vector2 a, Vector2 b)
+    {
+        return a.X * b.Y - a.Y * b.X;
     }
 }
