@@ -27,10 +27,11 @@ public sealed class ResourceLoader : IResourceLoader, IPostInject, IEventSubscri
     {
         // TODO: Move it in config
         MountContentFolder(".", "/");
-        MountContentFolder("Resources", "/");
-        MountContentFolder("Resources/Audio", "/");
-        MountContentFolder("Resources/Textures", "/");
-        MountContentFolder("Resources/Shaders", "/");
+        MountContentFolder("Resources/", "/");
+        MountContentFolder("Resources/Assets/", "/");
+        MountContentFolder("Resources/Assets/Audio", "/");
+        MountContentFolder("Resources/Assets/Textures", "/");
+        MountContentFolder("Resources/Assets/Shaders", "/");
         
         _logger.EngineInfo("Mounted resource directories");
     }

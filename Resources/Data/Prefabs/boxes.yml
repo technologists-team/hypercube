@@ -1,0 +1,11 @@
+﻿- type: EntityPrefab
+  id: TestBall
+  components:
+    - type: PhysicsComponent
+      Type: Dynamic
+      Shape:
+        - type: CircleShape
+          Radius: 1
+    - type: SpriteComponent
+      TexturePath: "/Textures/icon.png"
+    - type: ExampleComponent

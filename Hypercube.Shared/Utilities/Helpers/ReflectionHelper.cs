@@ -3,6 +3,10 @@ using System.Reflection;
 
 namespace Hypercube.Shared.Utilities.Helpers;
 
+/// <summary>
+/// Reflection is a very handy tool for automating work.
+/// It can be resource-intensive, so try to use it only at the moment of initialization.
+/// </summary>
 public static class ReflectionHelper
 {
     public static T? GetAttribute<T>(MethodInfo method)
@@ -18,7 +22,12 @@ public static class ReflectionHelper
 
         return null;
     }
-    
+
+    public static FrozenSet<Type> GetAllInstantiableSubclassOf<T>()
+    {
+        return GetAllInstantiableSubclassOf(typeof(T));
+    }
+
     public static FrozenSet<Type> GetAllInstantiableSubclassOf(Type parent)
     {
         var types = new HashSet<Type>();

@@ -17,6 +17,7 @@ using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Physics;
 using Hypercube.Shared.Resources.Container;
+using Hypercube.Shared.Resources.Data;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Resources.Preloader;
 using Hypercube.Shared.Timing;
@@ -39,6 +40,7 @@ public static class Dependencies
         // Resources
         rootContainer.Register<IResourceLoader, ResourceLoader>();
         rootContainer.Register<IResourceContainer, ResourceContainer>();
+        rootContainer.Register<IResourceDataContainer, ResourceDataContainer>();
         rootContainer.Register<IResourcePreloader, ResourcePreloader>();
 
         // Input
