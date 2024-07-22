@@ -2,5 +2,5 @@
 
 public abstract class Component : IComponent
 {
-    
+    public EntityUid Owner { get; set; }
 }

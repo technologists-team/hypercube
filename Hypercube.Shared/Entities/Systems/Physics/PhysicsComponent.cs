@@ -65,7 +65,12 @@ public sealed class PhysicsComponent : Component, IBody
         return Shape.GetVerticesTransformed(Position, Angle);
     }
 
-    public void Update(float deltaTime)
+    public Box2 ComputeAABB()
+    {
+        return Shape.ComputeAABB(Position, Angle);
+    }
+
+    public void Update(float deltaTime, Vector2 gravity)
     {
         if (IsStatic)
             return;
@@ -73,6 +78,7 @@ public sealed class PhysicsComponent : Component, IBody
         var acceleration = Force / Mass; 
         
         LinearVelocity += acceleration * deltaTime;
+        LinearVelocity += gravity * deltaTime;
         
         Position += LinearVelocity * deltaTime;
         Angle += AngularVelocity * deltaTime;

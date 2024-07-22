@@ -120,7 +120,8 @@ public sealed partial class EntitiesComponentManager : IEntitiesComponentManager
             throw new InvalidOperationException();
 
         var instance = (IComponent)constructor.Invoke(Array.Empty<object>()) ?? throw new NullReferenceException();
-
+        instance.Owner = entityUid;
+        
         components.Add(entityUid, instance);
         _entitiesComponentSet[entityUid].Add(instance.GetType());
         

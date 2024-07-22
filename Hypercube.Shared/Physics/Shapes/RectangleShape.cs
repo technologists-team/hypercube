@@ -33,4 +33,10 @@ public sealed class RectangleShape : IShape
     {
         return new Box2(position + Position - Size / 2, position + Position + Size / 2).Vertices;
     }
+
+    public Box2 ComputeAABB(Vector2 position, float rotation)
+    {
+        var transformed = GetVerticesTransformed(position, rotation);
+        return new Box2(transformed[0], transformed[2]);
+    }
 }

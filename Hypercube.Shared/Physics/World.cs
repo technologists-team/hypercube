@@ -1,4 +1,6 @@
 ﻿using Hypercube.Math.Vectors;
+using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Physics.Events;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Shared.Physics;
@@ -10,15 +12,23 @@ namespace Hypercube.Shared.Physics;
 /// <seealso cref="Chunk"/>
 public sealed class World
 {
-    private readonly HashSet<IBody> _bodies = new();
-
-    private Vector2 _gravity = new();
+    private readonly IEventBus _eventBus;
     
-    public void Update(float deltaTime)
+    private readonly HashSet<IBody> _bodies = new();
+    private readonly HashSet<Manifold> _manifolds = new();
+
+    private Vector2 _gravity = new(0, -9.8f);
+
+    public World(IEventBus eventBus)
+    {
+        _eventBus = eventBus;
+    }
+
+public void Update(float deltaTime)
     {
         foreach (var bodyA in _bodies)
         {
-            bodyA.Update(deltaTime);
+            bodyA.Update(deltaTime, _gravity);
             
             foreach (var bodyB in _bodies)
             {
@@ -31,7 +41,14 @@ public sealed class World
                 ProcessCollision(bodyA, bodyB);
             }
         }
-        
+
+        foreach (var manifold in _manifolds)
+        {
+            ResolveCollision(manifold.BodyA, manifold.BodyB, manifold.Depth, manifold.Normal);
+        }
+
+        _manifolds.Clear();
+
         // TODO: Add works with chunks
         // ProcessChunkCollisions();
     }
@@ -52,7 +69,13 @@ public sealed class World
             return;
         
         MoveBodies(bodyA, bodyB, depth, normal);
-        ResolveCollision(bodyA, bodyB, depth, normal);
+
+        var manifold = new Manifold(bodyA, bodyB, depth, normal, Vector2.Zero, Vector2.Zero, 0);
+        
+        var collisionEnterEvent = new PhysicsCollisionEntered(manifold);
+        _eventBus.Raise(collisionEnterEvent);
+        
+        _manifolds.Add(manifold);
     }
 
     private void MoveBodies(IBody bodyA, IBody bodyB, float depth, Vector2 normal)

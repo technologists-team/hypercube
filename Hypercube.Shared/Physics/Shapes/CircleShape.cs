@@ -1,4 +1,5 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Shared.Physics.Shapes;
 
@@ -29,5 +30,10 @@ public sealed class CircleShape : IShape
     public Vector2[] GetVerticesTransformed(Vector2 position, float rotation)
     {
         return Array.Empty<Vector2>();
+    }
+
+    public Box2 ComputeAABB(Vector2 position, float rotation)
+    {
+        return new Box2(Position - position - Radius, Position + position + Radius);
     }
 }

@@ -8,10 +8,11 @@ public sealed class PhysicsManager : IPhysicsManager, IEventSubscriber, IPostInj
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
 
-    private readonly World _world = new();
+    private World _world = default!;
     
     public void PostInject()
     {
+        _world = new World(_eventBus);
         _eventBus.Subscribe<TickFrameEvent>(this, OnTick);
     }
 
