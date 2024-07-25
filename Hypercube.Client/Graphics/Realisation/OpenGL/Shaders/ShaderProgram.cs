@@ -10,7 +10,7 @@ namespace Hypercube.Client.Graphics.Realisation.OpenGL.Shaders;
 
 public sealed class ShaderProgram : IShaderProgram
 {
-    private readonly int _handle;
+    public int Handle { get; private set; }
     private readonly FrozenDictionary<string, int> _uniformLocations;
 
     public ShaderProgram(string path, IResourceLoader loader) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
@@ -26,7 +26,7 @@ public sealed class ShaderProgram : IShaderProgram
             CreateShader(fragPath, ShaderType.FragmentShader, resourceLoader)
         };
         
-        _handle = GL.CreateProgram();
+        Handle = GL.CreateProgram();
 
         foreach (var shader in shaders)
         {
@@ -47,7 +47,7 @@ public sealed class ShaderProgram : IShaderProgram
 
     public void Use()
     {
-        GL.UseProgram(_handle);
+        GL.UseProgram(Handle);
     }
 
     public void Stop()
@@ -57,12 +57,12 @@ public sealed class ShaderProgram : IShaderProgram
 
     public void Attach(IShader shader)
     {
-        GL.AttachShader(_handle, shader.Handle);
+        GL.AttachShader(Handle, shader.Handle);
     }
 
     public void Detach(IShader shader)
     {
-        GL.DetachShader(_handle, shader.Handle);
+        GL.DetachShader(Handle, shader.Handle);
     }
 
     public void SetUniform(string name, byte value)
@@ -125,24 +125,24 @@ public sealed class ShaderProgram : IShaderProgram
         unsafe
         {
             var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
-            GL.UniformMatrix4(GL.GetUniformLocation(_handle, name), 1, false, (float*) &matrix);
+            GL.UniformMatrix4(GL.GetUniformLocation(Handle, name), 1, false, (float*) &matrix);
         }
     }
     
     public void Dispose()
     {
-        GL.DeleteProgram(_handle);
+        GL.DeleteProgram(Handle);
     }
 
     private FrozenDictionary<string, int> GetUniformLocations()
     {
-        GL.GetProgram(_handle, GetProgramParameterName.ActiveUniforms, out var uniforms);
+        GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var uniforms);
        
         var uniformLocations = new Dictionary<string, int>();
         for (var i = 0; i < uniforms; i++)
         {
-            var key = GL.GetActiveUniform(_handle, i, out _, out _);
-            var location = GL.GetUniformLocation(_handle, key);
+            var key = GL.GetActiveUniform(Handle, i, out _, out _);
+            var location = GL.GetUniformLocation(Handle, key);
             uniformLocations.Add(key, location);
         }
 
@@ -151,12 +151,12 @@ public sealed class ShaderProgram : IShaderProgram
     
     private void LinkProgram()
     {
-        GL.LinkProgram(_handle);
-        GL.GetProgram(_handle, GetProgramParameterName.LinkStatus, out var code);
+        GL.LinkProgram(Handle);
+        GL.GetProgram(Handle, GetProgramParameterName.LinkStatus, out var code);
         if (code == (int)All.True)
             return;
         
-        throw new Exception($"Error occurred whilst linking Program({_handle})");
+        throw new Exception($"Error occurred whilst linking Program({Handle})");
     }
     
     private IShader CreateShader(ResourcePath path, ShaderType type, IResourceLoader resourceLoader)

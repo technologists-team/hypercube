@@ -10,6 +10,7 @@ namespace Hypercube.Client.Graphics.Shaders;
 /// </summary>
 public interface IShaderProgram : IDisposable
 {
+    int Handle { get; }
     void Use();
     void Stop();
 

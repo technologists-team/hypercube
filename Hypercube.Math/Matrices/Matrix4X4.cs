@@ -679,6 +679,32 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
 
         return result;
     }
+    
+    public Vector2 Transform(Vector2 vector2)
+    {
+        return Transform(this, vector2);
+    }
+
+    public static Vector2 Transform(Matrix4X4 matrix, Vector2 vector)
+    {
+        var x1 = matrix.M00 * vector.X + matrix.M01 * vector.Y + matrix.M02 * 0 + matrix.M03 * 1f;
+        var y1 = matrix.M10 * vector.X + matrix.M11 * vector.Y + matrix.M12 * 0 + matrix.M13 * 1f;
+        
+        return new Vector2(x1, y1);
+    }
+
+    public Box2 Transform(Box2 quad)
+    {
+        return Transform(this, quad);
+    }
+    
+    public static Box2 Transform(Matrix4X4 matrix, Box2 quad)
+    {
+        var tr = Transform(matrix, quad.TopRight);
+        var bl = Transform(matrix, quad.BottomLeft);
+
+        return new Box2(bl.X, tr.Y, tr.X, bl.Y);
+    }
 
     public static Matrix4X4 CreateOrthographic(Box2 box2, float zNear, float zFar)
     {

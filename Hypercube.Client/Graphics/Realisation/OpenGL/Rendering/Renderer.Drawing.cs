@@ -7,6 +7,7 @@ using OpenTK.Mathematics;
 using OpenToolkit.Graphics.OpenGL4;
 using Box2 = Hypercube.Math.Shapes.Box2;
 using Vector2 = Hypercube.Math.Vectors.Vector2;
+using Vector4 = System.Numerics.Vector4;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
@@ -60,7 +61,7 @@ public sealed partial class Renderer
     {
         var startIndex = (uint)_batchVertexIndex;
         _batches.Add(new Batch(_batchIndexIndex, 2, null, PrimitiveType.Lines, model));
-        AddLineBatch(startIndex, box, color);
+        AddLineBatch(startIndex, model.Transform(box), color);
     }
 
     public void DrawCircle(Circle circle, Color color)
@@ -94,7 +95,7 @@ public sealed partial class Renderer
     {
         var startIndex = (uint)_batchVertexIndex;
         _batches.Add(new Batch(_batchIndexIndex, 6, null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, model));
-        AddQuadBatch(startIndex, box, Box2.UV, color);
+        AddQuadBatch(startIndex, model.Transform(box), Box2.UV, color);
     }
     
     public void DrawPolygon(Vector2[] vertices, Color color, bool outline = false)
@@ -128,10 +129,11 @@ public sealed partial class Renderer
 
     public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
+        EnsureBatchState(texture.Handle, PrimitiveType.Triangles, _texturingShaderProgram.Handle);
         
-        _batches.Add(new Batch(_batchIndexIndex, 6, texture.Handle, PrimitiveType.Triangles, model));
-        AddQuadBatch(startIndex, quad, uv, color);
+        var startIndex = (uint)_batchVertexIndex;
+        //_batches.Add(new Batch(_batchIndexIndex, 6, texture.Handle, PrimitiveType.Triangles, model));
+        AddQuadBatch(startIndex, model.Transform(quad), uv, color);
     }
 
     private void AddPointBatch(uint startIndex, Vector2 point, Color color)
@@ -183,5 +185,22 @@ public sealed partial class Renderer
         _batchIndices[_batchIndexIndex++] = startIndex + 1;
         _batchIndices[_batchIndexIndex++] = startIndex + 2;
         _batchIndices[_batchIndexIndex++] = startIndex + 3;
+    }
+
+    private void EnsureBatchState(int texHandle, PrimitiveType primitiveType, int shaderInstance)
+    {
+        if (_currentBatchData is not null)
+        {
+            var data = _currentBatchData.Value;
+            if (data.PrimitiveType == primitiveType &&
+                data.TextureHandle == texHandle &&
+                data.ShaderHandle == shaderInstance)
+            {
+                return;
+            }
+            FinalizeCurrentBatch();
+        }
+        
+        _currentBatchData = new BatchData(texHandle, shaderInstance, primitiveType, _batchIndexIndex);
     }
 }

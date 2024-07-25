@@ -4,6 +4,7 @@ using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Math;
+using Hypercube.Math.Matrices;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -25,6 +26,9 @@ public sealed partial class Renderer
     
     private int _batchVertexIndex;
     private int _batchIndexIndex; // Haha name it's fun
+
+    // contains info about currently running batch
+    private BatchData? _currentBatchData;
     
     private BufferObject _vbo = default!;
     private ArrayObject _vao = default!;
@@ -67,7 +71,7 @@ public sealed partial class Renderer
             cameraTitle = $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
         }
         
-        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle}");
+        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle} | Batches: {_batches.Count}");
 #endif
         _windowManager.PollEvents();
     }
@@ -86,6 +90,9 @@ public sealed partial class Renderer
 
         var args = new RenderDrawingEvent();
         _eventBus.Raise(ref args);
+        
+        // break batch so we get all batches
+        BreakCurrentBatch();
         
         _vao.Bind();
         _vbo.SetData(_batchVertices);
@@ -107,6 +114,7 @@ public sealed partial class Renderer
         
         _batchVertexIndex = 0;
         _batchIndexIndex = 0;
+        _currentBatchData = null;
         
         _batches.Clear();
     }
@@ -129,5 +137,27 @@ public sealed partial class Renderer
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
         
         shader.Stop();
+    }
+
+    private void FinalizeCurrentBatch()
+    {
+        if (_currentBatchData is null)
+            return;
+
+        var data = _currentBatchData.Value;
+        var currentIndex = _batchIndexIndex;
+        
+        var batch = new Batch(data.StartIndex, currentIndex - data.StartIndex, data.TextureHandle, data.PrimitiveType,
+            Matrix4X4.Identity);
+        
+        _batches.Add(batch);
+    }
+
+    // in case we need to get current batch, or start new one
+    private void BreakCurrentBatch()
+    {
+        FinalizeCurrentBatch();
+
+        _currentBatchData = null;
     }
 }

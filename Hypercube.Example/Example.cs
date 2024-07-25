@@ -3,7 +3,6 @@ using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Example.Camera;
 using Hypercube.Example.Controls;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
