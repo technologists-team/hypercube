@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
 # About
 
 Hypercube is a game engine/framework inspired by RboustToolbox, for creating cross-platform desktop games, with a predominant approach in ECS. 
