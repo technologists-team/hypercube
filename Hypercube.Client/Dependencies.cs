@@ -8,7 +8,6 @@ using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Client.Input.Manager;
-using Hypercube.Client.Resources.Caching;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
@@ -19,6 +18,8 @@ using Hypercube.Shared.Physics;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Resources.Preloader;
+using Hypercube.Shared.Runtimes;
+using Hypercube.Shared.Runtimes.Loop;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client;
@@ -30,16 +31,6 @@ public static class Dependencies
 {
     public static void Register(DependenciesContainer rootContainer)
     {
-        // Timing
-        rootContainer.Register<ITiming, Timing>();
-        
-        // EventBus
-        rootContainer.Register<IEventBus, EventBus>();
-        
-        // Resources
-        rootContainer.Register<IResourceLoader, ResourceLoader>();
-        rootContainer.Register<IResourceContainer, ResourceContainer>();
-        rootContainer.Register<IResourcePreloader, ResourcePreloader>();
 
         // Input
         rootContainer.Register<IInputHandler, InputHandler>();
@@ -55,21 +46,13 @@ public static class Dependencies
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
         
-        // Physics
-        rootContainer.Register<IPhysicsManager, PhysicsManager>();
         
         // Rendering
         rootContainer.Register<IRenderer, Renderer>();
         
-        // ECS
-        rootContainer.Register<IEntitiesComponentManager, EntitiesComponentManager>();
-        rootContainer.Register<IEntitiesSystemManager, EntitiesSystemManager>();
-        rootContainer.Register<IEntitiesEventBus, EntitiesEventBus>();
-        rootContainer.Register<IEntitiesManager, EntitiesManager>();
-        
         // Runtime
-        rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
-        rootContainer.Register<IRuntime, Runtime>();
+        rootContainer.Register<IRuntimeLoop, ClientRuntimeLoop>();
+        rootContainer.Register<IRuntime, ClientRuntime>();
         
         rootContainer.InstantiateAll();
     }

@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Runtimes.Loop;
+﻿namespace Hypercube.Shared.Runtimes.Loop;
 
 public interface IRuntimeLoop
 {

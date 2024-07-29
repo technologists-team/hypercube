@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Runtimes;
+﻿namespace Hypercube.Shared.Runtimes;
 
 public interface IRuntime
 {

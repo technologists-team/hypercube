@@ -3,11 +3,13 @@ using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
+using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Runtimes.Event;
+using Hypercube.Shared.Runtimes.Loop;
 
 namespace Hypercube.Client.Runtimes;
 
-public sealed class Runtime : IRuntime, IEventSubscriber, IPostInject
+public sealed class ClientRuntime : IRuntime, IEventSubscriber, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IRuntimeLoop _loop = default!;

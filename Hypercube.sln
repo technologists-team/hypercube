@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Example", "Hypercube.Example\Hypercube.Example.csproj", "{817BAF89-86DB-43CC-8C36-5067294F1E6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Example.Client", "Hypercube.Example.Client\Hypercube.Example.Client.csproj", "{817BAF89-86DB-43CC-8C36-5067294F1E6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Client", "Hypercube.Client\Hypercube.Client.csproj", "{5CC9824F-8B41-4594-BA5A-46B97133AF6A}"
 EndProject
@@ -9,6 +9,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Shared", "Hypercube.Shared\Hypercube.Shared.csproj", "{ADF0DA0A-1FDE-4EBE-A516-9CA5FB01C62F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.UnitTests", "Hypercube.UnitTests\Hypercube.UnitTests.csproj", "{6901E456-957F-4CC8-880F-B6A5DBD2862E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Server", "Hypercube.Server\Hypercube.Server.csproj", "{FD39F168-2960-4D80-82E0-0E37D8CC9852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Example.Server", "Hypercube.Example.Server\Hypercube.Example.Server.csproj", "{139145CC-AA74-45BC-8915-442A0B38BB83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +40,15 @@ Global
 		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6901E456-957F-4CC8-880F-B6A5DBD2862E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD39F168-2960-4D80-82E0-0E37D8CC9852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD39F168-2960-4D80-82E0-0E37D8CC9852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD39F168-2960-4D80-82E0-0E37D8CC9852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD39F168-2960-4D80-82E0-0E37D8CC9852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{139145CC-AA74-45BC-8915-442A0B38BB83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{139145CC-AA74-45BC-8915-442A0B38BB83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{139145CC-AA74-45BC-8915-442A0B38BB83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{139145CC-AA74-45BC-8915-442A0B38BB83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

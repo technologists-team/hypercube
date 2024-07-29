@@ -7,7 +7,7 @@ using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.Runtimes.Loop.Event;
 
-namespace Hypercube.Example.Camera;
+namespace Hypercube.Example.Client.Camera;
 
 public sealed class CameraSystem : EntitySystem
 {

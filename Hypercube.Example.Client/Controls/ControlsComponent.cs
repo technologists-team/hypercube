@@ -1,6 +1,6 @@
 ﻿using Hypercube.Shared.Entities.Realisation.Components;
 
-namespace Hypercube.Example.Controls;
+namespace Hypercube.Example.Client.Controls;
 
 public sealed class ControlsComponent : Component
 {
