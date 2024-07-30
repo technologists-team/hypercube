@@ -6,7 +6,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-        <RootNamespace>Hypercube.Example.Server</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
