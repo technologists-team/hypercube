@@ -4,5 +4,5 @@ namespace Hypercube.Example.Client.Controls;
 
 public sealed class ControlsComponent : Component
 {
-    public float Speed = 10;
+    public float Speed = 60;
 }

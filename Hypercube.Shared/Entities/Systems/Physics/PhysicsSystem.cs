@@ -2,8 +2,10 @@
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
+using Hypercube.Shared.Entities.Systems.Physics.Events;
 using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.Physics;
+using Hypercube.Shared.Physics.Events;
 using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Shared.Entities.Systems.Physics;
@@ -17,8 +19,22 @@ public abstract class PhysicsSystem : EntitySystem
     {
         base.Initialize();
         
+        Subscribe<PhysicsCollisionEntered>(OnCollisionEnter);
+        
         Subscribe<PhysicsComponent, ComponentAdded>(OnBodyAdded);
         Subscribe<PhysicsComponent, ComponentRemoved>(OnBodyRemoved);
+    }
+
+    private void OnCollisionEnter(ref PhysicsCollisionEntered args)
+    {
+        if (args.Manifold is not { BodyA: PhysicsComponent bodyA, BodyB: PhysicsComponent bodyB })
+            return;
+        
+        var eventA = new CollisionEnterEvent(bodyA);
+        var eventB = new CollisionEnterEvent(bodyB);
+
+        Raise(bodyA.Owner, bodyA, eventB);
+        Raise(bodyB.Owner, bodyB, eventA);
     }
 
     public override void FrameUpdate(UpdateFrameEvent args)

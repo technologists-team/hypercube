@@ -27,7 +27,8 @@ public interface IBody
     float Friction { get; }
     
     Vector2[] GetShapeVerticesTransformed();
+    Box2 ComputeAABB();
 
-    void Update(float deltaTime);
+    void Update(float deltaTime, Vector2 gravity);
     void Move(Vector2 position);
 }
