@@ -24,7 +24,7 @@ public sealed class World
         _eventBus = eventBus;
     }
 
-public void Update(float deltaTime)
+    public void Update(float deltaTime)
     {
         foreach (var bodyA in _bodies)
         {
