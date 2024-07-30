@@ -10,17 +10,10 @@ using Hypercube.Client.Input.Handler;
 using Hypercube.Client.Input.Manager;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
+using Hypercube.Shared;
 using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Entities.Realisation.EventBus;
-using Hypercube.Shared.Entities.Realisation.Manager;
-using Hypercube.Shared.EventBus;
-using Hypercube.Shared.Physics;
-using Hypercube.Shared.Resources.Container;
-using Hypercube.Shared.Resources.Manager;
-using Hypercube.Shared.Resources.Preloader;
 using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Runtimes.Loop;
-using Hypercube.Shared.Timing;
 
 namespace Hypercube.Client;
 
@@ -31,7 +24,8 @@ public static class Dependencies
 {
     public static void Register(DependenciesContainer rootContainer)
     {
-
+        SharedDependencies.Register(rootContainer);
+        
         // Input
         rootContainer.Register<IInputHandler, InputHandler>();
         rootContainer.Register<IInputManager, InputManager>();

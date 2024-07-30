@@ -25,10 +25,13 @@ public abstract class SharedEntryPoint
     {
         var parser = new ArgumentParser(args);
         parser.TryParse();
+        
         var rootContainer = DependencyManager.InitThread();
-        SharedDependencies.Register(rootContainer);
+        
         Enter(parser, rootContainer);
+        
         callback?.Invoke(args, rootContainer);
+        
         var runtime = rootContainer.Resolve<IRuntime>();
         runtime.Run();
     }
