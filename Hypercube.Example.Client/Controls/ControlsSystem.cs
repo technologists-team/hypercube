@@ -6,7 +6,7 @@ using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Runtimes.Loop.Event;
 
-namespace Hypercube.Example.Controls;
+namespace Hypercube.Example.Client.Controls;
 
 public sealed class ControlsSystem : EntitySystem
 {
