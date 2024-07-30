@@ -6,7 +6,7 @@ using Hypercube.Shared.Timing;
 
 namespace Hypercube.Server.Runtimes.Loop;
 
-public class ServerRuntimeLoop : IRuntimeLoop
+public class RuntimeLoop : IRuntimeLoop
 {
     [Dependency] private readonly ITiming _timing = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;

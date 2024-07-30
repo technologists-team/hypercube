@@ -17,8 +17,8 @@ public static class Dependencies
         SharedDependencies.Register(rootContainer);
         
         // Runtime
-        rootContainer.Register<IRuntimeLoop, ServerRuntimeLoop>();
-        rootContainer.Register<IRuntime, ServerRuntime>();
+        rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
+        rootContainer.Register<IRuntime, Runtime>();
         
         rootContainer.InstantiateAll();
     }

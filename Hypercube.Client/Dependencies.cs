@@ -45,8 +45,8 @@ public static class Dependencies
         rootContainer.Register<IRenderer, Renderer>();
         
         // Runtime
-        rootContainer.Register<IRuntimeLoop, ClientRuntimeLoop>();
-        rootContainer.Register<IRuntime, ClientRuntime>();
+        rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
+        rootContainer.Register<IRuntime, Runtime>();
         
         rootContainer.InstantiateAll();
     }
