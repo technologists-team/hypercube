@@ -2,7 +2,7 @@
 
 # About
 
-Hypercube is a game engine/framework inspired by RboustToolbox, for creating cross-platform desktop games, with a predominant approach in ECS. 
+Hypercube is a game engine/framework inspired by RobustToolbox, for creating cross-platform desktop games, with a predominant approach in ECS. 
 
 > [!NOTE]
 > Checkout the [Documentation](https://github.com/technologists-team/hypercube/wiki)
