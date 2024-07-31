@@ -25,9 +25,11 @@ public sealed class PhysicsComponent : Component, IBody
     }
 
     public Vector2 LinearVelocity { get; set; }
+    public Vector2 LinearDamping { get; set; } = new Vector2(1f, 1f);
     
     public float Angle { get; set; }
     public float AngularVelocity { get; }
+    public float AngularDamping { get; set; } = 1f;
     
     public Vector2 Force { get; set; }
 
@@ -79,9 +81,13 @@ public sealed class PhysicsComponent : Component, IBody
         
         LinearVelocity += acceleration * deltaTime;
         LinearVelocity += gravity * deltaTime;
+
+        LinearVelocity *= LinearDamping;
         
         Position += LinearVelocity * deltaTime;
         Angle += AngularVelocity * deltaTime;
+
+        Angle *= AngularDamping;
         
         Force = Vector2.Zero;
     }
