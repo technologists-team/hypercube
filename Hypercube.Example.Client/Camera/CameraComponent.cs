@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Shared.Entities.Realisation.Components;
 
-namespace Hypercube.Example.Camera;
+namespace Hypercube.Example.Client.Camera;
 
 public sealed class CameraComponent : Component
 {

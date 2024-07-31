@@ -1,4 +1,5 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Math.Shapes;
+using Hypercube.Math.Vectors;
 
 namespace Hypercube.Shared.Physics.Shapes;
 
@@ -31,5 +32,31 @@ public sealed class PolygonShape : IShape
         }
 
         return vertices;
+    }
+
+    public Box2 ComputeAABB(Vector2 position, float rotation)
+    {
+        var minX = float.MaxValue;
+        var minY = float.MaxValue;
+        var maxX = float.MinValue;
+        var maxY = float.MinValue;
+        
+        var vertices = GetVerticesTransformed(position, rotation);
+        foreach (var vertex in vertices)
+        {
+            if (vertex.X < minX)
+                minX = vertex.X;
+            
+            if (vertex.X > maxX)
+                maxX = vertex.X;
+            
+            if (vertex.Y < minY)
+                minY = vertex.Y;
+            
+            if (vertex.Y > maxY)
+                maxY = vertex.Y;
+        }
+
+        return new Box2(minX, minY, maxX, maxY);
     }
 }

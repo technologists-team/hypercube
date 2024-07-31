@@ -3,7 +3,7 @@ using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Example.Controls;
+using Hypercube.Example.Client.Controls;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Manager;
@@ -17,7 +17,7 @@ using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Scenes;
 
-namespace Hypercube.Example;
+namespace Hypercube.Example.Client;
 
 public sealed class Example : IEventSubscriber, IPostInject
 {

@@ -6,7 +6,7 @@ using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Runtimes.Loop.Event;
 
-namespace Hypercube.Example.Controls;
+namespace Hypercube.Example.Client.Controls;
 
 public sealed class ControlsSystem : EntitySystem
 {
@@ -22,7 +22,7 @@ public sealed class ControlsSystem : EntitySystem
         foreach (var entity in GetEntities<ControlsComponent>())
         {
             var physics = GetComponent<PhysicsComponent>(entity);
-            physics.LinearVelocity = new Vector2(inputX, inputY) * entity.Component.Speed;
+            physics.Force = new Vector2(inputX, inputY) * entity.Component.Speed;
         }
     }
 }

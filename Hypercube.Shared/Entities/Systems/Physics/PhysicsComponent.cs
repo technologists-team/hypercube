@@ -31,24 +31,46 @@ public sealed class PhysicsComponent : Component, IBody
     
     public Vector2 Force { get; set; }
 
-    public float Density { get; } = 0.5f;
+    public float Density
+    {
+        get => _density;
+        set => _density = value;
+    }
 
-    public float Mass { get; set; } = 2f;
-    public float InvMass => 1f / Mass;
+    public float Mass
+    {
+        get => _mass; 
+        set => _mass = value;
+    }
+    
+    public float InvMass => IsStatic ? 0 : 1f / Mass;
     
     public float Inertia { get; }
     public float InvInertia { get; }
     
-    public float Restitution { get; }
+    public float Restitution
+    {
+        get => _restitution;
+        set => _restitution = value;
+    }
     
     public float Friction { get; }
+
+    private float _density = 2f;
+    private float _mass = 8f;
+    private float _restitution = 0.5f;
     
     public Vector2[] GetShapeVerticesTransformed()
     {
         return Shape.GetVerticesTransformed(Position, Angle);
     }
 
-    public void Update(float deltaTime)
+    public Box2 ComputeAABB()
+    {
+        return Shape.ComputeAABB(Position, Angle);
+    }
+
+    public void Update(float deltaTime, Vector2 gravity)
     {
         if (IsStatic)
             return;
@@ -56,6 +78,7 @@ public sealed class PhysicsComponent : Component, IBody
         var acceleration = Force / Mass; 
         
         LinearVelocity += acceleration * deltaTime;
+        LinearVelocity += gravity * deltaTime;
         
         Position += LinearVelocity * deltaTime;
         Angle += AngularVelocity * deltaTime;

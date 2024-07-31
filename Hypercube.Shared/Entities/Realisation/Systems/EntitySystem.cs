@@ -77,7 +77,12 @@ public abstract class EntitySystem : IEntitySystem, IEventSubscriber
     {
         _eventBus.Subscribe(this, callback);
     }
-
+    
+    protected void Unsubscribe<T>(EventRefHandler<T> callback) where T : IEventArgs
+    {
+        _eventBus.Unsubscribe<T>(this);
+    }
+    
     protected void Subscribe<TComponent, TEvent>(EntitiesEventRefHandler<TComponent, TEvent> callback)
         where TComponent : IComponent
         where TEvent : IEntitiesEventArgs
@@ -85,9 +90,25 @@ public abstract class EntitySystem : IEntitySystem, IEventSubscriber
         _entitiesEventBus.Subscribe(this, callback);
     }
     
-    protected void Unsubscribe<T>(EventRefHandler<T> callback) where T : IEventArgs
+    protected void Raise<TComponent, TEvent>(EntityUid entityUid, TComponent component, TEvent args)
+        where TComponent : IComponent
+        where TEvent : IEntitiesEventArgs
     {
-        _eventBus.Unsubscribe<T>(this);
+        _entitiesEventBus.Raise(entityUid, component, args);
+    }
+    
+    protected void Raise<TComponent, TEvent>(Entity<TComponent> entity, TEvent args)
+        where TComponent : IComponent
+        where TEvent : IEntitiesEventArgs
+    {
+        _entitiesEventBus.Raise(entity, args);
+    }
+    
+    protected void Raise<TComponent, TEvent>(Entity<TComponent> entity, ref TEvent args)
+        where TComponent : IComponent
+        where TEvent : IEntitiesEventArgs
+    {
+        _entitiesEventBus.Raise(entity, args);
     }
     
     private string GetLoggerName()

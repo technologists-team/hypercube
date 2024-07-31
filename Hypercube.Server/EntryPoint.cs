@@ -1,8 +1,8 @@
-﻿using Hypercube.Shared;
+using Hypercube.Shared;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Utilities.ArgumentsParser;
 
-namespace Hypercube.Client;
+namespace Hypercube.Server;
 
 public sealed class EntryPoint : SharedEntryPoint
 {

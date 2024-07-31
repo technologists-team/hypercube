@@ -2,5 +2,5 @@
 
 public interface IComponent
 {
-    
+    EntityUid Owner { get; set; }
 }

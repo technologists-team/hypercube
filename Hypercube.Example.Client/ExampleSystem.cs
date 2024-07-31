@@ -5,7 +5,7 @@ using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;
 
-namespace Hypercube.Example;
+namespace Hypercube.Example.Client;
 
 public sealed class ExampleSystem : EntitySystem
 {
