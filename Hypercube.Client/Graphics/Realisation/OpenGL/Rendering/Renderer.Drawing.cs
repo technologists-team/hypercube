@@ -25,9 +25,9 @@ public sealed partial class Renderer
 
     public void DrawPoint(Vector2 vector, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 1, null, PrimitiveType.Points, model));
-        AddPointBatch(startIndex, vector, color);
+        BreakCurrentBatch();
+        EnsureBatchState(null, PrimitiveType.Points, _primitiveShaderProgram.Handle);
+        AddPointBatch((uint)_batchVertexIndex, model.Transform(vector), color);
     }
 
     public void DrawLine(Vector2 pointA, Vector2 pointB, Color color)
@@ -42,9 +42,7 @@ public sealed partial class Renderer
 
     public void DrawLine(Vector2 pointA, Vector2 pointB, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 2, null, PrimitiveType.Lines, model));
-        AddLineBatch(startIndex, pointA, pointB, color);
+        DrawLine(new Box2(pointA, pointB), color, model);
     }
 
     public void DrawLine(Box2 box, Color color)
@@ -59,9 +57,8 @@ public sealed partial class Renderer
 
     public void DrawLine(Box2 box, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 2, null, PrimitiveType.Lines, model));
-        AddLineBatch(startIndex, model.Transform(box), color);
+        EnsureBatchState(null, PrimitiveType.Lines, _primitiveShaderProgram.Handle);
+        AddLineBatch((uint)_batchVertexIndex, model.Transform(box), color);
     }
 
     public void DrawCircle(Circle circle, Color color)
@@ -76,9 +73,9 @@ public sealed partial class Renderer
 
     public void DrawCircle(Circle circle, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 20, null, PrimitiveType.LineLoop, model));
-        AddCircleBatch(startIndex, circle, color, 20);
+        BreakCurrentBatch();
+        EnsureBatchState(null, PrimitiveType.LineLoop, _primitiveShaderProgram.Handle);
+        AddCircleBatch((uint)_batchVertexIndex, circle, color, 20);
     }
 
     public void DrawRectangle(Box2 box, Color color, bool outline = false)
@@ -93,9 +90,9 @@ public sealed partial class Renderer
     
     public void DrawRectangle(Box2 box, Color color, Matrix4X4 model, bool outline = false)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 6, null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, model));
-        AddQuadBatch(startIndex, model.Transform(box), Box2.UV, color);
+        BreakCurrentBatch();
+        EnsureBatchState(null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, _primitiveShaderProgram.Handle);
+        AddQuadBatch((uint)_batchVertexIndex, model.Transform(box), Box2.UV, color);
     }
     
     public void DrawPolygon(Vector2[] vertices, Color color, bool outline = false)
@@ -110,13 +107,15 @@ public sealed partial class Renderer
 
     public void DrawPolygon(Vector2[] vertices, Color color, Matrix4X4 model, bool outline = false)
     {
+        BreakCurrentBatch();
+        EnsureBatchState(null, outline ? PrimitiveType.LineLoop : PrimitiveType.TriangleFan, _primitiveShaderProgram.Handle);
+        
         var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, vertices.Length, null, outline ? PrimitiveType.LineLoop : PrimitiveType.TriangleFan, model));
         
         uint i = 0;
         foreach (var vertex in vertices)
         {
-            _batchVertices[_batchVertexIndex++] = new Vertex(vertex, Vector2.Zero, color);
+            _batchVertices[_batchVertexIndex++] = new Vertex(model.Transform(vertex), Vector2.Zero, color);
             _batchIndices[_batchIndexIndex++] = startIndex + i;
             i++;
         }
@@ -187,7 +186,7 @@ public sealed partial class Renderer
         _batchIndices[_batchIndexIndex++] = startIndex + 3;
     }
 
-    private void EnsureBatchState(int texHandle, PrimitiveType primitiveType, int shaderInstance)
+    private void EnsureBatchState(int? texHandle, PrimitiveType primitiveType, int shaderInstance)
     {
         if (_currentBatchData is not null)
         {
