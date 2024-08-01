@@ -72,6 +72,9 @@ public sealed partial class Renderer
             return (null, result.Error);
 
         var registration = result.Registration;
+
+        if (registration == null)
+            return (null, "registration is null");
         
         _windowManager.MakeContextCurrent(registration);
         _windows.Add(registration.Id, registration);

@@ -17,6 +17,6 @@ public class MonitorHandle(MonitorId id, string name, Vector2Int size, int refre
 
     public override string ToString()
     {
-        return $"MonitorHandle {Id.Value}, name: {Name}, size: {size}, rate: {refreshRate}, mode: ({videoModes.Length})";
+        return $"MonitorHandle {Id.Value}, name: {Name}, size: {Size}, rate: {RefreshRate}, mode: ({VideoModes.Length})";
     }
 }

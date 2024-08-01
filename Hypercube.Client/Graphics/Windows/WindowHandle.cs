@@ -10,6 +10,6 @@ public class WindowHandle(IRenderer renderer, WindowRegistration registration) :
     public void Dispose()
     {
         // Destroy self in renderer
-        renderer.DestroyWindow(registration);
+        Renderer.DestroyWindow(Registration);
     }
 }

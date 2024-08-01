@@ -9,7 +9,6 @@ namespace Hypercube.Shared.Entities.Realisation.Manager;
 
 public sealed class EntitiesManager : IEntitiesManager
 {
-    [Dependency] private readonly IEntitiesComponentManager _entitiesComponentManager = default!;
     [Dependency] private readonly IEventBus _eventBus = default!;
 
     private readonly HashSet<EntityUid> _entities = new();
