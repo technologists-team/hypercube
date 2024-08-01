@@ -40,6 +40,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => this / Length;
     }
+
+    public float Angle
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Atan2(Y, X);
+    }
     
     public Vector2(float x, float y)
     {
