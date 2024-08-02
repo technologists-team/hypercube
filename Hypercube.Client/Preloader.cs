@@ -9,6 +9,7 @@ using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Resources.Preloader;
+using JetBrains.Annotations;
 
 namespace Hypercube.Client;
 
@@ -19,7 +20,7 @@ public sealed class Preloader : IPreloader
     
     private readonly ILogger _logger = new Logger("preloader");
 
-    [Preloading(typeof(GraphicsLibraryInitializedEvent))]
+    [Preloading(typeof(GraphicsLibraryInitializedEvent)), UsedImplicitly]
     private void PreloadGraphics()
     {
         PreloadShaders();
@@ -73,7 +74,7 @@ public sealed class Preloader : IPreloader
         _logger.EngineInfo($"Preloaded {count} shaders in {stopwatch.Elapsed}");
     }
     
-    [Preloading(typeof(AudioLibraryInitializedEvent))]
+    [Preloading(typeof(AudioLibraryInitializedEvent)), UsedImplicitly]
     private void PreloadAudio()
     {
         _logger.EngineInfo("Preloading shaders...");

@@ -17,7 +17,6 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
     
     private bool _initialized;
     private bool _running;
-    private bool _disposed;
     
     private int _nextWindowId = 1;
     

@@ -2,8 +2,6 @@
 
 public class ArgumentParser(string[] args)
 {
-    private readonly string[] Arguments = args;
-    
     public bool TryParse()
     {
         foreach (var arg in args)

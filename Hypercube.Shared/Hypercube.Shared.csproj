@@ -8,15 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final"/>
-      <PackageReference Include="YamlDotNet" Version="16.0.0"/>
+      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final" />
+      <PackageReference Include="YamlDotNet" Version="16.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj"/>
+      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
     </ItemGroup>
     
     <ItemGroup>
-        <None Include="..\Resources\**" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest"/>
+        <None Include="..\Resources\**" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 </Project>
