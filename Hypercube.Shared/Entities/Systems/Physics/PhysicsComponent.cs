@@ -25,7 +25,7 @@ public sealed class PhysicsComponent : Component, IBody
     }
 
     public Vector2 LinearVelocity { get; set; }
-    public Vector2 LinearDamping { get; set; } = new Vector2(1f, 1f);
+    public Vector2 LinearDamping { get; set; } = Vector2.One;
     
     public float Angle { get; set; }
     public float AngularVelocity { get; }
