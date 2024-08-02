@@ -5,7 +5,6 @@ using Hypercube.Math.Shapes;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Physics;
-using Hypercube.Shared.Physics.Shapes;
 using SharedPhysicsSystem = Hypercube.Shared.Entities.Systems.Physics.PhysicsSystem;
 
 namespace Hypercube.Client.Entities.Systems.Physics;

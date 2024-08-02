@@ -12,9 +12,11 @@ public interface IBody
 
     Vector2 Position { get; }
     Vector2 LinearVelocity { get; set; }
+    Vector2 LinearDamping { get; set; }
     
     float Angle { get; }
     float AngularVelocity { get; }
+    float AngularDamping { get; }
     
     Vector2 Force { get; }
     
