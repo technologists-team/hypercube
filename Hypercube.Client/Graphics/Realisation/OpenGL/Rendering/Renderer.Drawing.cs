@@ -3,11 +3,8 @@ using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Math;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Shapes;
-using OpenTK.Mathematics;
+using Hypercube.Math.Vectors;
 using OpenToolkit.Graphics.OpenGL4;
-using Box2 = Hypercube.Math.Shapes.Box2;
-using Vector2 = Hypercube.Math.Vectors.Vector2;
-
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
 public sealed partial class Renderer
@@ -24,9 +21,9 @@ public sealed partial class Renderer
 
     public void DrawPoint(Vector2 vector, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 1, null, PrimitiveType.Points, model));
-        AddPointBatch(startIndex, vector, color);
+        BreakCurrentBatch();
+        EnsureBatch(PrimitiveType.Points, null, _primitiveShaderProgram.Handle);
+        AddPointBatch((uint)_batchVertexIndex, model.Transform(vector), color);
     }
 
     public void DrawLine(Vector2 pointA, Vector2 pointB, Color color)
@@ -41,9 +38,7 @@ public sealed partial class Renderer
 
     public void DrawLine(Vector2 pointA, Vector2 pointB, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 2, null, PrimitiveType.Lines, model));
-        AddLineBatch(startIndex, pointA, pointB, color);
+        DrawLine(new Box2(pointA, pointB), color, model);
     }
 
     public void DrawLine(Box2 box, Color color)
@@ -58,9 +53,8 @@ public sealed partial class Renderer
 
     public void DrawLine(Box2 box, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 2, null, PrimitiveType.Lines, model));
-        AddLineBatch(startIndex, box, color);
+        EnsureBatch(PrimitiveType.Lines, null, _primitiveShaderProgram.Handle);
+        AddLineBatch((uint)_batchVertexIndex, model.Transform(box), color);
     }
 
     public void DrawCircle(Circle circle, Color color)
@@ -75,9 +69,8 @@ public sealed partial class Renderer
 
     public void DrawCircle(Circle circle, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 20, null, PrimitiveType.LineLoop, model));
-        AddCircleBatch(startIndex, circle, color, 20);
+        EnsureBatch(PrimitiveType.Lines, null, _primitiveShaderProgram.Handle);
+        AddCircleBatch(_batchVertexIndex, circle, color, 20);
     }
 
     public void DrawRectangle(Box2 box, Color color, bool outline = false)
@@ -92,9 +85,8 @@ public sealed partial class Renderer
     
     public void DrawRectangle(Box2 box, Color color, Matrix4X4 model, bool outline = false)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, 6, null, outline ? PrimitiveType.LineLoop : PrimitiveType.Triangles, model));
-        AddQuadBatch(startIndex, box, Box2.UV, color);
+        EnsureBatch(outline ? PrimitiveType.Lines : PrimitiveType.Triangles, null, _primitiveShaderProgram.Handle);
+        AddQuadTriangleBatch((uint)_batchVertexIndex, model.Transform(box), Box2.UV, color);
     }
     
     public void DrawPolygon(Vector2[] vertices, Color color, bool outline = false)
@@ -109,14 +101,45 @@ public sealed partial class Renderer
 
     public void DrawPolygon(Vector2[] vertices, Color color, Matrix4X4 model, bool outline = false)
     {
+        if (outline)
+        {
+            DrawPolygonOutline(vertices, color, model);
+            return;
+        }
+        
+        BreakCurrentBatch();
+        EnsureBatch(PrimitiveType.TriangleFan, null, _primitiveShaderProgram.Handle);
         var startIndex = (uint)_batchVertexIndex;
-        _batches.Add(new Batch(_batchIndexIndex, vertices.Length, null, outline ? PrimitiveType.LineLoop : PrimitiveType.TriangleFan, model));
         
         uint i = 0;
         foreach (var vertex in vertices)
         {
-            _batchVertices[_batchVertexIndex++] = new Vertex(vertex, Vector2.Zero, color);
+            _batchVertices[_batchVertexIndex++] = new Vertex(model.Transform(vertex), Vector2.Zero, color);
             _batchIndices[_batchIndexIndex++] = startIndex + i;
+            i++;
+        }
+    }
+
+    private void DrawPolygonOutline(Vector2[] vertices, Color color, Matrix4X4 model)
+    {
+        EnsureBatch(PrimitiveType.Lines, null, _primitiveShaderProgram.Handle);
+        var startIndex = (uint)_batchVertexIndex;
+        
+        uint i = 0;
+        foreach (var vertex in vertices)
+        {
+            _batchVertices[_batchVertexIndex++] = new Vertex(model.Transform(vertex), Vector2.Zero, color);
+            
+            if (i >= vertices.Length - 1)
+            {
+                _batchIndices[_batchIndexIndex++] = startIndex + i;
+                _batchIndices[_batchIndexIndex++] = startIndex;
+                continue;
+            }
+            
+            _batchIndices[_batchIndexIndex++] = startIndex + i;
+            _batchIndices[_batchIndexIndex++] = startIndex + i + 1;
+            
             i++;
         }
     }
@@ -126,12 +149,15 @@ public sealed partial class Renderer
         DrawTexture(texture, quad, uv, color, Matrix4X4.Identity);
     }
 
+    public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix3X3 model)
+    {
+        DrawTexture(texture, quad, uv, color, Matrix4X4.CreateIdentity(model));
+    }
+    
     public void DrawTexture(ITextureHandle texture, Box2 quad, Box2 uv, Color color, Matrix4X4 model)
     {
-        var startIndex = (uint)_batchVertexIndex;
-        
-        _batches.Add(new Batch(_batchIndexIndex, 6, texture.Handle, PrimitiveType.Triangles, model));
-        AddQuadBatch(startIndex, quad, uv, color);
+        EnsureBatch(PrimitiveType.Triangles, texture.Handle, _texturingShaderProgram.Handle);
+        AddQuadTriangleBatch(_batchVertexIndex, model.Transform(quad), uv, color);
     }
 
     private void AddPointBatch(uint startIndex, Vector2 point, Color color)
@@ -155,6 +181,11 @@ public sealed partial class Renderer
         _batchIndices[_batchIndexIndex++] = startIndex;
         _batchIndices[_batchIndexIndex++] = startIndex + 1;
     }
+
+    private void AddCircleBatch(int startIndex, Circle circle, Color color, int segments)
+    {
+        AddCircleBatch((uint)startIndex, circle, color, segments);    
+    }
     
     private void AddCircleBatch(uint startIndex, Circle circle, Color color, int segments)
     {
@@ -166,11 +197,25 @@ public sealed partial class Renderer
             var y = circle.Position.Y + circle.Radius * MathF.Sin(theta);
             
             _batchVertices[_batchVertexIndex++] = new Vertex(new Vector2(x, y), Vector2.Zero, color);
+
+            if (i >= segments - 1)
+            {
+                _batchIndices[_batchIndexIndex++] = startIndex + (uint)i;
+                _batchIndices[_batchIndexIndex++] = startIndex;
+                continue;
+            }
+            
             _batchIndices[_batchIndexIndex++] = startIndex + (uint)i;
+            _batchIndices[_batchIndexIndex++] = startIndex + (uint)i + 1;
         }
     }
+
+    private void AddQuadTriangleBatch(int startIndex, Box2 quad, Box2 uv, Color color)
+    {
+        AddQuadTriangleBatch((uint)startIndex, quad, uv, color);
+    }
     
-    private void AddQuadBatch(uint startIndex, Box2 quad, Box2 uv, Color color)
+    private void AddQuadTriangleBatch(uint startIndex, Box2 quad, Box2 uv, Color color)
     {
         _batchVertices[_batchVertexIndex++] = new Vertex(quad.TopRight, uv.TopRight, color);
         _batchVertices[_batchVertexIndex++] = new Vertex(quad.BottomRight, uv.BottomRight, color);

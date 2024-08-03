@@ -4,9 +4,9 @@ using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Math;
+using Hypercube.Math.Matrices;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
-
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
@@ -14,47 +14,56 @@ public sealed partial class Renderer
 {
     private IShaderProgram _primitiveShaderProgram = default!;
     private IShaderProgram _texturingShaderProgram = default!;
-    
+
     private const int MaxBatchVertices = 65532;
     private const int IndicesPerVertex = 6;
     private const int MaxBatchIndices = MaxBatchVertices * IndicesPerVertex;
-    
+
     private readonly List<Batch> _batches = new();
     private readonly Vertex[] _batchVertices = new Vertex[MaxBatchVertices];
     private readonly uint[] _batchIndices = new uint[MaxBatchIndices];
-    
+
     private int _batchVertexIndex;
     private int _batchIndexIndex; // Haha name it's fun
     
+    /// <summary>
+    /// Contains info about currently running batch.
+    /// </summary>
+    private BatchData? _currentBatchData;
+
     private BufferObject _vbo = default!;
     private ArrayObject _vao = default!;
     private BufferObject _ebo = default!;
-    
+
     private void OnLoad()
     {
-        _primitiveShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_primitive").ShaderProgram;
-        _texturingShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_texturing").ShaderProgram;
-        
+        _primitiveShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_primitive")
+            .ShaderProgram;
+        _texturingShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_texturing")
+            .ShaderProgram;
+
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
         _vao = new ArrayObject();
-        
+
         _vao.Bind();
         _vbo.SetData(_batchVertices);
         _ebo.SetData(_batchIndices);
-        
+
         // aPos
         GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 0);
         GL.EnableVertexAttribArray(0);
-        
+
         // aColor
-        GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 3 * sizeof(float));
+        GL.VertexAttribPointer(1, 4, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float),
+            3 * sizeof(float));
         GL.EnableVertexAttribArray(1);
-        
+
         // aTexCoords
-        GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float), 7 * sizeof(float)); 
+        GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, Vertex.Size * sizeof(float),
+            7 * sizeof(float));
         GL.EnableVertexAttribArray(2);
-        
+
         _logger.EngineInfo("Loaded");
     }
 
@@ -64,10 +73,12 @@ public sealed partial class Renderer
         var cameraTitle = string.Empty;
         if (_cameraManager.MainCamera is not null)
         {
-            cameraTitle = $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
+            cameraTitle =
+                $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
         }
-        
-        _windowManager.WindowSetTitle(MainWindow, $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle}");
+
+        _windowManager.WindowSetTitle(MainWindow,
+            $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle} | Batches: {_batches.Count}");
 #endif
         _windowManager.PollEvents();
     }
@@ -86,16 +97,19 @@ public sealed partial class Renderer
 
         var args = new RenderDrawingEvent();
         _eventBus.Raise(ref args);
-        
+
+        // break batch so we get all batches
+        BreakCurrentBatch();
+
         _vao.Bind();
         _vbo.SetData(_batchVertices);
         _ebo.SetData(_batchIndices);
-        
+
         foreach (var batch in _batches)
         {
             Render(batch);
         }
-        
+
         _vao.Unbind();
         _windowManager.WindowSwapBuffers(window);
     }
@@ -104,10 +118,11 @@ public sealed partial class Renderer
     {
         Array.Clear(_batchVertices, 0, _batchVertexIndex);
         Array.Clear(_batchIndices, 0, _batchIndexIndex);
-        
+
         _batchVertexIndex = 0;
         _batchIndexIndex = 0;
-        
+        _currentBatchData = null;
+
         _batches.Clear();
     }
 
@@ -120,14 +135,61 @@ public sealed partial class Renderer
             GL.BindTexture(TextureTarget.Texture2D, batch.TextureHandle.Value);
             shader = _texturingShaderProgram;
         }
-        
+
         shader.Use();
         shader.SetUniform("model", batch.Model);
         shader.SetUniform("view", _cameraManager.View);
         shader.SetUniform("projection", _cameraManager.Projection);
 
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
-        
+
         shader.Stop();
+    }
+
+    /// <summary>
+    /// Preserves the batches data to allow multiple primitives to be rendered in one batch,
+    /// note that for this to work, all current parameters must match a past call to <see cref="EnsureBatch"/>.
+    /// Use this instead of directly adding the batches, and it will probably reduce their number.
+    /// </summary>
+    private void EnsureBatch(PrimitiveType primitiveType, int? textureHandle, int shaderInstance)
+    {
+        if (_currentBatchData is not null)
+        {
+            // It's just similar batch,
+            // we need changing nothing to render different things
+            if (_currentBatchData.Value.Equals(primitiveType, textureHandle, shaderInstance))
+                return;
+
+            // Creating a real batch
+            GenerateBatch();
+        }
+
+        _currentBatchData = new BatchData(primitiveType, _batchIndexIndex, textureHandle, shaderInstance);
+    }
+
+    /// <summary>
+    /// In case we need to get current batch, or start new one
+    /// </summary>
+    private void BreakCurrentBatch()
+    {
+        if (_currentBatchData is null)
+            return;
+
+        GenerateBatch();
+        _currentBatchData = null;
+    }
+
+    private void GenerateBatch()
+    {
+        if (_currentBatchData is null)
+            throw new NullReferenceException();
+
+        var data = _currentBatchData.Value;
+        var currentIndex = _batchIndexIndex;
+
+        var batch = new Batch(data.StartIndex, currentIndex - data.StartIndex, data.TextureHandle, data.PrimitiveType,
+            Matrix4X4.Identity);
+
+        _batches.Add(batch);
     }
 }
