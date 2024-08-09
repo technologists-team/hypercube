@@ -1,16 +1,18 @@
-﻿using Hypercube.Shared.Utilities.Helpers;
+﻿using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics.Realisation.OpenGL;
+namespace Hypercube.OpenGL.Objects;
 
-public sealed class BufferObject : IDisposable
+[PublicAPI]
+public class BufferObject : IDisposable
 {
     public const int Null = 0;
     
     public readonly int Handle;
     public readonly BufferTarget BufferTarget;
 
-    private bool _binded;
+    private bool _bound;
     
     public BufferObject(BufferTarget target)
     {
@@ -20,19 +22,19 @@ public sealed class BufferObject : IDisposable
 
     public void Bind()
     {
-        if (_binded) 
+        if (_bound) 
             return;
 
-        _binded = true;
+        _bound = true;
         GL.BindBuffer(BufferTarget, Handle);
     }
 
     public void Unbind()
     {
-        if (!_binded)
+        if (!_bound)
             return;
 
-        _binded = false;
+        _bound = false;
         GL.BindBuffer(BufferTarget, Null);
     }
 
@@ -44,7 +46,7 @@ public sealed class BufferObject : IDisposable
     public void SetData<T>(T[] data, BufferUsageHint hint = BufferUsageHint.StaticDraw) where T : struct
     {
         Bind();
-        GL.BufferData(BufferTarget, data.Length * MarshalHelper.SizeOf<T>(), data, hint);
+        GL.BufferData(BufferTarget, data.Length * Marshal.SizeOf(default(T)), data, hint);
     }
 
     public void Dispose()

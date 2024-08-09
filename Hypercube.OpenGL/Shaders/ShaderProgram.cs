@@ -1,29 +1,25 @@
 using System.Collections.Frozen;
-using Hypercube.Client.Graphics.Shaders;
+using Hypercube.Graphics.Shaders;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
-using Hypercube.Shared.Resources;
-using Hypercube.Shared.Resources.Manager;
+using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics.Realisation.OpenGL.Shaders;
+namespace Hypercube.OpenGL.Shaders;
 
-public sealed class ShaderProgram : IShaderProgram
+[PublicAPI]
+public class ShaderProgram : IShaderProgram
 {
     public int Handle { get; private set; }
-    private readonly FrozenDictionary<string, int> _uniformLocations;
-
-    public ShaderProgram(string path, IResourceLoader loader) : this(new ResourcePath($"{path}.vert"), new ResourcePath($"{path}.frag"),
-        loader)
-    {
-    }
     
-    private ShaderProgram(ResourcePath vertPath, ResourcePath fragPath, IResourceLoader resourceLoader)
+    private readonly FrozenDictionary<string, int> _uniformLocations;
+    
+    public ShaderProgram(string vertSource, string fragSource)
     {
         var shaders = new HashSet<IShader>
         {
-            CreateShader(vertPath, ShaderType.VertexShader, resourceLoader),
-            CreateShader(fragPath, ShaderType.FragmentShader, resourceLoader)
+            CreateShader(vertSource, ShaderType.VertexShader),
+            CreateShader(fragSource, ShaderType.FragmentShader)
         };
         
         Handle = GL.CreateProgram();
@@ -112,11 +108,10 @@ public sealed class ShaderProgram : IShaderProgram
 
     public void SetUniform(string name, Matrix3X3 value, bool transpose = false)
     {
-        throw new NotImplementedException();
         unsafe
         {
-            //var matrix = transpose ? Matrix3X3.Transpose(value) : new Matrix3X3(value);
-            //GL.UniformMatrix3(GL.GetUniformLocation(_handle, name), 1, false, (float*)&matrix);
+            var matrix = transpose ? Matrix3X3.Transpose(value) : new Matrix3X3(value);
+            GL.UniformMatrix3(GL.GetUniformLocation(Handle, name), 1, false, (float*) &matrix);
         }
     }
 
@@ -159,10 +154,8 @@ public sealed class ShaderProgram : IShaderProgram
         throw new Exception($"Error occurred whilst linking Program({Handle})");
     }
     
-    private IShader CreateShader(ResourcePath path, ShaderType type, IResourceLoader resourceLoader)
+    private IShader CreateShader(string source, ShaderType type)
     {
-        var source = resourceLoader.ReadFileContentAllText(path);
-        var shader = new Shader(source, type);
-        return shader;
+        return new Shader(source, type);
     }
 }

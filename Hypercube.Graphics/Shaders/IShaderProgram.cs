@@ -1,13 +1,15 @@
 ﻿using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
+using JetBrains.Annotations;
 
-namespace Hypercube.Client.Graphics.Shaders;
+namespace Hypercube.Graphics.Shaders;
 
 /// <summary>
 /// What is usually called just a shader,
 /// when created creates a fragment and vertex shader,
 /// which are <see cref="Attach"/> and dispose afterwards.
 /// </summary>
+[PublicAPI]
 public interface IShaderProgram : IDisposable
 {
     int Handle { get; }

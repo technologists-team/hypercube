@@ -1,14 +1,16 @@
-﻿using OpenToolkit.Graphics.OpenGL4;
+﻿using JetBrains.Annotations;
+using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics.Realisation.OpenGL;
+namespace Hypercube.OpenGL.Objects;
 
-public sealed class ArrayObject
+[PublicAPI]
+public class ArrayObject
 {
     public const int Null = 0;
     
     public readonly int Handle;
 
-    private bool _binded;
+    private bool _bound;
     
     public ArrayObject()
     {
@@ -17,28 +19,28 @@ public sealed class ArrayObject
     
     public void Bind()
     {
-        if (_binded) 
+        if (_bound) 
             return;
 
-        _binded = true;
+        _bound = true;
         GL.BindVertexArray(Handle);
     }
 
     public void Unbind()
     {
-        if (!_binded)
+        if (!_bound)
             return;
 
-        _binded = false;
+        _bound = false;
         GL.BindVertexArray(Null);
     }
 
-    public void DrawElements(int start, int count)
+    public static void DrawElements(int start, int count)
     {
         DrawElements(BeginMode.Triangles, start, count, DrawElementsType.UnsignedInt);
     }
     
-    public void DrawElements(BeginMode mode, int start, int count, DrawElementsType type)
+    public static void DrawElements(BeginMode mode, int start, int count, DrawElementsType type)
     {
         GL.DrawElements(mode, count, type, start);
     }

@@ -1,10 +1,11 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Graphics.Shaders;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
+using Hypercube.Graphics.Shaders;
 using Hypercube.Math;
 using Hypercube.Math.Matrices;
+using Hypercube.OpenGL.Objects;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
