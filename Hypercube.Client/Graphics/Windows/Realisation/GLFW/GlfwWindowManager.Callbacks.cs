@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Input;
 using Hypercube.Client.Utilities.Helpers;
+using Hypercube.OpenGL.Utilities.Helpers;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;
 using KeyModifiers = Hypercube.Client.Input.KeyModifiers;

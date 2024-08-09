@@ -37,6 +37,22 @@ public readonly partial struct Vector2Int
     }
     
     /*
+     * System.Numerics Compatibility
+     */
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Vector2Int(System.Numerics.Vector2 vector)
+    {
+        return new Vector2Int((int)vector.X, (int)vector.Y);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator System.Numerics.Vector2(Vector2Int vector)
+    {
+        return new System.Numerics.Vector2(vector.X, vector.Y);
+    }
+    
+    /*
      * System.Drawing Compatibility
      */
     

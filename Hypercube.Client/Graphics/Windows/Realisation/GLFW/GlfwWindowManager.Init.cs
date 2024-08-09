@@ -1,4 +1,5 @@
 ﻿using Hypercube.Client.Utilities.Helpers;
+using Hypercube.OpenGL.Utilities.Helpers;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
