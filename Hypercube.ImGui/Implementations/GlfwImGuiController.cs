@@ -1,10 +1,13 @@
-﻿using Hypercube.Graphics.Shaders;
-using Hypercube.Math.Vectors;
+﻿using System.Diagnostics;
+using Hypercube.Graphics.Shaders;
+using Hypercube.Graphics.Windowing;
+using Hypercube.OpenGL.Objects;
 using Hypercube.OpenGL.Shaders;
 using Hypercube.OpenGL.Utilities.Helpers;
 using ImGuiNET;
 using JetBrains.Annotations;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using OpenToolkit.Graphics.OpenGL4;
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
 namespace Hypercube.ImGui.Implementations;
@@ -14,32 +17,39 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
 {
     private const int Framerate = 60;
     
-    private readonly nint _window;
+    public event Action<string>? OnErrorHandled;
+    
+    private readonly WindowHandle _window;
     
     private readonly bool[] _mousePressed;
     private readonly nint[] _mouseCursors;
     
     private ImGuiIOPtr _io;
     private IShaderProgram _shader = default!;
-    private double _time;
+    
+    private ArrayObject _vao = default!;
+    private BufferObject _vbo = default!;
+    private BufferObject _ebo = default!;
     
     private MouseButtonCallback? _mouseButtonCallback;
     private ScrollCallback? _scrollCallback;
     private KeyCallback? _keyCallback;
     private CharCallback? _charCallback;
     
-    public GlfwImGuiController(nint window)
+    public GlfwImGuiController(WindowHandle window)
     {
         _window = window;
         _mousePressed = new bool[(int) ImGuiMouseButton.COUNT];
         _mouseCursors = new nint[(int) ImGuiMouseCursor.COUNT];
-        
-        ImGuiNET.ImGui.CreateContext();
-        ImGuiNET.ImGui.StyleColorsDark();
     }
     
     public void Initialize()
     {
+        var context = ImGuiNET.ImGui.CreateContext();
+        ImGuiNET.ImGui.SetCurrentContext(context);
+        
+        ImGuiNET.ImGui.StyleColorsDark();
+        
         InitializeIO();
         InitializeGlfw();
         InitializeShaders();
@@ -48,6 +58,8 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     public void InitializeIO()
     {
         _io = ImGuiNET.ImGui.GetIO();
+        
+        _io.Fonts.AddFontDefault();
         
         _io.BackendFlags |= ImGuiBackendFlags.HasMouseCursors;
         _io.BackendFlags |= ImGuiBackendFlags.HasSetMousePos;
@@ -62,14 +74,24 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         _scrollCallback = OnScroll;
         _keyCallback = OnKey;
         _charCallback = OnChar;
+        
+        CheckErrors("Glfw initialized");
     }
 
     public void InitializeShaders()
     {
         _shader = new ShaderProgram(ShaderSource.VertexShader, ShaderSource.FragmentShader);
+
+        _vao = new ArrayObject();
+        _vbo = new BufferObject(BufferTarget.ArrayBuffer);
+        _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
+        
+        CreateFontsTexture();
+        
+        CheckErrors("OpenGL objects initialized");
     }
     
-    public unsafe void Update()
+    public void Update(float deltaTime)
     {
         if (!_io.Fonts.IsBuilt())
             throw new Exception("Unable to update state, without font atlas built");
@@ -78,16 +100,11 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         GLFWHelper.GetFramebufferSize(_window, out var framebufferSize);
 
         _io.DisplaySize = size;
-
         if (size > 0)
             _io.DisplayFramebufferScale = framebufferSize / size;
-
-        var time = GLFW.GetTime();
-        var deltaTime = _time > 0 ? time - _time : 1 / (float)Framerate;
-
-        _io.DeltaTime = (float)deltaTime;
-        _time = time;
         
+        _io.DeltaTime = deltaTime;
+
         UpdateMousePosition();
         UpdateMouseButtons();
         UpdateMouseCursor();
@@ -95,6 +112,16 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         ImGuiNET.ImGui.NewFrame();
     }
 
+    public void Begin(string name)
+    {
+        ImGuiNET.ImGui.Begin(name);
+    }
+
+    public void End()
+    {
+        ImGuiNET.ImGui.End();
+    }
+    
     public void Dispose()
     {
         
@@ -118,5 +145,32 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     private unsafe void OnChar(Window* window, uint codepoint)
     {
 
+    }
+    
+    private void CreateFontsTexture()
+    {
+        _io.Fonts.GetTexDataAsRGBA32(out nint pixels, out var width, out var height);
+
+        GL.ActiveTexture(TextureUnit.Texture0);
+        
+        var texture = GL.GenTexture();        
+        GL.BindTexture(TextureTarget.Texture2D, texture);
+
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
+
+        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+        
+        _io.Fonts.SetTexID(texture);
+        _io.Fonts.ClearTexData();
+    }
+    
+    private void CheckErrors(string title)
+    {
+        var errorString = GLHelper.CheckErrors($"{nameof(GlfwImGuiController)} {title}");
+        if (errorString == string.Empty)
+            return;
+        
+        OnErrorHandled?.Invoke(errorString);
     }
 }

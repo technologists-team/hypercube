@@ -4,19 +4,14 @@ using OpenToolkit.Graphics.OpenGL4;
 namespace Hypercube.OpenGL.Objects;
 
 [PublicAPI]
-public class ArrayObject
+public class ArrayObject : IDisposable
 {
     public const int Null = 0;
     
-    public readonly int Handle;
+    public readonly int Handle = GL.GenVertexArray();
 
     private bool _bound;
-    
-    public ArrayObject()
-    {
-        Handle = GL.GenVertexArray();
-    }
-    
+
     public void Bind()
     {
         if (_bound) 
@@ -35,6 +30,16 @@ public class ArrayObject
         GL.BindVertexArray(Null);
     }
 
+    public void Delete()
+    {
+        GL.DeleteVertexArray(Handle);
+    }
+    
+    public void Dispose()
+    {
+        Delete();
+    }
+    
     public static void DrawElements(int start, int count)
     {
         DrawElements(BeginMode.Triangles, start, count, DrawElementsType.UnsignedInt);

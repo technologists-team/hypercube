@@ -8,12 +8,12 @@ namespace Hypercube.OpenGL.Objects;
 public class BufferObject : IDisposable
 {
     public const int Null = 0;
-    
+
     public readonly int Handle;
     public readonly BufferTarget BufferTarget;
 
     private bool _bound;
-    
+
     public BufferObject(BufferTarget target)
     {
         Handle = GL.GenBuffer();
@@ -22,7 +22,7 @@ public class BufferObject : IDisposable
 
     public void Bind()
     {
-        if (_bound) 
+        if (_bound)
             return;
 
         _bound = true;
@@ -43,10 +43,28 @@ public class BufferObject : IDisposable
         GL.DeleteBuffer(Handle);
     }
     
+    public void SetData(int size, nint data, BufferUsageHint hint = BufferUsageHint.StaticDraw)
+    {
+        Bind();
+        GL.BufferData(BufferTarget, size, data, hint);
+    }
+
     public void SetData<T>(T[] data, BufferUsageHint hint = BufferUsageHint.StaticDraw) where T : struct
     {
         Bind();
         GL.BufferData(BufferTarget, data.Length * Marshal.SizeOf(default(T)), data, hint);
+    }
+
+    public void SetSubData(int size, nint data)
+    {
+        Bind();
+        GL.BufferSubData(BufferTarget, nint.Zero, size, data);
+    }
+    
+    public void SetSubData<T>(T[] data) where T : struct
+    {
+        Bind();
+        GL.BufferSubData(BufferTarget, nint.Zero, data.Length * Marshal.SizeOf<T>(), data);
     }
 
     public void Dispose()

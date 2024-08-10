@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Math;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Shapes;
@@ -10,19 +11,19 @@ namespace Hypercube.Client.Graphics.Rendering;
 
 public interface IRenderer
 {
-    WindowRegistration MainWindow { get; }
-    IReadOnlyDictionary<WindowId, WindowRegistration> Windows { get; }
+    WindowHandle MainWindow { get; }
+    IReadOnlyDictionary<WindowId, WindowHandle> Windows { get; }
     
     void EnterWindowLoop();
     void TerminateWindowLoop();
 
-    WindowRegistration CreateWindow(WindowCreateSettings settings);
-    void DestroyWindow(WindowRegistration registration);
-    void CloseWindow(WindowRegistration registration);
+    WindowHandle CreateWindow(WindowCreateSettings settings);
+    void DestroyWindow(WindowHandle handle);
+    void CloseWindow(WindowHandle handle);
 
     void AddMonitor(MonitorRegistration monitor);
     
-    void OnFocusChanged(WindowRegistration window, bool focused);
+    void OnFocusChanged(WindowHandle window, bool focused);
     
     // Drawing
     void DrawPoint(Vector2 vector, Color color);

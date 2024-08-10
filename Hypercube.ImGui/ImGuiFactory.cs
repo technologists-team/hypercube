@@ -1,6 +1,12 @@
-﻿namespace Hypercube.ImGui;
+﻿using Hypercube.Graphics.Windowing;
+using Hypercube.ImGui.Implementations;
 
-public sealed class ImGuiFactory
+namespace Hypercube.ImGui;
+
+public static class ImGuiFactory
 {
-    
+    public static IImGuiController Create(WindowHandle window)
+    {
+        return new GlfwImGuiController(window);
+    }
 }

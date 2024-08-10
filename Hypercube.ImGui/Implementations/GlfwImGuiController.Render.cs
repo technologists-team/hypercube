@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
-using Hypercube.OpenGL.Objects;
 using ImGuiNET;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -27,31 +25,92 @@ public partial class GlfwImGuiController
         
         if (frameBufferSize <= 0)
             return;
-
-        GL.GetInteger(GetPName.ActiveTexture, out var previousActiveTexture);
+    
+        SetupRender(data, frameBufferSize);
         
-        GL.ActiveTexture(TextureUnit.Texture0);
-
-        var vao = new ArrayObject();
-        SetupRender(data, frameBufferSize, vao);
+        _vao.Bind();
+        _vbo.Bind();
+        _ebo.Bind();
         
-        var clipOff = data.DisplayPos;
-        var clipScale = data.FramebufferScale;
+        CheckErrors("Buffer objects");
+        
+        for (var n = 0; n < data.CmdListsCount; n++)
+        {         
+            var cmd = data.CmdLists[n];
+            
+            var vertexSize = cmd.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
+            var indexSize = cmd.IdxBuffer.Size * sizeof(ushort);
+
+            _vbo.SetData(vertexSize, nint.Zero, BufferUsageHint.DynamicDraw);
+            _ebo.SetData(indexSize, nint.Zero, BufferUsageHint.DynamicDraw);
+            
+            CheckErrors("Setup data");
+        }
+
+        var project = Matrix4X4.CreateOrthographic(_io.DisplaySize, -1f, 1f);
+        
+        _shader.Use();
+        _shader.SetUniform("projection", project);
+        
+        CheckErrors("Projection");
+        
+        data.ScaleClipRects(_io.DisplayFramebufferScale);
+        
+        // Render command lists
+        for (var n = 0; n < data.CmdListsCount; n++)
+        {
+            var cmd = data.CmdLists[n];
+
+            _vbo.SetSubData(cmd.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>(), cmd.VtxBuffer.Data);
+            _ebo.SetSubData(cmd.IdxBuffer.Size * sizeof(ushort), cmd.IdxBuffer.Data);
+
+            CheckErrors("Setup subData");
+            
+            for (var i = 0; i < cmd.CmdBuffer.Size; i++)
+            {
+                var cmdPointer = cmd.CmdBuffer[i];
+                
+                if (cmdPointer.UserCallback != nint.Zero)
+                    throw new NotImplementedException();
+
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.BindTexture(TextureTarget.Texture2D, (int) cmdPointer.TextureId);
+                
+                CheckErrors("Texture");
+                
+                var clip = cmdPointer.ClipRect;
+                GL.Scissor((int) clip.X, _window.Size.Y - (int) clip.W, (int) (clip.Z - clip.X), (int) (clip.W - clip.Y));
+                
+                CheckErrors("Scissor");
+                
+                if (_io.BackendFlags.HasFlag(ImGuiBackendFlags.RendererHasVtxOffset))
+                {
+                    GL.DrawElementsBaseVertex(PrimitiveType.Triangles, (int)cmdPointer.ElemCount, DrawElementsType.UnsignedShort, (IntPtr)(cmdPointer.IdxOffset * sizeof(ushort)), unchecked((int)cmdPointer.VtxOffset));
+                }
+                else
+                {
+                    GL.DrawElements(BeginMode.Triangles, (int)cmdPointer.ElemCount, DrawElementsType.UnsignedShort, (int)cmdPointer.IdxOffset * sizeof(ushort));
+                }
+                
+                CheckErrors("Draw");
+            }
+        }
+        
+        _shader.Stop();
+        
+        _vao.Unbind();
+        _vbo.Unbind();
+        _ebo.Unbind();
     }
 
-    private void SetupRender(ImDrawDataPtr data, Vector2Int frameBufferSize, ArrayObject vao)
+    private void SetupRender(ImDrawDataPtr data, Vector2Int frameBufferSize)
     {
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.ScissorTest);
         
         GL.BlendEquation(BlendEquationMode.FuncAdd);
-        GL.BlendFuncSeparate(
-            BlendingFactorSrc.SrcAlpha,
-            BlendingFactorDest.OneMinusSrcAlpha,
-            BlendingFactorSrc.One,
-            BlendingFactorDest.OneMinusSrcAlpha
-        );
-
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        
         GL.Disable(EnableCap.CullFace);
         GL.Disable(EnableCap.DepthTest);
         GL.Disable(EnableCap.StencilTest);

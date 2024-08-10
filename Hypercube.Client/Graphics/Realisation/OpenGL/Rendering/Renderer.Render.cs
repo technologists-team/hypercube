@@ -3,6 +3,7 @@ using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Graphics.Shaders;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Math;
 using Hypercube.Math.Matrices;
 using Hypercube.OpenGL.Objects;
@@ -89,7 +90,7 @@ public sealed partial class Renderer
         Render(MainWindow);
     }
 
-    public void Render(WindowRegistration window)
+    public void Render(WindowHandle window)
     {
         Clear();
 

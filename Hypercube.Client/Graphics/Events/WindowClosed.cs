@@ -1,9 +1,10 @@
 ﻿using Hypercube.Client.Graphics.Windows;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Shared.EventBus.Events;
 
 namespace Hypercube.Client.Graphics.Events;
 
-public readonly struct WindowClosedEvent(WindowRegistration registration) : IEventArgs
+public readonly struct WindowClosedEvent(WindowHandle handle) : IEventArgs
 {
-    public readonly WindowRegistration Registration = registration;
+    public readonly WindowHandle Handle = handle;
 }
