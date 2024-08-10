@@ -28,12 +28,12 @@ public sealed partial class Renderer
         var version = GL.GetString(StringName.Version);
         var shading = GL.GetString(StringName.ShadingLanguageVersion);
         
+        GLFW.SwapInterval(SwapInterval);
+        
         _loggerOpenGL.EngineInfo($"Vendor: {vendor}");
         _loggerOpenGL.EngineInfo($"Renderer: {renderer}");
         _loggerOpenGL.EngineInfo($"Version: {version}, Shading: {shading}");
         _loggerOpenGL.EngineInfo($"Thread: {Thread.CurrentThread.Name ?? "unnamed"} ({Environment.CurrentManagedThreadId})");
-        
-        GLFW.SwapInterval(SwapInterval);
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
         
         _debugProc = DebugMessageCallback;
@@ -42,6 +42,7 @@ public sealed partial class Renderer
         
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);
+        GL.Enable(EnableCap.DebugOutputSynchronous);
         
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         GL.ClearColor(0, 0, 0, 0);
@@ -54,7 +55,7 @@ public sealed partial class Renderer
     {
         var message = Marshal.PtrToStringAnsi(messagePointer, length);
         var logger = LoggingManager.GetLogger("open_gl_debug");
-        
+
         var loggingMessage = $"[{type}] [{severity}] [{source}] {message} ({id})";
         
         if (type == DebugType.DebugTypeError)

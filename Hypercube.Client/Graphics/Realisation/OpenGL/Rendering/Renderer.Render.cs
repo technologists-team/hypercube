@@ -113,6 +113,9 @@ public sealed partial class Renderer
         }
 
         _vao.Unbind();
+        _vbo.Unbind();
+        _ebo.Unbind();
+        
         _windowManager.WindowSwapBuffers(window);
     }
     
