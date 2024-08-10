@@ -21,7 +21,9 @@ public partial class WriteBuffer
         WriteBitPos++;
     }
 
-    /// <remarks>Check that there is a fixed array size. You DO NOT need to save arrays with variable length here</remarks>
+    /// <remarks>
+    /// Check that there is a fixed array size. You DO NOT need to save arrays with variable length here
+    /// </remarks>
     public void WriteBits(bool[] bits)
     {
         foreach (var bit in bits)
@@ -30,7 +32,9 @@ public partial class WriteBuffer
         }
     }
 
-    /// <remarks>check that there is a fixed array size. You DO NOT need to save arrays with variable length here</remarks>
+    /// <remarks>
+    /// Check that there is a fixed array size. You DO NOT need to save arrays with variable length here
+    /// </remarks>
     public void WriteBits(BitArray bits)
     {
         for (var i = 0; i < bits.Length; i++)
