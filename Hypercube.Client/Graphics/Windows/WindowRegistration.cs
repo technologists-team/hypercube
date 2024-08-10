@@ -1,23 +1,18 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Graphics.Windowing;
+using JetBrains.Annotations;
 
 namespace Hypercube.Client.Graphics.Windows;
 
-public abstract class WindowRegistration
-{   
-    public bool IsDisposed;
+[PublicAPI]
+public class WindowRegistration(IRenderer renderer, WindowHandle handle) : IDisposable
+{
+    public readonly IRenderer Renderer = renderer;
+    public readonly WindowHandle Handle = handle;
 
-    public WindowId Id;
-    public WindowHandle Handle;
-    public WindowHandle? Owner;
-    public bool DisposeOnClose;
-    
-    public float Ratio { get; init; }
-    
-    public Vector2Int Size { get; set; }
-    public Vector2Int FramebufferSize { get; init; }
-
-    public void SetSize(int width, int height)
+    public void Dispose()
     {
-        Size = new Vector2Int(width, height);
+        // Destroy self in renderer
+        Renderer.DestroyWindow(Handle);
     }
-} 
+}

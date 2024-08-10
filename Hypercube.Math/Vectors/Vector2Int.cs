@@ -1,10 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 
 namespace Hypercube.Math.Vectors;
 
-[StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2Int : IEquatable<Vector2Int>
+[PublicAPI, StructLayout(LayoutKind.Sequential)]
+public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<Vector2Int>, IComparable<int>
 {
     public static readonly Vector2Int Zero = new(0, 0);
     public static readonly Vector2Int One = new(1, 1);
@@ -44,9 +45,23 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>
         X = x;
         Y = y;
     }
-
-    public Vector2Int(int value) : this(value, value)
+    
+    public Vector2Int(float x, float y)
     {
+        X = (int) x;
+        Y = (int) y;
+    }
+
+    public Vector2Int(int value)
+    {
+        X = value;
+        Y = value;
+    }
+    
+    public Vector2Int(float value)
+    {
+        X = (int) value;
+        Y = (int) value;
     }
     
     public Vector2Int(Vector2Int vector2Int) : this(vector2Int.X, vector2Int.Y)
@@ -63,6 +78,18 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>
     public Vector2Int WithY(int value)
     {
         return new Vector2Int(X, value);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(int other)
+    {
+        return LengthSquared.CompareTo(other * other);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(Vector2Int other)
+    {
+        return LengthSquared.CompareTo(other.LengthSquared);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -166,5 +193,53 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>
     public static bool operator !=(Vector2Int a, Vector2Int b)
     {
         return !a.Equals(b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <(Vector2Int a, Vector2Int b)
+    {
+        return a.CompareTo(b) == -1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >(Vector2Int a, Vector2Int b)
+    {
+        return a.CompareTo(b) == 1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <=(Vector2Int a, Vector2Int b)
+    {
+        return a.CompareTo(b) is -1 or 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >=(Vector2Int a, Vector2Int b)
+    {
+        return a.CompareTo(b) is 1 or 0;
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <(Vector2Int a, int b)
+    {
+        return a.CompareTo(b) == -1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >(Vector2Int a, int b)
+    {
+        return a.CompareTo(b) == 1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <=(Vector2Int a, int b)
+    {
+        return a.CompareTo(b) is -1 or 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >=(Vector2Int a, int b)
+    {
+        return a.CompareTo(b) is 1 or 0;
     }
 }

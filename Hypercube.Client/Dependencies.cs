@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Audio;
 using Hypercube.Client.Audio.Loading;
 using Hypercube.Client.Audio.Realisations.OpenAL;
+using Hypercube.Client.Graphics.ImGui;
 using Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 using Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 using Hypercube.Client.Graphics.Rendering;
@@ -40,9 +41,9 @@ public static class Dependencies
         // Camera
         rootContainer.Register<ICameraManager, CameraManager>();
         
-        
         // Rendering
         rootContainer.Register<IRenderer, Renderer>();
+        rootContainer.Register<IImGui, Graphics.ImGui.ImGui>();
         
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();

@@ -15,12 +15,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.ImGui\Hypercube.ImGui.csproj" />
       <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.OpenGL\Hypercube.OpenGL.csproj" />
       <ProjectReference Include="..\Hypercube.Shared\Hypercube.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenTK" Version="5.0.0-pre.10" />
+      <PackageReference Include="OpenTK" Version="5.0.0-pre.11" />
       <PackageReference Include="OpenToolkit.Graphics" Version="4.0.0-pre9.3" />
       <PackageReference Include="StbImageSharp" Version="2.27.14" />
     </ItemGroup>

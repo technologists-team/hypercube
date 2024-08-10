@@ -1,9 +1,11 @@
-﻿using Hypercube.Client.Graphics.Shaders;
+﻿using Hypercube.Graphics.Shaders;
+using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.Client.Graphics.Realisation.OpenGL.Shaders;
+namespace Hypercube.OpenGL.Shaders;
 
-public sealed class Shader : IShader
+[PublicAPI]
+public class Shader : IShader
 {
     public int Handle { get; }
     public ShaderType Type { get; }

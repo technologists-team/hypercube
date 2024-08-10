@@ -3,8 +3,9 @@ using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Realisation.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Utilities.Helpers;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Math.Vectors;
+using Hypercube.OpenGL.Utilities.Helpers;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 using OpenTK.Windowing.Common;
@@ -17,7 +18,7 @@ namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 public sealed unsafe partial class GlfwWindowManager
 {
     public WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings,
-        WindowRegistration? contextShare)
+        WindowHandle? contextShare)
     {
         GLFW.WindowHint(WindowHintString.X11ClassName, "Hypercube");
         GLFW.WindowHint(WindowHintString.X11InstanceName, "Hypercube");
@@ -61,8 +62,8 @@ public sealed unsafe partial class GlfwWindowManager
         }
 
         Window* share = null;
-        if (contextShare is GlfwWindowRegistration glfwShare)
-            share = glfwShare.Pointer;
+        if (contextShare is GlfwWindowHandle glfwShare)
+            share = glfwShare;
 
         Monitor* monitor = null;
         if (settings.Monitor is null || !_monitors.TryGetValue(settings.Monitor.Id, out var threadMonitorRegistration))
@@ -114,42 +115,38 @@ public sealed unsafe partial class GlfwWindowManager
         return new WindowCreateResult(WindowSetup(window, settings), null);
     }
 
-    private GlfwWindowRegistration WindowSetup(Window* window, WindowCreateSettings settings)
-     {
-         GLFWHelper.GetFramebufferSize(window, out var framebufferSize);
-         GLFWHelper.GetWindowSize(window, out var size);
-         
-         var registration = new GlfwWindowRegistration
-         {
-             Pointer = window,
-             Id = new WindowId(_nextWindowId++),
-             
-             Ratio = framebufferSize.AspectRatio,
-             Size = size,
-             FramebufferSize = framebufferSize
-         };
+    private WindowRegistration WindowSetup(Window* window, WindowCreateSettings settings)
+    {
+        GLFWHelper.GetFramebufferSize(window, out var framebufferSize);
+        GLFWHelper.GetWindowSize(window, out var size);
 
-         registration.Handle = new WindowHandle(_renderer, registration);
-        
-         // Setting icons
-         if (settings.WindowImages != null)
-             WindowSetIcons(registration, settings.WindowImages.ToList());
-         
-         // Setting callbacks
-         GLFW.SetKeyCallback(window, _keyCallback);
-         GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
-         GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
-         GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
-         
-         return registration;
-     }
+        var handle = new GlfwWindowHandle(new WindowId(_nextWindowId++), window)
+        {
+            Ratio = framebufferSize.AspectRatio,
+            Size = size,
+            FramebufferSize = framebufferSize
+        };
+
+        var registration = new WindowRegistration(_renderer, handle);
+
+        // Setting icons
+        if (settings.WindowImages != null)
+            WindowSetIcons(handle, settings.WindowImages.ToList());
+
+        // Setting callbacks
+        GLFW.SetKeyCallback(window, _keyCallback);
+        GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
+        GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
+        GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
+
+        return registration;
+    }
      
-     public void WindowDestroy(WindowRegistration registration)
+     public void WindowDestroy(WindowHandle handle)
      {
-         if (registration is not GlfwWindowRegistration glfwRegistration)
+         if (handle is not GlfwWindowHandle glfwRegistration)
              return;
-
-         var window = glfwRegistration.Pointer;
+         
          if (OperatingSystem.IsWindows() && glfwRegistration.Owner is not null)
          {
              // On Windows, closing the child window causes the owner to be minimized, apparently.
@@ -166,23 +163,23 @@ public sealed unsafe partial class GlfwWindowManager
              */
          }
 
-         GLFW.DestroyWindow(window);
+         GLFW.DestroyWindow(glfwRegistration);
      }
 
-     private bool TryGetWindow(Window* window, [NotNullWhen(true)] out GlfwWindowRegistration? registration)
+     private bool TryGetWindow(Window* window, [NotNullWhen(true)] out GlfwWindowHandle? registration)
      {
          registration = GetWindow(window);
          return registration is not null;
      }
 
-     private GlfwWindowRegistration? GetWindow(Window* window)
+     private GlfwWindowHandle? GetWindow(Window* window)
      {
          foreach (var (_, registration) in _renderer.Windows)
          {
-             if (registration is not GlfwWindowRegistration glfwRegistration)
+             if (registration is not GlfwWindowHandle glfwRegistration)
                  continue;
              
-             if (glfwRegistration.Pointer != window)
+             if (glfwRegistration != window)
                  continue;
 
              return glfwRegistration;
@@ -191,76 +188,76 @@ public sealed unsafe partial class GlfwWindowManager
          return null;
      }
 
-     public void WindowSetTitle(WindowRegistration window, string title)
+     public void WindowSetTitle(WindowHandle window, string title)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
         
-         GLFW.SetWindowTitle(glfwWindow.Pointer, title);
+         GLFW.SetWindowTitle(glfwWindow, title);
      }
      
-     public void WindowSetMonitor(WindowRegistration window, MonitorRegistration registration)
+     public void WindowSetMonitor(WindowHandle window, MonitorRegistration registration)
      {
          WindowSetMonitor(window, registration, Vector2Int.Zero);
      }
      
-     public void WindowRequestAttention(WindowRegistration window)
+     public void WindowRequestAttention(WindowHandle window)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
         
-         GLFW.RequestWindowAttention(glfwWindow.Pointer);
+         GLFW.RequestWindowAttention(glfwWindow);
      }
 
-     public void WindowSetSize(WindowRegistration window, Vector2Int size)
+     public void WindowSetSize(WindowHandle window, Vector2Int size)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
         
-         GLFW.SetWindowSize(glfwWindow.Pointer, size.X, size.Y);
+         GLFW.SetWindowSize(glfwWindow, size.X, size.Y);
      }
 
-     public void WindowSetVisible(WindowRegistration window, bool visible)
+     public void WindowSetVisible(WindowHandle window, bool visible)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
 
          if (visible)
          {
-             GLFW.ShowWindow(glfwWindow.Pointer);
+             GLFW.ShowWindow(glfwWindow);
              return;
          }
             
-         GLFW.HideWindow(glfwWindow.Pointer);
+         GLFW.HideWindow(glfwWindow);
      }
 
-     public void WindowSetOpacity(WindowRegistration window, float opacity)
+     public void WindowSetOpacity(WindowHandle window, float opacity)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
         
-         GLFW.SetWindowOpacity(glfwWindow.Pointer, opacity);
+         GLFW.SetWindowOpacity(glfwWindow, opacity);
      }
      
-     public void WindowSetPosition(WindowRegistration window, Vector2Int position)
+     public void WindowSetPosition(WindowHandle window, Vector2Int position)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
          
-         GLFW.SetWindowPos(glfwWindow.Pointer, position.X, position.Y);
+         GLFW.SetWindowPos(glfwWindow, position.X, position.Y);
      }
 
-     public void WindowSwapBuffers(WindowRegistration window)
+     public void WindowSwapBuffers(WindowHandle window)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
         
-         GLFW.SwapBuffers(glfwWindow.Pointer);
+         GLFW.SwapBuffers(glfwWindow);
      }
      
-     public void WindowSetIcons(WindowRegistration window, List<ITexture> images)
+     public void WindowSetIcons(WindowHandle window, List<ITexture> images)
      {
-         if (window is not GlfwWindowRegistration glfwWindow)
+         if (window is not GlfwWindowHandle glfwWindow)
              return;
 
          var count = images.Count;
@@ -277,7 +274,7 @@ public sealed unsafe partial class GlfwWindowManager
              glfwImages[i] = new GlfwImage(image.Width, image.Height, addrOfPinnedObject);
          }
          
-         GLFW.SetWindowIcon(glfwWindow.Pointer, glfwImages);
+         GLFW.SetWindowIcon(glfwWindow, glfwImages);
      }
      
      public IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureMan, IResourceLoader resourceLoader, ResourcePath path)
@@ -290,8 +287,18 @@ public sealed unsafe partial class GlfwWindowManager
          }
      }
      
-     private class GlfwWindowRegistration : WindowRegistration
+     private class GlfwWindowHandle : WindowHandle
      {
-         public Window* Pointer;
+         public readonly Window* GlfwPointer;
+
+         public GlfwWindowHandle(WindowId id, Window* pointer) : base(id, (nint)pointer)
+         {
+             GlfwPointer = pointer;
+         }
+
+         public static implicit operator Window*(GlfwWindowHandle handle)
+         {
+             return handle.GlfwPointer;
+         }
      }
 }

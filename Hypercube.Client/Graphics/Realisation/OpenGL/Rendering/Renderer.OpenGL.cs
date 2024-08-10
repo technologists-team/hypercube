@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -16,7 +17,7 @@ public sealed partial class Renderer
     /// </summary>
     private DebugProc? _debugProc;
     
-    private void InitOpenGL()
+    private unsafe void InitOpenGL()
     {
         GL.LoadBindings(_bindingsContext);
         
@@ -27,18 +28,21 @@ public sealed partial class Renderer
         var version = GL.GetString(StringName.Version);
         var shading = GL.GetString(StringName.ShadingLanguageVersion);
         
+        GLFW.SwapInterval(SwapInterval);
+        
         _loggerOpenGL.EngineInfo($"Vendor: {vendor}");
         _loggerOpenGL.EngineInfo($"Renderer: {renderer}");
         _loggerOpenGL.EngineInfo($"Version: {version}, Shading: {shading}");
-        
-        GLFW.SwapInterval(SwapInterval);
+        _loggerOpenGL.EngineInfo($"Thread: {Thread.CurrentThread.Name ?? "unnamed"} ({Environment.CurrentManagedThreadId})");
         _loggerOpenGL.EngineInfo($"Swap interval: {SwapInterval}");
-
+        
         _debugProc = DebugMessageCallback;
-        GL.DebugMessageCallback(_debugProc, IntPtr.Zero);
+        
+        GL.DebugMessageCallback(_debugProc, nint.Zero);
         
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);
+        GL.Enable(EnableCap.DebugOutputSynchronous);
         
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         GL.ClearColor(0, 0, 0, 0);
@@ -46,24 +50,20 @@ public sealed partial class Renderer
         _loggerOpenGL.EngineInfo("Initialized");
         _eventBus.Raise(new GraphicsLibraryInitializedEvent());
     }
-
-    private void DebugMessageCallback(DebugSource source, DebugType type, int id, DebugSeverity severity, int length, IntPtr messagePointer, IntPtr userparam)
+    
+    private unsafe void DebugMessageCallback(DebugSource source, DebugType type, int id, DebugSeverity severity, int length, nint messagePointer, nint @params)
     {
-        // In order to access the string pointed to by pMessage, you can use Marshal
-        // class to copy its contents to a C# string without unsafe code. You can
-        // also use the new function Marshal.PtrToStringUTF8 since .NET Core 1.1.
-        string message = Marshal.PtrToStringAnsi(messagePointer, length);
-
-        // The rest of the function is up to you to implement, however a debug output
-        // is always useful.
+        var message = Marshal.PtrToStringAnsi(messagePointer, length);
         var logger = LoggingManager.GetLogger("open_gl_debug");
-        logger.EngineInfo($"{severity} source={source} type={id} {message}");
 
-        // Potentially, you may want to throw from the function for certain severity
-        // messages.
+        var loggingMessage = $"[{type}] [{severity}] [{source}] {message} ({id})";
+        
         if (type == DebugType.DebugTypeError)
         {
+            logger.Fatal(loggingMessage);
             throw new Exception(message);
         }
+        
+        logger.EngineInfo(loggingMessage);
     }
 }

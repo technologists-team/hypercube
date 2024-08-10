@@ -2,7 +2,7 @@
 using Hypercube.Math.Vectors;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Hypercube.Client.Utilities.Helpers;
+namespace Hypercube.OpenGL.Utilities.Helpers;
 
 public static unsafe class GLFWHelper
 {
@@ -11,10 +11,22 @@ public static unsafe class GLFWHelper
         GLFW.GetFramebufferSize(window, out var x, out var y);
         framebufferSize = new Vector2Int(x, y);
     }
+    
+    public static void GetFramebufferSize(nint window, out Vector2Int framebufferSize)
+    {
+        GLFW.GetFramebufferSize((Window*)window, out var x, out var y);
+        framebufferSize = new Vector2Int(x, y);
+    }
 
     public static void GetWindowSize(Window* window, out Vector2Int size)
     {
         GLFW.GetWindowSize(window, out var x, out var y);
+        size = new Vector2Int(x, y);
+    }
+    
+    public static void GetWindowSize(nint window, out Vector2Int size)
+    {
+        GLFW.GetWindowSize((Window*)window, out var x, out var y);
         size = new Vector2Int(x, y);
     }
     

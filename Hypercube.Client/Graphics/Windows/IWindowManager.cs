@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Realisation.OpenGL;
 using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
@@ -30,20 +31,20 @@ public interface IWindowManager : IDisposable
     void Terminate();
     
     // Window
-    WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? contextShare);
-    void WindowDestroy(WindowRegistration window);
-    void WindowSetTitle(WindowRegistration window, string title);
-    void WindowSetMonitor(WindowRegistration window, MonitorRegistration monitor);
-    void WindowSetMonitor(WindowRegistration window, MonitorRegistration monitor, Vector2Int vector2Int);
-    void WindowRequestAttention(WindowRegistration window);
-    void WindowSetOpacity(WindowRegistration window, float opacity);
-    void WindowSetVisible(WindowRegistration window, bool visible);
-    void WindowSetSize(WindowRegistration window, Vector2Int size);
-    void WindowSetPosition(WindowRegistration window, Vector2Int position);
-    void WindowSwapBuffers(WindowRegistration window);
-    void WindowSetIcons(WindowRegistration window, List<ITexture> images);
+    WindowCreateResult WindowCreate(ContextInfo? context, WindowCreateSettings settings, WindowHandle? contextShare);
+    void WindowDestroy(WindowHandle window);
+    void WindowSetTitle(WindowHandle window, string title);
+    void WindowSetMonitor(WindowHandle window, MonitorRegistration monitor);
+    void WindowSetMonitor(WindowHandle window, MonitorRegistration monitor, Vector2Int vector2Int);
+    void WindowRequestAttention(WindowHandle window);
+    void WindowSetOpacity(WindowHandle window, float opacity);
+    void WindowSetVisible(WindowHandle window, bool visible);
+    void WindowSetSize(WindowHandle window, Vector2Int size);
+    void WindowSetPosition(WindowHandle window, Vector2Int position);
+    void WindowSwapBuffers(WindowHandle window);
+    void WindowSetIcons(WindowHandle window, List<ITexture> images);
     
-    void MakeContextCurrent(WindowRegistration? window);
+    void MakeContextCurrent(WindowHandle? window);
     IEnumerable<ITexture> LoadWindowIcons(ITextureManager textureManager, IResourceLoader resourceLoader, ResourcePath resPath);
     
     nint GetProcAddress(string procName);

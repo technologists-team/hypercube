@@ -1,12 +1,19 @@
-﻿namespace Hypercube.Client.Graphics.Windows;
+﻿using JetBrains.Annotations;
 
-[Serializable]
-public readonly struct WindowId(int value) : IEquatable<WindowId>
+namespace Hypercube.Graphics.Windowing;
+
+[PublicAPI, Serializable]
+public readonly struct WindowId : IEquatable<WindowId>
 {
-    public static readonly WindowId Invalid = default;
+    public static readonly WindowId Invalid;
     public static readonly WindowId Zero = new(0);
     
-    internal readonly int Value = value;
+    public readonly int Value;
+
+    public WindowId(int value)
+    {
+        Value = value;
+    }
     
     public bool Equals(WindowId other)
     {
@@ -16,6 +23,16 @@ public readonly struct WindowId(int value) : IEquatable<WindowId>
     public override bool Equals(object? obj)
     {
         return obj is WindowId id && Equals(id);
+    }
+    
+    public override int GetHashCode()
+    {
+        return Value;
+    }
+    
+    public override string ToString()
+    {
+        return $"window({Value})";
     }
     
     public static bool operator ==(WindowId a, WindowId b)
@@ -31,15 +48,5 @@ public readonly struct WindowId(int value) : IEquatable<WindowId>
     public static explicit operator int(WindowId id)
     {
         return id.Value;
-    }
-    
-    public override int GetHashCode()
-    {
-        return Value;
-    }
-    
-    public override string ToString()
-    {
-        return $"window({Value})";
     }
 }

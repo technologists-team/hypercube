@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Input.Handler;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Logging;
@@ -72,16 +73,16 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         _logger.EngineInfo("Exit main loop");
     }
     
-    public void MakeContextCurrent(WindowRegistration? window)
+    public void MakeContextCurrent(WindowHandle? window)
     {
         if (window is not null)
         {
             if (window.IsDisposed)
                 return;
 
-            var reg = (GlfwWindowRegistration)window;
+            var reg = (GlfwWindowHandle)window;
 
-            GLFW.MakeContextCurrent(reg.Pointer);
+            GLFW.MakeContextCurrent(reg);
             return;
         }
 
@@ -93,16 +94,16 @@ public sealed unsafe partial class GlfwWindowManager : IWindowManager
         return GLFW.GetProcAddress(procName);
     }
 
-    public void WindowSetMonitor(WindowRegistration window, MonitorRegistration monitor, Vector2Int vector)
+    public void WindowSetMonitor(WindowHandle window, MonitorRegistration monitor, Vector2Int vector)
     {
         if (monitor is not GlfwMonitorRegistration glfwMonitor)
             return;
         
-        if (window is not GlfwWindowRegistration glfwWindow)
+        if (window is not GlfwWindowHandle glfwWindow)
             return;
         
         GLFW.SetWindowMonitor(
-            glfwWindow.Pointer, 
+            glfwWindow, 
             glfwMonitor.Pointer, 
             vector.X, vector.Y, 
             monitor.Handle.Size.X, monitor.Handle.Size.Y, 

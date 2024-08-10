@@ -1,14 +1,15 @@
 ﻿using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Windows;
+using Hypercube.Graphics.Windowing;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 
 public sealed partial class Renderer
 {
-    public WindowRegistration MainWindow => _windows[_mainWindowId];
-    public IReadOnlyDictionary<WindowId, WindowRegistration> Windows => _windows; 
+    public WindowHandle MainWindow => _windows[_mainWindowId];
+    public IReadOnlyDictionary<WindowId, WindowHandle> Windows => _windows; 
     
-    private readonly Dictionary<WindowId, WindowRegistration> _windows = new();
+    private readonly Dictionary<WindowId, WindowHandle> _windows = new();
     private WindowId _mainWindowId = WindowId.Invalid;
     
     public void EnterWindowLoop()
@@ -21,7 +22,7 @@ public sealed partial class Renderer
         _windowManager.Terminate();
     }
 
-    public WindowRegistration CreateWindow(WindowCreateSettings settings)
+    public WindowHandle CreateWindow(WindowCreateSettings settings)
     {
         var (registration, error) = CreateWindow(_context, settings, MainWindow);
         if (registration is null)
@@ -30,26 +31,26 @@ public sealed partial class Renderer
         return registration;
     }
     
-    public void DestroyWindow(WindowRegistration registration)
+    public void DestroyWindow(WindowHandle handle)
     {
-        _windowManager.WindowDestroy(registration);
-        _windows.Remove(registration.Id);
+        _windowManager.WindowDestroy(handle);
+        _windows.Remove(handle.Id);
     }
 
-    public void CloseWindow(WindowRegistration registration)
+    public void CloseWindow(WindowHandle handle)
     {
-        _eventBus.Raise(new WindowClosedEvent(registration));
+        _eventBus.Raise(new WindowClosedEvent(handle));
         
-        if (registration.Id == _mainWindowId)
+        if (handle.Id == _mainWindowId)
         {
-            _eventBus.Raise(new MainWindowClosedEvent(registration));
+            _eventBus.Raise(new MainWindowClosedEvent(handle));
             return;
         }
         
-        if (!registration.DisposeOnClose)
+        if (!handle.DisposeOnClose)
             return;
         
-        DestroyWindow(registration);
+        DestroyWindow(handle);
     }
     
     private bool InitMainWindow(ContextInfo? context, WindowCreateSettings settings)
@@ -65,26 +66,25 @@ public sealed partial class Renderer
         return true;
     }
 
-    private (WindowRegistration? registration, string? error) CreateWindow(ContextInfo? context, WindowCreateSettings settings, WindowRegistration? share)
+    private (WindowHandle? registration, string? error) CreateWindow(ContextInfo? context, WindowCreateSettings settings, WindowHandle? share)
     {
         var result = _windowManager.WindowCreate(context, settings, share);
         if (result.Failed)
             return (null, result.Error);
 
-        var registration = result.Registration;
-
-        if (registration == null)
+        var handle = result.Registration?.Handle;
+        if (handle is null)
             return (null, "registration is null");
         
-        _windowManager.MakeContextCurrent(registration);
-        _windows.Add(registration.Id, registration);
+        _windowManager.MakeContextCurrent(handle);
+        _windows.Add(handle.Id, handle);
         
-        _logger.EngineInfo($"Created new window {registration.Id}");
+        _logger.EngineInfo($"Created new {handle}");
         
-        return (registration, null);
+        return (handle, null);
     }
 
-    public void OnFocusChanged(WindowRegistration window, bool focused)
+    public void OnFocusChanged(WindowHandle window, bool focused)
     {
         _eventBus.Raise(new WindowFocusChangedEvent(window, focused));
     }

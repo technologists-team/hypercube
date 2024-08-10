@@ -243,6 +243,10 @@ public partial struct Matrix3X3
     {
     }
     
+    public Matrix3X3(Matrix3X3 matrix3X3) : this(matrix3X3.Row0, matrix3X3.Row1, matrix3X3.Row2)
+    {
+    }
+    
     /// <summary>
     /// Creates 3x3 matrix
     /// <code>

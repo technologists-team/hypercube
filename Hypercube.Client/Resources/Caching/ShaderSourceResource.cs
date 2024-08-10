@@ -1,5 +1,5 @@
-﻿using Hypercube.Client.Graphics.Realisation.OpenGL.Shaders;
-using Hypercube.Client.Graphics.Shaders;
+﻿using Hypercube.Graphics.Shaders;
+using Hypercube.OpenGL.Shaders;
 using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
@@ -30,7 +30,11 @@ public sealed class ShaderSourceResource : Resource, IDisposable
     
     protected override void OnLoad(ResourcePath path, DependenciesContainer container)
     {
-        ShaderProgram = new ShaderProgram(path, container.Resolve<IResourceLoader>());
+        var resourceLoader = container.Resolve<IResourceLoader>();
+        var vertSource = resourceLoader.ReadFileContentAllText($"{path}.vert");
+        var fragSource = resourceLoader.ReadFileContentAllText($"{path}.frag");
+        
+        ShaderProgram = new ShaderProgram(vertSource, fragSource);
     }
 
     public void Dispose()
