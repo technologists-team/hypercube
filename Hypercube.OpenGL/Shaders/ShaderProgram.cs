@@ -2,6 +2,7 @@ using System.Collections.Frozen;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
+using Hypercube.OpenGL.Utilities.Helpers;
 using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -11,9 +12,9 @@ namespace Hypercube.OpenGL.Shaders;
 public class ShaderProgram : IShaderProgram
 {
     public int Handle { get; private set; }
-    
+
     private readonly FrozenDictionary<string, int> _uniformLocations;
-    
+
     public ShaderProgram(string vertSource, string fragSource)
     {
         var shaders = new HashSet<IShader>
@@ -21,14 +22,14 @@ public class ShaderProgram : IShaderProgram
             CreateShader(vertSource, ShaderType.VertexShader),
             CreateShader(fragSource, ShaderType.FragmentShader)
         };
-        
+
         Handle = GL.CreateProgram();
 
         foreach (var shader in shaders)
         {
             Attach(shader);
         }
-        
+
         LinkProgram();
 
         // When the shader program is linked, it no longer needs the individual shaders attached to it; the compiled code is copied into the shader program.
@@ -90,7 +91,7 @@ public class ShaderProgram : IShaderProgram
     {
         GL.Uniform1(_uniformLocations[name], value);
     }
-    
+
     public void SetUniform(string name, Vector2 value)
     {
         GL.Uniform2(_uniformLocations[name], value.X, value.Y);
@@ -106,24 +107,23 @@ public class ShaderProgram : IShaderProgram
         GL.Uniform3(_uniformLocations[name], value.X, value.Y, value.Z);
     }
 
-    public void SetUniform(string name, Matrix3X3 value, bool transpose = false)
+    public unsafe void SetUniform(string name, Matrix3X3 value, bool transpose = false)
     {
-        unsafe
-        {
-            var matrix = transpose ? Matrix3X3.Transpose(value) : new Matrix3X3(value);
-            GL.UniformMatrix3(GL.GetUniformLocation(Handle, name), 1, false, (float*) &matrix);
-        }
+        var matrix = transpose ? Matrix3X3.Transpose(value) : new Matrix3X3(value);
+        GL.UniformMatrix3(GL.GetUniformLocation(Handle, name), 1, false, (float*)&matrix);
     }
 
-    public void SetUniform(string name, Matrix4X4 value, bool transpose = false)
+    public unsafe void SetUniform(string name, Matrix4X4 value, bool transpose = false)
     {
-        unsafe
-        {
-            var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
-            GL.UniformMatrix4(GL.GetUniformLocation(Handle, name), 1, false, (float*) &matrix);
-        }
+        var matrix = transpose ? Matrix4X4.Transpose(value) : new Matrix4X4(value);
+        GL.UniformMatrix4(GL.GetUniformLocation(Handle, name), 1, false, (float*)&matrix);
     }
-    
+
+    public void Label(string name)
+    {
+        GLHelper.LabelObject(ObjectLabelIdentifier.Program, Handle, name);    
+    }
+
     public void Dispose()
     {
         GL.DeleteProgram(Handle);

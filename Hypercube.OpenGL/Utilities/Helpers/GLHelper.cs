@@ -4,6 +4,11 @@ namespace Hypercube.OpenGL.Utilities.Helpers;
 
 public static class GLHelper
 {
+    public static void LabelObject(ObjectLabelIdentifier objLabelIdent, int glObject, string name)
+    {
+        GL.ObjectLabel(objLabelIdent, glObject, name.Length, name);
+    }
+    
     public static string CheckErrors(string title)
     {
         var error = GL.GetError();

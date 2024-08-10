@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Hypercube.OpenGL.Utilities.Helpers;
+using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.OpenGL.Objects;
@@ -33,6 +34,12 @@ public class ArrayObject : IDisposable
     public void Delete()
     {
         GL.DeleteVertexArray(Handle);
+    }
+    
+    public void Label(string name)
+    {
+        Bind();
+        GLHelper.LabelObject(ObjectLabelIdentifier.VertexArray, Handle, name);    
     }
     
     public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using Hypercube.OpenGL.Utilities.Helpers;
 using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -65,6 +66,12 @@ public class BufferObject : IDisposable
     {
         Bind();
         GL.BufferSubData(BufferTarget, nint.Zero, data.Length * Marshal.SizeOf<T>(), data);
+    }
+    
+    public void Label(string name)
+    {
+        Bind();
+        GLHelper.LabelObject(ObjectLabelIdentifier.Buffer, Handle, name);    
     }
 
     public void Dispose()

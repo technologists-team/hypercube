@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Graphics.Windowing;
 using Hypercube.OpenGL.Objects;
@@ -81,10 +82,31 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     public void InitializeShaders()
     {
         _shader = new ShaderProgram(ShaderSource.VertexShader, ShaderSource.FragmentShader);
-
+        _shader.Label("ImGui");
+        
         _vao = new ArrayObject();
+        _vao.Label("ImGui");
+        
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
+        _vbo.Label("ImGui");
+        
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
+        _ebo.Label("ImGui");
+        
+        var stride = Unsafe.SizeOf<ImDrawVert>();
+        
+        GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, stride, 0);
+        GL.EnableVertexAttribArray(0);
+        
+        GL.VertexAttribPointer(1, 4, VertexAttribPointerType.UnsignedByte, true, stride, 16);
+        GL.EnableVertexAttribArray(1);
+        
+        GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, stride, 8);
+        GL.EnableVertexAttribArray(2);
+
+        _vao.Unbind();
+        _vbo.Unbind();
+        _ebo.Unbind();
         
         CreateFontsTexture();
         

@@ -23,7 +23,7 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     {
         _eventBus.Subscribe<GraphicsLibraryInitializedEvent>(this, OnGraphicsInitialized);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnUpdateFrame);
-        _eventBus.Subscribe<RenderFrameEvent>(this, OnRenderFrame);
+        _eventBus.Subscribe<RenderDrawingEvent>(this, OnRenderDrawing);
     }
     
     private void OnGraphicsInitialized(ref GraphicsLibraryInitializedEvent args)
@@ -39,7 +39,7 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _controller.Update(args.DeltaSeconds);
     }
 
-    private void OnRenderFrame(ref RenderFrameEvent args)
+    private void OnRenderDrawing(ref RenderDrawingEvent args)
     {
         _controller.Begin("Test");
         _controller.End();

@@ -32,4 +32,6 @@ public interface IShaderProgram : IDisposable
     
     void SetUniform(string name, Matrix3X3 value, bool transpose = false);
     void SetUniform(string name, Matrix4X4 value, bool transpose = false);
+
+    void Label(string name);
 }
