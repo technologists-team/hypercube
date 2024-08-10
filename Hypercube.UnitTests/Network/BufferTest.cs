@@ -24,6 +24,8 @@ public class BufferTest
     private static readonly double[] Doubles =
         [1.2345678901234567, -5.67890123456789, 9.012345678901234, -3.456789012345678];
 
+    private const string Str = "The quick brown fox jumps over the lazy dog.";
+
     [Test]
     public void BufferBitTest()
     {
@@ -187,5 +189,33 @@ public class BufferTest
             Assert.That(rBuf.ReadDoubles(Doubles.Length), Is.EqualTo(Doubles));
         });
         Assert.Pass("Double RWBuffer passed.");
+    }
+    
+    [Test]
+    public void BufferByteArrayTest()
+    {
+        var wBuf = new WriteBuffer();
+        wBuf.WriteByteArray(Bytes);
+        var rBuf = new ReadBuffer(wBuf.GetData());
+        Assert.Multiple(() =>
+        {
+            Assert.That(rBuf.ReadByteArray(), Is.EqualTo(Bytes));
+        });
+        Assert.Pass("Bytearray RWBuffer passed.");
+    }
+
+    [Test]
+    public void BufferStringTest()
+    {
+        var wBuf = new WriteBuffer();
+        wBuf.WriteString("CURSE OF 220");
+        wBuf.WriteString(Str);
+        var rBuf = new ReadBuffer(wBuf.GetData());
+        Assert.Multiple(() =>
+        {
+            Assert.That(rBuf.ReadString(), Is.EqualTo("CURSE OF 220"));
+            Assert.That(rBuf.ReadString(), Is.EqualTo(Str));
+        });
+        Assert.Pass("String RWBuffer passed.");
     }
 }

@@ -10,7 +10,7 @@ public partial class ReadBuffer
         return ReadBytes((int)length);
     }
 
-    public string ReadString(uint count)
+    public string ReadString()
     {
         var bytes = ReadByteArray();
         return Encoding.UTF8.GetString(bytes);
