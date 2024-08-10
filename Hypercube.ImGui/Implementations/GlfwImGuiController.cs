@@ -32,6 +32,9 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     private BufferObject _vbo = default!;
     private BufferObject _ebo = default!;
     
+    private int _vertexBufferSize;
+    private int _indexBufferSize;
+    
     private MouseButtonCallback? _mouseButtonCallback;
     private ScrollCallback? _scrollCallback;
     private KeyCallback? _keyCallback;

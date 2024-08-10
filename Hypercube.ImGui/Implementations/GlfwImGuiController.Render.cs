@@ -32,7 +32,7 @@ public partial class GlfwImGuiController
         _vbo.Bind();
         _ebo.Bind();
         
-        CheckErrors("Buffer objects");
+        CheckErrors("Buffer objects"); ;
         
         for (var n = 0; n < data.CmdListsCount; n++)
         {         
@@ -41,8 +41,21 @@ public partial class GlfwImGuiController
             var vertexSize = cmd.VtxBuffer.Size * Unsafe.SizeOf<ImDrawVert>();
             var indexSize = cmd.IdxBuffer.Size * sizeof(ushort);
 
-            _vbo.SetData(vertexSize, nint.Zero, BufferUsageHint.DynamicDraw);
-            _ebo.SetData(indexSize, nint.Zero, BufferUsageHint.DynamicDraw);
+            if (vertexSize > _vertexBufferSize)
+            {
+                var newSize = (int)System.Math.Max(_vertexBufferSize * 1.5f, vertexSize);
+                
+                _vertexBufferSize = newSize;
+                _vbo.SetData(newSize, nint.Zero, BufferUsageHint.DynamicDraw);
+            }
+
+            if (indexSize > _indexBufferSize)
+            {
+                var newSize = (int)System.Math.Max(_indexBufferSize * 1.5f, indexSize);
+                
+                _indexBufferSize = newSize;
+                _ebo.SetData(newSize, nint.Zero, BufferUsageHint.DynamicDraw);
+            }
             
             CheckErrors("Setup data");
         }
