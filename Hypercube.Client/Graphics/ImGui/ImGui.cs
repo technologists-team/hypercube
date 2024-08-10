@@ -1,4 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Events;
+using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.ImGui;
 using Hypercube.Shared.Dependency;
@@ -41,17 +42,29 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
 
     private void OnRenderDrawing(ref RenderDrawingEvent args)
     {
-        _controller.Begin("Test");
-        
-        /*
-        _controller.Text("Test1");
-        _controller.Text("Test2");
-        _controller.Text("Test3");
-        _controller.Button("Also test");
-        */
-        
-        _controller.End();
+        var ev = new ImGuiRenderEvent(this);
+        _eventBus.Raise(ev);
         
         _controller.Render();
+    }
+
+    public void Begin(string name)
+    {
+        _controller.Begin(name);
+    }
+
+    public void Text(string label)
+    {
+        _controller.Text(label);
+    }
+
+    public bool Button(string label)
+    {
+        return _controller.Button(label);
+    }
+
+    public void End()
+    {
+        _controller.End();
     }
 }

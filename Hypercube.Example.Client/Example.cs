@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Audio;
 using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
+using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Example.Client.Controls;
@@ -39,8 +40,9 @@ public sealed class Example : IEventSubscriber, IPostInject
     public void PostInject()
     {
         _eventBus.Subscribe<RuntimeStartupEvent>(this, Startup);
+        _eventBus.Subscribe<ImGuiRenderEvent>(this, ImGuiRender);
     }
-
+    
     private void Startup(ref RuntimeStartupEvent args)
     {
         for (var i = 0; i < 10; i++)
@@ -75,6 +77,13 @@ public sealed class Example : IEventSubscriber, IPostInject
         _cameraManager.SetMainCamera(camera);
     }
 
+    private void ImGuiRender(ref ImGuiRenderEvent args)
+    {
+        var imGui = args.Instance;
+        imGui.Begin("Example");
+        imGui.End();
+    }
+    
     private void CreateEntity(SceneCoordinates coordinates, IShape shape, BodyType type = BodyType.Dynamic)
     {
         var entityUid = _entitiesManager.Create("Fuck", coordinates);
