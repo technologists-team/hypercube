@@ -139,6 +139,16 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         ImGuiNET.ImGui.Begin(name);
     }
 
+    public void Text(string label)
+    {
+        ImGuiNET.ImGui.Text(label);
+    }
+
+    public bool Button(string label)
+    {
+        return ImGuiNET.ImGui.Button(label);
+    }
+    
     public void End()
     {
         ImGuiNET.ImGui.End();

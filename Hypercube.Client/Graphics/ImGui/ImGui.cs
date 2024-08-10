@@ -42,6 +42,14 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     private void OnRenderDrawing(ref RenderDrawingEvent args)
     {
         _controller.Begin("Test");
+        
+        /*
+        _controller.Text("Test1");
+        _controller.Text("Test2");
+        _controller.Text("Test3");
+        _controller.Button("Also test");
+        */
+        
         _controller.End();
         
         _controller.Render();
