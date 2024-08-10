@@ -14,7 +14,8 @@ public partial class WriteBuffer : Buffer
         {
             if (value > 8)
             {
-                Data[Data.Length + 1] = 0;
+                Array.Resize(ref Data, Data.Length+1);
+                Data[^1] = 0;
                 _writeBitPos = 0;
             }
             else
@@ -28,6 +29,6 @@ public partial class WriteBuffer : Buffer
     public WriteBuffer()
     {
         _writeBitPos = 0;
-        Data = [];
+        Data = [0];
     }
 }

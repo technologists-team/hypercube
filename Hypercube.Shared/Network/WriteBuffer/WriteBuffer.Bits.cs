@@ -12,12 +12,12 @@ public partial class WriteBuffer
         if (value)
             data |= (byte)(1 << bitNumber);
         else
-            data &= (byte)(1 << bitNumber);
+            data &= (byte)~(1 << bitNumber);
     }
 
     public void WriteBit(bool bit)
     {
-        SetBitInByte(ref Data[-1], _writeBitPos, bit);
+        SetBitInByte(ref Data[^1], _writeBitPos, bit);
         WriteBitPos++;
     }
 

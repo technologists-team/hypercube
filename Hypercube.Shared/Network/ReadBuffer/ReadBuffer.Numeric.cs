@@ -20,7 +20,7 @@ public partial class ReadBuffer
     }
 
 
-    public byte[] ReadBytes(uint count)
+    public byte[] ReadBytes(int count)
     {
         var output = new byte[count];
         for (uint i = 0; i < count; i++)
@@ -47,7 +47,7 @@ public partial class ReadBuffer
     }
 
 
-    public sbyte[] ReadSBytes(uint count)
+    public sbyte[] ReadSBytes(int count)
     {
         var output = new sbyte[count];
         for (uint i = 0; i < count; i++)
@@ -77,7 +77,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public short[] ReadShorts(uint count)
+    public short[] ReadShorts(int count)
     {
         var output = new short[count];
         for (uint i = 0; i < count; i++)
@@ -103,7 +103,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public ushort[] ReadUShorts(uint count)
+    public ushort[] ReadUShorts(int count)
     {
         var output = new ushort[count];
         for (uint i = 0; i < count; i++)
@@ -133,7 +133,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public int[] ReadInts(uint count)
+    public int[] ReadInts(int count)
     {
         var output = new int[count];
         for (uint i = 0; i < count; i++)
@@ -159,7 +159,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public uint[] ReadUInts(uint count)
+    public uint[] ReadUInts(int count)
     {
         var output = new uint[count];
         for (uint i = 0; i < count; i++)
@@ -189,7 +189,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public long[] ReadLongs(uint count)
+    public long[] ReadLongs(int count)
     {
         var output = new long[count];
         for (uint i = 0; i < count; i++)
@@ -215,7 +215,7 @@ public partial class ReadBuffer
         return result;
     }
 
-    public ulong[] ReadULongs(uint count)
+    public ulong[] ReadULongs(int count)
     {
         var output = new ulong[count];
         for (uint i = 0; i < count; i++)
@@ -232,20 +232,21 @@ public partial class ReadBuffer
 
     public float ReadFloat()
     {
-        var array = ReadBits(sizeof(float) * 8);
-        uint result = 0;
-        for (byte i = 0; i < sizeof(float) * 8; i++)
+        var bytes = new byte[sizeof(float)];
+        var bits = ReadBits(sizeof(float) * 8);
+
+        for (var i = 0; i < sizeof(float) * 8; i++)
         {
-            if (array[i])
+            if (bits[i])
             {
-                result |= 1u << i;
+                bytes[i / 8] |= (byte)(1 << (i % 8));
             }
         }
 
-        return result;
+        return BitConverter.ToSingle(bytes, 0);
     }
 
-    public float[] ReadFloats(uint count)
+    public float[] ReadFloats(int count)
     {
         var output = new float[count];
         for (uint i = 0; i < count; i++)
@@ -258,20 +259,21 @@ public partial class ReadBuffer
 
     public double ReadDouble()
     {
-        var array = ReadBits(sizeof(double) * 8);
-        ulong result = 0;
-        for (byte i = 0; i < sizeof(double) * 8; i++)
+        var bytes = new byte[sizeof(double)];
+        var bits = ReadBits(sizeof(double) * 8);
+
+        for (var i = 0; i < sizeof(double) * 8; i++)
         {
-            if (array[i])
+            if (bits[i])
             {
-                result |= 1UL << i;
+                bytes[i / 8] |= (byte)(1 << (i % 8));
             }
         }
 
-        return result;
+        return BitConverter.ToDouble(bytes, 0);
     }
 
-    public double[] ReadDoubles(uint count)
+    public double[] ReadDoubles(int count)
     {
         var output = new double[count];
         for (uint i = 0; i < count; i++)

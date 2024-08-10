@@ -7,7 +7,7 @@ public partial class ReadBuffer
     public byte[] ReadByteArray()
     {
         var length = ReadUInt();
-        return ReadBytes(length);
+        return ReadBytes((int)length);
     }
 
     public string ReadString(uint count)
