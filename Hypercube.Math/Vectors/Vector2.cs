@@ -5,7 +5,7 @@ using Hypercube.Math.Extensions;
 namespace Hypercube.Math.Vectors;
 
 [StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2 : IEquatable<Vector2>
+public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>
 {
     public static readonly Vector2 NaN = new(float.NaN, float.NaN);
     public static readonly Vector2 Zero = new(0, 0);
@@ -261,5 +261,33 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static float Cross(Vector2 a, Vector2 b)
     {
         return a.X * b.Y - a.Y * b.X;
+    }
+
+    public int CompareTo(Vector2 other)
+    {
+        return Length.CompareTo(other.Length);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(Vector2 other, ComparisonType comparisonType)
+    {
+        switch (comparisonType)
+        {
+            case ComparisonType.XComponent:
+                return X.CompareTo(other.X);
+            case ComparisonType.YComponent:
+                return Y.CompareTo(other.Y);
+            case ComparisonType.Angle:
+                return Angle.CompareTo(other.Angle);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(comparisonType), comparisonType, "Invalid ComparisonType");
+        }
+    }
+
+    public enum ComparisonType
+    {
+        XComponent,
+        YComponent,
+        Angle
     }
 }
