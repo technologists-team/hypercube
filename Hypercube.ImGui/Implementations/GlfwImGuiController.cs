@@ -129,10 +129,6 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
             _io.DisplayFramebufferScale = framebufferSize / size;
         
         _io.DeltaTime = deltaTime;
-
-        UpdateMousePosition();
-        UpdateMouseButtons();
-        UpdateMouseCursor();
         
         ImGuiNET.ImGui.NewFrame();
     }

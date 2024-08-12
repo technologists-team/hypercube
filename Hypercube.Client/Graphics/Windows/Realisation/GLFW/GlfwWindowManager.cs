@@ -4,6 +4,7 @@ using Hypercube.Client.Input.Handler;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -11,10 +12,11 @@ namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 
 public sealed unsafe partial class GlfwWindowManager : IWindowManager
 {
-    [Dependency] private readonly IRenderer _renderer = default!;
+    [Dependency] private readonly IEventBus _eventBus = default!;
     [Dependency] private readonly IInputHandler _inputHandler = default!;
-    
-    private readonly ILogger _logger =  LoggingManager.GetLogger("glfw");
+    [Dependency] private readonly IRenderer _renderer = default!;
+
+    private readonly Logger _logger =  LoggingManager.GetLogger("glfw");
     
     private bool _initialized;
     private bool _running;

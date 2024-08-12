@@ -1,9 +1,15 @@
-﻿using Hypercube.Client.Input;
-using Hypercube.Client.Utilities.Helpers;
+﻿using Hypercube.Client.Input.Events.Windowing;
+using Hypercube.Input;
 using Hypercube.OpenGL.Utilities.Helpers;
+using Hypercube.Shared.EventBus.Events;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+
 using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;
-using KeyModifiers = Hypercube.Client.Input.KeyModifiers;
+using GlfwMouseButton = OpenTK.Windowing.GraphicsLibraryFramework.MouseButton;
+
+using KeyModifiers = Hypercube.Input.KeyModifiers;
+using MouseButton = Hypercube.Input.MouseButton;
+
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
@@ -11,9 +17,12 @@ namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 public sealed unsafe partial class GlfwWindowManager
 {
     private ErrorCallback? _errorCallback;
-    
+
+    private CharCallback? _charCallback;
+    private ScrollCallback? _scrollCallback;
     private KeyCallback? _keyCallback;
-    
+    private MouseButtonCallback? _mouseButtonCallback;
+
     private WindowCloseCallback? _windowCloseCallback;
     private WindowSizeCallback? _windowSizeCallback;
     private WindowFocusCallback? _windowFocusCallback;
@@ -26,51 +35,59 @@ public sealed unsafe partial class GlfwWindowManager
     private void HandleCallbacks()
     {
         _errorCallback = OnErrorHandled;
-        
+
+        _charCallback = OnWindowCharHandled;
+        _scrollCallback = OnWindowScrollHandled;
         _keyCallback = OnWindowKeyHandled;
+        _mouseButtonCallback = OnMouseButtonHandled;
 
         _windowCloseCallback = OnWindowClosed;
         _windowSizeCallback = OnWindowResized;
         _windowFocusCallback = OnWindowFocusChanged;
     }
-    
+
     private void OnErrorHandled(ErrorCode error, string description)
     {
         _logger.Error(GLFWHelper.FormatError(error, description));
     }
+
+    #region Input handler
     
     private void OnWindowKeyHandled(Window* window, Keys glfwKey, int scanCode, InputAction action, GlfwKeyModifiers mods)
     {
-        var key = (Key)glfwKey;
-        var pressed = false;
-        var repeat = false;
-        
-        switch (action)
-        {
-            case InputAction.Release:
-                pressed = false;
-                break;
-            
-            case InputAction.Press:
-                pressed = true;
-                break;
-            
-            case InputAction.Repeat:
-                pressed = true;
-                repeat = true;
-                break;
-            
-            default:
-                throw new ArgumentOutOfRangeException(nameof(action), action, null);
-        }
-        
-        _inputHandler.SendKeyState(new KeyStateChangedArgs(
-            key,
-            pressed,
-            repeat,
+        RaiseInput(new WindowingKeyHandledEvent(new KeyStateChangedArgs(
+            (Key)glfwKey,
+            Convert(action),
             (KeyModifiers)mods,
-            scanCode));
+            scanCode
+        )));
     }
+    
+    private void OnWindowCharHandled(Window* window, uint codepoint)
+    {
+        RaiseInput(new WindowingCharHandledEvent());
+    }
+    
+    private void OnWindowScrollHandled(Window* window, double offsetX, double offsetY)
+    {
+        RaiseInput(new WindowingScrollHandledEvent());
+    }
+    
+    private void OnMouseButtonHandled(Window* window, GlfwMouseButton button, InputAction action, GlfwKeyModifiers mods)
+    {
+        RaiseInput(new WindowingMouseButtonHandledEvent(new MouseButtonChangedArgs(
+            (MouseButton)button,
+            Convert(action),
+            (KeyModifiers)mods
+        )));
+    }
+
+    private void RaiseInput<T>(T args) where T : IEventArgs
+    {
+        _eventBus.Raise(_inputHandler, ref args);
+    }
+    
+    #endregion
     
     private void OnWindowClosed(Window* window)
     {
@@ -95,6 +112,7 @@ public sealed unsafe partial class GlfwWindowManager
         
         _renderer.OnFocusChanged(registration, focused);
     }
+    
     private void OnWindowFocused(Window* window, bool focused)
     {
         if (!TryGetWindow(window, out var registration))
@@ -102,5 +120,15 @@ public sealed unsafe partial class GlfwWindowManager
         
         _renderer.OnFocusChanged(registration, focused);
     }
-    
+
+    private static KeyState Convert(InputAction action)
+    {
+        return action switch
+        {
+            InputAction.Release => KeyState.Release,
+            InputAction.Press => KeyState.Press,
+            InputAction.Repeat => KeyState.Repeat,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
 }

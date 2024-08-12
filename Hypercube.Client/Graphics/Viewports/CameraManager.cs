@@ -1,5 +1,6 @@
 ﻿using Hypercube.Client.Input;
 using Hypercube.Client.Input.Handler;
+using Hypercube.Input;
 using Hypercube.Math.Matrices;
 using Hypercube.Math.Vectors;
 using Hypercube.Shared.Dependency;

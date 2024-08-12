@@ -1,36 +1,61 @@
-﻿using Hypercube.Shared.Logging;
+﻿using Hypercube.Client.Input.Events.Windowing;
+using Hypercube.Input;
+using Hypercube.Shared.Dependency;
+using Hypercube.Shared.EventBus;
+using Hypercube.Shared.Logging;
 
 namespace Hypercube.Client.Input.Handler;
 
-public sealed class InputHandler : IInputHandler
+public sealed class InputHandler : IInputHandler, IPostInject
 {
-    public event Action<KeyStateChangedArgs>? KeyUp;
-    public event Action<KeyStateChangedArgs>? KeyDown;
+    [Dependency] private readonly IEventBus _eventBus = default!;
+    
+    private readonly HashSet<Key> _keysRelease = [];
+    private readonly HashSet<Key> _keysPressed = [];
+    private readonly HashSet<Key> _keysDown = [];
+    
+    private readonly Logger _logger = LoggingManager.GetLogger("input_handler");
 
-    private readonly HashSet<Key> _keysDown = new();
-    private readonly ILogger _logger = LoggingManager.GetLogger("input_handler");
+    public void PostInject()
+    {
+        _eventBus.Subscribe<WindowingCharHandledEvent>(this, OnCharHandled);
+        _eventBus.Subscribe<WindowingKeyHandledEvent>(this, OnKeyHandled);
+        _eventBus.Subscribe<WindowingMouseButtonHandledEvent>(this, OnMouseButtonHandled);
+        _eventBus.Subscribe<WindowingScrollHandledEvent>(this, OnScrollHandled);
+    }
 
-    public void SendKeyState(KeyStateChangedArgs changedArgs)
+    private void OnCharHandled(ref WindowingCharHandledEvent args)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private void OnKeyHandled(ref WindowingKeyHandledEvent args)
     {
 #if DEBUG
         // Use only in Debug build,
         // as this check can take quite a lot of performance during input processing
-        if (!Enum.IsDefined(typeof(Key), changedArgs.Key))
+        if (!Enum.IsDefined(typeof(Key), args.State.Key))
         {
-            _logger.Warning($"Unknown key {changedArgs.Key} handled");
+            _logger.Warning($"Unknown key {args.State.Key} handled");
             return;
         }
 #endif
         
-        if (changedArgs.Pressed)
+        if (args.State == KeyState.Press)
         {
-            KeyDown?.Invoke(changedArgs);
-            _keysDown.Add(changedArgs.Key);
+            _keysDown.Add(args.State.Key);
             return;
         }
         
-        _keysDown.Remove(changedArgs.Key);
-        KeyUp?.Invoke(changedArgs);
+        _keysDown.Remove(args.State.Key);
+    }
+
+    private void OnMouseButtonHandled(ref WindowingMouseButtonHandledEvent args)
+    {
+    }
+    
+    private void OnScrollHandled(ref WindowingScrollHandledEvent args)
+    {
     }
 
     public bool IsKeyDown(Key key)

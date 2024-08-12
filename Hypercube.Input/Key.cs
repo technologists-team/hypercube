@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Input;
+﻿namespace Hypercube.Input;
 
 public enum Key
 {

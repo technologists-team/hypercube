@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Client.Input;
+﻿namespace Hypercube.Input;
 
 [Flags]
 public enum KeyModifiers
