@@ -17,8 +17,8 @@ public sealed class ControlsSystem : EntitySystem
     {
         base.FrameUpdate(args);
 
-        var inputX = (_inputHandler.IsKeyDown(Key.D) ? 1 : 0) - (_inputHandler.IsKeyDown(Key.A) ? 1 : 0);
-        var inputY = (_inputHandler.IsKeyDown(Key.W) ? 1 : 0) - (_inputHandler.IsKeyDown(Key.S) ? 1 : 0);
+        var inputX = (_inputHandler.IsKeyHeld(Key.D) ? 1 : 0) - (_inputHandler.IsKeyHeld(Key.A) ? 1 : 0);
+        var inputY = (_inputHandler.IsKeyHeld(Key.W) ? 1 : 0) - (_inputHandler.IsKeyHeld(Key.S) ? 1 : 0);
 
         foreach (var entity in GetEntities<ControlsComponent>())
         {

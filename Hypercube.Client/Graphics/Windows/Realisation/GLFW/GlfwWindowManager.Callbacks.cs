@@ -126,8 +126,8 @@ public sealed unsafe partial class GlfwWindowManager
         return action switch
         {
             InputAction.Release => KeyState.Release,
-            InputAction.Press => KeyState.Press,
-            InputAction.Repeat => KeyState.Repeat,
+            InputAction.Press => KeyState.Pressed,
+            InputAction.Repeat => KeyState.Held,
             _ => throw new ArgumentOutOfRangeException()
         };
     }
