@@ -3,4 +3,9 @@ using Hypercube.Shared.EventBus.Events;
 
 namespace Hypercube.Client.Input.Events.Windowing;
 
-public readonly record struct WindowingMouseButtonHandledEvent(MouseButtonChangedArgs State) : IEventArgs;
+public class WindowingMouseButtonHandledEvent : MouseButtonChangedArgs, IEventArgs
+{
+    public WindowingMouseButtonHandledEvent(MouseButton button, KeyState state, KeyModifiers modifiers) : base(button, state, modifiers)
+    {
+    }
+}

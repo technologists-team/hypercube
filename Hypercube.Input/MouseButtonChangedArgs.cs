@@ -1,6 +1,6 @@
 ﻿namespace Hypercube.Input;
 
-public readonly struct MouseButtonChangedArgs
+public class MouseButtonChangedArgs
 {
     public bool Shift => Modifiers.HasFlag(KeyModifiers.Shift);
     public bool Control => Modifiers.HasFlag(KeyModifiers.Control);

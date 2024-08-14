@@ -3,4 +3,9 @@ using Hypercube.Shared.EventBus.Events;
 
 namespace Hypercube.Client.Input.Events.Windowing;
 
-public readonly record struct WindowingKeyHandledEvent(KeyStateChangedArgs State) : IEventArgs;
+public sealed class WindowingKeyHandledEvent : KeyStateChangedArgs, IEventArgs
+{
+    public WindowingKeyHandledEvent(Key key, KeyState state, KeyModifiers modifiers, int scanCode) : base(key, state, modifiers, scanCode)
+    {
+    }
+}

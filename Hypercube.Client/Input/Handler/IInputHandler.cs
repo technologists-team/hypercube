@@ -15,4 +15,10 @@ public interface IInputHandler : IEventSubscriber
     bool IsKeyPressed(Key key);
     bool IsKeyReleased(Key key);
     void KeyClear();
+    
+    bool IsMouseButtonState(MouseButton button, KeyState state);
+    bool IsMouseButtonHeld(MouseButton button);
+    bool IsMouseButtonPressed(MouseButton button);
+    bool IsMouseButtonReleased(MouseButton button);
+    void MouseButtonClear();
 }
