@@ -1,4 +1,5 @@
 ﻿using System.Collections.Frozen;
+using Hypercube.Client.Input.Events;
 using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.Input;
 using Hypercube.Shared.Dependency;
@@ -43,8 +44,21 @@ public sealed class InputHandler : IInputHandler, IPostInject
     {
         _keys[KeyState.Pressed].Clear();
         _keys[KeyState.Release].Clear();
+
+        foreach (var key in _keys[KeyState.Held])
+        {
+            // Held event don't support modifiers yet, also scanCode
+            _eventBus.Raise(new KeyHandledEvent(key, KeyState.Held, KeyModifiers.None, 0));
+        }
+        
         _mouseButtons[KeyState.Pressed].Clear();
         _mouseButtons[KeyState.Release].Clear();
+        
+        foreach (var mouseButton in _mouseButtons[KeyState.Held])
+        {
+            // Held event don't support modifiers yet
+            _eventBus.Raise(new MouseButtonHandledEvent(mouseButton, KeyState.Held, KeyModifiers.None));
+        }
     }
 
     private void OnCharHandled(ref WindowingCharHandledEvent args)
@@ -62,11 +76,14 @@ public sealed class InputHandler : IInputHandler, IPostInject
             return;
         }
 #endif
-
-        // Legacy shit, maybe will eat many ram and cpu
-        // We made many shit because fucking Key rollover: https://en.wikipedia.org/wiki/Key_rollover
+        
         switch (args.State)
         {
+            case KeyState.Held:
+                return;
+            
+            // Legacy shit, maybe will eat many ram and cpu
+            // We made many shit because fucking Key rollover: https://en.wikipedia.org/wiki/Key_rollover
             case KeyState.Pressed:
                 _keys[KeyState.Held].Add(args.Key);
                 _keys[KeyState.Pressed].Add(args.Key);
@@ -77,12 +94,11 @@ public sealed class InputHandler : IInputHandler, IPostInject
                 _keys[KeyState.Pressed].Add(args.Key);
                 break;
             
-            case KeyState.Held:
-                break;
-            
             default:
                 throw new ArgumentOutOfRangeException();
         }
+
+        _eventBus.Raise(new KeyHandledEvent(args.Key, args.State, args.Modifiers, args.ScanCode));
     }
 
     private void OnMouseButtonHandled(ref WindowingMouseButtonHandledEvent args)
@@ -99,6 +115,9 @@ public sealed class InputHandler : IInputHandler, IPostInject
         
         switch (args.State)
         {
+            case KeyState.Held:
+                return;
+            
             case KeyState.Pressed:
                 _mouseButtons[KeyState.Held].Add(args.Button);
                 _mouseButtons[KeyState.Pressed].Add(args.Button);
@@ -109,12 +128,11 @@ public sealed class InputHandler : IInputHandler, IPostInject
                 _mouseButtons[KeyState.Pressed].Add(args.Button);
                 break;
             
-            case KeyState.Held:
-                break;
-            
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        
+        _eventBus.Raise(new MouseButtonHandledEvent(args.Button, args.State, args.Modifiers));
     }
     
     private void OnScrollHandled(ref WindowingScrollHandledEvent args)
