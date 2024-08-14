@@ -10,10 +10,8 @@ public sealed class InputHandler : IInputHandler, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
     
-    private readonly HashSet<Key> _keysRelease = [];
-    private readonly HashSet<Key> _keysPressed = [];
-    private readonly HashSet<Key> _keysDown = [];
-    
+    private readonly Dictionary<Key, KeyState> _keys = [];
+
     private readonly Logger _logger = LoggingManager.GetLogger("input_handler");
 
     public void PostInject()
@@ -31,23 +29,24 @@ public sealed class InputHandler : IInputHandler, IPostInject
     
     private void OnKeyHandled(ref WindowingKeyHandledEvent args)
     {
+        var state = args.State.State;
+        var key = args.State.Key;
+        
 #if DEBUG
         // Use only in Debug build,
         // as this check can take quite a lot of performance during input processing
-        if (!Enum.IsDefined(typeof(Key), args.State.Key))
+        if (!Enum.IsDefined(typeof(Key), key))
         {
-            _logger.Warning($"Unknown key {args.State.Key} handled");
+            _logger.Warning($"Unknown key {key} handled");
             return;
         }
 #endif
+
+        // Legacy shit, maybe will eat many ram and cpu
+        // We made many shit because fucking Key rollover: https://en.wikipedia.org/wiki/Key_rollover
         
-        if (args.State == KeyState.Press)
-        {
-            _keysDown.Add(args.State.Key);
-            return;
-        }
         
-        _keysDown.Remove(args.State.Key);
+        _logger.Warning($"{key} {state}");
     }
 
     private void OnMouseButtonHandled(ref WindowingMouseButtonHandledEvent args)
@@ -58,8 +57,28 @@ public sealed class InputHandler : IInputHandler, IPostInject
     {
     }
 
-    public bool IsKeyDown(Key key)
+    public bool IsKeyState(Key key, KeyState state)
     {
-        return _keysDown.Contains(key);
+        return _keys.TryGetValue(key, out var keyState) && keyState == state;
+    }
+
+    public bool IsKeyHeld(Key key)
+    {
+        return _keys.TryGetValue(key, out var keyState) && keyState is KeyState.Held or KeyState.Pressed;
+    }
+
+    public bool IsKeyPressed(Key key)
+    {
+        return IsKeyState(key, KeyState.Pressed);
+    }
+
+    public bool IsKeyReleased(Key key)
+    {
+        return IsKeyState(key, KeyState.Pressed);
+    }
+
+    public void KeyClear()
+    {
+        _keys.Clear();
     }
 }
