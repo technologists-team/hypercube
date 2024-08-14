@@ -28,28 +28,28 @@ public class CameraManager : ICameraManager
         
         var speed = 60f;
         
-        if (_inputHandler.IsKeyDown(Key.W))
+        if (_inputHandler.IsKeyHeld(Key.W))
             position += Vector3.UnitY * speed * delta;
 
-        if (_inputHandler.IsKeyDown(Key.S))
+        if (_inputHandler.IsKeyHeld(Key.S))
             position -= Vector3.UnitY * speed * delta; 
 
-        if (_inputHandler.IsKeyDown(Key.A))
+        if (_inputHandler.IsKeyHeld(Key.A))
             position -= Vector3.UnitX * speed * delta;
 
-        if (_inputHandler.IsKeyDown(Key.D))
+        if (_inputHandler.IsKeyHeld(Key.D))
             position += Vector3.UnitX * speed * delta;
         
-        if (_inputHandler.IsKeyDown(Key.Q))
+        if (_inputHandler.IsKeyHeld(Key.Q))
             rotation -= Vector3.UnitZ * delta;
 
-        if (_inputHandler.IsKeyDown(Key.E))
+        if (_inputHandler.IsKeyHeld(Key.E))
             rotation += Vector3.UnitZ * delta;
         
-        if (_inputHandler.IsKeyDown(Key.T))
+        if (_inputHandler.IsKeyHeld(Key.T))
             scale -= Vector3.One * delta;
 
-        if (_inputHandler.IsKeyDown(Key.Y))
+        if (_inputHandler.IsKeyHeld(Key.Y))
             scale += Vector3.One * delta;
         
         camera.SetPosition(position);

@@ -55,12 +55,12 @@ public sealed unsafe partial class GlfwWindowManager
     
     private void OnWindowKeyHandled(Window* window, Keys glfwKey, int scanCode, InputAction action, GlfwKeyModifiers mods)
     {
-        RaiseInput(new WindowingKeyHandledEvent(new KeyStateChangedArgs(
+        RaiseInput(new WindowingKeyHandledEvent(
             (Key)glfwKey,
             Convert(action),
             (KeyModifiers)mods,
             scanCode
-        )));
+        ));
     }
     
     private void OnWindowCharHandled(Window* window, uint codepoint)
@@ -75,11 +75,11 @@ public sealed unsafe partial class GlfwWindowManager
     
     private void OnMouseButtonHandled(Window* window, GlfwMouseButton button, InputAction action, GlfwKeyModifiers mods)
     {
-        RaiseInput(new WindowingMouseButtonHandledEvent(new MouseButtonChangedArgs(
+        RaiseInput(new WindowingMouseButtonHandledEvent(
             (MouseButton)button,
             Convert(action),
             (KeyModifiers)mods
-        )));
+        ));
     }
 
     private void RaiseInput<T>(T args) where T : IEventArgs
@@ -126,8 +126,8 @@ public sealed unsafe partial class GlfwWindowManager
         return action switch
         {
             InputAction.Release => KeyState.Release,
-            InputAction.Press => KeyState.Press,
-            InputAction.Repeat => KeyState.Repeat,
+            InputAction.Press => KeyState.Pressed,
+            InputAction.Repeat => KeyState.Held,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

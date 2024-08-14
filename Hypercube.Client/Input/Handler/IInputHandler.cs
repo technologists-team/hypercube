@@ -10,5 +10,15 @@ namespace Hypercube.Client.Input.Handler;
 /// </summary>
 public interface IInputHandler : IEventSubscriber
 {
-    bool IsKeyDown(Key key);
+    bool IsKeyState(Key key, KeyState state);
+    bool IsKeyHeld(Key key);
+    bool IsKeyPressed(Key key);
+    bool IsKeyReleased(Key key);
+    void KeyClear();
+    
+    bool IsMouseButtonState(MouseButton button, KeyState state);
+    bool IsMouseButtonHeld(MouseButton button);
+    bool IsMouseButtonPressed(MouseButton button);
+    bool IsMouseButtonReleased(MouseButton button);
+    void MouseButtonClear();
 }

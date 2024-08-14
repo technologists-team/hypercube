@@ -3,6 +3,6 @@
 public enum KeyState
 {
     Release,
-    Press,
-    Repeat 
+    Pressed,
+    Held 
 }

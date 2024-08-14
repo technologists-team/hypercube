@@ -1,6 +1,6 @@
 ﻿namespace Hypercube.Input;
 
-public readonly struct KeyStateChangedArgs
+public class KeyStateChangedArgs
 {
     public bool Shift => Modifiers.HasFlag(KeyModifiers.Shift);
     public bool Control => Modifiers.HasFlag(KeyModifiers.Control);
