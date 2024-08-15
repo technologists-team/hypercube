@@ -40,17 +40,17 @@ public sealed class DependenciesContainer
     {
         Register(typeof(T));
     }
-    
-    public void Register<TType, TImpl>()
-    {
-        Register(typeof(TType), typeof(TImpl));
-    }
 
     public void Register(Type type)
     {
         Register(type, type);
     }
-    
+
+    public void Register<TType, TImpl>()
+    {
+        Register(typeof(TType), typeof(TImpl));
+    }
+
     public void Register(Type type, Type impl)
     {
         object DefaultFactory(DependenciesContainer container)

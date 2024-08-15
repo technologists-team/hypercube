@@ -18,24 +18,36 @@ namespace Hypercube.Dependencies;
 public static class DependencyManager
 {
     private static readonly ThreadLocal<DependenciesContainer> Container = new();
-    
+
     public static void InitThread(DependenciesContainer collection, bool replaceExisting = false)
     {
         if (Container.IsValueCreated && !replaceExisting)
             throw new InvalidOperationException();
-        
+
         Container.Value = collection;
     }
-    
+
     public static DependenciesContainer InitThread()
     {
         if (Container.IsValueCreated)
             return Container.Value!;
-        
+
         var deps = new DependenciesContainer();
         Container.Value = deps;
-        
+
         return deps;
+    }
+
+    public static void Register<T>()
+    {
+        Debug.Assert(Container.IsValueCreated);
+        Container.Value!.Register<T>();
+    }
+
+    public static void Register(Type type)
+    {
+        Debug.Assert(Container.IsValueCreated);
+        Container.Value!.Register(type);
     }
 
     public static void Register<TType, TImplementation>()
@@ -43,29 +55,59 @@ public static class DependencyManager
         Debug.Assert(Container.IsValueCreated);
         Container.Value!.Register<TType, TImplementation>();
     }
-    
-    public static void Register<T>()
+
+    public static void Register(Type type, Type impl)
     {
         Debug.Assert(Container.IsValueCreated);
-        Container.Value!.Register<T>();
+        Container.Value!.Register(type, impl);
     }
-    
+
     public static void Register<T>(T instance)
     {
         Debug.Assert(Container.IsValueCreated);
         Container.Value!.Register(instance);
     }
-    
+
+    public static void Register(Type type, object instance)
+    {
+        Debug.Assert(Container.IsValueCreated);
+        Container.Value!.Register(type, instance);
+    }
+
     public static void Register<T>(Func<DependenciesContainer, T> factory)
     {
         Debug.Assert(Container.IsValueCreated);
         Container.Value!.Register(factory);
     }
-    
+
     public static T Resolve<T>()
     {
         Debug.Assert(Container.IsValueCreated);
         return Container.Value!.Resolve<T>();
+    }
+
+    public static object Resolve(Type type)
+    {
+        Debug.Assert(Container.IsValueCreated);
+        return Container.Value!.Resolve(type);
+    }
+
+    public static object Instantiate<T>()
+    {
+        Debug.Assert(Container.IsValueCreated);
+        return Container.Value!.Instantiate<T>();
+    }
+    
+    public static object Instantiate(Type type)
+    {
+        Debug.Assert(Container.IsValueCreated);
+        return Container.Value!.Instantiate(type);
+    }
+
+    public static void InstantiateAll()
+    {
+        Debug.Assert(Container.IsValueCreated);
+        Container.Value!.InstantiateAll();
     }
 
     public static void Inject(object instance)
