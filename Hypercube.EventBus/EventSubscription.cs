@@ -1,7 +1,9 @@
 ﻿using Hypercube.Utilities.Ref;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.EventBus;
+namespace Hypercube.EventBus;
 
+[PublicAPI]
 public sealed class EventSubscription : IEquatable<EventSubscription>
 {
     public RefHandler Handler { get; }

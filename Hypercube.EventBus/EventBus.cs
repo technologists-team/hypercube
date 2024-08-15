@@ -1,10 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Shared.EventBus.Events;
+using Hypercube.EventBus.Events;
 using Hypercube.Utilities.Ref;
 using Hypercube.Utilities.Units;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.EventBus;
+namespace Hypercube.EventBus;
 
+/// <summary>
+/// EventBus providing interaction between loosely coupled
+/// components according to the principle of "event publisher -> event subscriber".
+/// </summary>
+[PublicAPI]
 public sealed class EventBus : IEventBus
 {
     private readonly Dictionary<Type, HashSet<EventSubscription>> _eventRegistration = new();

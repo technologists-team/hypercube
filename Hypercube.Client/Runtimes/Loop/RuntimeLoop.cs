@@ -1,5 +1,5 @@
 ﻿using Hypercube.Dependencies;
-using Hypercube.Shared.EventBus;
+using Hypercube.EventBus;
 using Hypercube.Shared.Runtimes.Loop;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;

@@ -2,7 +2,7 @@
 using Hypercube.Client.Audio.Events;
 using Hypercube.Client.Audio.Loading;
 using Hypercube.Dependencies;
-using Hypercube.Shared.EventBus;
+using Hypercube.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Runtimes.Event;

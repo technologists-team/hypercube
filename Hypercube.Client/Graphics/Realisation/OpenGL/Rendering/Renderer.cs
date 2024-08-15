@@ -5,7 +5,7 @@ using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Graphics.Windows.Realisation.Glfw;
 using Hypercube.Dependencies;
-using Hypercube.Shared.EventBus;
+using Hypercube.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;

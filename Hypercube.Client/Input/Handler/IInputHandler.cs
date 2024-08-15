@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Windows;
+using Hypercube.EventBus;
 using Hypercube.Input;
-using Hypercube.Shared.EventBus;
 
 namespace Hypercube.Client.Input.Handler;
 

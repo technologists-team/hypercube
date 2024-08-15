@@ -1,11 +1,13 @@
-﻿using Hypercube.Shared.EventBus.Events;
+﻿using Hypercube.EventBus.Events;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.EventBus;
+namespace Hypercube.EventBus;
 
 /// <summary>
 /// EventBus providing interaction between loosely coupled
 /// components according to the principle of "event publisher -> event subscriber".
 /// </summary>
+[PublicAPI]
 public interface IEventBus
 {
     void Raise<T>(ref T eventArgs) where T : IEventArgs;

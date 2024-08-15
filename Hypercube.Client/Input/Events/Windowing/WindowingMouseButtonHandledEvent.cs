@@ -1,5 +1,5 @@
-﻿using Hypercube.Input;
-using Hypercube.Shared.EventBus.Events;
+﻿using Hypercube.EventBus.Events;
+using Hypercube.Input;
 
 namespace Hypercube.Client.Input.Events.Windowing;
 

@@ -1,12 +1,11 @@
-﻿using Hypercube.Client.Entities.Systems.Sprite;
-using Hypercube.Dependencies;
+﻿using Hypercube.Dependencies;
+using Hypercube.EventBus;
 using Hypercube.Shared;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.MetaData;
 using Hypercube.Shared.Entities.Systems.Transform;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
-using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Runtimes.Event;
 
 namespace Hypercube.UnitTests.Entities;

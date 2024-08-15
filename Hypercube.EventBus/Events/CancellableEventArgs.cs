@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Shared.EventBus.Events;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.EventBus.Events;
+
+[PublicAPI]
 public abstract class CancellableEventArgs : EventArgs
 {
     public bool Cancelled { get; private set; }
@@ -9,7 +12,7 @@ public abstract class CancellableEventArgs : EventArgs
         Cancelled = true;
     }
 
-    public void UnCancel()
+    public void Uncancel()
     {
         Cancelled = false;
     }

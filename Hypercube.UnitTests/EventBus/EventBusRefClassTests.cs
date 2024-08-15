@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.EventBus;
+﻿using Hypercube.EventBus;
 
 namespace Hypercube.UnitTests.EventBus;
 
@@ -7,7 +7,7 @@ public sealed class EventBusRefClassTests
     [Test]
     public static void RefClass()
     {
-        var eventBus = new Shared.EventBus.EventBus();
+        var eventBus = new Hypercube.EventBus.EventBus();
         
         var subscriber1 = new TestRefClassSubscriber1(eventBus);
         var subscriber2 = new TestRefClassSubscriber2(eventBus);
@@ -22,7 +22,7 @@ public sealed class EventBusRefClassTests
         Assert.Pass("All subscribers handled correctly");
     }
     
-    private sealed class TestEventClass : Shared.EventBus.Events.EventArgs
+    private sealed class TestEventClass : Hypercube.EventBus.Events.EventArgs
     {
         public int Counter { get; set; }
     }

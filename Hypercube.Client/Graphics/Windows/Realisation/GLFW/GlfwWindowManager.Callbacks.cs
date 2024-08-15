@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Input.Events.Windowing;
+using Hypercube.EventBus.Events;
 using Hypercube.Input;
 using Hypercube.OpenGL.Utilities.Helpers;
-using Hypercube.Shared.EventBus.Events;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;

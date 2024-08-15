@@ -1,7 +1,7 @@
 ﻿using Hypercube.Dependencies;
+using Hypercube.EventBus;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
-using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Physics;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;

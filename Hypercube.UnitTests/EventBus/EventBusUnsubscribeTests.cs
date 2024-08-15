@@ -1,5 +1,5 @@
-﻿using Hypercube.Shared.EventBus;
-using Hypercube.Shared.EventBus.Events;
+﻿using Hypercube.EventBus;
+using Hypercube.EventBus.Events;
 
 namespace Hypercube.UnitTests.EventBus;
 
@@ -8,7 +8,7 @@ public class EventBusUnsubscribeTests
     [Test]
     public void Unsubscribing()
     {
-        var eventBus = new Shared.EventBus.EventBus();
+        var eventBus = new Hypercube.EventBus.EventBus();
         var subscriber = new TestEventSubscriber(eventBus);
         
         subscriber.Subscribe();
