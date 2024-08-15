@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Utilities.Extensions;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.Dependency;
+namespace Hypercube.Dependencies;
 
 /// <summary>
 /// Implementing the IoC mechanism through dependency injection.
@@ -15,24 +15,26 @@ namespace Hypercube.Shared.Dependency;
 /// the value from this container will be returned to you.
 /// </para>
 /// </remarks>
-/// <param name="parent">
-/// Parent container, defaults to null.
-/// Used to search for dependencies if no implementation is found in this container.
-/// </param>
 /// <seealso cref="DependencyAttribute"/>
-public sealed class DependenciesContainer(DependenciesContainer? parent = null)
+[PublicAPI]
+public sealed class DependenciesContainer
 {
-    private readonly DependenciesContainer? _parent = parent;
+    private readonly DependenciesContainer? _parent;
 
     private readonly Dictionary<Type, Func<DependenciesContainer, object>> _factories = new();
     private readonly Dictionary<Type, object> _instances = new();
-    private readonly HashSet<Type> _resolutions = new();
+    private readonly HashSet<Type> _resolutions = [];
 
     private readonly object _lock = new();
 
 #if DEBUG
-    private readonly ILogger _debugLogger = LoggingManager.GetLogger("di_container");
+    private readonly Logger _debugLogger = LoggingManager.GetLogger("di_container");
 #endif
+    
+    public DependenciesContainer(DependenciesContainer? parent = null)
+    {
+        _parent = parent;
+    }
     
     public void Register<T>()
     {
@@ -63,13 +65,13 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
             if (constructorParams.Length != 0)
                 throw new InvalidOperationException();
 
-            return constructor.Invoke(Array.Empty<object>());
+            return constructor.Invoke([]);
         }   
         
         Register(type, DefaultFactory);
     }
     
-    public void Register<T>([NotNull] T instance)
+    public void Register<T>([System.Diagnostics.CodeAnalysis.NotNull] T instance)
     {
         if (instance is null)
             throw new ArgumentNullException();
@@ -180,10 +182,8 @@ public sealed class DependenciesContainer(DependenciesContainer? parent = null)
     {
         lock (_lock)
         {
-            if (_resolutions.Contains(type))
+            if (!_resolutions.Add(type))
                 throw new Exception();
-
-            _resolutions.Add(type);
 
             try
             {

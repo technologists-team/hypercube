@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Dependencies;
 
 namespace Hypercube.Shared.Resources;
 

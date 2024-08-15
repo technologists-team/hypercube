@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Dependencies;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;

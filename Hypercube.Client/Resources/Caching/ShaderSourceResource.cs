@@ -1,6 +1,6 @@
-﻿using Hypercube.Graphics.Shaders;
+﻿using Hypercube.Dependencies;
+using Hypercube.Graphics.Shaders;
 using Hypercube.OpenGL.Shaders;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 

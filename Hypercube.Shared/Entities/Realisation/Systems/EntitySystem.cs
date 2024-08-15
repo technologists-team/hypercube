@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.EventBus.EventArgs;

@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Shared.Dependency;
+﻿namespace Hypercube.Dependencies;
 
 public interface IPostInject
 {

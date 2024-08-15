@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Dependencies;
 using Hypercube.Math;
 using Hypercube.Math.Shapes;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Physics;
 using SharedPhysicsSystem = Hypercube.Shared.Entities.Systems.Physics.PhysicsSystem;

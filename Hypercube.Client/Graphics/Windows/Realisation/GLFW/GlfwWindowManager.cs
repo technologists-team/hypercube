@@ -1,9 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Monitors;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Input.Handler;
+using Hypercube.Dependencies;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Math.Vectors;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;

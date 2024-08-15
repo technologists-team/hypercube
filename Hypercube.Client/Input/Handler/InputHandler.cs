@@ -1,8 +1,8 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Client.Input.Events;
 using Hypercube.Client.Input.Events.Windowing;
+using Hypercube.Dependencies;
 using Hypercube.Input;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;

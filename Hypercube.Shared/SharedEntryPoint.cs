@@ -1,4 +1,4 @@
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Utilities.ArgumentsParser;

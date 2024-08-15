@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Event;
-using Hypercube.Shared.Utilities.Helpers;
+using Hypercube.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Manager;
 

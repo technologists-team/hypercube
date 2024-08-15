@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;

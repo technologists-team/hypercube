@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Shared.Utilities.Helpers;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Utilities.Helpers;
+
+[PublicAPI]
 public static class PathHelpers
 {
     public static string GetExecDirectory()

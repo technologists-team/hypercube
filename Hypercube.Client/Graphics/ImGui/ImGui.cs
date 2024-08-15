@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Dependencies;
 using Hypercube.ImGui;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;

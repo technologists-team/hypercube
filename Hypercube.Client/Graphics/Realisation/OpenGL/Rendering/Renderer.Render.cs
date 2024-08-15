@@ -1,6 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Graphics.Windows;
 using Hypercube.Client.Resources.Caching;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Graphics.Windowing;

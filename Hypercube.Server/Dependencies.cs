@@ -1,7 +1,7 @@
-﻿using Hypercube.Server.Runtimes;
+﻿using Hypercube.Dependencies;
+using Hypercube.Server.Runtimes;
 using Hypercube.Server.Runtimes.Loop;
 using Hypercube.Shared;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Runtimes.Loop;
 

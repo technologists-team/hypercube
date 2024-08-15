@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Dependencies;
 using Hypercube.Shared.Entities.Realisation.EventBus;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.EventBus;
@@ -6,8 +6,6 @@ using Hypercube.Shared.Physics;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;
 using Hypercube.Shared.Resources.Preloader;
-using Hypercube.Shared.Runtimes;
-using Hypercube.Shared.Runtimes.Loop;
 using Hypercube.Shared.Timing;
 
 namespace Hypercube.Shared;

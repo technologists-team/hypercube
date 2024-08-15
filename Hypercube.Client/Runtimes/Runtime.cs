@@ -1,6 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Runtimes.Loop;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes;

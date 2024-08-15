@@ -1,9 +1,8 @@
-﻿using System.Collections.Frozen;
-using System.Reflection;
-using Hypercube.Shared.Dependency;
+﻿using System.Reflection;
+using Hypercube.Dependencies;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.Utilities.Helpers;
+using Hypercube.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources.Preloader;
 

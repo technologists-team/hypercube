@@ -1,8 +1,8 @@
 ﻿using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Texturing.Settings;
+using Hypercube.Dependencies;
 using Hypercube.Math;
 using Hypercube.Math.Vectors;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Resources;
 using Hypercube.Shared.Resources.Manager;
 using StbImageSharp;

@@ -11,8 +11,8 @@ using Hypercube.Client.Input.Handler;
 using Hypercube.Client.Input.Manager;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
+using Hypercube.Dependencies;
 using Hypercube.Shared;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Runtimes.Loop;
 

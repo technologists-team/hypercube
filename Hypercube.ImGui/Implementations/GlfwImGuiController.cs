@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Graphics.Windowing;
 using Hypercube.OpenGL.Objects;

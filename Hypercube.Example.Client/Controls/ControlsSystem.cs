@@ -1,8 +1,7 @@
-﻿using Hypercube.Client.Input;
-using Hypercube.Client.Input.Handler;
+﻿using Hypercube.Client.Input.Handler;
+using Hypercube.Dependencies;
 using Hypercube.Input;
 using Hypercube.Math.Vectors;
-using Hypercube.Shared.Dependency;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Runtimes.Loop.Event;

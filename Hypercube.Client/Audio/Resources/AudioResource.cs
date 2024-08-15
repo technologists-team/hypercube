@@ -1,5 +1,5 @@
 ﻿using Hypercube.Client.Audio.Settings;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Audio.Resources;

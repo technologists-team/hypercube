@@ -1,5 +1,5 @@
-﻿using Hypercube.Shared;
-using Hypercube.Shared.Dependency;
+﻿using Hypercube.Dependencies;
+using Hypercube.Shared;
 using Hypercube.Shared.Utilities.ArgumentsParser;
 
 namespace Hypercube.Client;

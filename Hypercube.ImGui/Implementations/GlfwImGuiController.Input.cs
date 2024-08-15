@@ -1,5 +1,4 @@
 ﻿using Hypercube.Math.Vectors;
-using OpenTK.Platform;
 
 namespace Hypercube.ImGui.Implementations;
 

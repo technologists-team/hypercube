@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Shared.Logging;
-using Hypercube.Shared.Utilities.Helpers;
+using Hypercube.Utilities.Helpers;
 
 namespace Hypercube.Shared.Resources;
 

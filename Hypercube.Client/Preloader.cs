@@ -4,7 +4,7 @@ using Hypercube.Client.Audio.Resources;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Resources.Caching;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Resources.Container;
 using Hypercube.Shared.Resources.Manager;

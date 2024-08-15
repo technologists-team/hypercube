@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Dependency;
+﻿using Hypercube.Dependencies;
 using Hypercube.Shared.EventBus;
 using Hypercube.Shared.Runtimes.Loop;
 using Hypercube.Shared.Runtimes.Loop.Event;

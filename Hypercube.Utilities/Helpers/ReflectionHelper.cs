@@ -1,8 +1,10 @@
 ﻿using System.Collections.Frozen;
 using System.Reflection;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.Utilities.Helpers;
+namespace Hypercube.Utilities.Helpers;
 
+[PublicAPI]
 public static class ReflectionHelper
 {
     public static T? GetAttribute<T>(MethodInfo method)
