@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Hypercube.Shared.Logging;
-using Hypercube.Shared.Utilities.Extensions;
+using Hypercube.Utilities.Extensions;
 using JetBrains.Annotations;
 
 namespace Hypercube.Dependencies;

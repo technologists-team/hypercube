@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Shared.Utilities.Extensions;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Utilities.Extensions;
+
+[PublicAPI]
 public static class StringExtension
 {
     public static string RemoveChar(this string str, char @char) {

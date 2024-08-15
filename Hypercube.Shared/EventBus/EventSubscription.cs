@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Utilities.Ref;
+﻿using Hypercube.Utilities.Ref;
 
 namespace Hypercube.Shared.EventBus;
 

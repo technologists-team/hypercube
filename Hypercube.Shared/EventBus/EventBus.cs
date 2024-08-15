@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Hypercube.Shared.EventBus.Events;
-using Hypercube.Shared.Utilities.Ref;
-using Hypercube.Shared.Utilities.Units;
+using Hypercube.Utilities.Ref;
+using Hypercube.Utilities.Units;
 
 namespace Hypercube.Shared.EventBus;
 

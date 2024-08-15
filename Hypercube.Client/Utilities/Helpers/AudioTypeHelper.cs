@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Client.Audio;
-using Hypercube.Shared.Utilities.Extensions;
+using Hypercube.Utilities.Extensions;
 
 namespace Hypercube.Client.Utilities.Helpers;
 

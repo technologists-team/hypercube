@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Shared.Utilities.Units;
+using Hypercube.Utilities.Units;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.Utilities;
+namespace Hypercube.Utilities.Helpers;
 
+[PublicAPI]
 public static class UnitHelper
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

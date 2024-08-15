@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using JetBrains.Annotations;
 
-namespace Hypercube.Shared.Utilities.Extensions;
+namespace Hypercube.Utilities.Extensions;
 
+[PublicAPI]
 public static class TypeExtension
 {
     /// <summary>
