@@ -4,6 +4,15 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Hypercube.Logging</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>TornadoTech</Authors>
+        <Product>Hypercube.Logging</Product>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <RepositoryUrl>https://github.com/technologists-team/hypercube</RepositoryUrl>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="..\LICENSE" Pack="true" PackagePath=""/>
+    </ItemGroup>
 </Project>
