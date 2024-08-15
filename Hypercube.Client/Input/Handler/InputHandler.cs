@@ -6,27 +6,34 @@ using Hypercube.EventBus;
 using Hypercube.Input;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;
+using JetBrains.Annotations;
 
 namespace Hypercube.Client.Input.Handler;
 
+[PublicAPI]
 public sealed class InputHandler : IInputHandler, IPostInject
 {
     [Dependency] private readonly IEventBus _eventBus = default!;
 
+    /// <summary>
+    /// List of all <see cref="KeyState"/> of <see cref="Key"/> for legacy input and raising events.
+    /// </summary>
     private readonly FrozenDictionary<KeyState, HashSet<Key>> _keys = new Dictionary<KeyState, HashSet<Key>>
     {
         { KeyState.Held, [] },
-        { KeyState.Release, [] },
+        { KeyState.Released, [] },
         { KeyState.Pressed, [] },
     }.ToFrozenDictionary();
-
+    
+    /// <summary>
+    /// List of all <see cref="KeyState"/> of <see cref="MouseButton"/> for legacy input and raising events.
+    /// </summary>
     private readonly FrozenDictionary<KeyState, HashSet<MouseButton>> _mouseButtons = new Dictionary<KeyState, HashSet<MouseButton>>
     {
         { KeyState.Held, [] },
-        { KeyState.Release, [] },
+        { KeyState.Released, [] },
         { KeyState.Pressed, [] },
     }.ToFrozenDictionary();
-
     
     private readonly Logger _logger = LoggingManager.GetLogger("input_handler");
 
@@ -43,7 +50,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
     private void OnInputFrameUpdate(ref InputFrameEvent args)
     {
         _keys[KeyState.Pressed].Clear();
-        _keys[KeyState.Release].Clear();
+        _keys[KeyState.Released].Clear();
 
         foreach (var key in _keys[KeyState.Held])
         {
@@ -52,7 +59,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
         }
         
         _mouseButtons[KeyState.Pressed].Clear();
-        _mouseButtons[KeyState.Release].Clear();
+        _mouseButtons[KeyState.Released].Clear();
         
         foreach (var mouseButton in _mouseButtons[KeyState.Held])
         {
@@ -63,6 +70,8 @@ public sealed class InputHandler : IInputHandler, IPostInject
 
     private void OnCharHandled(ref WindowingCharHandledEvent args)
     {
+        var ev = new CharHandledEvent(args.Code);
+        _eventBus.Raise(ev);
     }
     
     private void OnKeyHandled(ref WindowingKeyHandledEvent args)
@@ -89,7 +98,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
                 _keys[KeyState.Pressed].Add(args.Key);
                 break;
             
-            case KeyState.Release:
+            case KeyState.Released:
                 _keys[KeyState.Held].Remove(args.Key);
                 _keys[KeyState.Pressed].Add(args.Key);
                 break;
@@ -123,7 +132,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
                 _mouseButtons[KeyState.Pressed].Add(args.Button);
                 break;
             
-            case KeyState.Release:
+            case KeyState.Released:
                 _mouseButtons[KeyState.Held].Remove(args.Button);
                 _mouseButtons[KeyState.Pressed].Add(args.Button);
                 break;
@@ -137,6 +146,8 @@ public sealed class InputHandler : IInputHandler, IPostInject
     
     private void OnScrollHandled(ref WindowingScrollHandledEvent args)
     {
+        var ev = new ScrollHandledEvent(args.Offset);
+        _eventBus.Raise(ev);
     }
 
     public bool IsKeyState(Key key, KeyState state)
@@ -184,7 +195,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
 
     public bool IsMouseButtonReleased(MouseButton button)
     {
-        return IsMouseButtonState(button, KeyState.Release);
+        return IsMouseButtonState(button, KeyState.Released);
     }
 
     public void MouseButtonClear()

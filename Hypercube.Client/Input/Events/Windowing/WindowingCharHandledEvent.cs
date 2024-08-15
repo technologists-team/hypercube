@@ -2,4 +2,12 @@
 
 namespace Hypercube.Client.Input.Events.Windowing;
 
-public readonly record struct WindowingCharHandledEvent : IEventArgs;
+public class WindowingCharHandledEvent : IEventArgs
+{
+    public readonly uint Code;
+    
+    public WindowingCharHandledEvent(uint code)
+    {
+        Code = code;
+    }
+}

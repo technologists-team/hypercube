@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.EventBus.Events;
 using Hypercube.Input;
+using Hypercube.Math.Vectors;
 using Hypercube.OpenGL.Utilities.Helpers;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -65,12 +66,12 @@ public sealed unsafe partial class GlfwWindowManager
     
     private void OnWindowCharHandled(Window* window, uint codepoint)
     {
-        RaiseInput(new WindowingCharHandledEvent());
+        RaiseInput(new WindowingCharHandledEvent(codepoint));
     }
     
     private void OnWindowScrollHandled(Window* window, double offsetX, double offsetY)
     {
-        RaiseInput(new WindowingScrollHandledEvent());
+        RaiseInput(new WindowingScrollHandledEvent(new Vector2((float) offsetX, (float) offsetY)));
     }
     
     private void OnMouseButtonHandled(Window* window, GlfwMouseButton button, InputAction action, GlfwKeyModifiers mods)
@@ -125,7 +126,7 @@ public sealed unsafe partial class GlfwWindowManager
     {
         return action switch
         {
-            InputAction.Release => KeyState.Release,
+            InputAction.Release => KeyState.Released,
             InputAction.Press => KeyState.Pressed,
             InputAction.Repeat => KeyState.Held,
             _ => throw new ArgumentOutOfRangeException()
