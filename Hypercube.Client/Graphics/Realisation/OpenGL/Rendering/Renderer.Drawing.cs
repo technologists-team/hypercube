@@ -1,9 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Math;
-using Hypercube.Math.Matrices;
-using Hypercube.Math.Shapes;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics;
+using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Shapes;
+using Hypercube.Mathematics.Vectors;
 using OpenToolkit.Graphics.OpenGL4;
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 

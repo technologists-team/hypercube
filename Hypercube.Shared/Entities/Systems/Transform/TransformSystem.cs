@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Systems;
 

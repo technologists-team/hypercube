@@ -1,5 +1,5 @@
 ﻿using Hypercube.EventBus.Events;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client.Input.Events;

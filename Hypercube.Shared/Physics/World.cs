@@ -1,5 +1,5 @@
 ﻿using Hypercube.EventBus;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Physics.Events;
 using Hypercube.Shared.Scenes;
 

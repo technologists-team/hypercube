@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Vectors;
+﻿using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Client.Graphics.Monitors;
 

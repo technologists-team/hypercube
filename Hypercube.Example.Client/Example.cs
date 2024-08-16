@@ -7,7 +7,7 @@ using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Example.Client.Controls;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;

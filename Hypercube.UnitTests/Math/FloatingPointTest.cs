@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Extensions;
+﻿using Hypercube.Mathematics.Extensions;
 
 namespace Hypercube.UnitTests.Math;
 

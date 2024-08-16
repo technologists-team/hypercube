@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Graphics.Texturing.Settings;
-using Hypercube.Math;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;

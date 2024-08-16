@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
     </ItemGroup>
 
     <ItemGroup>

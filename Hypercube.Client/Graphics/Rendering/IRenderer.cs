@@ -2,10 +2,10 @@
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Windows;
 using Hypercube.Graphics.Windowing;
-using Hypercube.Math;
-using Hypercube.Math.Matrices;
-using Hypercube.Math.Shapes;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics;
+using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Shapes;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Client.Graphics.Rendering;
 

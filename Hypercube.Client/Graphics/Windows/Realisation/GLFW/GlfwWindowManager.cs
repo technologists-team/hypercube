@@ -4,7 +4,7 @@ using Hypercube.Client.Input.Handler;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Graphics.Windowing;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 

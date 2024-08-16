@@ -2,8 +2,8 @@
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Dependencies;
-using Hypercube.Math.Shapes;
-using Hypercube.Math.Transforms;
+using Hypercube.Mathematics.Shapes;
+using Hypercube.Mathematics.Transforms;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;

@@ -1,5 +1,5 @@
 ﻿using System.Runtime.InteropServices;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Hypercube.OpenGL.Utilities.Helpers;

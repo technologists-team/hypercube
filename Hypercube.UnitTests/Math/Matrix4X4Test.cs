@@ -1,5 +1,5 @@
-﻿using Hypercube.Math.Matrices;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.UnitTests.Math;
 

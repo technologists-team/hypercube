@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using JetBrains.Annotations;
 
 namespace Hypercube.Graphics.Windowing;

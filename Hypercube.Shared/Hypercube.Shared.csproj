@@ -17,7 +17,7 @@
       <ProjectReference Include="..\Hypercube.Dependencies\Hypercube.Dependencies.csproj" />
       <ProjectReference Include="..\Hypercube.EventBus\Hypercube.EventBus.csproj" />
       <ProjectReference Include="..\Hypercube.Input\Hypercube.Input.csproj" />
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
     </ItemGroup>
     
     <ItemGroup>

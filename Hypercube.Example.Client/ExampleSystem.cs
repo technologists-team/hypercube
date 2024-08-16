@@ -1,6 +1,6 @@
 ﻿using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Dependencies;
-using Hypercube.Math;
+using Hypercube.Mathematics;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Shared.Timing;

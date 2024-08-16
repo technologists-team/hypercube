@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Shapes;
+﻿using Hypercube.Mathematics.Shapes;
 using Hypercube.Shared.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;

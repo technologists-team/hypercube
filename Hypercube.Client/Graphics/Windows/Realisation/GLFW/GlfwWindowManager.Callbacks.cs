@@ -1,7 +1,7 @@
 ﻿using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.EventBus.Events;
 using Hypercube.Input;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.OpenGL.Utilities.Helpers;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 

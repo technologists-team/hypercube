@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Math.Matrices;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Vectors;
 using ImGuiNET;
 using OpenToolkit.Graphics.OpenGL4;
 
