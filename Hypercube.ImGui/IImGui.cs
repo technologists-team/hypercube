@@ -97,9 +97,24 @@ public interface IImGui
         ImGuiNET.ImGui.BeginGroup();
     }
     
-    public void BeginMenu(string label)
+    public bool BeginMainMenuBar()
     {
-        ImGuiNET.ImGui.BeginMenu(label);
+        return ImGuiNET.ImGui.BeginMainMenuBar();
+    }
+    
+    public void EndMainMenuBar()
+    {
+        ImGuiNET.ImGui.EndMainMenuBar();
+    }
+    
+    public bool BeginMenu(string label)
+    {
+        return ImGuiNET.ImGui.BeginMenu(label);
+    }
+    
+    public void EndMenu()
+    {
+        ImGuiNET.ImGui.EndMenu();
     }
     
     public void End()
