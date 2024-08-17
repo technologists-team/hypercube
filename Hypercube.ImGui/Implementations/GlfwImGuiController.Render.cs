@@ -11,6 +11,11 @@ public partial class GlfwImGuiController
 {
     public void Render()
     {
+        if (!_frameBegun)
+            return;
+
+        _frameBegun = false;
+        
         ImGuiNET.ImGui.Render();
         Render(ImGuiNET.ImGui.GetDrawData());
     }
@@ -61,10 +66,11 @@ public partial class GlfwImGuiController
             CheckErrors("Setup data");
         }
 
-        var project = Matrix4X4.CreateScaleY(-1) * Matrix4X4.CreateOrthographic(_io.DisplaySize, -1f, 1f);
+        var project = Matrix4X4.CreateOrthographicOffCenter(0f, _io.DisplaySize.X, _io.DisplaySize.Y, 0f, -1f, 1f);
         
         _shader.Use();
         _shader.SetUniform("projection", project);
+        _shader.SetUniform("fontTexture", 0);
         
         CheckErrors("Projection");
         

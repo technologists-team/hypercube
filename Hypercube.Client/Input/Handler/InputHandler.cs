@@ -112,7 +112,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
             
             case KeyState.Released:
                 _keys[KeyState.Held].Remove(args.Key);
-                _keys[KeyState.Pressed].Add(args.Key);
+                _keys[KeyState.Released].Add(args.Key);
                 break;
             
             default:
@@ -146,7 +146,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
             
             case KeyState.Released:
                 _mouseButtons[KeyState.Held].Remove(args.Button);
-                _mouseButtons[KeyState.Pressed].Add(args.Button);
+                _mouseButtons[KeyState.Released].Add(args.Button);
                 break;
             
             default:

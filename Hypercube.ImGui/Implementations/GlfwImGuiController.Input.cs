@@ -9,11 +9,6 @@ public partial class GlfwImGuiController
     
     public void InputFrame()
     {
-        // Clear mouse input
-        for (var i = 0; i < MouseButtons; i++)
-        {
-            _io.MouseDown[i] = false;
-        }
     }
     
     public void UpdateMousePosition(Vector2Int position)

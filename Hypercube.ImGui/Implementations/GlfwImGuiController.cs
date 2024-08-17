@@ -33,11 +33,7 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     
     private int _vertexBufferSize;
     private int _indexBufferSize;
-    
-    private MouseButtonCallback? _mouseButtonCallback;
-    private ScrollCallback? _scrollCallback;
-    private KeyCallback? _keyCallback;
-    private CharCallback? _charCallback;
+    private bool _frameBegun;
     
     public GlfwImGuiController(WindowHandle window)
     {
@@ -54,7 +50,6 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         ImGuiNET.ImGui.StyleColorsDark();
         
         InitializeIO();
-        InitializeGlfw();
         InitializeShaders();
     }
     
@@ -70,17 +65,7 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
 
         _io.ClipboardUserData = _window;
     }
-
-    public unsafe void InitializeGlfw()
-    {
-        _mouseButtonCallback = OnMouseButton;
-        _scrollCallback = OnScroll;
-        _keyCallback = OnKey;
-        _charCallback = OnChar;
-        
-        CheckErrors("Glfw initialized");
-    }
-
+    
     public void InitializeShaders()
     {
         _shader = new ShaderProgram(ShaderSource.VertexShader, ShaderSource.FragmentShader);
@@ -119,6 +104,11 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     {
         if (!_io.Fonts.IsBuilt())
             throw new Exception("Unable to update state, without font atlas built");
+
+        if (_frameBegun)
+        {
+            ImGuiNET.ImGui.Render();
+        }
         
         GLFWHelper.GetWindowSize(_window, out var size);
         GLFWHelper.GetFramebufferSize(_window, out var framebufferSize);
@@ -128,7 +118,8 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
             _io.DisplayFramebufferScale = framebufferSize / size;
         
         _io.DeltaTime = deltaTime;
-        
+
+        _frameBegun = true;
         ImGuiNET.ImGui.NewFrame();
     }
 
@@ -165,9 +156,11 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     public void ShowDebugInput()
     {
         Begin("ImGui input");
-
-        Button("a");
-        Text($"Mouse position");
+        
+        Text($"Mouse LBM: {_io.MouseDown[0]}");
+        Text($"Mouse RBM: {_io.MouseDown[1]}");
+        Text($"Mouse position: {_io.MousePos}");
+        Text($"Mouse wheel: <{_io.MouseWheel}, {_io.MouseWheelH}>");
         
         End();
     }
@@ -175,26 +168,6 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     public void Dispose()
     {
         
-    }
-    
-    private unsafe void OnMouseButton(Window* window, MouseButton button, InputAction action, KeyModifiers mods)
-    {
-
-    }
-    
-    private unsafe void OnScroll(Window* window, double offsetx, double offsety)
-    {
-
-    }
-    
-    private unsafe void OnKey(Window* window, Keys key, int scancode, InputAction action, KeyModifiers mods)
-    {
-
-    }
-    
-    private unsafe void OnChar(Window* window, uint codepoint)
-    {
-
     }
     
     private void CreateFontsTexture()
