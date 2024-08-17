@@ -45,16 +45,7 @@ public sealed class Example : IEventSubscriber, IPostInject
     
     private void Startup(ref RuntimeStartupEvent args)
     {
-        for (var i = 0; i < 10; i++)
-        {
-            var x = _random.NextSingle() * 10 - 5;
-            var y = _random.NextSingle() * 10 - 5;
-
-            var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
-            CreateEntity(coord, new RectangleShape(Vector2.One * 2f));
-            CreateEntity(coord, new CircleShape(1f));
-        }
-
+        
         CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(0, 11)),
             new RectangleShape(new Vector2(40, 1)), BodyType.Static);
         CreateEntity(new SceneCoordinates(SceneId.Nullspace, new Vector2(0, -11)),
@@ -80,7 +71,17 @@ public sealed class Example : IEventSubscriber, IPostInject
     private void ImGuiRender(ref ImGuiRenderEvent args)
     {
         var imGui = args.Instance;
-        imGui.ShowDebugInput();
+
+        imGui.Begin("Test");
+        if (imGui.Button("Spawn"))
+        {
+            var x = _random.NextSingle() * 10 - 5;
+            var y = _random.NextSingle() * 10 - 5;
+            var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
+            CreateEntity(coord, new RectangleShape(Vector2.One * 2f));
+            CreateEntity(coord, new CircleShape(1f));   
+        }
+        imGui.End();
     }
     
     private void CreateEntity(SceneCoordinates coordinates, IShape shape, BodyType type = BodyType.Dynamic)

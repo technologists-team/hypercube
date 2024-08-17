@@ -3,7 +3,7 @@ using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.ImGui.Implementations;
 
-public partial class GlfwImGuiController
+public partial class OpenGLImGuiController
 {
     private const int MouseButtons = 5; 
     
@@ -29,10 +29,5 @@ public partial class GlfwImGuiController
     {
         _io.MouseWheelH = offset.X;
         _io.MouseWheel = offset.Y;
-    }
-    
-    public void UpdateMouseCursor()
-    {
-
     }
 }

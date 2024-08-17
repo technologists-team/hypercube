@@ -6,14 +6,12 @@ using Hypercube.OpenGL.Shaders;
 using Hypercube.OpenGL.Utilities.Helpers;
 using ImGuiNET;
 using JetBrains.Annotations;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit.Graphics.OpenGL4;
-using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
 namespace Hypercube.ImGui.Implementations;
 
 [PublicAPI]
-public partial class GlfwImGuiController : IImGuiController, IDisposable
+public partial class OpenGLImGuiController : IImGuiController, IDisposable
 {
     private const int Framerate = 60;
     
@@ -35,7 +33,7 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     private int _indexBufferSize;
     private bool _frameBegun;
     
-    public GlfwImGuiController(WindowHandle window)
+    public OpenGLImGuiController(WindowHandle window)
     {
         _window = window;
         _mousePressed = new bool[(int) ImGuiMouseButton.COUNT];
@@ -46,7 +44,6 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     {
         var context = ImGuiNET.ImGui.CreateContext();
         ImGuiNET.ImGui.SetCurrentContext(context);
-        
         ImGuiNET.ImGui.StyleColorsDark();
         
         InitializeIO();
@@ -123,51 +120,13 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
         ImGuiNET.ImGui.NewFrame();
     }
 
-    public void Begin(string name)
-    {
-        ImGuiNET.ImGui.Begin(name);
-    }
-
-    public void Text(string label)
-    {
-        ImGuiNET.ImGui.Text(label);
-    }
-
-    public bool Button(string label)
-    {
-        return ImGuiNET.ImGui.Button(label);
-    }
-    
-    public void End()
-    {
-        ImGuiNET.ImGui.End();
-    }
-
-    public void DockSpaceOverViewport()
-    {
-        ImGuiNET.ImGui.DockSpaceOverViewport();
-    }
-
-    public void ShowDemoWindow()
-    {
-       ImGuiNET.ImGui.ShowDemoWindow();
-    }
-
-    public void ShowDebugInput()
-    {
-        Begin("ImGui input");
-        
-        Text($"Mouse LBM: {_io.MouseDown[0]}");
-        Text($"Mouse RBM: {_io.MouseDown[1]}");
-        Text($"Mouse position: {_io.MousePos}");
-        Text($"Mouse wheel: <{_io.MouseWheel}, {_io.MouseWheelH}>");
-        
-        End();
-    }
-
     public void Dispose()
     {
+        _shader.Dispose();
         
+        _vao.Dispose();
+        _vbo.Dispose();
+        _ebo.Dispose();
     }
     
     private void CreateFontsTexture()
@@ -201,7 +160,7 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     
     private void CheckErrors(string title)
     {
-        var errorString = GLHelper.CheckErrors($"{nameof(GlfwImGuiController)} {title}");
+        var errorString = GLHelper.CheckErrors($"{nameof(OpenGLImGuiController)} {title}");
         if (errorString == string.Empty)
             return;
         

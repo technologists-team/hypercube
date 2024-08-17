@@ -1,8 +1,10 @@
 ﻿using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
+using JetBrains.Annotations;
 
 namespace Hypercube.ImGui;
 
+[PublicAPI]
 public interface IImGuiController : IImGui
 {
     event Action<string>? OnErrorHandled;
@@ -15,5 +17,4 @@ public interface IImGuiController : IImGui
     void UpdateMousePosition(Vector2Int position);
     void UpdateMouseButtons(MouseButton button, bool state);
     void UpdateMouseScroll(Vector2 offset);
-    void UpdateMouseCursor();
 }

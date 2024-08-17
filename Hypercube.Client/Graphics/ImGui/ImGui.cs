@@ -76,39 +76,4 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     {
         _controller.UpdateMouseScroll(args.Offset);
     }
-
-    public void Begin(string name)
-    {
-        _controller.Begin(name);
-    }
-
-    public void Text(string label)
-    {
-        _controller.Text(label);
-    }
-
-    public bool Button(string label)
-    {
-        return _controller.Button(label);
-    }
-
-    public void End()
-    {
-        _controller.End();
-    }
-
-    public void DockSpaceOverViewport()
-    {
-        _controller.DockSpaceOverViewport();
-    }
-
-    public void ShowDemoWindow()
-    {
-        _controller.ShowDemoWindow();
-    }
-
-    public void ShowDebugInput()
-    {
-        _controller.ShowDebugInput();
-    }
 }

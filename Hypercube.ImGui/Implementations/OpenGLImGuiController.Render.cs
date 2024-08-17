@@ -7,7 +7,7 @@ using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.ImGui.Implementations;
 
-public partial class GlfwImGuiController
+public partial class OpenGLImGuiController
 {
     public void Render()
     {
