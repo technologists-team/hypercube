@@ -1,9 +1,11 @@
 ﻿using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Client.Input.Events;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.ImGui;
+using Hypercube.Input;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using JetBrains.Annotations;
@@ -23,16 +25,28 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     public void PostInject()
     {
         _eventBus.Subscribe<GraphicsLibraryInitializedEvent>(this, OnGraphicsInitialized);
+        
+        _eventBus.Subscribe<InputFrameEvent>(this, OnInputFrame);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnUpdateFrame);
-        _eventBus.Subscribe<RenderDrawingEvent>(this, OnRenderDrawing);
+        _eventBus.Subscribe<RenderFrameEvent>(this, OnRenderFrame);
+        
+        _eventBus.Subscribe<MouseButtonHandledEvent>(this, OnMouseButton);
+        _eventBus.Subscribe<MousePositionHandledEvent>(this, OnMousePosition);
+        _eventBus.Subscribe<ScrollHandledEvent>(this, OnInputScroll);
     }
     
+
     private void OnGraphicsInitialized(ref GraphicsLibraryInitializedEvent args)
     {
         _controller = ImGuiFactory.Create(_renderer.MainWindow);
         _controller.OnErrorHandled += message => _logger.Error(message);
         
         _controller.Initialize();
+    }    
+    
+    private void OnInputFrame(ref InputFrameEvent args)
+    {
+        _controller.InputFrame();
     }
     
     private void OnUpdateFrame(ref UpdateFrameEvent args)
@@ -40,12 +54,27 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _controller.Update(args.DeltaSeconds);
     }
 
-    private void OnRenderDrawing(ref RenderDrawingEvent args)
+    private void OnRenderFrame(ref RenderFrameEvent args)
     {
         var ev = new ImGuiRenderEvent(this);
         _eventBus.Raise(ev);
         
         _controller.Render();
+    }
+    
+    private void OnMouseButton(ref MouseButtonHandledEvent args)
+    {
+        _controller.UpdateMouseButtons(args.Button, args.State is KeyState.Pressed or KeyState.Held);
+    }
+    
+    private void OnMousePosition(ref MousePositionHandledEvent args)
+    {
+        _controller.UpdateMousePosition(args.Position);
+    }
+
+    private void OnInputScroll(ref ScrollHandledEvent args)
+    {
+        _controller.UpdateMouseScroll(args.Offset);
     }
 
     public void Begin(string name)
@@ -66,5 +95,20 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     public void End()
     {
         _controller.End();
+    }
+
+    public void DockSpaceOverViewport()
+    {
+        _controller.DockSpaceOverViewport();
+    }
+
+    public void ShowDemoWindow()
+    {
+        _controller.ShowDemoWindow();
+    }
+
+    public void ShowDebugInput()
+    {
+        _controller.ShowDebugInput();
     }
 }

@@ -1,31 +1,42 @@
-﻿using Hypercube.Mathematics.Vectors;
+﻿using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.ImGui.Implementations;
 
 public partial class GlfwImGuiController
 {
-    private void UpdateMousePosition(Vector2Int position)
+    private const int MouseButtons = 5; 
+    
+    public void InputFrame()
+    {
+        // Clear mouse input
+        for (var i = 0; i < MouseButtons; i++)
+        {
+            _io.MouseDown[i] = false;
+        }
+    }
+    
+    public void UpdateMousePosition(Vector2Int position)
     {
         _io.MousePos = position;
     }
     
-    private void UpdateMouseButtons(bool[] state)
+    public void UpdateMouseButtons(MouseButton button, bool state)
     {
-        _io.MouseDown[0] = state[0]; // Left
-        _io.MouseDown[1] = state[1]; // Right
-        _io.MouseDown[2] = state[2]; // Middle
+        var index = (int) button;
+        if (index >= MouseButtons)
+            return;
         
-        _io.MouseDown[3] = state[3];
-        _io.MouseDown[4] = state[4];
+        _io.MouseDown[index] = state;
     }
 
-    private void UpdateMouseScroll(Vector2 offset)
+    public void UpdateMouseScroll(Vector2 offset)
     {
         _io.MouseWheelH = offset.X;
         _io.MouseWheel = offset.Y;
     }
     
-    private void UpdateMouseCursor()
+    public void UpdateMouseCursor()
     {
 
     }

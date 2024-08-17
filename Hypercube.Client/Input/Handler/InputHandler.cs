@@ -4,6 +4,7 @@ using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using JetBrains.Annotations;
@@ -36,12 +37,15 @@ public sealed class InputHandler : IInputHandler, IPostInject
     }.ToFrozenDictionary();
     
     private readonly Logger _logger = LoggingManager.GetLogger("input_handler");
-
+    
+    public Vector2 MousePosition { get; private set; }
+    
     public void PostInject()
     {
         _eventBus.Subscribe<InputFrameEvent>(this, OnInputFrameUpdate);
         
         _eventBus.Subscribe<WindowingCharHandledEvent>(this, OnCharHandled);
+        _eventBus.Subscribe<WindowingCursorPositionHandledEvent>(this, OnCursorPositionHandled);
         _eventBus.Subscribe<WindowingKeyHandledEvent>(this, OnKeyHandled);
         _eventBus.Subscribe<WindowingMouseButtonHandledEvent>(this, OnMouseButtonHandled);
         _eventBus.Subscribe<WindowingScrollHandledEvent>(this, OnScrollHandled);
@@ -71,6 +75,14 @@ public sealed class InputHandler : IInputHandler, IPostInject
     private void OnCharHandled(ref WindowingCharHandledEvent args)
     {
         var ev = new CharHandledEvent(args.Code);
+        _eventBus.Raise(ev);
+    }
+    
+    private void OnCursorPositionHandled(ref WindowingCursorPositionHandledEvent args)
+    {
+        MousePosition = args.Position;
+        
+        var ev = new MousePositionHandledEvent(args.Position);
         _eventBus.Raise(ev);
     }
     
@@ -149,7 +161,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
         var ev = new ScrollHandledEvent(args.Offset);
         _eventBus.Raise(ev);
     }
-
+    
     public bool IsKeyState(Key key, KeyState state)
     {
         return _keys[state].Contains(key);

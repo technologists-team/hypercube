@@ -12,6 +12,7 @@ using Hypercube.Client.Input.Manager;
 using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Dependencies;
+using Hypercube.ImGui;
 using Hypercube.Shared;
 using Hypercube.Shared.Runtimes;
 using Hypercube.Shared.Runtimes.Loop;

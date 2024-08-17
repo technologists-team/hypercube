@@ -34,10 +34,10 @@ internal static class ShaderSource
     in vec4 Color;
     in vec2 TexCoord;
     
-    uniform sampler2D Texture;
+    uniform sampler2D texture0;
 
     void main()
     {
-        oColor = Color * texture(Texture, TexCoord.st);
+        oColor = Color * texture(texture0, TexCoord.st);
     }";
 }

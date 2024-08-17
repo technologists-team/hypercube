@@ -482,6 +482,22 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return result;
     }
 
+    /// <summary>
+    /// Creating scale matrix
+    /// <code>
+    ///  1  |  0  |  0  |  0 
+    ///  0  |  y  |  0  |  0
+    ///  0  |  0  |  1  |  0
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateScaleY(float value)
+    {
+        var result = Identity;
+        result.M11 = value;
+        return result;
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix4X4 CreateRotation(Quaternion quaternion)
     {

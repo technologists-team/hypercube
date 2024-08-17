@@ -1,10 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Extensions;
+using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics.Vectors;
 
-[StructLayout(LayoutKind.Sequential)]
+[PublicAPI, StructLayout(LayoutKind.Sequential)]
 public readonly partial struct Vector2 : IEquatable<Vector2>
 {
     public static readonly Vector2 NaN = new(float.NaN, float.NaN);
@@ -53,12 +54,28 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
         Y = y;
     }
     
-    public Vector2(float value) : this(value, value)
+    public Vector2(float value)
     {
+        X = value;
+        Y = value;
+    }
+    
+    public Vector2(double x, double y)
+    {
+        X = (float) x;
+        Y = (float) y;
+    }
+    
+    public Vector2(double value)
+    {
+        X = (float) value;
+        Y = (float) value;
     }
 
-    public Vector2(Vector2 vector2) : this(vector2.X, vector2.Y)
+    public Vector2(Vector2 vector2)
     {
+        X = vector2.X;
+        Y = vector2.Y;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -15,6 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Input\Hypercube.Input.csproj" />
       <ProjectReference Include="..\Hypercube.OpenGL\Hypercube.OpenGL.csproj" />
     </ItemGroup>
 

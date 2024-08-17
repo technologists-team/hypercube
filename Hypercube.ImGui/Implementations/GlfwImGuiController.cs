@@ -84,16 +84,16 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     public void InitializeShaders()
     {
         _shader = new ShaderProgram(ShaderSource.VertexShader, ShaderSource.FragmentShader);
-        _shader.Label("ImGui");
+        _shader.Label("ImGui shader");
         
         _vao = new ArrayObject();
-        _vao.Label("ImGui");
+        _vao.Label("ImGui vao");
         
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
-        _vbo.Label("ImGui");
+        _vbo.Label("ImGui vbo");
         
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
-        _ebo.Label("ImGui");
+        _ebo.Label("ImGui ebo");
         
         var stride = Unsafe.SizeOf<ImDrawVert>();
         
@@ -151,7 +151,27 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     {
         ImGuiNET.ImGui.End();
     }
-    
+
+    public void DockSpaceOverViewport()
+    {
+        ImGuiNET.ImGui.DockSpaceOverViewport();
+    }
+
+    public void ShowDemoWindow()
+    {
+       ImGuiNET.ImGui.ShowDemoWindow();
+    }
+
+    public void ShowDebugInput()
+    {
+        Begin("ImGui input");
+
+        Button("a");
+        Text($"Mouse position");
+        
+        End();
+    }
+
     public void Dispose()
     {
         
@@ -179,20 +199,31 @@ public partial class GlfwImGuiController : IImGuiController, IDisposable
     
     private void CreateFontsTexture()
     {
-        _io.Fonts.GetTexDataAsRGBA32(out nint pixels, out var width, out var height);
-
+        _io.Fonts.GetTexDataAsRGBA32(out nint pixels, out var width, out var height, out var bytesPerPixel);
+        var mips = (int)Math.Floor(Math.Log(Math.Max(width, height), 2));
+        
         GL.ActiveTexture(TextureUnit.Texture0);
         
-        var texture = GL.GenTexture();        
+        var texture = GL.GenTexture();
+
         GL.BindTexture(TextureTarget.Texture2D, texture);
+        GLHelper.LabelObject(ObjectLabelIdentifier.Texture, texture, "ImGui font texture");
 
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Linear);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Linear);
-
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, pixels);
+        GL.TexStorage2D(TextureTarget2d.Texture2D, mips, SizedInternalFormat.Rgba8, width, height);
+        GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, PixelFormat.Bgra, PixelType.UnsignedByte, pixels);
+        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMaxLevel, mips - 1);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+        
+
         _io.Fonts.SetTexID(texture);
         _io.Fonts.ClearTexData();
+        
+        GLHelper.UnbindTexture(TextureTarget.Texture2D);
     }
     
     private void CheckErrors(string title)

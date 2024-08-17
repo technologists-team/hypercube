@@ -39,12 +39,8 @@ public sealed partial class Renderer
         
         GL.DebugMessageCallback(_debugProc, nint.Zero);
         
-        GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);
         GL.Enable(EnableCap.DebugOutputSynchronous);
-        
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0, 0, 0, 0);
         
         _loggerOpenGL.EngineInfo("Initialized");
         _eventBus.Raise(new GraphicsLibraryInitializedEvent());

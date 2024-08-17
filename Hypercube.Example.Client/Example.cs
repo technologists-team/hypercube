@@ -80,8 +80,7 @@ public sealed class Example : IEventSubscriber, IPostInject
     private void ImGuiRender(ref ImGuiRenderEvent args)
     {
         var imGui = args.Instance;
-        imGui.Begin("Example");
-        imGui.End();
+        imGui.ShowDebugInput();
     }
     
     private void CreateEntity(SceneCoordinates coordinates, IShape shape, BodyType type = BodyType.Dynamic)

@@ -23,6 +23,7 @@ public sealed unsafe partial class GlfwWindowManager
     private ScrollCallback? _scrollCallback;
     private KeyCallback? _keyCallback;
     private MouseButtonCallback? _mouseButtonCallback;
+    private CursorPosCallback? _cursorPosCallback;
 
     private WindowCloseCallback? _windowCloseCallback;
     private WindowSizeCallback? _windowSizeCallback;
@@ -41,7 +42,8 @@ public sealed unsafe partial class GlfwWindowManager
         _scrollCallback = OnWindowScrollHandled;
         _keyCallback = OnWindowKeyHandled;
         _mouseButtonCallback = OnMouseButtonHandled;
-
+        _cursorPosCallback = OnCursorPositionHandled;
+        
         _windowCloseCallback = OnWindowClosed;
         _windowSizeCallback = OnWindowResized;
         _windowFocusCallback = OnWindowFocusChanged;
@@ -83,6 +85,11 @@ public sealed unsafe partial class GlfwWindowManager
         ));
     }
 
+    private void OnCursorPositionHandled(Window* window, double x, double y)
+    {
+        RaiseInput(new WindowingCursorPositionHandledEvent(x, y));
+    }
+    
     private void RaiseInput<T>(T args) where T : IEventArgs
     {
         _eventBus.Raise(_inputHandler, ref args);
