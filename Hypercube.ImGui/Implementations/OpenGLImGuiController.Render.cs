@@ -123,6 +123,9 @@ public partial class OpenGLImGuiController
         _vao.Unbind();
         _vbo.Unbind();
         _ebo.Unbind();
+        
+        GL.Disable(EnableCap.Blend);
+        GL.Disable(EnableCap.ScissorTest);
     }
 
     private void SetupRender(ImDrawDataPtr data, Vector2Int frameBufferSize)

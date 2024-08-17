@@ -6,6 +6,7 @@ using Hypercube.Graphics.Windowing;
 using Hypercube.Mathematics;
 using Hypercube.Mathematics.Matrices;
 using Hypercube.OpenGL.Objects;
+using Hypercube.OpenGL.Utilities.Helpers;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -43,9 +44,9 @@ public sealed partial class Renderer
         _texturingShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_texturing")
             .ShaderProgram;
 
+        _vao = new ArrayObject();
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
-        _vao = new ArrayObject();
 
         _vao.Bind();
         _vbo.SetData(_batchVertices);
@@ -95,12 +96,9 @@ public sealed partial class Renderer
         
         GL.BlendEquation(BlendEquationMode.FuncAdd);
         GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        
-        GL.Disable(EnableCap.CullFace);
+   
         GL.Disable(EnableCap.ScissorTest);
-        GL.Disable(EnableCap.StencilTest);
-        GL.Disable(EnableCap.PrimitiveRestart);
-
+        
         GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
         
         GL.ClearColor(0, 0, 0, 0);
@@ -111,9 +109,10 @@ public sealed partial class Renderer
         Clear();
 
         GL.Viewport(window.Size);
-
-        var args = new RenderDrawingEvent();
-        _eventBus.Raise(ref args);
+        GL.Clear(ClearBufferMask.ColorBufferBit);
+        
+        var ev = new RenderDrawingEvent();
+        _eventBus.Raise(ref ev);
 
         // break batch so we get all batches
         BreakCurrentBatch();
@@ -132,9 +131,10 @@ public sealed partial class Renderer
         _vbo.Unbind();
         _ebo.Unbind();
         
-        _windowManager.WindowSwapBuffers(window);
+        var evUI = new RenderAfterDrawingEvent();
+        _eventBus.Raise(ref evUI);
         
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+        _windowManager.WindowSwapBuffers(window);
     }
     
     public void Clear()
@@ -167,6 +167,7 @@ public sealed partial class Renderer
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
 
         shader.Stop();
+        GLHelper.UnbindTexture(TextureTarget.Texture2D);
     }
 
     /// <summary>

@@ -28,7 +28,7 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         
         _eventBus.Subscribe<InputFrameEvent>(this, OnInputFrame);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnUpdateFrame);
-        _eventBus.Subscribe<RenderFrameEvent>(this, OnRenderFrame);
+        _eventBus.Subscribe<RenderAfterDrawingEvent>(this, OnRenderUI);
         
         _eventBus.Subscribe<MouseButtonHandledEvent>(this, OnMouseButton);
         _eventBus.Subscribe<MousePositionHandledEvent>(this, OnMousePosition);
@@ -54,7 +54,7 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _controller.Update(args.DeltaSeconds);
     }
 
-    private void OnRenderFrame(ref RenderFrameEvent args)
+    private void OnRenderUI(ref RenderAfterDrawingEvent args)
     {
         var ev = new ImGuiRenderEvent(this);
         _eventBus.Raise(ev);
