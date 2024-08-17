@@ -4,9 +4,11 @@ using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
+using Hypercube.Client.Input.Events;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Example.Client.Controls;
+using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Physics;
@@ -31,6 +33,9 @@ public sealed class Example : IEventSubscriber, IPostInject
     [Dependency] private readonly IResourceContainer _resourceContainer = default!;
 
     private readonly Random _random = new();
+
+    private bool _showSpawnWindow;
+    private bool _showDemoWindow;
     
     public void Start(string[] args, DependenciesContainer root)
     {
@@ -41,8 +46,10 @@ public sealed class Example : IEventSubscriber, IPostInject
     {
         _eventBus.Subscribe<RuntimeStartupEvent>(this, Startup);
         _eventBus.Subscribe<ImGuiRenderEvent>(this, ImGuiRender);
+        
+        _eventBus.Subscribe<KeyHandledEvent>(this, OnKey);
     }
-    
+
     private void Startup(ref RuntimeStartupEvent args)
     {
         
@@ -72,16 +79,36 @@ public sealed class Example : IEventSubscriber, IPostInject
     {
         var imGui = args.Instance;
 
-        imGui.Begin("Test");
-        if (imGui.Button("Spawn"))
+        if (_showSpawnWindow)
         {
-            var x = _random.NextSingle() * 10 - 5;
-            var y = _random.NextSingle() * 10 - 5;
-            var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
-            CreateEntity(coord, new RectangleShape(Vector2.One * 2f));
-            CreateEntity(coord, new CircleShape(1f));   
+            imGui.Begin("Test");
+            if (imGui.Button("Spawn"))
+            {
+                var x = _random.NextSingle() * 10 - 5;
+                var y = _random.NextSingle() * 10 - 5;
+                var coord = new SceneCoordinates(SceneId.Nullspace, new Vector2(x, y));
+                CreateEntity(coord, new RectangleShape(Vector2.One * 2f));
+                CreateEntity(coord, new CircleShape(1f));   
+            }
+            imGui.End();
         }
-        imGui.End();
+
+        if (_showDemoWindow)
+        {
+            imGui.ShowDemoWindow();
+        }
+    }
+    
+    private void OnKey(ref KeyHandledEvent args)
+    {
+        if (args.State != KeyState.Pressed)
+            return;
+
+        if (args.Key == Key.F1)
+            _showSpawnWindow = !_showSpawnWindow;
+
+        if (args.Key == Key.F2)
+            _showDemoWindow = !_showDemoWindow;
     }
     
     private void CreateEntity(SceneCoordinates coordinates, IShape shape, BodyType type = BodyType.Dynamic)
