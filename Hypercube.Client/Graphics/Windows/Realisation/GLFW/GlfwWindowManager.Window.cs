@@ -134,10 +134,15 @@ public sealed unsafe partial class GlfwWindowManager
             WindowSetIcons(handle, settings.WindowImages.ToList());
 
         // Setting callbacks
-        GLFW.SetKeyCallback(window, _keyCallback);
         GLFW.SetWindowCloseCallback(window, _windowCloseCallback);
         GLFW.SetWindowSizeCallback(window, _windowSizeCallback);
         GLFW.SetWindowFocusCallback(window, _windowFocusCallback);
+
+        GLFW.SetCharCallback(window, _charCallback);
+        GLFW.SetScrollCallback(window, _scrollCallback);
+        GLFW.SetKeyCallback(window, _keyCallback);
+        GLFW.SetMouseButtonCallback(window, _mouseButtonCallback);
+        GLFW.SetCursorPosCallback(window, _cursorPosCallback);
 
         return registration;
     }

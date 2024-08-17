@@ -26,7 +26,7 @@ public sealed partial class Renderer
 
     private int _batchVertexIndex;
     private int _batchIndexIndex; // Haha name it's fun
-    
+
     /// <summary>
     /// Contains info about currently running batch.
     /// </summary>
@@ -89,19 +89,36 @@ public sealed partial class Renderer
         Render(MainWindow);
     }
 
+    public void SetupRender()
+    {
+        GL.Enable(EnableCap.Blend);
+        
+        GL.BlendEquation(BlendEquationMode.FuncAdd);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+        
+        GL.Disable(EnableCap.CullFace);
+        GL.Disable(EnableCap.ScissorTest);
+        GL.Disable(EnableCap.StencilTest);
+        GL.Disable(EnableCap.PrimitiveRestart);
+
+        GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+        
+        GL.ClearColor(0, 0, 0, 0);
+    }
+
     public void Render(WindowHandle window)
     {
         Clear();
 
         GL.Viewport(window.Size);
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
         var args = new RenderDrawingEvent();
         _eventBus.Raise(ref args);
 
         // break batch so we get all batches
         BreakCurrentBatch();
-
+        SetupRender();
+        
         _vao.Bind();
         _vbo.SetData(_batchVertices);
         _ebo.SetData(_batchIndices);
@@ -116,6 +133,8 @@ public sealed partial class Renderer
         _ebo.Unbind();
         
         _windowManager.WindowSwapBuffers(window);
+        
+        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
     }
     
     public void Clear()

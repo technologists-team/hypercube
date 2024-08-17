@@ -4,6 +4,7 @@ using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.Shared.Logging;
 using Hypercube.Shared.Runtimes.Loop.Event;
 using JetBrains.Annotations;
@@ -36,12 +37,15 @@ public sealed class InputHandler : IInputHandler, IPostInject
     }.ToFrozenDictionary();
     
     private readonly Logger _logger = LoggingManager.GetLogger("input_handler");
-
+    
+    public Vector2 MousePosition { get; private set; }
+    
     public void PostInject()
     {
         _eventBus.Subscribe<InputFrameEvent>(this, OnInputFrameUpdate);
         
         _eventBus.Subscribe<WindowingCharHandledEvent>(this, OnCharHandled);
+        _eventBus.Subscribe<WindowingCursorPositionHandledEvent>(this, OnCursorPositionHandled);
         _eventBus.Subscribe<WindowingKeyHandledEvent>(this, OnKeyHandled);
         _eventBus.Subscribe<WindowingMouseButtonHandledEvent>(this, OnMouseButtonHandled);
         _eventBus.Subscribe<WindowingScrollHandledEvent>(this, OnScrollHandled);
@@ -74,6 +78,14 @@ public sealed class InputHandler : IInputHandler, IPostInject
         _eventBus.Raise(ev);
     }
     
+    private void OnCursorPositionHandled(ref WindowingCursorPositionHandledEvent args)
+    {
+        MousePosition = args.Position;
+        
+        var ev = new MousePositionHandledEvent(args.Position);
+        _eventBus.Raise(ev);
+    }
+    
     private void OnKeyHandled(ref WindowingKeyHandledEvent args)
     {
 #if DEBUG
@@ -100,7 +112,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
             
             case KeyState.Released:
                 _keys[KeyState.Held].Remove(args.Key);
-                _keys[KeyState.Pressed].Add(args.Key);
+                _keys[KeyState.Released].Add(args.Key);
                 break;
             
             default:
@@ -134,7 +146,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
             
             case KeyState.Released:
                 _mouseButtons[KeyState.Held].Remove(args.Button);
-                _mouseButtons[KeyState.Pressed].Add(args.Button);
+                _mouseButtons[KeyState.Released].Add(args.Button);
                 break;
             
             default:
@@ -149,7 +161,7 @@ public sealed class InputHandler : IInputHandler, IPostInject
         var ev = new ScrollHandledEvent(args.Offset);
         _eventBus.Raise(ev);
     }
-
+    
     public bool IsKeyState(Key key, KeyState state)
     {
         return _keys[state].Contains(key);

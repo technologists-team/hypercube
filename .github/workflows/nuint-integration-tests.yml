@@ -2,7 +2,10 @@ name: NUnit integration test
 
 on:
   push:
+    branches: [ master ]
   pull_request:
+    types: [ opened, reopened, synchronize, ready_for_review ]
+    branches: [ master ]
   workflow_dispatch:
   
 env:
@@ -10,7 +13,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  build-windows:
+  build:
     name: Windows Build
     runs-on: windows-latest
 
@@ -20,22 +23,19 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: 🛠️ Setup Submodules
+    - name: ⚙️ Setup Submodules
       run: git submodule update --init --recursive
 
-    - name: 🛠️ Setup .NET
+    - name: ⚙️ Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
     
-    - name: 🛠️ Install dotnet dependencies
+    - name: 📦 Install dotnet dependencies
       run: dotnet restore
 
-    - name: 🛠️ Install dotnet tools
+    - name: 📦 Install dotnet tools
       run: dotnet tool restore
 
-    - name: 🔨 Build and Test (Release)
-      run: dotnet test --configuration=Release Hypercube.UnitTests/Hypercube.UnitTests.csproj
-
-    - name: 🔨 Build and Test (Debug)
+    - name: 🛠️ Build and Test (Debug)
       run: dotnet test --configuration=Debug Hypercube.UnitTests/Hypercube.UnitTests.csproj

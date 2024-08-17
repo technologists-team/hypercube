@@ -1,15 +1,21 @@
 ﻿using System.Runtime.CompilerServices;
 using Hypercube.Mathematics.Matrices;
 using Hypercube.Mathematics.Vectors;
+using Hypercube.OpenGL.Utilities.Helpers;
 using ImGuiNET;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.ImGui.Implementations;
 
-public partial class GlfwImGuiController
+public partial class OpenGLImGuiController
 {
     public void Render()
     {
+        if (!_frameBegun)
+            return;
+
+        _frameBegun = false;
+        
         ImGuiNET.ImGui.Render();
         Render(ImGuiNET.ImGui.GetDrawData());
     }
@@ -43,7 +49,7 @@ public partial class GlfwImGuiController
 
             if (vertexSize > _vertexBufferSize)
             {
-                var newSize = (int)System.Math.Max(_vertexBufferSize * 1.5f, vertexSize);
+                var newSize = (int)Math.Max(_vertexBufferSize * 1.5f, vertexSize);
                 
                 _vertexBufferSize = newSize;
                 _vbo.SetData(newSize, nint.Zero, BufferUsageHint.DynamicDraw);
@@ -51,7 +57,7 @@ public partial class GlfwImGuiController
 
             if (indexSize > _indexBufferSize)
             {
-                var newSize = (int)System.Math.Max(_indexBufferSize * 1.5f, indexSize);
+                var newSize = (int)Math.Max(_indexBufferSize * 1.5f, indexSize);
                 
                 _indexBufferSize = newSize;
                 _ebo.SetData(newSize, nint.Zero, BufferUsageHint.DynamicDraw);
@@ -60,10 +66,11 @@ public partial class GlfwImGuiController
             CheckErrors("Setup data");
         }
 
-        var project = Matrix4X4.CreateOrthographic(_io.DisplaySize, -1f, 1f);
+        var project = Matrix4X4.CreateOrthographicOffCenter(0f, _io.DisplaySize.X, _io.DisplaySize.Y, 0f, -1f, 1f);
         
         _shader.Use();
         _shader.SetUniform("projection", project);
+        _shader.SetUniform("fontTexture", 0);
         
         CheckErrors("Projection");
         
@@ -109,6 +116,8 @@ public partial class GlfwImGuiController
             }
         }
         
+        GLHelper.UnbindTexture(TextureTarget.Texture2D);
+        
         _shader.Stop();
         
         _vao.Unbind();
@@ -130,7 +139,6 @@ public partial class GlfwImGuiController
         GL.Disable(EnableCap.PrimitiveRestart);
 
         GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-
         GL.Viewport(frameBufferSize);
     }
 }

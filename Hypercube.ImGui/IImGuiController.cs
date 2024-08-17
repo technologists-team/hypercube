@@ -1,6 +1,11 @@
-﻿namespace Hypercube.ImGui;
+﻿using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
+using JetBrains.Annotations;
 
-public interface IImGuiController
+namespace Hypercube.ImGui;
+
+[PublicAPI]
+public interface IImGuiController : IImGui
 {
     event Action<string>? OnErrorHandled;
     
@@ -8,8 +13,8 @@ public interface IImGuiController
     void Update(float deltaTime);
     void Render();
 
-    void Begin(string name);
-    void Text(string label);
-    bool Button(string label);
-    void End();
+    void InputFrame();
+    void UpdateMousePosition(Vector2Int position);
+    void UpdateMouseButtons(MouseButton button, bool state);
+    void UpdateMouseScroll(Vector2 offset);
 }

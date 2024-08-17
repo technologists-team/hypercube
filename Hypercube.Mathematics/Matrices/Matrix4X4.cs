@@ -3,10 +3,11 @@ using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Shapes;
 using Hypercube.Mathematics.Transforms;
 using Hypercube.Mathematics.Vectors;
+using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics.Matrices;
 
-[StructLayout(LayoutKind.Sequential)]
+[PublicAPI, StructLayout(LayoutKind.Sequential)]
 public partial struct Matrix4X4 : IEquatable<Matrix4X4>
 {
     /// <summary>
@@ -482,6 +483,22 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
         return result;
     }
 
+    /// <summary>
+    /// Creating scale matrix
+    /// <code>
+    ///  1  |  0  |  0  |  0 
+    ///  0  |  y  |  0  |  0
+    ///  0  |  0  |  1  |  0
+    ///  0  |  0  |  0  |  1
+    /// </code>
+    /// </summary>
+    public static Matrix4X4 CreateScaleY(float value)
+    {
+        var result = Identity;
+        result.M11 = value;
+        return result;
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Matrix4X4 CreateRotation(Quaternion quaternion)
     {
@@ -718,15 +735,26 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
     
     public static Matrix4X4 CreateOrthographic(float width, float height, float zNear, float zFar)
     {
-        var result = Identity;
-        var range = 1.0f / (zNear - zFar);
+        return CreateOrthographicOffCenter(-width / 2d, width / 2f, -height / 2d, height / 2f, zNear, zFar);
+    }
+
+    public static Matrix4X4 CreateOrthographicOffCenter(double left, float right, double bottom, float top, float zNear, float zFar)
+    {
+        return CreateOrthographicOffCenter((float) left, right, (float) bottom, top, zNear, zFar);
+    }
+    
+    public static Matrix4X4 CreateOrthographicOffCenter(float left, float right, float bottom, float top, float zNear, float zFar)
+    {
+        var v1 = (float) (1d / ((double) right - left));
+        var v2 = (float) (1d / ((double) top - bottom));
+        var zD = (float) (1d / ((double) zFar - zNear));
         
-        result.Row0 = new Vector4(2.0f / width, 0, 0, 0);
-        result.Row1 = new Vector4(0, 2.0f / height, 0, 0);
-        result.Row2 = new Vector4(0, 0, range, 0);
-        result.Row3 = new Vector4(0, 0, range * zNear, 1);
-        
-        return result;
+        return new Matrix4X4(
+            2f * v1, 0, 0, 0,
+            0, 2f * v2, 0, 0,
+            0, 0, -2f * zD, 0,
+            (float) -((double) right + left) * v1, (float) -((double) top + bottom) * v2, (float) -((double) zFar + zNear) * zD, 1
+        );
     }
 
     /// <summary>

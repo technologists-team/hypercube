@@ -2,6 +2,7 @@
 using Hypercube.Client.Input.Events;
 using Hypercube.EventBus;
 using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client.Input.Handler;
@@ -13,6 +14,8 @@ namespace Hypercube.Client.Input.Handler;
 [PublicAPI]
 public interface IInputHandler : IEventSubscriber
 {
+    Vector2 MousePosition { get; }
+    
     bool IsKeyState(Key key, KeyState state);
     
     /// <summary>
