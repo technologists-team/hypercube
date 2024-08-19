@@ -6,8 +6,8 @@ using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.ImGui;
 using Hypercube.Input;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.Logging;
+using Hypercube.Runtime.Events;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client.Graphics.ImGui;

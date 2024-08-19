@@ -1,6 +1,6 @@
 using Hypercube.Dependencies;
 using Hypercube.Shared;
-using Hypercube.Shared.Utilities.ArgumentsParser;
+using Hypercube.Utilities;
 
 namespace Hypercube.Server;
 

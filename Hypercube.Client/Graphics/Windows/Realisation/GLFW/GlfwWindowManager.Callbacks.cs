@@ -4,7 +4,6 @@ using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
 using Hypercube.OpenGL.Utilities.Helpers;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-
 using GlfwKeyModifiers = OpenTK.Windowing.GraphicsLibraryFramework.KeyModifiers;
 using GlfwMouseButton = OpenTK.Windowing.GraphicsLibraryFramework.MouseButton;
 
@@ -13,9 +12,9 @@ using MouseButton = Hypercube.Input.MouseButton;
 
 using static OpenTK.Windowing.GraphicsLibraryFramework.GLFWCallbacks;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
+namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 
-public sealed unsafe partial class GlfwWindowManager
+public sealed unsafe partial class GlfwWindowing
 {
     private ErrorCallback? _errorCallback;
 

@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Hypercube.Shared.Logging;
+using Hypercube.Logging;
 using Hypercube.Utilities.Extensions;
 using JetBrains.Annotations;
 

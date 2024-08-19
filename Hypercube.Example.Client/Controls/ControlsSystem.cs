@@ -2,9 +2,9 @@
 using Hypercube.Dependencies;
 using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Physics;
-using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Example.Client.Controls;
 

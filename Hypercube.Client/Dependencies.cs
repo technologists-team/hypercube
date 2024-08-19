@@ -1,21 +1,18 @@
-﻿using Hypercube.Client.Audio;
-using Hypercube.Client.Audio.Loading;
-using Hypercube.Client.Audio.Realisations.OpenAL;
-using Hypercube.Client.Graphics.ImGui;
+﻿using Hypercube.Audio;
+using Hypercube.Audio.Loading;
 using Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
 using Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 using Hypercube.Client.Graphics.Rendering;
-using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
 using Hypercube.Client.Input.Handler;
 using Hypercube.Client.Input.Manager;
-using Hypercube.Client.Runtimes;
 using Hypercube.Client.Runtimes.Loop;
 using Hypercube.Dependencies;
+using Hypercube.Graphics.Texturing;
 using Hypercube.ImGui;
+using Hypercube.OpenAL;
+using Hypercube.Runtime;
 using Hypercube.Shared;
-using Hypercube.Shared.Runtimes;
-using Hypercube.Shared.Runtimes.Loop;
 
 namespace Hypercube.Client;
 
@@ -48,7 +45,7 @@ public static class Dependencies
         
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
-        rootContainer.Register<IRuntime, Runtime>();
+        rootContainer.Register<IRuntime, Runtimes.Runtime>();
         
         rootContainer.InstantiateAll();
     }

@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
+      <ProjectReference Include="..\Hypercube.Resources\Hypercube.Resources.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,11 +1,13 @@
-﻿namespace Hypercube.UnitTests.ResourceManager;
+﻿using Hypercube.Resources.Manager;
+
+namespace Hypercube.UnitTests.ResourceManager;
 
 public class ResourceManagerTests
 {
     [Test]
     public void ReadFileTest()
     {
-        var resourceMan = new Shared.Resources.Manager.ResourceLoader();
+        var resourceMan = new ResourceLoader();
         resourceMan.MountContentFolder("Resources", "/");
 
         if (!resourceMan.TryReadFileContent("/Tests/testFile.txt", out var stream))

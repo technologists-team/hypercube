@@ -1,9 +1,8 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
-using Hypercube.Shared.Runtimes.Event;
-using Hypercube.Shared.Runtimes.Loop.Event;
 using Hypercube.Utilities.Helpers;
 
 namespace Hypercube.Shared.Entities.Realisation.Manager;

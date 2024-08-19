@@ -1,9 +1,8 @@
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Runtimes;
-using Hypercube.Shared.Runtimes.Event;
-using Hypercube.Shared.Runtimes.Loop;
+using Hypercube.Logging;
+using Hypercube.Runtime;
+using Hypercube.Runtime.Events;
 
 namespace Hypercube.Server.Runtimes;
 

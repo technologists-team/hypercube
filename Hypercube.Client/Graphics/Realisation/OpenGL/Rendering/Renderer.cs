@@ -1,16 +1,16 @@
 using System.Collections.Frozen;
 using Hypercube.Client.Graphics.Rendering;
-using Hypercube.Client.Graphics.Texturing;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Client.Graphics.Windows;
-using Hypercube.Client.Graphics.Windows.Realisation.Glfw;
+using Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Resources.Container;
-using Hypercube.Shared.Resources.Manager;
-using Hypercube.Shared.Runtimes.Event;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.Graphics.Texturing;
+using Hypercube.Graphics.Windowing;
+using Hypercube.Logging;
+using Hypercube.OpenGL;
+using Hypercube.Resources.Container;
+using Hypercube.Resources.Manager;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Timing;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -30,7 +30,7 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     private readonly ILogger _logger = LoggingManager.GetLogger("renderer");
     private readonly ILogger _loggerOpenGL = LoggingManager.GetLogger("open_gl")!;
 
-    private IWindowManager _windowManager = default!;
+    private IWindowing _windowing = default!;
     private IBindingsContext _bindingsContext = default!;
     private Thread _currentThread = default!;
 
@@ -78,8 +78,8 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
     
     private void OnInitialization(ref RuntimeInitializationEvent args)
     {
-        _windowManager = CreateWindowManager();
-        _bindingsContext = new BindingsContext(_windowManager);
+        _windowing = CreateWindowManager();
+        _bindingsContext = new BindingsContext(_windowing);
     }
 
     private void OnStartup(ref RuntimeStartupEvent args)
@@ -98,16 +98,16 @@ public sealed partial class Renderer : IRenderer, IPostInject, IEventSubscriber
             break;
         }
 
-        var windowIcons = _windowManager.LoadWindowIcons(_textureManager, _resourceLoader, "/Icons").ToList();
-        _windowManager.WindowSetIcons(MainWindow, windowIcons);
+        //var windowIcons = _windowing.LoadWindowIcons(_textureManager, _resourceLoader, "/Icons").ToList();
+        //_windowing.WindowSetIcons(MainWindow, windowIcons);
         
         InitOpenGL();
         OnLoad();
     }
     
-    private IWindowManager CreateWindowManager()
+    private IWindowing CreateWindowManager()
     {
-        var windowManager = new GlfwWindowManager();
+        var windowManager = new GlfwWindowing();
         if (!windowManager.Init())
             throw new Exception();
 

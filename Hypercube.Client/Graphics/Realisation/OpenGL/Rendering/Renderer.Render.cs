@@ -1,13 +1,12 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Resources.Caching;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Mathematics;
 using Hypercube.Mathematics.Matrices;
 using Hypercube.OpenGL.Objects;
 using Hypercube.OpenGL.Utilities.Helpers;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.Runtime.Events;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
@@ -79,10 +78,10 @@ public sealed partial class Renderer
                 $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
         }
 
-        _windowManager.WindowSetTitle(MainWindow,
+        _windowing.WindowSetTitle(MainWindow,
             $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle} | Batches: {_batches.Count}");
 #endif
-        _windowManager.PollEvents();
+        _windowing.PollEvents();
     }
 
     private void OnFrameRender(ref RenderFrameEvent args)
@@ -134,7 +133,7 @@ public sealed partial class Renderer
         var evUI = new RenderAfterDrawingEvent();
         _eventBus.Raise(ref evUI);
         
-        _windowManager.WindowSwapBuffers(window);
+        _windowing.WindowSwapBuffers(window);
     }
     
     public void Clear()

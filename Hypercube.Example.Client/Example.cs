@@ -1,5 +1,5 @@
-﻿using Hypercube.Client.Audio;
-using Hypercube.Client.Audio.Resources;
+﻿using Hypercube.Audio;
+using Hypercube.Audio.Resources;
 using Hypercube.Client.Entities.Systems.Sprite;
 using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
@@ -10,14 +10,14 @@ using Hypercube.EventBus;
 using Hypercube.Example.Client.Controls;
 using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
+using Hypercube.Resources;
+using Hypercube.Resources.Container;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Entities.Realisation.Manager;
 using Hypercube.Shared.Entities.Systems.Physics;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.Physics;
 using Hypercube.Shared.Physics.Shapes;
-using Hypercube.Shared.Resources;
-using Hypercube.Shared.Resources.Container;
-using Hypercube.Shared.Runtimes.Event;
 using Hypercube.Shared.Scenes;
 
 namespace Hypercube.Example.Client;

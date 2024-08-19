@@ -1,8 +1,8 @@
-﻿using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Graphics.Texturing.Settings;
-using Hypercube.Client.Utilities.Helpers;
+﻿using Hypercube.Graphics.Texturing;
+using Hypercube.Graphics.Texturing.Settings;
+using Hypercube.OpenGL.Utilities.Helpers;
 using OpenToolkit.Graphics.OpenGL4;
-using TextureTarget = Hypercube.Client.Graphics.Texturing.Parameters.TextureTarget;
+using TextureTarget = Hypercube.Graphics.Texturing.Parameters.TextureTarget;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;
 

@@ -1,5 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
-using Hypercube.Client.Graphics.Texturing;
+using Hypercube.Graphics.Texturing;
 using Hypercube.Mathematics;
 using Hypercube.Mathematics.Matrices;
 using Hypercube.Mathematics.Shapes;

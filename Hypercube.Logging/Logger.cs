@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 
-namespace Hypercube.Shared.Logging;
+namespace Hypercube.Logging;
 
 public class Logger(string name) : ILogger
 {

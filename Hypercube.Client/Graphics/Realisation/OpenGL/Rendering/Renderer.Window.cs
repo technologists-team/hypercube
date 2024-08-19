@@ -1,5 +1,5 @@
 ﻿using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Graphics.Windows;
+using Hypercube.Graphics;
 using Hypercube.Graphics.Windowing;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
@@ -14,12 +14,12 @@ public sealed partial class Renderer
     
     public void EnterWindowLoop()
     {
-        _windowManager.EnterWindowLoop();
+        _windowing.EnterWindowLoop();
     }
 
     public void TerminateWindowLoop()
     {
-        _windowManager.Terminate();
+        _windowing.Terminate();
     }
 
     public WindowHandle CreateWindow(WindowCreateSettings settings)
@@ -33,7 +33,7 @@ public sealed partial class Renderer
     
     public void DestroyWindow(WindowHandle handle)
     {
-        _windowManager.WindowDestroy(handle);
+        _windowing.WindowDestroy(handle);
         _windows.Remove(handle.Id);
     }
 
@@ -53,7 +53,7 @@ public sealed partial class Renderer
         DestroyWindow(handle);
     }
     
-    private bool InitMainWindow(ContextInfo? context, WindowCreateSettings settings)
+    private bool InitMainWindow(IContextInfo? context, WindowCreateSettings settings)
     {
         var (registration, error) = CreateWindow(context, settings, null);
         if (registration is null)
@@ -66,17 +66,17 @@ public sealed partial class Renderer
         return true;
     }
 
-    private (WindowHandle? registration, string? error) CreateWindow(ContextInfo? context, WindowCreateSettings settings, WindowHandle? share)
+    private (WindowHandle? registration, string? error) CreateWindow(IContextInfo? context, WindowCreateSettings settings, WindowHandle? share)
     {
-        var result = _windowManager.WindowCreate(context, settings, share);
+        var result = _windowing.WindowCreate(context, settings, share);
         if (result.Failed)
             return (null, result.Error);
 
-        var handle = result.Registration?.Handle;
+        var handle = result.Registration;
         if (handle is null)
             return (null, "registration is null");
         
-        _windowManager.MakeContextCurrent(handle);
+        _windowing.MakeContextCurrent(handle);
         _windows.Add(handle.Id, handle);
         
         _logger.EngineInfo($"Created new {handle}");

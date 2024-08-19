@@ -4,9 +4,9 @@ using Hypercube.Client.Input.Events.Windowing;
 using Hypercube.Dependencies;
 using Hypercube.EventBus;
 using Hypercube.Input;
+using Hypercube.Logging;
 using Hypercube.Mathematics.Vectors;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.Runtime.Events;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client.Input.Handler;

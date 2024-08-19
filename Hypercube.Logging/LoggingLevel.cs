@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Shared.Logging;
+﻿namespace Hypercube.Logging;
 
 [Flags]
 public enum LoggingLevel

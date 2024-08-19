@@ -1,8 +1,7 @@
-﻿using Hypercube.OpenGL.Utilities.Helpers;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
-namespace Hypercube.OpenGL;
+namespace Hypercube.OpenGL.Utilities.Helpers;
 
 [PublicAPI]
 public static class GLSettingsHelper

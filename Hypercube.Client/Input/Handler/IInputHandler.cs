@@ -1,6 +1,6 @@
-﻿using Hypercube.Client.Graphics.Windows;
-using Hypercube.Client.Input.Events;
+﻿using Hypercube.Client.Input.Events;
 using Hypercube.EventBus;
+using Hypercube.Graphics.Windowing;
 using Hypercube.Input;
 using Hypercube.Mathematics.Vectors;
 using JetBrains.Annotations;
@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace Hypercube.Client.Input.Handler;
 
 /// <summary>
-/// Receives requests from user input, via <see cref="IWindowManager"/>,
+/// Receives requests from user input, via <see cref="IWindowing"/>,
 /// and submits them for further work via events.
 /// </summary>
 [PublicAPI]

@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Dependencies;
+﻿using JetBrains.Annotations;
 
-[AttributeUsage(AttributeTargets.Field)]
+namespace Hypercube.Dependencies;
+
+[PublicAPI, AttributeUsage(AttributeTargets.Field)]
 public class DependencyAttribute : Attribute;

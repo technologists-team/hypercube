@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Shared.Logging;
+using Hypercube.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit.Graphics.OpenGL4;
 
