@@ -15,6 +15,8 @@ public interface IImGuiController : IImGui
 
     void InputFrame();
     void UpdateMousePosition(Vector2Int position);
-    void UpdateMouseButtons(MouseButton button, bool state);
+    void UpdateKey(Key key, KeyState state, KeyModifiers modifiers);
+    void UpdateMouseButtons(MouseButton button, KeyState state, KeyModifiers modifiers);
     void UpdateMouseScroll(Vector2 offset);
+    void UpdateInputCharacter(char character);
 }

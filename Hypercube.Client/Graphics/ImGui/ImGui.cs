@@ -31,10 +31,11 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _eventBus.Subscribe<RenderAfterDrawingEvent>(this, OnRenderUI);
         
         _eventBus.Subscribe<MouseButtonHandledEvent>(this, OnMouseButton);
+        _eventBus.Subscribe<KeyHandledEvent>(this, OnKey);
         _eventBus.Subscribe<MousePositionHandledEvent>(this, OnMousePosition);
         _eventBus.Subscribe<ScrollHandledEvent>(this, OnInputScroll);
+        _eventBus.Subscribe<CharHandledEvent>(this, OnChar);
     }
-    
 
     private void OnGraphicsInitialized(ref GraphicsLibraryInitializedEvent args)
     {
@@ -62,9 +63,14 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _controller.Render();
     }
     
+    private void OnKey(ref KeyHandledEvent args)
+    {
+        _controller.UpdateKey(args.Key, args.State, args.Modifiers);
+    }
+    
     private void OnMouseButton(ref MouseButtonHandledEvent args)
     {
-        _controller.UpdateMouseButtons(args.Button, args.State is KeyState.Pressed or KeyState.Held);
+        _controller.UpdateMouseButtons(args.Button, args.State, args.Modifiers);
     }
     
     private void OnMousePosition(ref MousePositionHandledEvent args)
@@ -75,5 +81,10 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     private void OnInputScroll(ref ScrollHandledEvent args)
     {
         _controller.UpdateMouseScroll(args.Offset);
+    }
+    
+    private void OnChar(ref CharHandledEvent args)
+    {
+        _controller.UpdateInputCharacter(args.Char);
     }
 }
