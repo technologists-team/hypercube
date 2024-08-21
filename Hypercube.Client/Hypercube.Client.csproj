@@ -30,6 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include=".\Libraries\**" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <None Include=".\Libraries\**" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     </ItemGroup>
 </Project>

@@ -23,6 +23,6 @@
     </ItemGroup>
     
     <ItemGroup>
-        <None Include="..\Resources\**" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="..\Resources\**" Link="Resources\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     </ItemGroup>
 </Project>
