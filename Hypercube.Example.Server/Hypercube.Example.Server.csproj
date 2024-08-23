@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <Import Project="..\build\main.props" />
+
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <PackageId>Hypercube.Example.Server</PackageId>
+        <Product>Hypercube.Example.Server</Product>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <ProjectReference Include="..\Hypercube.Server\Hypercube.Server.csproj" />
     </ItemGroup>

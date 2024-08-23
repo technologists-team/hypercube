@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
+    <PropertyGroup>
+        <PackageId>Hypercube.Audio</PackageId>
+        <Product>Hypercube.Audio</Product>
+    </PropertyGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Resources\Hypercube.Resources.csproj" />
     </ItemGroup>

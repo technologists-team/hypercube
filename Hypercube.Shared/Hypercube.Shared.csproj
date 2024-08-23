@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
-    </PropertyGroup>
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PackageId>Hypercube.Shared</PackageId>
+        <Product>Hypercube.Shared</Product>
+    </PropertyGroup>
+    
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0-2.final" />
       <PackageReference Include="YamlDotNet" Version="16.0.0" />
     </ItemGroup>

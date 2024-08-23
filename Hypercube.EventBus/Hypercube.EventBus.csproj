@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <PackageId>Hypercube.EventBus</PackageId>
+        <Product>Hypercube.EventBus</Product>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Utilities\Hypercube.Utilities.csproj" />

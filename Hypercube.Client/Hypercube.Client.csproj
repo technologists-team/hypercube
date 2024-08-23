@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <PackageId>Hypercube.Client</PackageId>
+        <Product>Hypercube.Client</Product>
     </PropertyGroup>
-
+    
     <ItemGroup>
       <Compile Remove="bin\**" />
       <EmbeddedResource Remove="bin\**" />

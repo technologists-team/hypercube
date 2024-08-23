@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <PackageId>Hypercube.Runtime</PackageId>
+        <Product>Hypercube.Runtime</Product>
     </PropertyGroup>
 
     <ItemGroup>
