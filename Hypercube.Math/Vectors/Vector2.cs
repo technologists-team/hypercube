@@ -263,9 +263,10 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
         return a.X * b.Y - a.Y * b.X;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(Vector2 other)
     {
-        return Length.CompareTo(other.Length);
+        return LengthSquared.CompareTo(other.LengthSquared);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
