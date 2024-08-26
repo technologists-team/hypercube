@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Hypercube.Math.Vectors;
-using System.Text;
-using System.Threading.Tasks;
-using static Hypercube.Math.Vectors.Vector2;
+using NUnit.Framework;
 
 namespace Hypercube.UnitTests.Math;
 
@@ -22,7 +18,7 @@ public sealed class CompareToTest
         var result = vector1.CompareTo(vector2);
 
         // Assert
-        Assert.Less(result, 0); 
+        Assert.Less(result, 0);
     }
 
     [Test]
@@ -33,7 +29,7 @@ public sealed class CompareToTest
         var vector2 = new Vector2(6, 4);
 
         // Act
-        var result = vector1.CompareTo(vector2, ComparisonType.XComponent);
+        var result = vector1.CompareTo(vector2, v => v.X);
 
         // Assert
         Assert.Less(result, 0); // Expecting vector1 to be "less than" vector2 based on X component
@@ -47,7 +43,7 @@ public sealed class CompareToTest
         var vector2 = new Vector2(3, 2);
 
         // Act
-        var result = vector1.CompareTo(vector2, ComparisonType.YComponent);
+        var result = vector1.CompareTo(vector2, v => v.Y);
 
         // Assert
         Assert.Greater(result, 0); // Expecting vector1 to be "greater than" vector2 based on Y component
@@ -61,7 +57,7 @@ public sealed class CompareToTest
         var vector2 = new Vector2(1, 0); // Angle = 0 degrees
 
         // Act
-        var result = vector1.CompareTo(vector2, ComparisonType.Angle);
+        var result = vector1.CompareTo(vector2, v => v.Angle);
 
         // Assert
         Assert.Greater(result, 0); // Expecting vector1 to be "greater than" vector2 based on Angle
@@ -76,9 +72,9 @@ public sealed class CompareToTest
 
         // Act & Assert
         Assert.AreEqual(0, vector1.CompareTo(vector2));
-        Assert.AreEqual(0, vector1.CompareTo(vector2, ComparisonType.XComponent));
-        Assert.AreEqual(0, vector1.CompareTo(vector2, ComparisonType.YComponent));
-        Assert.AreEqual(0, vector1.CompareTo(vector2, ComparisonType.Angle));
+        Assert.AreEqual(0, vector1.CompareTo(vector2, v => v.X));
+        Assert.AreEqual(0, vector1.CompareTo(vector2, v => v.Y));
+        Assert.AreEqual(0, vector1.CompareTo(vector2, v => v.Angle));
     }
 
     [Test]
@@ -90,22 +86,11 @@ public sealed class CompareToTest
 
         // Act
         var lengthComparison = vector1.CompareTo(vector2);
-        var xComponentComparison = vector1.CompareTo(vector2, ComparisonType.XComponent);
-        var yComponentComparison = vector1.CompareTo(vector2, ComparisonType.YComponent);
+        var xComponentComparison = vector1.CompareTo(vector2, v => v.X);
+        var yComponentComparison = vector1.CompareTo(vector2, v => v.Y);
 
         // Assert
         Assert.AreNotEqual(lengthComparison, xComponentComparison);
         Assert.AreNotEqual(xComponentComparison, yComponentComparison);
-    }
-
-    [Test]
-    public void CompareTo_InvalidComparisonType_ThrowsArgumentOutOfRangeException()
-    {
-        // Arrange
-        var vector1 = new Vector2(3, 4);
-        var vector2 = new Vector2(3, 4);
-
-        // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => vector1.CompareTo(vector2, (ComparisonType)999));
     }
 }

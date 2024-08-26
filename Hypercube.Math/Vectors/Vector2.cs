@@ -270,25 +270,8 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int CompareTo(Vector2 other, ComparisonType comparisonType)
+    public int CompareTo(Vector2 other, Func<Vector2, double> selector)
     {
-        switch (comparisonType)
-        {
-            case ComparisonType.XComponent:
-                return X.CompareTo(other.X);
-            case ComparisonType.YComponent:
-                return Y.CompareTo(other.Y);
-            case ComparisonType.Angle:
-                return Angle.CompareTo(other.Angle);
-            default:
-                throw new ArgumentOutOfRangeException(nameof(comparisonType), comparisonType, "Invalid ComparisonType");
-        }
-    }
-
-    public enum ComparisonType
-    {
-        XComponent,
-        YComponent,
-        Angle
+        return selector(this).CompareTo(selector(other));
     }
 }
