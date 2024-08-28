@@ -1,6 +1,7 @@
 ﻿using Hypercube.Client.Graphics.Texturing.Settings;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Resources;
+using Hypercube.Dependencies;
+using Hypercube.Graphics.Texturing;
+using Hypercube.Resources;
 
 namespace Hypercube.Client.Graphics.Texturing;
 

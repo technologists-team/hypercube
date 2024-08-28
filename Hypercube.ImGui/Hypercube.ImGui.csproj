@@ -1,20 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PackageId>Hypercube.ImGui</PackageId>
+        <Product>Hypercube.ImGui</Product>
+    </PropertyGroup>
+    
     <ItemGroup>
       <PackageReference Include="ImGui.NET" Version="1.91.0.1" />
-      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
       <PackageReference Include="OpenTK" Version="5.0.0-pre.11" />
       <PackageReference Include="OpenToolkit.Core" Version="4.0.0-pre9.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Input\Hypercube.Input.csproj" />
       <ProjectReference Include="..\Hypercube.OpenGL\Hypercube.OpenGL.csproj" />
     </ItemGroup>
 

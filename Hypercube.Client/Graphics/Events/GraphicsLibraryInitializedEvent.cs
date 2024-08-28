@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.EventBus.Events;
+﻿using Hypercube.EventBus.Events;
 
 namespace Hypercube.Client.Graphics.Events;
 

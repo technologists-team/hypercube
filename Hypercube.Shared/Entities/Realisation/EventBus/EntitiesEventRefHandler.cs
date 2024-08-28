@@ -1,6 +1,6 @@
 ﻿using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Realisation.EventBus.EventArgs;
-using Hypercube.Shared.Utilities.Units;
+using Hypercube.Utilities.Units;
 
 namespace Hypercube.Shared.Entities.Realisation.EventBus;
 

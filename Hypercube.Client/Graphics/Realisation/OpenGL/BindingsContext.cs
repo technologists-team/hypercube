@@ -1,12 +1,12 @@
-﻿using Hypercube.Client.Graphics.Windows;
+﻿using Hypercube.Graphics.Windowing;
 using OpenToolkit;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL;
 
-public sealed class BindingsContext(IWindowManager windowManager) : IBindingsContext
+public sealed class BindingsContext(IWindowing windowing) : IBindingsContext
 {
-    public IntPtr GetProcAddress(string procName)
+    public nint GetProcAddress(string procName)
     {
-        return windowManager.GetProcAddress(procName);
+        return windowing.GetProcAddress(procName);
     }
 }

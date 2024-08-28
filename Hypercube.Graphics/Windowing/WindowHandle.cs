@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Vectors;
 using JetBrains.Annotations;
 
 namespace Hypercube.Graphics.Windowing;
@@ -7,14 +7,11 @@ namespace Hypercube.Graphics.Windowing;
 [PublicAPI]
 public abstract class WindowHandle
 {
-    public readonly WindowId Id;
-    public readonly nint Pointer;
-    
-    public WindowHandle? Owner;
-    
-    public bool DisposeOnClose;
-    public bool IsDisposed;
-
+    public WindowId Id { get; }
+    public nint Pointer { get; }
+    public WindowHandle? Owner { get; }
+    public bool DisposeOnClose { get; }
+    public bool IsDisposed { get; }
     public float Ratio { get; init; }
     public Vector2Int Size { get; set; }
     public Vector2Int FramebufferSize { get; init; }

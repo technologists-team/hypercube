@@ -1,17 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <PackageId>Hypercube.Graphics</PackageId>
+        <Product>Hypercube.Graphics</Product>
     </PropertyGroup>
-
+    
     <ItemGroup>
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2024.2.0" />
+      <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
+      <ProjectReference Include="..\Hypercube.Resources\Hypercube.Resources.csproj" />
     </ItemGroup>
 
 </Project>

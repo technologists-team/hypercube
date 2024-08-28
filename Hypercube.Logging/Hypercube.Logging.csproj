@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+
+    <PropertyGroup>
+        <PackageId>Hypercube.Logging</PackageId>
+        <Product>Hypercube.Logging</Product>
+    </PropertyGroup>
+
+</Project>

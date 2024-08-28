@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+    
+    <PropertyGroup>
+        <PackageId>Hypercube.Dependecies</PackageId>
+        <Product>Hypercube.Dependecies</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Logging\Hypercube.Logging.csproj" />
+      <ProjectReference Include="..\Hypercube.Utilities\Hypercube.Utilities.csproj" />
+    </ItemGroup>
+</Project>

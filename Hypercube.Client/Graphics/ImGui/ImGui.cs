@@ -1,11 +1,13 @@
 ﻿using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.ImGui.Events;
 using Hypercube.Client.Graphics.Rendering;
+using Hypercube.Client.Input.Events;
+using Hypercube.Dependencies;
+using Hypercube.EventBus;
 using Hypercube.ImGui;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.EventBus;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.Input;
+using Hypercube.Logging;
+using Hypercube.Runtime.Events;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client.Graphics.ImGui;
@@ -23,16 +25,29 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
     public void PostInject()
     {
         _eventBus.Subscribe<GraphicsLibraryInitializedEvent>(this, OnGraphicsInitialized);
+        
+        _eventBus.Subscribe<InputFrameEvent>(this, OnInputFrame);
         _eventBus.Subscribe<UpdateFrameEvent>(this, OnUpdateFrame);
-        _eventBus.Subscribe<RenderDrawingEvent>(this, OnRenderDrawing);
+        _eventBus.Subscribe<RenderAfterDrawingEvent>(this, OnRenderUI);
+        
+        _eventBus.Subscribe<MouseButtonHandledEvent>(this, OnMouseButton);
+        _eventBus.Subscribe<KeyHandledEvent>(this, OnKey);
+        _eventBus.Subscribe<MousePositionHandledEvent>(this, OnMousePosition);
+        _eventBus.Subscribe<ScrollHandledEvent>(this, OnInputScroll);
+        _eventBus.Subscribe<CharHandledEvent>(this, OnChar);
     }
-    
+
     private void OnGraphicsInitialized(ref GraphicsLibraryInitializedEvent args)
     {
         _controller = ImGuiFactory.Create(_renderer.MainWindow);
         _controller.OnErrorHandled += message => _logger.Error(message);
         
         _controller.Initialize();
+    }    
+    
+    private void OnInputFrame(ref InputFrameEvent args)
+    {
+        _controller.InputFrame();
     }
     
     private void OnUpdateFrame(ref UpdateFrameEvent args)
@@ -40,31 +55,36 @@ public sealed class ImGui : IImGui, IEventSubscriber, IPostInject
         _controller.Update(args.DeltaSeconds);
     }
 
-    private void OnRenderDrawing(ref RenderDrawingEvent args)
+    private void OnRenderUI(ref RenderAfterDrawingEvent args)
     {
         var ev = new ImGuiRenderEvent(this);
         _eventBus.Raise(ev);
         
         _controller.Render();
     }
-
-    public void Begin(string name)
+    
+    private void OnKey(ref KeyHandledEvent args)
     {
-        _controller.Begin(name);
+        _controller.UpdateKey(args.Key, args.State, args.Modifiers);
+    }
+    
+    private void OnMouseButton(ref MouseButtonHandledEvent args)
+    {
+        _controller.UpdateMouseButtons(args.Button, args.State, args.Modifiers);
+    }
+    
+    private void OnMousePosition(ref MousePositionHandledEvent args)
+    {
+        _controller.UpdateMousePosition(args.Position);
     }
 
-    public void Text(string label)
+    private void OnInputScroll(ref ScrollHandledEvent args)
     {
-        _controller.Text(label);
+        _controller.UpdateMouseScroll(args.Offset);
     }
-
-    public bool Button(string label)
+    
+    private void OnChar(ref CharHandledEvent args)
     {
-        return _controller.Button(label);
-    }
-
-    public void End()
-    {
-        _controller.End();
+        _controller.UpdateInputCharacter(args.Char);
     }
 }

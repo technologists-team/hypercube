@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.EventBus;
+using Hypercube.Dependencies;
+using Hypercube.EventBus;
 using Hypercube.Shared.Scenes.Events;
 
 namespace Hypercube.Shared.Scenes.Manager;

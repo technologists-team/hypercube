@@ -1,11 +1,11 @@
 ﻿using Hypercube.Client.Graphics.Rendering;
 using Hypercube.Client.Graphics.Viewports;
-using Hypercube.Shared.Dependency;
+using Hypercube.Dependencies;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Entities.Realisation;
 using Hypercube.Shared.Entities.Realisation.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Transform;
-using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Example.Client.Camera;
 

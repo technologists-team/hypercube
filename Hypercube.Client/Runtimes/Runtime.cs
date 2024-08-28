@@ -1,11 +1,9 @@
 ﻿using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Runtimes.Loop;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.EventBus;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Runtimes;
-using Hypercube.Shared.Runtimes.Event;
-using Hypercube.Shared.Runtimes.Loop;
+using Hypercube.Dependencies;
+using Hypercube.EventBus;
+using Hypercube.Logging;
+using Hypercube.Runtime;
+using Hypercube.Runtime.Events;
 
 namespace Hypercube.Client.Runtimes;
 

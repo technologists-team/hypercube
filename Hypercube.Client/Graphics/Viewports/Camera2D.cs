@@ -1,7 +1,7 @@
-﻿using Hypercube.Math;
-using Hypercube.Math.Matrices;
-using Hypercube.Math.Transforms;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Mathematics;
+using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Transforms;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Client.Graphics.Viewports;
 

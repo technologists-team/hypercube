@@ -1,13 +1,12 @@
 ﻿using Hypercube.Client.Graphics.Drawing;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Client.Graphics.Windows;
-using Hypercube.Client.Resources.Caching;
 using Hypercube.Graphics.Shaders;
 using Hypercube.Graphics.Windowing;
-using Hypercube.Math;
-using Hypercube.Math.Matrices;
+using Hypercube.Mathematics;
+using Hypercube.Mathematics.Matrices;
 using Hypercube.OpenGL.Objects;
-using Hypercube.Shared.Runtimes.Loop.Event;
+using Hypercube.OpenGL.Utilities.Helpers;
+using Hypercube.Runtime.Events;
 using OpenToolkit.Graphics.OpenGL4;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Rendering;
@@ -27,7 +26,7 @@ public sealed partial class Renderer
 
     private int _batchVertexIndex;
     private int _batchIndexIndex; // Haha name it's fun
-    
+
     /// <summary>
     /// Contains info about currently running batch.
     /// </summary>
@@ -44,9 +43,9 @@ public sealed partial class Renderer
         _texturingShaderProgram = _resourceContainer.GetResource<ShaderSourceResource>("/Shaders/base_texturing")
             .ShaderProgram;
 
+        _vao = new ArrayObject();
         _vbo = new BufferObject(BufferTarget.ArrayBuffer);
         _ebo = new BufferObject(BufferTarget.ElementArrayBuffer);
-        _vao = new ArrayObject();
 
         _vao.Bind();
         _vbo.SetData(_batchVertices);
@@ -79,10 +78,10 @@ public sealed partial class Renderer
                 $"| cPos: {_cameraManager.MainCamera.Position}| cRot: {_cameraManager.MainCamera.Rotation * HyperMathF.RadiansToDegrees} | cScale: {_cameraManager.MainCamera.Scale}";
         }
 
-        _windowManager.WindowSetTitle(MainWindow,
+        _windowing.WindowSetTitle(MainWindow,
             $"FPS: {_timing.Fps} | RealTime: {_timing.RealTime} {cameraTitle} | Batches: {_batches.Count}");
 #endif
-        _windowManager.PollEvents();
+        _windowing.PollEvents();
     }
 
     private void OnFrameRender(ref RenderFrameEvent args)
@@ -90,19 +89,34 @@ public sealed partial class Renderer
         Render(MainWindow);
     }
 
+    public void SetupRender()
+    {
+        GL.Enable(EnableCap.Blend);
+        
+        GL.BlendEquation(BlendEquationMode.FuncAdd);
+        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+   
+        GL.Disable(EnableCap.ScissorTest);
+        
+        GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+        
+        GL.ClearColor(0, 0, 0, 0);
+    }
+
     public void Render(WindowHandle window)
     {
         Clear();
 
         GL.Viewport(window.Size);
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-        var args = new RenderDrawingEvent();
-        _eventBus.Raise(ref args);
+        GL.Clear(ClearBufferMask.ColorBufferBit);
+        
+        var ev = new RenderDrawingEvent();
+        _eventBus.Raise(ref ev);
 
         // break batch so we get all batches
         BreakCurrentBatch();
-
+        SetupRender();
+        
         _vao.Bind();
         _vbo.SetData(_batchVertices);
         _ebo.SetData(_batchIndices);
@@ -116,7 +130,10 @@ public sealed partial class Renderer
         _vbo.Unbind();
         _ebo.Unbind();
         
-        _windowManager.WindowSwapBuffers(window);
+        var evUI = new RenderAfterDrawingEvent();
+        _eventBus.Raise(ref evUI);
+        
+        _windowing.WindowSwapBuffers(window);
     }
     
     public void Clear()
@@ -149,6 +166,7 @@ public sealed partial class Renderer
         GL.DrawElements(batch.PrimitiveType, batch.Size, DrawElementsType.UnsignedInt, batch.Start * sizeof(uint));
 
         shader.Stop();
+        GLHelper.UnbindTexture(TextureTarget.Texture2D);
     }
 
     /// <summary>

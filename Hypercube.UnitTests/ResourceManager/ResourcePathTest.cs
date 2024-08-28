@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.Resources;
+﻿using Hypercube.Resources;
 
 namespace Hypercube.UnitTests.ResourceManager;
 

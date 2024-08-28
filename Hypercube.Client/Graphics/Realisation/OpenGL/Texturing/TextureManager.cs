@@ -1,10 +1,11 @@
-﻿using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Graphics.Texturing.Settings;
-using Hypercube.Math;
-using Hypercube.Math.Vectors;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Resources;
-using Hypercube.Shared.Resources.Manager;
+﻿using Hypercube.Client.Graphics.Texturing.Settings;
+using Hypercube.Dependencies;
+using Hypercube.Graphics.Texturing;
+using Hypercube.Graphics.Texturing.Settings;
+using Hypercube.Mathematics;
+using Hypercube.Mathematics.Vectors;
+using Hypercube.Resources;
+using Hypercube.Resources.Manager;
 using StbImageSharp;
 
 namespace Hypercube.Client.Graphics.Realisation.OpenGL.Texturing;

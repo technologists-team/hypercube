@@ -1,4 +1,4 @@
-﻿using Hypercube.Math.Transforms;
+﻿using Hypercube.Mathematics.Transforms;
 using Hypercube.Shared.Entities.Realisation.Components;
 using Hypercube.Shared.Entities.Systems.Transform.Coordinates;
 using Hypercube.Shared.Scenes;

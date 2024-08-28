@@ -1,14 +1,14 @@
 ﻿using System.Diagnostics;
-using Hypercube.Client.Audio.Events;
-using Hypercube.Client.Audio.Resources;
+using Hypercube.Audio.Events;
+using Hypercube.Audio.Resources;
+using Hypercube.Client.Graphics;
 using Hypercube.Client.Graphics.Events;
 using Hypercube.Client.Graphics.Texturing;
-using Hypercube.Client.Resources.Caching;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Logging;
-using Hypercube.Shared.Resources.Container;
-using Hypercube.Shared.Resources.Manager;
-using Hypercube.Shared.Resources.Preloader;
+using Hypercube.Dependencies;
+using Hypercube.Logging;
+using Hypercube.Resources.Container;
+using Hypercube.Resources.Manager;
+using Hypercube.Resources.Preloader;
 using JetBrains.Annotations;
 
 namespace Hypercube.Client;

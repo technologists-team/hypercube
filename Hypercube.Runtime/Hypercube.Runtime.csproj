@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+
+    <PropertyGroup>
+        <PackageId>Hypercube.Runtime</PackageId>
+        <Product>Hypercube.Runtime</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.EventBus\Hypercube.EventBus.csproj" />
+    </ItemGroup>
+
+</Project>

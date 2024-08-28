@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Hypercube.Client.Graphics.Events;
-using Hypercube.Shared.Logging;
+using Hypercube.Logging;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -40,12 +39,8 @@ public sealed partial class Renderer
         
         GL.DebugMessageCallback(_debugProc, nint.Zero);
         
-        GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.DebugOutput);
         GL.Enable(EnableCap.DebugOutputSynchronous);
-        
-        GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-        GL.ClearColor(0, 0, 0, 0);
         
         _loggerOpenGL.EngineInfo("Initialized");
         _eventBus.Raise(new GraphicsLibraryInitializedEvent());

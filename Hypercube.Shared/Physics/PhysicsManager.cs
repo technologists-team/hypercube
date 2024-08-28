@@ -1,6 +1,6 @@
-﻿using Hypercube.Shared.Dependency;
-using Hypercube.Shared.EventBus;
-using Hypercube.Shared.Runtimes.Loop.Event;
+﻿using Hypercube.Dependencies;
+using Hypercube.EventBus;
+using Hypercube.Runtime.Events;
 
 namespace Hypercube.Shared.Physics;
 

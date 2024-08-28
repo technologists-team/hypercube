@@ -1,7 +1,7 @@
 using System.Collections.Frozen;
 using Hypercube.Graphics.Shaders;
-using Hypercube.Math.Matrices;
-using Hypercube.Math.Vectors;
+using Hypercube.Mathematics.Matrices;
+using Hypercube.Mathematics.Vectors;
 using Hypercube.OpenGL.Utilities.Helpers;
 using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;

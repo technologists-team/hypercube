@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+
+    <PropertyGroup>
+        <PackageId>Hypercube.Audio</PackageId>
+        <Product>Hypercube.Audio</Product>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Resources\Hypercube.Resources.csproj" />
+    </ItemGroup>
+
+</Project>

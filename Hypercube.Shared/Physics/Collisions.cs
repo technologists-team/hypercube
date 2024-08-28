@@ -1,5 +1,5 @@
-﻿using Hypercube.Math.Shapes;
-using Hypercube.Math.Vectors;
+﻿using Hypercube.Mathematics.Shapes;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Shared.Physics;
 

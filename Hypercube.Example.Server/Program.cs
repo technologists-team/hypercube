@@ -1,4 +1,4 @@
-﻿using Hypercube.Shared.EventBus;
+﻿using Hypercube.EventBus;
 
 namespace Hypercube.Example.Server;
 

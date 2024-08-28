@@ -1,9 +1,7 @@
-﻿using Hypercube.Server.Runtimes;
+﻿using Hypercube.Dependencies;
+using Hypercube.Runtime;
 using Hypercube.Server.Runtimes.Loop;
 using Hypercube.Shared;
-using Hypercube.Shared.Dependency;
-using Hypercube.Shared.Runtimes;
-using Hypercube.Shared.Runtimes.Loop;
 
 namespace Hypercube.Server;
 
@@ -18,7 +16,7 @@ public static class Dependencies
         
         // Runtime
         rootContainer.Register<IRuntimeLoop, RuntimeLoop>();
-        rootContainer.Register<IRuntime, Runtime>();
+        rootContainer.Register<IRuntime, Runtimes.Runtime>();
         
         rootContainer.InstantiateAll();
     }

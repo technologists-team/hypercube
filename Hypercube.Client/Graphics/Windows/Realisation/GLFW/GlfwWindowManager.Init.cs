@@ -1,9 +1,8 @@
-﻿using Hypercube.Client.Utilities.Helpers;
-using Hypercube.OpenGL.Utilities.Helpers;
+﻿using Hypercube.OpenGL.Utilities.Helpers;
 
-namespace Hypercube.Client.Graphics.Windows.Realisation.Glfw;
+namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 
-public sealed partial class GlfwWindowManager
+public sealed partial class GlfwWindowing
 {
     private bool GlfwInit()
     {

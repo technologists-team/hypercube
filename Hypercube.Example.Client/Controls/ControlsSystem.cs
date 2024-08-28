@@ -1,10 +1,10 @@
-﻿using Hypercube.Client.Input;
-using Hypercube.Client.Input.Handler;
-using Hypercube.Math.Vectors;
-using Hypercube.Shared.Dependency;
+﻿using Hypercube.Client.Input.Handler;
+using Hypercube.Dependencies;
+using Hypercube.Input;
+using Hypercube.Mathematics.Vectors;
+using Hypercube.Runtime.Events;
 using Hypercube.Shared.Entities.Realisation.Systems;
 using Hypercube.Shared.Entities.Systems.Physics;
-using Hypercube.Shared.Runtimes.Loop.Event;
 
 namespace Hypercube.Example.Client.Controls;
 
@@ -16,8 +16,8 @@ public sealed class ControlsSystem : EntitySystem
     {
         base.FrameUpdate(args);
 
-        var inputX = (_inputHandler.IsKeyDown(Key.D) ? 1 : 0) - (_inputHandler.IsKeyDown(Key.A) ? 1 : 0);
-        var inputY = (_inputHandler.IsKeyDown(Key.W) ? 1 : 0) - (_inputHandler.IsKeyDown(Key.S) ? 1 : 0);
+        var inputX = (_inputHandler.IsKeyHeld(Key.D) ? 1 : 0) - (_inputHandler.IsKeyHeld(Key.A) ? 1 : 0);
+        var inputY = (_inputHandler.IsKeyHeld(Key.W) ? 1 : 0) - (_inputHandler.IsKeyHeld(Key.S) ? 1 : 0);
 
         foreach (var entity in GetEntities<ControlsComponent>())
         {

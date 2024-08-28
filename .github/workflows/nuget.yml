@@ -1,0 +1,38 @@
+name: Nuget realease
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: 🛠️ Setup Submodules
+      run: git submodule update --init --recursive
+
+    - name: 🛠️ Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: 🛠️ Install dotnet dependencies
+      run: dotnet restore
+
+    - name: 🛠️ Install dotnet tools
+      run: dotnet tool restore
+
+    - name: 🛠️ Build (Release)
+      run: dotnet build --configuration=Release
+
+    - name: 📦 Pack
+      run: dotnet pack

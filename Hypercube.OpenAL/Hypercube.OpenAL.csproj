@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PackageId>Hypercube.OpenAL</PackageId>
+        <Product>Hypercube.OpenAL</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Audio\Hypercube.Audio.csproj" />
+      <ProjectReference Include="..\Hypercube.Runtime\Hypercube.Runtime.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenToolkit.OpenAL" Version="4.0.0-pre9.3" />
+    </ItemGroup>
+
+</Project>

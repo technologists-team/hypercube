@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
+    <Import Project="..\build\module.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <PackageId>Hypercube.Client</PackageId>
+        <Product>Hypercube.Client</Product>
     </PropertyGroup>
-
+    
     <ItemGroup>
       <Compile Remove="bin\**" />
       <EmbeddedResource Remove="bin\**" />
@@ -15,8 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Audio\Hypercube.Audio.csproj" />
       <ProjectReference Include="..\Hypercube.ImGui\Hypercube.ImGui.csproj" />
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
+      <ProjectReference Include="..\Hypercube.OpenAL\Hypercube.OpenAL.csproj" />
       <ProjectReference Include="..\Hypercube.OpenGL\Hypercube.OpenGL.csproj" />
       <ProjectReference Include="..\Hypercube.Shared\Hypercube.Shared.csproj" />
     </ItemGroup>
@@ -28,6 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include=".\Libraries\**" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <None Include=".\Libraries\**" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     </ItemGroup>
 </Project>

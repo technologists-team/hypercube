@@ -1,9 +1,10 @@
-﻿using OpenToolkit.Graphics.OpenGL4;
-using PixelFormat = Hypercube.Client.Graphics.Texturing.Parameters.PixelFormat;
-using PixelInternalFormat = Hypercube.Client.Graphics.Texturing.Parameters.PixelInternalFormat;
-using PixelType = Hypercube.Client.Graphics.Texturing.Parameters.PixelType;
-using TextureParameterName = Hypercube.Client.Graphics.Texturing.Parameters.TextureParameterName;
-using TextureTarget = Hypercube.Client.Graphics.Texturing.Parameters.TextureTarget;
+﻿using Hypercube.Graphics.Texturing.Settings;
+using OpenToolkit.Graphics.OpenGL4;
+using PixelFormat = Hypercube.Graphics.Texturing.Parameters.PixelFormat;
+using PixelInternalFormat = Hypercube.Graphics.Texturing.Parameters.PixelInternalFormat;
+using PixelType = Hypercube.Graphics.Texturing.Parameters.PixelType;
+using TextureParameterName = Hypercube.Graphics.Texturing.Parameters.TextureParameterName;
+using TextureTarget = Hypercube.Graphics.Texturing.Parameters.TextureTarget;
 
 namespace Hypercube.Client.Graphics.Texturing.Settings;
 
@@ -32,13 +33,13 @@ public struct TextureCreationSettings : ITextureCreationSettings
     public TextureCreationSettings()
     {
         TextureTarget = TextureTarget.Texture2D;
-        Parameters = new()
-        {
+        Parameters =
+        [
             new TextureParameter(TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat),
             new TextureParameter(TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat),
             new TextureParameter(TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest),
-            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest),
-        };
+            new TextureParameter(TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest)
+        ];
         PixelInternalFormat = PixelInternalFormat.Rgba;
         Level = 0;
         Border = 0;

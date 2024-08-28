@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    
+    <Import Project="..\build\main.props" />
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <PackageId>Hypercube.UnitTests</PackageId>
+        <Product>Hypercube.UnitTests</Product>
     </PropertyGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0"/>
         <PackageReference Include="NUnit" Version="3.13.3"/>
@@ -19,7 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Client\Hypercube.Client.csproj" />
-      <ProjectReference Include="..\Hypercube.Math\Hypercube.Math.csproj" />
+      <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
       <ProjectReference Include="..\Hypercube.Shared\Hypercube.Shared.csproj" />
     </ItemGroup>
 
