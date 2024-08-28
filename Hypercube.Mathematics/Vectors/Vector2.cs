@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Hypercube.Mathematics.Vectors;
 
 [PublicAPI, StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2 : IEquatable<Vector2>
+public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>
 {
     public static readonly Vector2 NaN = new(float.NaN, float.NaN);
     public static readonly Vector2 Zero = new(0, 0);
@@ -278,5 +278,17 @@ public readonly partial struct Vector2 : IEquatable<Vector2>
     public static float Cross(Vector2 a, Vector2 b)
     {
         return a.X * b.Y - a.Y * b.X;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(Vector2 other)
+    {
+        return LengthSquared.CompareTo(other.LengthSquared);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(Vector2 other, Func<Vector2, double> selector)
+    {
+        return selector(this).CompareTo(selector(other));
     }
 }
