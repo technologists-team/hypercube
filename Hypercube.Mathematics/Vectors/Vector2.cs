@@ -131,17 +131,35 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public float Dot(Vector2 other)
+    {
+        return Dot(this, other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float Cross(Vector2 other)
     {
         return Cross(this, other);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Dot(Vector2 other)
+    public Vector2 Clamp(Vector2 min, Vector2 max)
     {
-        return Dot(this, other);
+        return Clamp(this, min, max);
     }
-
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Clamp(float min, float max)
+    {
+        return Clamp(this, min, max);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Lerp(Vector2 vector, float amount)
+    {
+        return Lerp(this, vector, amount);
+    }
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2 Max(Vector2 other)
     {
@@ -343,6 +361,30 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     public static float Cross(Vector2 a, Vector2 b)
     {
         return a.X * b.Y - a.Y * b.X;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Lerp(Vector2 vectorA, Vector2 vectorB, float amount)
+    {
+        return new Vector2(
+            float.Lerp(vectorA.X, vectorB.X, amount),
+            float.Lerp(vectorA.Y, vectorB.Y, amount));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Clamp(Vector2 vector, Vector2 min, Vector2 max)
+    {
+        return new Vector2(
+            float.Clamp(vector.X, min.X, max.X),
+            float.Clamp(vector.Y, min.Y, max.Y));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 Clamp(Vector2 vector, float min, float max)
+    {
+        return new Vector2(
+            float.Clamp(vector.X, min, max),
+            float.Clamp(vector.Y, min, max));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -2,7 +2,7 @@
 
 public static class HyperMath
 {
-    public const double PI = System.Math.PI;
+    public const double PI = Math.PI;
     
     public const double PIOver2 = PI / 2;
     public const double PIOver4 = PI / 4;
