@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Hypercube.Mathematics.Vectors;
 
 [PublicAPI, StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>
+public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>, IComparable<float>
 {
     public static readonly Vector2 NaN = new(float.NaN, float.NaN);
     public static readonly Vector2 PositiveInfinity = new(float.PositiveInfinity, float.PositiveInfinity);
@@ -198,6 +198,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     public int CompareTo(Vector2 other)
     {
         return LengthSquared.CompareTo(other.LengthSquared);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(float other)
+    {
+        return LengthSquared.CompareTo(other * other);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

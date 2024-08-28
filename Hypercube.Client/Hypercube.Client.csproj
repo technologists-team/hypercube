@@ -18,6 +18,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Hypercube.Audio\Hypercube.Audio.csproj" />
       <ProjectReference Include="..\Hypercube.ImGui\Hypercube.ImGui.csproj" />
+      <ProjectReference Include="..\Hypercube.Logging\Hypercube.Logging.csproj" />
       <ProjectReference Include="..\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
       <ProjectReference Include="..\Hypercube.OpenAL\Hypercube.OpenAL.csproj" />
       <ProjectReference Include="..\Hypercube.OpenGL\Hypercube.OpenGL.csproj" />
