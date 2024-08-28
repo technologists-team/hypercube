@@ -203,6 +203,12 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 MoveTowards(Vector2 target, float distance)
+    {
+        return MoveTowards(this, target, distance);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2 Rotate(float angle)
     {
         var cos = MathF.Cos(angle);
@@ -362,7 +368,15 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     {
         return a.X * b.Y - a.Y * b.X;
     }
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector2 MoveTowards(Vector2 current, Vector2 target, float distance)
+    {
+        return new Vector2(
+            HyperMathF.MoveTowards(current.X, target.X, distance),
+            HyperMathF.MoveTowards(current.Y, target.Y, distance));
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Lerp(Vector2 vectorA, Vector2 vectorB, float amount)
     {
@@ -370,7 +384,7 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
             float.Lerp(vectorA.X, vectorB.X, amount),
             float.Lerp(vectorA.Y, vectorB.Y, amount));
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Clamp(Vector2 vector, Vector2 min, Vector2 max)
     {
