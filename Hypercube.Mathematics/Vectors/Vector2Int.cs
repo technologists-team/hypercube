@@ -19,7 +19,7 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     public float AspectRatio
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => X / (float)Y;
+        get => X / (float) Y;
     }
     
     public float LengthSquared
@@ -39,6 +39,38 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => this / Length;
     }
+    
+    public float Angle
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => MathF.Atan2(Y, X);
+    }
+
+    public int Summation
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X + Y;
+    }
+
+    public int Production 
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => X * Y;
+    }
+    
+    public int this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            return index switch
+            {
+                0 => X,
+                1 => Y,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
 
     public Vector2Int(int x, int y)
     {
@@ -46,16 +78,16 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
         Y = y;
     }
     
-    public Vector2Int(float x, float y)
-    {
-        X = (int) x;
-        Y = (int) y;
-    }
-
     public Vector2Int(int value)
     {
         X = value;
         Y = value;
+    }
+    
+    public Vector2Int(float x, float y)
+    {
+        X = (int) x;
+        Y = (int) y;
     }
     
     public Vector2Int(float value)
@@ -64,8 +96,10 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
         Y = (int) value;
     }
     
-    public Vector2Int(Vector2Int vector2Int) : this(vector2Int.X, vector2Int.Y)
+    public Vector2Int(Vector2Int value)
     {
+        X = value.X;
+        Y = value.Y;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
