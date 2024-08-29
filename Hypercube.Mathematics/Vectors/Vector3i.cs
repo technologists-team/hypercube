@@ -104,6 +104,21 @@ public readonly partial struct Vector3i : IEquatable<Vector3i>, IComparable<Vect
         get => new(X, Y);
     }
     
+    public int this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            return index switch
+            {
+                0 => X,
+                1 => Y,
+                2 => Z,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
+    
     public Vector3i(int x, int y, int z)
     {
         X = x;

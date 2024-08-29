@@ -143,6 +143,22 @@ public readonly partial struct Vector4 : IEquatable<Vector4>, IComparable<Vector
         get => X * Y * Z * W;
     }
     
+    public float this[int index]
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get
+        {
+            return index switch
+            {
+                0 => X,
+                1 => Y,
+                2 => Z,
+                3 => W,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
+    
     public Vector4(float x, float y, float z, float w)
     {
         X = x;
