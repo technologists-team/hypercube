@@ -302,7 +302,7 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(float other)
     {
-        return LengthSquared.CompareTo(other * other * other);
+        return LengthSquared.CompareTo(other * other);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

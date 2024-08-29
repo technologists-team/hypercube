@@ -13,4 +13,11 @@ public static class HyperMath
 
     public const double RadiansToDegrees = 180 / PI;
     public const double DegreesToRadians = PI / 180;
+    
+    public static int MoveTowards(int current, int target, int distance)
+    {
+        return current < target ?
+            Math.Min(current + distance, target) :
+            Math.Max(current - distance, target);
+    }
 }

@@ -1,7 +1,9 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Hypercube.Mathematics.Vectors;
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public readonly partial struct Vector2i
 {
     /*
