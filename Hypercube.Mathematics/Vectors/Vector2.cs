@@ -119,27 +119,27 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float DistanceSquared(Vector2 other)
+    public float DistanceSquared(Vector2 value)
     {
-        return (this - other).LengthSquared;
+        return (this - value).LengthSquared;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Distance(Vector2 other)
+    public float Distance(Vector2 value)
     {
-        return MathF.Sqrt(DistanceSquared(this, other));
+        return MathF.Sqrt(DistanceSquared(this, value));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Dot(Vector2 other)
+    public float Dot(Vector2 value)
     {
-        return Dot(this, other);
+        return Dot(this, value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Cross(Vector2 other)
+    public float Cross(Vector2 value)
     {
-        return Cross(this, other);
+        return Cross(this, value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,21 +155,21 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Lerp(Vector2 vector, float amount)
+    public Vector2 Lerp(Vector2 value, float amount)
     {
-        return Lerp(this, vector, amount);
+        return Lerp(this, value, amount);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Max(Vector2 other)
+    public Vector2 Max(Vector2 value)
     {
-        return Max(this, other);
+        return Max(this, value);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Min(Vector2 other)
+    public Vector2 Min(Vector2 value)
     {
-        return Min(this, other);
+        return Min(this, value);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -256,21 +256,21 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator +(Vector2 a, Vector2 b)
+    public static Vector2 operator +(Vector2 a, Vector2 valueB)
     {
-        return new Vector2(a.X + b.X, a.Y + b.Y);
+        return new Vector2(a.X + valueB.X, a.Y + valueB.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator +(float a, Vector2 b)
+    public static Vector2 operator +(float a, Vector2 valueB)
     {
-        return new Vector2(b.X + a, b.Y + a);
+        return new Vector2(valueB.X + a, valueB.Y + a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator +(Vector2 a, float b)
+    public static Vector2 operator +(Vector2 a, float valueB)
     {
-        return new Vector2(a.X + b, a.Y + b);
+        return new Vector2(a.X + valueB, a.Y + valueB);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -280,93 +280,141 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator -(Vector2 a, Vector2 b)
+    public static Vector2 operator -(Vector2 a, Vector2 valueB)
     {
-        return new Vector2(a.X - b.X, a.Y - b.Y);
+        return new Vector2(a.X - valueB.X, a.Y - valueB.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator -(float a, Vector2 b)
+    public static Vector2 operator -(float a, Vector2 valueB)
     {
-        return new Vector2(b.X - a, b.Y - a);
+        return new Vector2(valueB.X - a, valueB.Y - a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator -(Vector2 a, float b)
+    public static Vector2 operator -(Vector2 a, float valueB)
     {
-        return new Vector2(a.X - b, a.Y - b);
+        return new Vector2(a.X - valueB, a.Y - valueB);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator *(Vector2 a, Vector2 b)
+    public static Vector2 operator *(Vector2 a, Vector2 valueB)
     {
-        return new Vector2(a.X * b.X, a.Y * b.Y);
+        return new Vector2(a.X * valueB.X, a.Y * valueB.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator *(float a, Vector2 b)
+    public static Vector2 operator *(float a, Vector2 valueB)
     {
-        return new Vector2(b.X * a, b.Y * a);
+        return new Vector2(valueB.X * a, valueB.Y * a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator *(Vector2 a, float b)
+    public static Vector2 operator *(Vector2 a, float valueB)
     {
-        return new Vector2(a.X * b, a.Y * b);
+        return new Vector2(a.X * valueB, a.Y * valueB);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator /(Vector2 a, Vector2 b)
+    public static Vector2 operator /(Vector2 a, Vector2 valueB)
     {
-        return new Vector2(a.X / b.X, a.Y / b.Y);
+        return new Vector2(a.X / valueB.X, a.Y / valueB.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator /(float a, Vector2 b)
+    public static Vector2 operator /(float a, Vector2 valueB)
     {
-        return new Vector2(b.X / a, b.Y / a);
+        return new Vector2(valueB.X / a, valueB.Y / a);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 operator /(Vector2 a, float b)
+    public static Vector2 operator /(Vector2 a, float valueB)
     {
-        return new Vector2(a.X / b, a.Y / b);
+        return new Vector2(a.X / valueB, a.Y / valueB);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator ==(Vector2 a, Vector2 b)
+    public static bool operator ==(Vector2 a, Vector2 valueB)
     {
-        return a.Equals(b);
+        return a.Equals(valueB);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator !=(Vector2 a, Vector2 b)
+    public static bool operator !=(Vector2 a, Vector2 valueB)
     {
-        return !a.Equals(b);
+        return !a.Equals(valueB);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float DistanceSquared(Vector2 a, Vector2 b)
+    public static bool operator <(Vector2 valueA, Vector2 valueB)
     {
-        return (a - b).LengthSquared;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Distance(Vector2 a, Vector2 b)
-    {
-        return MathF.Sqrt(DistanceSquared(a, b));
+        return valueA.CompareTo(valueB) == -1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Dot(Vector2 a, Vector2 b)
+    public static bool operator >(Vector2 valueA, Vector2 valueB)
     {
-        return a.X * b.X + a.Y * b.Y;
+        return valueA.CompareTo(valueB) == 1;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Cross(Vector2 a, Vector2 b)
+    public static bool operator <=(Vector2 valueA, Vector2 valueB)
     {
-        return a.X * b.Y - a.Y * b.X;
+        return valueA.CompareTo(valueB) is -1 or 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >=(Vector2 valueA, Vector2 valueB)
+    {
+        return valueA.CompareTo(valueB) is 1 or 0;
+    }
+        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <(Vector2 valueA, int valueB)
+    {
+        return valueA.CompareTo(valueB) == -1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >(Vector2 valueA, int valueB)
+    {
+        return valueA.CompareTo(valueB) == 1;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator <=(Vector2 valueA, int valueB)
+    {
+        return valueA.CompareTo(valueB) is -1 or 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator >=(Vector2 valueA, int valueB)
+    {
+        return valueA.CompareTo(valueB) is 1 or 0;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float DistanceSquared(Vector2 valueA, Vector2 valueB)
+    {
+        return (valueA - valueB).LengthSquared;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Distance(Vector2 valueA, Vector2 valueB)
+    {
+        return MathF.Sqrt(DistanceSquared(valueA, valueB));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Dot(Vector2 valueA, Vector2 valueB)
+    {
+        return valueA.X * valueB.X + valueA.Y * valueB.Y;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Cross(Vector2 valueA, Vector2 valueB)
+    {
+        return valueA.X * valueB.Y - valueA.Y * valueB.X;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -386,82 +434,82 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Clamp(Vector2 vector, Vector2 min, Vector2 max)
+    public static Vector2 Clamp(Vector2 value, Vector2 min, Vector2 max)
     {
         return new Vector2(
-            float.Clamp(vector.X, min.X, max.X),
-            float.Clamp(vector.Y, min.Y, max.Y));
+            float.Clamp(value.X, min.X, max.X),
+            float.Clamp(value.Y, min.Y, max.Y));
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Clamp(Vector2 vector, float min, float max)
+    public static Vector2 Clamp(Vector2 value, float min, float max)
     {
         return new Vector2(
-            float.Clamp(vector.X, min, max),
-            float.Clamp(vector.Y, min, max));
+            float.Clamp(value.X, min, max),
+            float.Clamp(value.Y, min, max));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Max(Vector2 a, Vector2 b)
+    public static Vector2 Max(Vector2 valueA, Vector2 valueB)
     {
         return new Vector2(
-            MathF.Max(a.X, b.X),
-            MathF.Max(a.Y, b.Y));
+            MathF.Max(valueA.X, valueB.X),
+            MathF.Max(valueA.Y, valueB.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Min(Vector2 a, Vector2 b)
+    public static Vector2 Min(Vector2 valueA, Vector2 valueB)
     {
         return new Vector2(
-            MathF.Min(a.X, b.X),
-            MathF.Min(a.Y, b.Y));
+            MathF.Min(valueA.X, valueB.X),
+            MathF.Min(valueA.Y, valueB.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Abs(Vector2 vector)
+    public static Vector2 Abs(Vector2 value)
     {
         return new Vector2(
-            Math.Abs(vector.X),
-            Math.Abs(vector.Y));
+            Math.Abs(value.X),
+            Math.Abs(value.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Round(Vector2 vector)
+    public static Vector2 Round(Vector2 value)
     {
         return new Vector2(
-            Math.Round(vector.X),
-            Math.Round(vector.Y));
+            Math.Round(value.X),
+            Math.Round(value.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Round(Vector2 vector, int digits)
+    public static Vector2 Round(Vector2 value, int digits)
     {
         return new Vector2(
-            Math.Round(vector.X, digits),
-            Math.Round(vector.Y, digits));
+            Math.Round(value.X, digits),
+            Math.Round(value.Y, digits));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Ceiling(Vector2 vector)
+    public static Vector2 Ceiling(Vector2 value)
     {
         return new Vector2(
-            Math.Ceiling(vector.X),
-            Math.Ceiling(vector.Y));
+            Math.Ceiling(value.X),
+            Math.Ceiling(value.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Floor(Vector2 vector)
+    public static Vector2 Floor(Vector2 value)
     {
         return new Vector2(
-            Math.Floor(vector.X),
-            Math.Floor(vector.Y));
+            Math.Floor(value.X),
+            Math.Floor(value.Y));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Vector2 Sign(Vector2 vector)
+    public static Vector2 Sign(Vector2 value)
     {
         return new Vector2(
-            Math.Sign(vector.X),
-            Math.Sign(vector.Y));
+            Math.Sign(value.X),
+            Math.Sign(value.Y));
     }
 }
