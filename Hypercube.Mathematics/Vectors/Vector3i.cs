@@ -237,6 +237,12 @@ public readonly partial struct Vector3i : IEquatable<Vector3i>, IComparable<Vect
     {
         return Abs(this);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3i Sign()
+    {
+        return Sign(this);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(int other)
