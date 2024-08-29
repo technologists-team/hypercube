@@ -176,13 +176,13 @@ public readonly partial struct Vector3i : IEquatable<Vector3i>, IComparable<Vect
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float DistanceSquared(Vector3i value)
     {
-        return (this - value).LengthSquared;
+        return DistanceSquared(this, value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float Distance(Vector3i value)
     {
-        return MathF.Sqrt(DistanceSquared(value));
+        return Distance(this, value);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -400,15 +400,15 @@ public readonly partial struct Vector3i : IEquatable<Vector3i>, IComparable<Vect
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float DistanceSquared(Vector2 valueA, Vector2 valueB)
+    public static float DistanceSquared(Vector3i valueA, Vector3i valueB)
     {
         return (valueA - valueB).LengthSquared;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Distance(Vector2 valueA, Vector2 valueB)
+    public static float Distance(Vector3i valueA, Vector3i valueB)
     {
-        return MathF.Sqrt(DistanceSquared(valueA, valueB));
+        return (valueA - valueB).Length;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

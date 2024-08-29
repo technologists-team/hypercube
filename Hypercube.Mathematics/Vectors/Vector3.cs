@@ -216,13 +216,13 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float DistanceSquared(Vector3 value)
     {
-        return (this - value).LengthSquared;
+        return DistanceSquared(this, value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float Distance(Vector3 value)
     {
-        return MathF.Sqrt(DistanceSquared(value));
+        return Distance(this, value);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -380,6 +380,12 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 operator +(float a, Vector3 b)
+    {
+        return new Vector3(a + b.X, a + b.Y, a + b.Z);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 operator -(Vector3 a)
     {
         return new Vector3(-a.X, -a.Y, -a.Z);
@@ -401,6 +407,12 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     public static Vector3 operator -(Vector3 a, float b)
     {
         return new Vector3(a.X - b, a.Y - b, a.Z - b);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 operator -(float a, Vector3 b)
+    {
+        return new Vector3(a - b.X, a - b.Y, a - b.Z);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -472,7 +484,7 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Distance(Vector2 valueA, Vector2 valueB)
     {
-        return MathF.Sqrt(DistanceSquared(valueA, valueB));
+        return (valueA - valueB).Length;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
