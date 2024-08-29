@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Extensions;
@@ -9,7 +10,7 @@ namespace Hypercube.Mathematics.Vectors;
 /// <summary>
 /// Represents a vector with three single-precision floating-point values.
 /// </summary>
-[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential), DebuggerDisplay("({X}, {Y}, {Z})")]
 public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector3>, IComparable<float>, IEnumerable<float>
 {
     /// <value>

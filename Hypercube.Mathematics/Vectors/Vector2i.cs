@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -6,7 +7,7 @@ using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics.Vectors;
 
-[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential), DebuggerDisplay("({X}, {Y})")]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public readonly partial struct Vector2i : IEquatable<Vector2i>, IComparable<Vector2i>, IComparable<int>, IEnumerable<int>
 {
