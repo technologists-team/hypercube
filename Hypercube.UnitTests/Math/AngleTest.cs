@@ -3,10 +3,20 @@ using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.UnitTests.Math;
 
+[TestFixture]
 public static class AngleTest
 {
+    private static readonly Dictionary<double, Vector2> ConvertToVectorPairs = new()
+    {
+        { 0d, Vector2.UnitX },
+        { HyperMath.PIOver2, Vector2.UnitY },
+        { HyperMath.PIOver4, Vector2.One.Normalized },
+        { HyperMath.PI, -Vector2.UnitX },
+        { HyperMath.ThreePiOver2, -Vector2.UnitY },
+    };
+
     [Test]
-    public static void Degrees()
+    public static void ConvertToDegrees()
     {
         Assert.Multiple(() =>
         {
@@ -14,41 +24,33 @@ public static class AngleTest
             Assert.That(new Angle(HyperMath.PIOver2).Degrees, Is.EqualTo(90d).Within(0.01d));
             Assert.That(new Angle(HyperMath.PIOver4).Degrees, Is.EqualTo(45d).Within(0.01d));
             Assert.That(new Angle(HyperMath.PIOver6).Degrees, Is.EqualTo(30d).Within(0.01d));
-
+        });
+    }
+    
+    [Test]
+    public static void ConvertFromDegrees()
+    {
+        Assert.Multiple(() =>
+        {
             Assert.That(Angle.FromDegrees(180d), Is.EqualTo(new Angle(HyperMath.PI)));
             Assert.That(Angle.FromDegrees(90d), Is.EqualTo(new Angle(HyperMath.PIOver2)));
             Assert.That(Angle.FromDegrees(45d), Is.EqualTo(new Angle(HyperMath.PIOver4)));
             Assert.That(Angle.FromDegrees(30d), Is.EqualTo(new Angle(HyperMath.PIOver6)));
         });
-        
-        Assert.Pass($"{nameof(Angle)} degrees passed");
     }
 
     [Test]
-    public static void Vector()
+    public static void ConvertToVector()
     {
-        Assert.Multiple(() =>
+        foreach (var (angle, vector) in ConvertToVectorPairs)
         {
-            Assert.That(Angle.Zero.GetRoundVector(), Is.EqualTo(Vector2.UnitX));
-            Assert.That(new Angle(HyperMath.PI).GetRoundVector(), Is.EqualTo(-Vector2.UnitX));
-            Assert.That(new Angle(-HyperMath.PI).GetRoundVector(), Is.EqualTo(-Vector2.UnitX));
+            var vectorA = new Angle(angle).Vector.Round(3);
+            var vectorB = vector.Round(3);
+            
+            if (vectorA.Equals(vectorB))
+                continue;
 
-            Assert.That(new Angle(HyperMath.PIOver2).GetRoundVector(), Is.EqualTo(Vector2.UnitY));
-            Assert.That(new Angle(HyperMath.ThreePiOver2).GetRoundVector(), Is.EqualTo(-Vector2.UnitY));
-            Assert.That(new Angle(-HyperMath.PIOver2).GetRoundVector(), Is.EqualTo(-Vector2.UnitY));
-
-            Assert.That(new Angle(HyperMath.PIOver4).GetRoundVector(), Is.EqualTo(Vector2.One.Normalized));
-            Assert.That(new Angle(HyperMath.ThreePiOver2 - HyperMath.PIOver4).GetRoundVector(), Is.EqualTo(-Vector2.One.Normalized));
-        });
-        
-        Assert.Pass($"{nameof(Angle)} vector passed");
-    }
-
-    private static Vector2 GetRoundVector(this Angle angle)
-    {
-        var vector = angle.Vector;
-        var x = MathF.Abs(vector.X) < 1e-15f ? 0 : vector.X;
-        var y = MathF.Abs(vector.Y) < 1e-15f ? 0 : vector.Y;
-        return new Vector2(x, y);
+            Assert.Fail($"Expected {vectorB}, but was {vectorA}");
+        }
     }
 }

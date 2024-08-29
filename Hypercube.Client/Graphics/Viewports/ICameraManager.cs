@@ -12,6 +12,6 @@ public interface ICameraManager
     
     
     void SetMainCamera(ICamera camera);
-    ICamera CreateCamera2D(Vector2Int size);
+    ICamera CreateCamera2D(Vector2i size);
     void UpdateInput(ICamera? camera, float delta);
 }

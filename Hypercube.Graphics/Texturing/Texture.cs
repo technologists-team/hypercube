@@ -11,7 +11,7 @@ public readonly struct Texture : ITexture
     public const int PixelPerUnit = 32;
 
     public ResourcePath Path { get; }
-    public Vector2Int Size { get; }
+    public Vector2i Size { get; }
 
     public byte[] Data { get; }
     
@@ -27,7 +27,7 @@ public readonly struct Texture : ITexture
         }
     }
 
-    public Texture(ResourcePath path, Vector2Int size, byte[] data)
+    public Texture(ResourcePath path, Vector2i size, byte[] data)
     {
         Path = path;
         Size = size;

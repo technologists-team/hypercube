@@ -95,7 +95,7 @@ public sealed unsafe partial class GlfwWindowing : IWindowing
         return OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetProcAddress(procName);
     }
 
-    public void WindowSetMonitor(WindowHandle window, MonitorHandle monitor, Vector2Int vector)
+    public void WindowSetMonitor(WindowHandle window, MonitorHandle monitor, Vector2i vector)
     {
         if (monitor is not GlfwMonitorRegistration glfwMonitor)
             return;

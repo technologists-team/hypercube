@@ -8,11 +8,11 @@ public class MonitorHandle
 {
     public MonitorId Id { get; }
     public string Name { get; }
-    public Vector2Int Size { get; }
+    public Vector2i Size { get; }
     public int RefreshRate { get; }
     public VideoMode[] VideoModes { get; }
 
-    public MonitorHandle(MonitorId id, string name, Vector2Int size, int refreshRate, VideoMode[] videoModes)
+    public MonitorHandle(MonitorId id, string name, Vector2i size, int refreshRate, VideoMode[] videoModes)
     {
         Id = id;
         Name = name;
@@ -25,7 +25,7 @@ public class MonitorHandle
     {
         Id = id;
         Name = name;
-        Size = new Vector2Int(width, height);
+        Size = new Vector2i(width, height);
         RefreshRate = refreshRate;
         VideoModes = videoModes;
     }

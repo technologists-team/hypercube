@@ -25,7 +25,7 @@ public partial class OpenGLImGuiController
         if (data.CmdListsCount == 0)
             return;
         
-        var frameBufferSize = new Vector2Int(
+        var frameBufferSize = new Vector2i(
             data.DisplaySize.X * data.FramebufferScale.X,
             data.DisplaySize.Y * data.FramebufferScale.Y);
         
@@ -128,7 +128,7 @@ public partial class OpenGLImGuiController
         GL.Disable(EnableCap.ScissorTest);
     }
 
-    private void SetupRender(ImDrawDataPtr data, Vector2Int frameBufferSize)
+    private void SetupRender(ImDrawDataPtr data, Vector2i frameBufferSize)
     {
         GL.Enable(EnableCap.Blend);
         GL.Enable(EnableCap.ScissorTest);

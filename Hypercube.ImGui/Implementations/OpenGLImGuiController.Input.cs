@@ -14,7 +14,7 @@ public partial class OpenGLImGuiController
     {
     }
     
-    public void UpdateMousePosition(Vector2Int position)
+    public void UpdateMousePosition(Vector2i position)
     {
         _io.MousePos = position;
     }

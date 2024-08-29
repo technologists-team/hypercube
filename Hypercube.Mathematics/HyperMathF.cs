@@ -13,4 +13,11 @@ public static class HyperMathF
 
     public const float RadiansToDegrees = 180 / PI;
     public const float DegreesToRadians = PI / 180;
+    
+    public static float MoveTowards(float current, float target, float distance)
+    {
+        return current < target ?
+            MathF.Min(current + distance, target) :
+            MathF.Max(current - distance, target);
+    }
 }

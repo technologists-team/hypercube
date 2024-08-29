@@ -9,9 +9,9 @@ public readonly partial struct Vector2
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int(Vector2 vector)
+    public static implicit operator Vector2i(Vector2 vector)
     {
-        return new Vector2Int((int)vector.X, (int)vector.Y);
+        return new Vector2i((int)vector.X, (int)vector.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

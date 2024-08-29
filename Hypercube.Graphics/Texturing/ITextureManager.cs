@@ -9,7 +9,7 @@ namespace Hypercube.Graphics.Texturing;
 [PublicAPI]
 public interface ITextureManager
 {
-    ITexture CreateBlank(Vector2Int size, Color color);
+    ITexture CreateBlank(Vector2i size, Color color);
     ITexture CreateTexture(ResourcePath path);
     
     ITextureHandle CreateTextureHandle(ITexture texture);

@@ -61,12 +61,12 @@ public class CameraManager : ICameraManager
         MainCamera = camera;
     }
     
-    public ICamera CreateCamera2D(Vector2Int size)
+    public ICamera CreateCamera2D(Vector2i size)
     {
         return CreateCamera2D(size, Vector2.Zero);
     }
     
-    public ICamera CreateCamera2D(Vector2Int size, Vector2 position, float zNear = 0.1f, float zFar = 100f)
+    public ICamera CreateCamera2D(Vector2i size, Vector2 position, float zNear = 0.1f, float zFar = 100f)
     {
         return new Camera2D(size, position, zNear, zFar);
     }

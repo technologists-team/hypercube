@@ -10,14 +10,14 @@ namespace Hypercube.Shared.Physics;
 /// </summary>
 public sealed class Chunk
 {
-    public readonly Vector2Int Position;
+    public readonly Vector2i Position;
     
     private HashSet<IBody> _bodies = new();
     
     public IReadOnlySet<IBody> Bodies => _bodies;
     public bool ContainBodes => _bodies.Count != 0;
     
-    public Chunk(Vector2Int position)
+    public Chunk(Vector2i position)
     {
         Position = position;
     }

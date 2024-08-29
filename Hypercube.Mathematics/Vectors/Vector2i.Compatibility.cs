@@ -1,21 +1,23 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 namespace Hypercube.Mathematics.Vectors;
 
-public readonly partial struct Vector2Int
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+public readonly partial struct Vector2i
 {
     /*
      * Self Compatibility
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2(Vector2Int vector)
+    public static implicit operator Vector2(Vector2i vector)
     {
         return new Vector2(vector.X, vector.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector3(Vector2Int vector)
+    public static implicit operator Vector3(Vector2i vector)
     {
         return new Vector3(vector.X, vector.Y, 0f);
     }
@@ -25,13 +27,13 @@ public readonly partial struct Vector2Int
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int((int x, int y) a)
+    public static implicit operator Vector2i((int x, int y) a)
     {
-        return new Vector2Int(a.x, a.y);
+        return new Vector2i(a.x, a.y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator (int x, int y)(Vector2Int a)
+    public static implicit operator (int x, int y)(Vector2i a)
     {
         return (a.X, a.Y);
     }
@@ -41,13 +43,13 @@ public readonly partial struct Vector2Int
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int(System.Numerics.Vector2 vector)
+    public static implicit operator Vector2i(System.Numerics.Vector2 vector)
     {
-        return new Vector2Int((int)vector.X, (int)vector.Y);
+        return new Vector2i((int)vector.X, (int)vector.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator System.Numerics.Vector2(Vector2Int vector)
+    public static implicit operator System.Numerics.Vector2(Vector2i vector)
     {
         return new System.Numerics.Vector2(vector.X, vector.Y);
     }
@@ -57,13 +59,13 @@ public readonly partial struct Vector2Int
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int(System.Drawing.Size size)
+    public static implicit operator Vector2i(System.Drawing.Size size)
     {
-        return new Vector2Int(size.Width, size.Height);
+        return new Vector2i(size.Width, size.Height);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator System.Drawing.Size(Vector2Int vector2)
+    public static implicit operator System.Drawing.Size(Vector2i vector2)
     {
         return new System.Drawing.Size(vector2.X, vector2.Y);
     }
@@ -73,13 +75,13 @@ public readonly partial struct Vector2Int
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int(OpenTK.Mathematics.Vector2i vector)
+    public static implicit operator Vector2i(OpenTK.Mathematics.Vector2i vector)
     {
-        return new Vector2Int(vector.X, vector.Y);
+        return new Vector2i(vector.X, vector.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator OpenTK.Mathematics.Vector2i(Vector2Int vector)
+    public static implicit operator OpenTK.Mathematics.Vector2i(Vector2i vector)
     {
         return new OpenTK.Mathematics.Vector2i(vector.X, vector.Y);
     }
@@ -89,13 +91,13 @@ public readonly partial struct Vector2Int
      */
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Vector2Int(OpenToolkit.Mathematics.Vector2i vector)
+    public static implicit operator Vector2i(OpenToolkit.Mathematics.Vector2i vector)
     {
-        return new Vector2Int(vector.X, vector.Y);
+        return new Vector2i(vector.X, vector.Y);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator OpenToolkit.Mathematics.Vector2i(Vector2Int vector)
+    public static implicit operator OpenToolkit.Mathematics.Vector2i(Vector2i vector)
     {
         return new OpenToolkit.Mathematics.Vector2i(vector.X, vector.Y);
     }
