@@ -82,7 +82,7 @@ public sealed unsafe partial class GlfwWindowing
         public readonly Monitor* Pointer;
 
 
-        public GlfwMonitorRegistration(MonitorId id, string name, Vector2Int size, int refreshRate, VideoMode[] videoModes, Monitor* pointer) : base(id, name, size, refreshRate, videoModes)
+        public GlfwMonitorRegistration(MonitorId id, string name, Vector2i size, int refreshRate, VideoMode[] videoModes, Monitor* pointer) : base(id, name, size, refreshRate, videoModes)
         {
             Pointer = pointer;
         }

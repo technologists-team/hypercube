@@ -27,7 +27,7 @@ public interface IShaderProgram : IDisposable
     void SetUniform(string name, double value);
     
     void SetUniform(string name, Vector2 value);
-    void SetUniform(string name, Vector2Int value);
+    void SetUniform(string name, Vector2i value);
     void SetUniform(string name, Vector3 value);
     
     void SetUniform(string name, Matrix3X3 value, bool transpose = false);

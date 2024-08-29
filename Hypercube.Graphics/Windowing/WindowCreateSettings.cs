@@ -12,7 +12,7 @@ public sealed class WindowCreateSettings
     public int Height => Size.Y;
     
     public string Title { get; init; } = "Hypercube Window";
-    public Vector2Int Size { get; init; } = new(1280, 720);
+    public Vector2i Size { get; init; } = new(1280, 720);
     
     public ITexture[]? WindowImages { get; init; }
     public MonitorHandle? Monitor { get; init; }

@@ -14,7 +14,7 @@ public sealed class TextureManager : ITextureManager
 {
     [Dependency] private readonly IResourceLoader _resourceLoader = default!;
 
-    public ITexture CreateBlank(Vector2Int size, Color color)
+    public ITexture CreateBlank(Vector2i size, Color color)
     {
         var data = new byte[size.X * size.Y * 4];
         

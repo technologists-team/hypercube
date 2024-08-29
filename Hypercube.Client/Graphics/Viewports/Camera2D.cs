@@ -13,14 +13,14 @@ public sealed class Camera2D : ICamera
     public Vector3 Position => _transform.Position;
     public Vector3 Rotation => _transform.Rotation.ToEuler();
     public Vector3 Scale => _transform.Scale;
-    public Vector2Int Size { get; private set; }
+    public Vector2i Size { get; private set; }
     
     private readonly float _zFar;
     private readonly float _zNear;
 
     private Transform3 _transform = new();
 
-    public Camera2D(Vector2Int size, Vector2 position, float zNear, float zFar)
+    public Camera2D(Vector2i size, Vector2 position, float zNear, float zFar)
     {
         Size = size;
         _zNear = zNear;

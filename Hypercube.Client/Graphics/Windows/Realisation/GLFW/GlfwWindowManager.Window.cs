@@ -206,7 +206,7 @@ public sealed unsafe partial class GlfwWindowing
      
      public void WindowSetMonitor(WindowHandle window, MonitorHandle registration)
      {
-         WindowSetMonitor(window, registration, Vector2Int.Zero);
+         WindowSetMonitor(window, registration, Vector2i.Zero);
      }
      
      public void WindowRequestAttention(WindowHandle window)
@@ -217,7 +217,7 @@ public sealed unsafe partial class GlfwWindowing
          OpenTK.Windowing.GraphicsLibraryFramework.GLFW.RequestWindowAttention(glfwWindow);
      }
 
-     public void WindowSetSize(WindowHandle window, Vector2Int size)
+     public void WindowSetSize(WindowHandle window, Vector2i size)
      {
          if (window is not GlfwWindowHandle glfwWindow)
              return;
@@ -247,7 +247,7 @@ public sealed unsafe partial class GlfwWindowing
          OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowOpacity(glfwWindow, opacity);
      }
      
-     public void WindowSetPosition(WindowHandle window, Vector2Int position)
+     public void WindowSetPosition(WindowHandle window, Vector2i position)
      {
          if (window is not GlfwWindowHandle glfwWindow)
              return;

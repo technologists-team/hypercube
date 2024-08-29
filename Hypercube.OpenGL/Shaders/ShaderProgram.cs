@@ -97,7 +97,7 @@ public class ShaderProgram : IShaderProgram
         GL.Uniform2(_uniformLocations[name], value.X, value.Y);
     }
 
-    public void SetUniform(string name, Vector2Int value)
+    public void SetUniform(string name, Vector2i value)
     {
         GL.Uniform2(_uniformLocations[name], value.X, value.Y);
     }

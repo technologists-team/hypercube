@@ -33,12 +33,12 @@ public interface IWindowing : IDisposable
     void WindowDestroy(WindowHandle window);
     void WindowSetTitle(WindowHandle window, string title);
     void WindowSetMonitor(WindowHandle window, MonitorHandle monitor);
-    void WindowSetMonitor(WindowHandle window, MonitorHandle monitor, Vector2Int vector2Int);
+    void WindowSetMonitor(WindowHandle window, MonitorHandle monitor, Vector2i vector2I);
     void WindowRequestAttention(WindowHandle window);
     void WindowSetOpacity(WindowHandle window, float opacity);
     void WindowSetVisible(WindowHandle window, bool visible);
-    void WindowSetSize(WindowHandle window, Vector2Int size);
-    void WindowSetPosition(WindowHandle window, Vector2Int position);
+    void WindowSetSize(WindowHandle window, Vector2i size);
+    void WindowSetPosition(WindowHandle window, Vector2i position);
     void WindowSwapBuffers(WindowHandle window);
     void WindowSetIcons(WindowHandle window, List<ITexture> images);
     

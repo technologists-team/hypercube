@@ -13,8 +13,8 @@ public abstract class WindowHandle
     public bool DisposeOnClose { get; }
     public bool IsDisposed { get; }
     public float Ratio { get; init; }
-    public Vector2Int Size { get; set; }
-    public Vector2Int FramebufferSize { get; init; }
+    public Vector2i Size { get; set; }
+    public Vector2i FramebufferSize { get; init; }
     
     protected WindowHandle(WindowId id, nint pointer)
     {
@@ -22,14 +22,14 @@ public abstract class WindowHandle
         Pointer = pointer;
     }
     
-    public void SetSize(Vector2Int size)
+    public void SetSize(Vector2i size)
     {
         Size = size;
     }
     
     public void SetSize(int width, int height)
     {
-        Size = new Vector2Int(width, height);
+        Size = new Vector2i(width, height);
     }
 
     public override string ToString()
