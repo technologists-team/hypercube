@@ -1,19 +1,41 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics.Vectors;
 
-[PublicAPI, StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<Vector2Int>, IComparable<int>
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
+public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<Vector2Int>, IComparable<int>, IEnumerable<int>
 {
-    public static readonly Vector2Int Zero = new(0, 0);
-    public static readonly Vector2Int One = new(1, 1);
+    /// <value>
+    /// Vector (0, 0).
+    /// </value>
+    public static readonly Vector2Int Zero = new(0);
+    
+    /// <value>
+    /// Vector (1, 1).
+    /// </value>
+    public static readonly Vector2Int One = new(1);
 
+    /// <value>
+    /// Vector (1, 0).
+    /// </value>
     public static readonly Vector2Int UnitX = new(1, 0);
+    
+    /// <value>
+    /// Vector (0, 1).
+    /// </value>
     public static readonly Vector2Int UnitY = new(0, 1);
     
+    /// <summary>
+    /// Vector X component.
+    /// </summary>
     public readonly int X;
+    
+    /// <summary>
+    /// Vector Y component.
+    /// </summary>
     public readonly int Y;
     
     public float AspectRatio
@@ -31,7 +53,7 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     public float Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MathF.Sqrt(LengthSquared);
+        get => 1f / MathF.ReciprocalSqrtEstimate(LengthSquared);
     }
     
     public Vector2Int Normalized
@@ -131,13 +153,7 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     {
         return Dot(this, value);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Cross(Vector2Int value)
-    {
-        return Cross(this, value);
-    }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2Int Clamp(Vector2Int min, Vector2Int max)
     {
@@ -197,6 +213,19 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<int> GetEnumerator()
+    {
+        yield return X;
+        yield return Y;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Equals(Vector2Int other)
     {
         return X == other.X &&
@@ -220,7 +249,7 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     {
         return $"{X}, {Y}";
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2Int operator +(Vector2Int a, Vector2Int b)
     {
@@ -363,12 +392,6 @@ public readonly partial struct Vector2Int : IEquatable<Vector2Int>, IComparable<
     public static float Dot(Vector2Int valueA, Vector2Int valueB)
     {
         return valueA.X * valueB.X + valueA.Y * valueB.Y;
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Cross(Vector2Int valueA, Vector2Int valueB)
-    {
-        return valueA.X * valueB.Y - valueA.Y * valueB.X;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

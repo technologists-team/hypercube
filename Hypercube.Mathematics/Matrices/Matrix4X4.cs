@@ -320,38 +320,33 @@ public partial struct Matrix4X4 : IEquatable<Matrix4X4>
 
     public static Matrix4X4 operator *(Matrix4X4 a, Matrix4X4 b)
     {
-        var result = Zero;
-
-        result.M00 = (a.Row0 * b.Column0).Sum();
-        result.M01 = (a.Row0 * b.Column1).Sum();
-        result.M02 = (a.Row0 * b.Column2).Sum();
-        result.M03 = (a.Row0 * b.Column3).Sum();
-
-        result.M10 = (a.Row1 * b.Column0).Sum();
-        result.M11 = (a.Row1 * b.Column1).Sum();
-        result.M12 = (a.Row1 * b.Column2).Sum();
-        result.M13 = (a.Row1 * b.Column3).Sum();
-
-        result.M20 = (a.Row2 * b.Column0).Sum();
-        result.M21 = (a.Row2 * b.Column1).Sum();
-        result.M22 = (a.Row2 * b.Column2).Sum();
-        result.M23 = (a.Row2 * b.Column3).Sum();
-
-        result.M30 = (a.Row3 * b.Column0).Sum();
-        result.M31 = (a.Row3 * b.Column1).Sum();
-        result.M32 = (a.Row3 * b.Column2).Sum();
-        result.M33 = (a.Row3 * b.Column3).Sum();
-
-        return result;
+        return new Matrix4X4(
+            (a.Row0 * b.Column0).Summation,
+            (a.Row0 * b.Column1).Summation,
+            (a.Row0 * b.Column2).Summation,
+            (a.Row0 * b.Column3).Summation,
+            (a.Row1 * b.Column0).Summation,
+            (a.Row1 * b.Column1).Summation,
+            (a.Row1 * b.Column2).Summation,
+            (a.Row1 * b.Column3).Summation,
+            (a.Row2 * b.Column0).Summation,
+            (a.Row2 * b.Column1).Summation,
+            (a.Row2 * b.Column2).Summation,
+            (a.Row2 * b.Column3).Summation,
+            (a.Row3 * b.Column0).Summation,
+            (a.Row3 * b.Column1).Summation,
+            (a.Row3 * b.Column2).Summation,
+            (a.Row3 * b.Column3).Summation
+        );
     }
 
     public static Vector4 operator *(Matrix4X4 a, Vector4 b)
     {
         return new Vector4(
-            (a.Row0 * b).Sum(),
-            (a.Row1 * b).Sum(),
-            (a.Row2 * b).Sum(),
-            (a.Row3 * b).Sum());
+            (a.Row0 * b).Summation,
+            (a.Row1 * b).Summation,
+            (a.Row2 * b).Summation,
+            (a.Row3 * b).Summation);
     }
 
     public static bool operator ==(Matrix4X4 a, Matrix4X4 b)

@@ -1,43 +1,104 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Extensions;
 using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics.Vectors;
 
-[PublicAPI, StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>, IComparable<float>
+/// <summary>
+/// Represents a vector with two single-precision floating-point values.
+/// </summary>
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
+public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>, IComparable<float>, IEnumerable<float>
 {
-    public static readonly Vector2 NaN = new(float.NaN, float.NaN);
-    public static readonly Vector2 PositiveInfinity = new(float.PositiveInfinity, float.PositiveInfinity);
-    public static readonly Vector2 NegativeInfinity = new(float.NegativeInfinity, float.NegativeInfinity);
-    public static readonly Vector2 Zero = new(0, 0);
-    public static readonly Vector2 One = new(1, 1);
+    /// <value>
+    /// Vector (float.NaN, float.NaN).
+    /// </value>
+    public static readonly Vector2 NaN = new(float.NaN);
     
+    /// <value>
+    /// Vector (float.PositiveInfinity, float.PositiveInfinity).
+    /// </value>
+    public static readonly Vector2 PositiveInfinity = new(float.PositiveInfinity);
+    
+    /// <value>
+    /// Vector (float.NegativeInfinity, float.NegativeInfinity).
+    /// </value>
+    public static readonly Vector2 NegativeInfinity = new(float.NegativeInfinity);
+    
+    /// <value>
+    /// Vector (0, 0).
+    /// </value>
+    public static readonly Vector2 Zero = new(0);
+    
+    /// <value>
+    /// Vector (1, 1).
+    /// </value>
+    public static readonly Vector2 One = new(1);
+    
+    /// <value>
+    /// Vector (1, 0).
+    /// </value>
     public static readonly Vector2 UnitX = new(1, 0);
+    
+    /// <value>
+    /// Vector (0, 1).
+    /// </value>
     public static readonly Vector2 UnitY = new(0, 1);
     
+    /// <summary>
+    /// Vector X component.
+    /// </summary>
     public readonly float X;
+    
+    /// <summary>
+    /// Vector Y component.
+    /// </summary>
     public readonly float Y;
 
+    /// <summary>
+    /// Returns the ratio of X to Y.
+    /// </summary>
     public float AspectRatio
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => X / Y;
     }
     
+    /// <summary>
+    /// Gets the square of the vector length (magnitude).
+    /// </summary>
+    /// <remarks>
+    /// Allows you to avoid using the rather expensive sqrt operation.
+    /// (On ARM64 hardware <see cref="Length"/> may use the FRSQRTE instruction, which would take away this advantage).
+    /// </remarks>
+    /// <seealso cref="Length"/>
     public float LengthSquared
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => X * X + Y * Y;
     }
     
+    /// <summary>
+    /// Gets the length (magnitude) of the vector.
+    /// </summary>
+    /// <remarks>
+    /// On ARM64 hardware this may use the FRSQRTE instruction
+    /// which performs a single Newton-Raphson iteration.
+    /// On hardware without specialized support
+    /// sqrt is used, which makes the method less fast.
+    /// </remarks>
+    /// <seealso cref="LengthSquared"/>
     public float Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => MathF.Sqrt(LengthSquared);
+        get => 1f / MathF.ReciprocalSqrtEstimate(LengthSquared);
     }
     
+    /// <summary>
+    /// Copy of scaled to unit length.
+    /// </summary>
     public Vector2 Normalized
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,12 +111,18 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
         get => MathF.Atan2(Y, X);
     }
 
+    /// <summary>
+    /// Summation of all vector components.
+    /// </summary>
     public float Summation
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => X + Y;
     }
 
+    /// <summary>
+    /// Production of all vector components.
+    /// </summary>
     public float Production 
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -127,7 +194,7 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float Distance(Vector2 value)
     {
-        return MathF.Sqrt(DistanceSquared(this, value));
+        return MathF.Sqrt(DistanceSquared(value));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -135,11 +202,11 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     {
         return Dot(this, value);
     }
-
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float Cross(Vector2 value)
+    public Vector2 Reflect(Vector2 normal)
     {
-        return Cross(this, value);
+        return Reflect(this, normal);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -228,6 +295,19 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     public int CompareTo(float other)
     {
         return LengthSquared.CompareTo(other * other);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IEnumerator<float> GetEnumerator()
+    {
+        yield return X;
+        yield return Y;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -412,9 +492,9 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Cross(Vector2 valueA, Vector2 valueB)
+    public static Vector2 Reflect(Vector2 value, Vector2 normal)
     {
-        return valueA.X * valueB.Y - valueA.Y * valueB.X;
+        return value - 2.0f * (Dot(value, normal) * normal);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
