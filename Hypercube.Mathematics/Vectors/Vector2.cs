@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Extensions;
@@ -9,8 +10,8 @@ namespace Hypercube.Mathematics.Vectors;
 /// <summary>
 /// Represents a vector with two single-precision floating-point values.
 /// </summary>
-[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
-public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>, IComparable<float>, IEnumerable<float>
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential), DebuggerDisplay("({X}, {Y})")]
+public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector2>, IComparable<float>, IEnumerable<float>, ISpanFormattable
 {
     /// <value>
     /// Vector (float.NaN, float.NaN).
@@ -210,66 +211,6 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Clamp(Vector2 min, Vector2 max)
-    {
-        return Clamp(this, min, max);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Clamp(float min, float max)
-    {
-        return Clamp(this, min, max);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Lerp(Vector2 value, float amount)
-    {
-        return Lerp(this, value, amount);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Max(Vector2 value)
-    {
-        return Max(this, value);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Min(Vector2 value)
-    {
-        return Min(this, value);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Abs()
-    {
-        return Abs(this);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Round()
-    {
-        return Round(this);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Round(int digits)
-    {
-        return Round(this, digits);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Ceiling()
-    {
-        return Ceiling(this);
-    }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Vector2 Floor()
-    {
-        return Floor(this);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Vector2 MoveTowards(Vector2 target, float distance)
     {
         return MoveTowards(this, target, distance);
@@ -283,6 +224,66 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
         return new Vector2(
             cos * X - sin * Y,
             sin * X + cos * Y);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Clamp(Vector2 min, Vector2 max)
+    {
+        return Clamp(this, min, max);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Clamp(float min, float max)
+    {
+        return Clamp(this, min, max);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Lerp(Vector2 value, float amount)
+    {
+        return Lerp(this, value, amount);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Max(Vector2 value)
+    {
+        return Max(this, value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Min(Vector2 value)
+    {
+        return Min(this, value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Abs()
+    {
+        return Abs(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Round()
+    {
+        return Round(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Round(int digits)
+    {
+        return Round(this, digits);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Ceiling()
+    {
+        return Ceiling(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector2 Floor()
+    {
+        return Floor(this);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -328,13 +329,25 @@ public readonly partial struct Vector2 : IEquatable<Vector2>, IComparable<Vector
     {
         return HashCode.Combine(X, Y);
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
         return $"{X}, {Y}";
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+        return $"{X}, {Y}".ToString(formatProvider);
+    }
     
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        return destination.TryWrite(provider, $"{X}, {Y}", out charsWritten);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 operator +(Vector2 a, Vector2 valueB)
     {

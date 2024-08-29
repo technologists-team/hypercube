@@ -226,6 +226,72 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     {
         return Reflect(this, normal);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 MoveTowards(Vector3 target, float distance)
+    {
+        return MoveTowards(this, target, distance);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Clamp(Vector3 min, Vector3 max)
+    {
+        return Clamp(this, min, max);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Clamp(float min, float max)
+    {
+        return Clamp(this, min, max);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Lerp(Vector3 value, float amount)
+    {
+        return Lerp(this, value, amount);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Max(Vector3 value)
+    {
+        return Max(this, value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Min(Vector3 value)
+    {
+        return Min(this, value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Abs()
+    {
+        return Abs(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Round()
+    {
+        return Round(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Round(int digits)
+    {
+        return Round(this, digits);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Ceiling()
+    {
+        return Ceiling(this);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Vector3 Floor()
+    {
+        return Floor(this);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int CompareTo(Vector3 other)
@@ -380,6 +446,18 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     {
         return !a.Equals(b);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float DistanceSquared(Vector2 valueA, Vector2 valueB)
+    {
+        return (valueA - valueB).LengthSquared;
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Distance(Vector2 valueA, Vector2 valueB)
+    {
+        return MathF.Sqrt(DistanceSquared(valueA, valueB));
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 Cross(Vector3 valueA, Vector3 valueB)
@@ -400,5 +478,113 @@ public readonly partial struct Vector3 : IEquatable<Vector3>, IComparable<Vector
     public static Vector3 Reflect(Vector3 value, Vector3 normal)
     {
         return value - 2.0f * (Dot(value, normal) * normal);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 MoveTowards(Vector3 current, Vector3 target, float distance)
+    {
+        return new Vector3(
+            HyperMathF.MoveTowards(current.X, target.X, distance),
+            HyperMathF.MoveTowards(current.Y, target.Y, distance),
+            HyperMathF.MoveTowards(current.Z, target.Z, distance));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Clamp(Vector3 value, Vector3 min, Vector3 max)
+    {
+        return new Vector3(
+            float.Clamp(value.X, min.X, max.X),
+            float.Clamp(value.Y, min.Y, max.Y),
+            float.Clamp(value.Z, min.Z, max.Z));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Clamp(Vector3 value, float min, float max)
+    {
+        return new Vector3(
+            float.Clamp(value.X, min, max),
+            float.Clamp(value.Y, min, max),
+            float.Clamp(value.Z, min, max));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Lerp(Vector3 value, Vector3 target, float amount)
+    {
+        return new Vector3(
+            float.Lerp(value.X, target.X, amount),
+            float.Lerp(value.Y, target.Y, amount),
+            float.Lerp(value.Z, target.Z, amount));
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Max(Vector3 valueA, Vector3 valueB)
+    {
+        return new Vector3(
+            MathF.Max(valueA.X, valueB.X),
+            MathF.Max(valueA.Y, valueB.Y),
+            MathF.Max(valueA.Z, valueB.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Min(Vector3 valueA, Vector3 valueB)
+    {
+        return new Vector3(
+            MathF.Min(valueA.X, valueB.X),
+            MathF.Min(valueA.Y, valueB.Y),
+            MathF.Min(valueA.Z, valueB.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Abs(Vector3 value)
+    {
+        return new Vector3(
+            Math.Abs(value.X),
+            Math.Abs(value.Y),
+            Math.Abs(value.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Round(Vector3 value)
+    {
+        return new Vector3(
+            Math.Round(value.X),
+            Math.Round(value.Y),
+            Math.Round(value.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Round(Vector3 value, int digits)
+    {
+        return new Vector3(
+            Math.Round(value.X, digits),
+            Math.Round(value.Y, digits),
+            Math.Round(value.Z, digits));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Ceiling(Vector3 value)
+    {
+        return new Vector3(
+            Math.Ceiling(value.X),
+            Math.Ceiling(value.Y),
+            Math.Ceiling(value.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Floor(Vector3 value)
+    {
+        return new Vector3(
+            Math.Floor(value.X),
+            Math.Floor(value.Y),
+            Math.Floor(value.Z));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Vector3 Sign(Vector3 value)
+    {
+        return new Vector3(
+            Math.Sign(value.X),
+            Math.Sign(value.Y),
+            Math.Sign(value.Z));
     }
 }

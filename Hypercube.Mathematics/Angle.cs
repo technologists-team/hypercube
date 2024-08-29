@@ -1,9 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Extensions;
 using Hypercube.Mathematics.Vectors;
+using JetBrains.Annotations;
 
 namespace Hypercube.Mathematics;
 
+[PublicAPI, Serializable, StructLayout(LayoutKind.Sequential)]
 public readonly struct Angle : IEquatable<Angle>, IEquatable<double>
 {
     public static readonly Angle Zero = new(0);
@@ -19,7 +22,7 @@ public readonly struct Angle : IEquatable<Angle>, IEquatable<double>
     public Vector2 Vector
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => new((float)System.Math.Cos(Theta), (float)System.Math.Sin(Theta));
+        get => new(MathF.Cos((float) Theta), MathF.Sin((float) Theta));
     }
 
     public Angle(double theta)
@@ -27,10 +30,9 @@ public readonly struct Angle : IEquatable<Angle>, IEquatable<double>
         Theta = theta;
     }
     
-    public Angle(Vector2 vector2)
+    public Angle(Vector2 value)
     {
-        vector2 = vector2.Normalized;
-        Theta = System.Math.Atan2(vector2.X, vector2.Y);
+        Theta = value.Angle;
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
