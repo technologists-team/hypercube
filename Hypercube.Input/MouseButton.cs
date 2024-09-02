@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Input;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Input;
+
+[PublicAPI]
 public enum MouseButton
 {
     Left = 0,

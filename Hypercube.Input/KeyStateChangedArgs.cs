@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Input;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Input;
+
+[PublicAPI]
 public class KeyStateChangedArgs
 {
     public bool Shift => Modifiers.HasFlag(KeyModifiers.Shift);
@@ -12,7 +15,6 @@ public class KeyStateChangedArgs
     public readonly Key Key;
     public readonly KeyState State;
     public readonly KeyModifiers Modifiers;
-    
     public readonly int ScanCode;
 
     public KeyStateChangedArgs(Key key, KeyState state, KeyModifiers modifiers, int scanCode)

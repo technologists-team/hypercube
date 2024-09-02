@@ -1,6 +1,8 @@
-﻿namespace Hypercube.Input;
+﻿using JetBrains.Annotations;
 
-[Flags]
+namespace Hypercube.Input;
+
+[PublicAPI, Flags]
 public enum KeyModifiers
 {
     None = default,

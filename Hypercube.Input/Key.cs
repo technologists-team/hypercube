@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Input;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Input;
+
+[PublicAPI]
 public enum Key
 {
     Unknown = -1,

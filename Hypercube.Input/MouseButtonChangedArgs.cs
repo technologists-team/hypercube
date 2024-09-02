@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Input;
+﻿using JetBrains.Annotations;
 
+namespace Hypercube.Input;
+
+[PublicAPI]
 public class MouseButtonChangedArgs
 {
     public bool Shift => Modifiers.HasFlag(KeyModifiers.Shift);
