@@ -1,4 +1,5 @@
 ﻿using Hypercube.Graphics.Shaders;
+using Hypercube.Graphics.Shaders.Exceptions;
 using JetBrains.Annotations;
 using OpenToolkit.Graphics.OpenGL4;
 
@@ -32,6 +33,6 @@ public class Shader : IShader
             return;
         
         var infoLog = GL.GetShaderInfoLog(Handle);
-        throw new Exception($"Error occurred whilst compiling Shader({Handle}).\n\n{infoLog}");
+        throw new ShaderCompilationException(Handle, infoLog);
     }
 }

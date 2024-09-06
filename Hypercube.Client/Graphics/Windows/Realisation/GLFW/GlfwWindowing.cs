@@ -6,6 +6,7 @@ using Hypercube.Graphics.Monitors;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Logging;
 using Hypercube.Mathematics.Vectors;
+using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 
 namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 
@@ -97,15 +98,12 @@ public sealed unsafe partial class GlfwWindowing : IWindowing
 
     public void WindowSetMonitor(WindowHandle window, MonitorHandle monitor, Vector2i vector)
     {
-        if (monitor is not GlfwMonitorRegistration glfwMonitor)
-            return;
-        
         if (window is not GlfwWindowHandle glfwWindow)
             return;
         
         OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetWindowMonitor(
             glfwWindow, 
-            glfwMonitor.Pointer, 
+            (Monitor*) monitor.Pointer, 
             vector.X,
             vector.Y, 
             monitor.Size.X,

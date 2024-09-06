@@ -42,6 +42,39 @@ public class ShaderProgram : IShaderProgram
         _uniformLocations = GetUniformLocations();
     }
 
+    public ShaderProgram(IEnumerable<KeyValuePair<ShaderType, string>> sources)
+    {
+        var shaders = new HashSet<IShader>();
+        foreach (var (type, shader) in sources)
+        {
+            shaders.Add(CreateShader(shader, type));
+        }
+
+        Handle = GL.CreateProgram();
+        
+        foreach (var shader in shaders)
+        {
+            Attach(shader);
+        }
+
+        LinkProgram();
+
+        // When the shader program is linked, it no longer needs the individual shaders attached to it; the compiled code is copied into the shader program.
+        // Detach them, and then delete them.
+        foreach (var shader in shaders)
+        {
+            Detach(shader);
+        }
+
+        _uniformLocations = GetUniformLocations();
+    }
+
+    public ShaderProgram(HashSet<IShader> shaders)
+    {
+
+        _uniformLocations = GetUniformLocations();
+    }
+
     public void Use()
     {
         GL.UseProgram(Handle);
@@ -153,8 +186,8 @@ public class ShaderProgram : IShaderProgram
         
         throw new Exception($"Error occurred whilst linking Program({Handle})");
     }
-    
-    private IShader CreateShader(string source, ShaderType type)
+
+    public static IShader CreateShader(string source, ShaderType type)
     {
         return new Shader(source, type);
     }

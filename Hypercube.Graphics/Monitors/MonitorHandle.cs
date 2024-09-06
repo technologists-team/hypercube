@@ -6,32 +6,26 @@ namespace Hypercube.Graphics.Monitors;
 [PublicAPI]
 public class MonitorHandle
 {
+    public nint Pointer { get; }
     public MonitorId Id { get; }
     public string Name { get; }
-    public Vector2i Size { get; }
-    public int RefreshRate { get; }
+    public VideoMode VideoMode { get; }
     public VideoMode[] VideoModes { get; }
 
-    public MonitorHandle(MonitorId id, string name, Vector2i size, int refreshRate, VideoMode[] videoModes)
+    public Vector2i Size => new(VideoMode.Width, VideoMode.Height);
+    public int RefreshRate => VideoMode.RefreshRate;
+    
+    public MonitorHandle(nint pointer, MonitorId id, string name, VideoMode videoMode, VideoMode[] videoModes)
     {
+        Pointer = pointer;
         Id = id;
         Name = name;
-        Size = size;
-        RefreshRate = refreshRate;
-        VideoModes = videoModes;
-    }
-
-    public MonitorHandle(MonitorId id, string name, int width, int height, int refreshRate, VideoMode[] videoModes)
-    {
-        Id = id;
-        Name = name;
-        Size = new Vector2i(width, height);
-        RefreshRate = refreshRate;
+        VideoMode = videoMode;
         VideoModes = videoModes;
     }
 
     public override string ToString()
     {
-        return $"MonitorHandle {Id.Value}, name: {Name}, size: {Size}, rate: {RefreshRate}, mode: ({VideoModes.Length})";
+        return $"{Name} [{Id.Value}]({Pointer}) mode: ({VideoMode}), count: {VideoModes.Length}";
     }
 }

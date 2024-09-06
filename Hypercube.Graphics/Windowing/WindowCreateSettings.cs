@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Hypercube.Graphics.Windowing;
 
 [PublicAPI]
-public sealed class WindowCreateSettings
+public class WindowCreateSettings
 {
     public int Width => Size.X;
     public int Height => Size.Y;

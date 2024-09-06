@@ -5,9 +5,10 @@ namespace Hypercube.Graphics.Windowing;
 [PublicAPI]
 public readonly struct WindowCreateResult
 {
-    public bool Failed => Registration is null;
     public readonly WindowHandle? Registration;
     public readonly string? Error;
+    
+    public bool Failed => Registration is null;
 
     public WindowCreateResult(WindowHandle registration)
     {

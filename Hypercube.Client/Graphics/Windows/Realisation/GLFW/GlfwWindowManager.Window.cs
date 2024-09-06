@@ -81,7 +81,7 @@ public sealed unsafe partial class GlfwWindowing
         }
         else
         {
-            monitor = threadMonitorRegistration.Pointer;
+            monitor = (Monitor*) threadMonitorRegistration.Pointer;
             var modePointer = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetVideoMode(monitor);
 
             OpenTK.Windowing.GraphicsLibraryFramework.GLFW.WindowHint(WindowHintInt.RedBits, settings.RedBits ?? modePointer->RedBits);

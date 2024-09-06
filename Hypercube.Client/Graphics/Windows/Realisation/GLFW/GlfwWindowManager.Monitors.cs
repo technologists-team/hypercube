@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using Hypercube.Graphics.Monitors;
-using Hypercube.Mathematics.Vectors;
+using Hypercube.OpenGL.Utilities.Helpers;
+using JetBrains.Annotations;
 using GlfwVideoMode = OpenTK.Windowing.GraphicsLibraryFramework.VideoMode;
 using Monitor = OpenTK.Windowing.GraphicsLibraryFramework.Monitor;
 using VideoMode = Hypercube.Graphics.Monitors.VideoMode;
@@ -9,10 +10,10 @@ namespace Hypercube.Client.Graphics.Windows.Realisation.GLFW;
 
 public sealed unsafe partial class GlfwWindowing
 {
-    private readonly Dictionary<int, GlfwMonitorRegistration> _monitors = new();
+    private readonly Dictionary<int, MonitorHandle> _monitors = new();
     
-    private int _primaryMonitorId;
-    private int _nextMonitorId = 1;
+    private MonitorId _primaryMonitorId;
+    private MonitorId _nextMonitorId = MonitorId.Zero;
     
     private void InitMonitors()
     { 
@@ -25,7 +26,7 @@ public sealed unsafe partial class GlfwWindowing
         
         var primary = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetPrimaryMonitor();
         var up = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetMonitorUserPointer(primary);
-        _primaryMonitorId = (int)up;
+        _primaryMonitorId = (int) up;
         
         _logger.EngineInfo($"Initialize monitors, count: {_monitors.Count}");
     }
@@ -33,63 +34,27 @@ public sealed unsafe partial class GlfwWindowing
     [MethodImpl(MethodImplOptions.NoInlining)]
     private void ThreadSetupMonitor(Monitor* monitor)
     {
-        var id = _nextMonitorId++;
+        // Create a new monitor index by simply increasing the counter by 1
+        var monitorId = new MonitorId(_nextMonitorId++);
         
+        // Set our monitor identifier as a pointer
+        // to be able to get information from glfw events without problems
+        GLFWHelper.SetMonitorUserPointer(monitor, monitorId);
+        
+        // Block for obtaining basic monitor information for further registration
         var name = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetMonitorName(monitor);
-        var videoMode = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetVideoMode(monitor);
+        var videoMode = GLFWHelper.GetVideoMode(monitor);
+        var videoModes = GLFWHelper.GetVideoModes(monitor);
         
-        var modesPointer = OpenTK.Windowing.GraphicsLibraryFramework.GLFW.GetVideoModesRaw(monitor, out var modeCount);
-        var modes = new VideoMode[modeCount];
-           
-        for (var i = 0; i < modes.Length; i++)
-        {
-            modes[i] = ConvertVideoMode(modesPointer[i]);
-        }
-            
-        OpenTK.Windowing.GraphicsLibraryFramework.GLFW.SetMonitorUserPointer(monitor, (void*)id);
-
-        var currentVideoMode = ConvertVideoMode(*videoMode);
-        
-        var registration = new GlfwMonitorRegistration(
-            id,
+        var registration = new MonitorHandle(
+            (nint) monitor,
+            monitorId,
             name,
-            currentVideoMode.Width,
-            currentVideoMode.Height,
-            currentVideoMode.RefreshRate,
-            modes,
-            monitor
+            videoMode,
+            videoModes
         );
         
-        _monitors[id] = registration;
+        _monitors[monitorId] = registration;
         _renderer.AddMonitor(registration);
-    }
-
-    private static VideoMode ConvertVideoMode(in GlfwVideoMode mode)
-    {
-        return new()
-        {
-            Width = (ushort)mode.Width,
-            Height = (ushort)mode.Height,
-            RedBits = (byte)mode.RedBits,
-            RefreshRate = (ushort)mode.RefreshRate,
-            GreenBits = (byte)mode.GreenBits,
-            BlueBits = (byte)mode.BlueBits,
-        };
-    }
-    
-    public sealed class GlfwMonitorRegistration : MonitorHandle
-    {
-        public readonly Monitor* Pointer;
-
-
-        public GlfwMonitorRegistration(MonitorId id, string name, Vector2i size, int refreshRate, VideoMode[] videoModes, Monitor* pointer) : base(id, name, size, refreshRate, videoModes)
-        {
-            Pointer = pointer;
-        }
-
-        public GlfwMonitorRegistration(MonitorId id, string name, int width, int height, int refreshRate, VideoMode[] videoModes, Monitor* pointer) : base(id, name, width, height, refreshRate, videoModes)
-        {
-            Pointer = pointer;
-        }
     }
 }

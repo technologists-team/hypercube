@@ -1,13 +1,37 @@
-﻿namespace Hypercube.Graphics.Monitors;
+﻿using JetBrains.Annotations;
 
-[Serializable]
-public readonly struct MonitorId(int value) : IEquatable<MonitorId>
+namespace Hypercube.Graphics.Monitors;
+
+/// <summary>
+/// Registered monitor index. Wrapper over <see cref="int"/>,
+/// to simplify typing and work with indexing.
+/// </summary>
+[PublicAPI, Serializable]
+public readonly struct MonitorId : IEquatable<MonitorId>
 {
-    public static readonly MonitorId Invalid = default;
+    /// <summary>
+    /// Incorrect monitor index.
+    /// </summary>
+    /// <value>
+    /// MonitorId (-1)
+    /// </value>
+    public static readonly MonitorId Invalid = new(-1);
+    
+    /// <summary>
+    /// Index from which monitors indexing start.
+    /// </summary>
+    /// <value>
+    /// MonitorId (0)
+    /// </value>
     public static readonly MonitorId Zero = new(0);
     
-    public readonly int Value = value;
-    
+    public readonly int Value;
+
+    public MonitorId(int value)
+    {
+        Value = value;
+    }
+
     public bool Equals(MonitorId other)
     {
         return Value == other.Value;
@@ -16,6 +40,16 @@ public readonly struct MonitorId(int value) : IEquatable<MonitorId>
     public override bool Equals(object? obj)
     {
         return obj is MonitorId id && Equals(id);
+    }
+    
+    public override int GetHashCode()
+    {
+        return Value;
+    }
+    
+    public override string ToString()
+    {
+        return $"monitor({Value})";
     }
     
     public static bool operator ==(MonitorId a, MonitorId b)
@@ -36,15 +70,5 @@ public readonly struct MonitorId(int value) : IEquatable<MonitorId>
     public static implicit operator MonitorId(int id)
     {
         return new MonitorId(id);
-    }
-    
-    public override int GetHashCode()
-    {
-        return Value;
-    }
-    
-    public override string ToString()
-    {
-        return $"monitor({Value})";
     }
 }

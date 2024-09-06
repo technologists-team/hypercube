@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
     <OutputPath>../bin</OutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 </Project>
