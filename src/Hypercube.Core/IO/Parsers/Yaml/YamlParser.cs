@@ -123,12 +123,12 @@ public static class YamlParser
             {
                 result += currentChar switch
                 {
-                    'n' => "\n", // Handle newline escape
-                    't' => "\t", // Handle tab escape
-                    'r' => "\r", // Handle carriage return escape
-                    '\\' => "\\", // Handle escaped backslash
-                    '"' => "\"", // Handle escaped double quote
-                    '\'' => "'", // Handle escaped single quote
+                    'n' => '\n', // Handle newline escape
+                    't' => '\t', // Handle tab escape
+                    'r' => '\r', // Handle carriage return escape
+                    '\\' => '\\', // Handle escaped backslash
+                    '"' => '\"', // Handle escaped double quote
+                    '\'' => '\'', // Handle escaped single quote
                     _ => throw new FormatException($"Invalid escape sequence: \\{currentChar}")
                 };
 

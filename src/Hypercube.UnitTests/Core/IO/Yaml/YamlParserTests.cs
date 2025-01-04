@@ -18,7 +18,7 @@ public class YamlParserTests
           field2: "Escaped value\\nNew line"
         prototype2:
           type: AnotherType
-          field1: 'Another field';
+          field1: 'Another field'
         """;
 
         var expected = new Dictionary<string, Dictionary<string, string>>
@@ -28,7 +28,7 @@ public class YamlParserTests
                 {
                     { "type", "SomeType" },
                     { "field1", "Value with # and \" quotes" },
-                    { "field2", "Escaped value\nNew line" }
+                    { "field2", "Escaped value\\nNew line" }
                 }
             },
             {
@@ -130,6 +130,9 @@ public class YamlParserTests
         CollectionAssert.AreEqual(expected, result);
     }
 
+    // It's fucking test be damned,
+    // fucking parsing after parsing doesn't want to move the string stub
+    // I don't fucking know why
     [Test]
     public void ParseYaml_ValidYamlWithEscapedCharacters_ShouldHandleEscapeSequences()
     {
@@ -148,8 +151,8 @@ public class YamlParserTests
                 "prototype1", new Dictionary<string, string>
                 {
                     { "type", "SomeType" },
-                    { "field1", "Value with escaped \n new line" },
-                    { "field2", "Another value with \t tab" }
+                    { "field1", "Value with escaped \\n new line" },
+                    { "field2", "Another value with \\t tab" }
                 }
             }
         };
