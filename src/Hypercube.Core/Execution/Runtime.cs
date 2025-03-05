@@ -2,12 +2,8 @@
 using Hypercube.Core.Execution.Attributes;
 using Hypercube.Core.Execution.Enums;
 using Hypercube.Core.Utilities.Helpers;
-using Hypercube.Graphics;
 using Hypercube.Graphics.Rendering;
-using Hypercube.Graphics.Rendering.Api;
-using Hypercube.Graphics.Windowing.Api;
 using Hypercube.Graphics.Windowing.Settings;
-using Hypercube.Mathematics;
 using Hypercube.Resources.Loader;
 using Hypercube.Utilities.Configuration;
 using Hypercube.Utilities.Debugging.Logger;

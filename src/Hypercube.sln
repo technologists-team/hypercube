@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Core", "Hypercube.Core\Hypercube.Core.csproj", "{AE394ECD-C2C9-4498-B81D-1123AA84CCAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.GraphicsApi", "Hypercube.GraphicsApi\Hypercube.GraphicsApi.csproj", "{8AF5C444-E7AF-4D42-94D1-CBE9DCDA1153}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Graphics", "Hypercube.Graphics\Hypercube.Graphics.csproj", "{35E973E0-51C3-4398-906A-17D5D08E3589}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypercube.Resources", "Hypercube.Resources\Hypercube.Resources.csproj", "{564D7290-9873-4403-AFFF-F6DB29EE93AC}"
@@ -17,11 +15,6 @@ Global
 		{AE394ECD-C2C9-4498-B81D-1123AA84CCAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE394ECD-C2C9-4498-B81D-1123AA84CCAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE394ECD-C2C9-4498-B81D-1123AA84CCAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE394ECD-C2C9-4498-B81D-1123AA84CCAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF5C444-E7AF-4D42-94D1-CBE9DCDA1153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF5C444-E7AF-4D42-94D1-CBE9DCDA1153}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF5C444-E7AF-4D42-94D1-CBE9DCDA1153}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF5C444-E7AF-4D42-94D1-CBE9DCDA1153}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35E973E0-51C3-4398-906A-17D5D08E3589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35E973E0-51C3-4398-906A-17D5D08E3589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35E973E0-51C3-4398-906A-17D5D08E3589}.Release|Any CPU.ActiveCfg = Release|Any CPU
