@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Hypercube.Core.Ecs.Systems;
 using Hypercube.Core.Execution.Attributes;
 using Hypercube.Core.Execution.Enums;
 using Hypercube.Core.Utilities.Helpers;
@@ -93,6 +94,7 @@ public sealed class Runtime
     {
         _dependencies.Register<IConfigManager, ConfigManager>();
         _dependencies.Register<IRuntimeLoop, RuntimeLoop>();
+        _dependencies.Register<IEntitySystemManager, EntitySystemManager>();
         
         Resources.Dependencies.Register(_dependencies);
         Graphics.Dependencies.Register(_dependencies);

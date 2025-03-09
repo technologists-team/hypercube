@@ -3,13 +3,8 @@
 public class EntitySystemManager : IEntitySystemManager
 {
     private readonly List<World> _worlds = [];
-
-    public World CreateWorld()
-    {
-        return new World();
-    }
-
-    public IEntitySystem GetSystem<T>() where T : IEntitySystem
+    
+    public IWorld GetWorld(int id)
     {
         throw new NotImplementedException();
     }
