@@ -111,7 +111,17 @@ public class World : IWorld
         // Since we are working with an interface we cannot use a constructor
         // I don't want to create an initialization method and allow nullable types either
         // So we just set the value to getter
-        ReflectionHelper.SetProperty(instance, nameof(IEntitySystem.World), this, flags:  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+        var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
+                    BindingFlags.FlattenHierarchy;
+        
+        // If the property setter is private, it does not exist in the inherited class.
+        // Working to go one level below, DeclaringType of the PropertyInfo
+        var propertyInfo = type
+            .GetProperty(nameof(IEntitySystem.World), flags)?
+            .DeclaringType?
+            .GetProperty(nameof(IEntitySystem.World), flags);
+       
+        propertyInfo?.SetValue(instance, this);
 
         return (IEntitySystem) instance;
     }
