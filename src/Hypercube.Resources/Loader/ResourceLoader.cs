@@ -33,7 +33,7 @@ public class ResourceLoader : IResourceLoader
         prefix = ValidatePrefix(prefix);
         
         if (!Path.IsPathRooted(file))
-            file = PathHelper.GetExecRelativeFile(file);
+            file = PathHelper.GetExecutionRelativeFile(file);
 
         var dirInfo = new DirectoryInfo(file);
         

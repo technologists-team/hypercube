@@ -2,10 +2,13 @@
 
 public class EntitySystemManager : IEntitySystemManager
 {
-    private readonly List<World> _worlds = [];
-    
-    public IWorld GetWorld(int id)
+    private readonly World _world;
+
+    public EntitySystemManager()
     {
-        throw new NotImplementedException();
+        _world = new World();
+        
+        var registrar = new WorldRegistrar(_world);
+        registrar.Register();
     }
 }   

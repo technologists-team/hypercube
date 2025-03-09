@@ -4,48 +4,104 @@ using JetBrains.Annotations;
 
 namespace Hypercube.Core.Ecs.Systems;
 
+/// <summary>
+/// An abstract base class for entity systems that operate within a <see cref="World"/>.
+/// Entity systems manage and process entities and their components.
+/// </summary>
 public abstract class EntitySystem : IEntitySystem
 {
+    /// <summary>
+    /// Gets the <see cref="World"/> instance that this system operates within.
+    /// This property is implicitly assigned and should not be null after initialization.
+    /// </summary>
     [UsedImplicitly(ImplicitUseKindFlags.Assign)]
     public World World { get; private set; } = default!;
 
+    /// <summary>
+    /// Called when the system is started. Override this method to perform initialization logic.
+    /// </summary>
     public virtual void Startup()
     {
     }
-
+    
+    /// <summary>
+    /// Called when the system is shut down. Override this method to perform cleanup logic.
+    /// </summary>
     public virtual void Shutdown()
     {
     }
-
+    
+    /// <summary>
+    /// Called every frame or update cycle. Override this method to implement system-specific update logic.
+    /// </summary>
+    /// <param name="deltaTime">The time elapsed since the last update, in seconds.</param>
     public virtual void Update(float deltaTime)
     {
     }
-
+    
+    /// <summary>
+    /// Checks if the specified entity has a component of type <typeparamref name="T"/>.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to check for.</typeparam>
+    /// <param name="entity">The entity to check.</param>
+    /// <returns><c>true</c> if the entity has the component; otherwise, <c>false</c>.</returns>
     protected bool HasComponent<T>(Entity entity) where T : IComponent
     {
         return World.HasComponent<T>(entity);
     }
 
+    /// <summary>
+    /// Adds a component of type <typeparamref name="T"/> to the specified entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to add.</typeparam>
+    /// <param name="entity">The entity to add the component to.</param>
+    /// <returns><c>true</c> if the component was added successfully; otherwise, <c>false</c>.</returns>
     protected bool AddComponent<T>(Entity entity) where T : IComponent
     {
         return World.AddComponent<T>(entity);
     }
 
+    /// <summary>
+    /// Removes a component of type <typeparamref name="T"/> from the specified entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to remove.</typeparam>
+    /// <param name="entity">The entity to remove the component from.</param>
+    /// <returns><c>true</c> if the component was removed successfully; otherwise, <c>false</c>.</returns>
     protected bool RemoveComponent<T>(Entity entity) where T : IComponent
     {
         return World.RemoveComponent<T>(entity);
     }
 
+    /// <summary>
+    /// Retrieves the component of type <typeparamref name="T"/> from the specified entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to retrieve.</typeparam>
+    /// <param name="entity">The entity to retrieve the component from.</param>
+    /// <returns>The component of type <typeparamref name="T"/>.</returns>
     protected T GetComponent<T>(Entity entity) where T : IComponent
     {
         return World.GetComponent<T>(entity);
     }
 
+    /// <summary>
+    /// Ensures that the specified entity has a component of type <typeparamref name="T"/>.
+    /// If the component does not exist, it is added to the entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to ensure.</typeparam>
+    /// <param name="entity">The entity to ensure the component for.</param>
+    /// <returns>The component of type <typeparamref name="T"/>.</returns>
     protected T EnsureComponent<T>(Entity entity) where T : IComponent
     {
         return World.EnsureComponent<T>(entity);
     }
 
+    /// <summary>
+    /// Attempts to retrieve the component of type <typeparamref name="T"/> from the specified entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component to retrieve.</typeparam>
+    /// <param name="entity">The entity to retrieve the component from.</param>
+    /// <param name="component">The output parameter that will contain the component if it exists.</param>
+    /// <returns><c>true</c> if the component was found; otherwise, <c>false</c>.</returns>
     protected bool TryGetComponent<T>(Entity entity, [NotNullWhen(true)] out T? component) where T : IComponent
     {
         return World.TryGetComponent(entity, out component);

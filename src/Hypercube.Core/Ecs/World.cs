@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Hypercube.Core.Ecs.Components;
 using Hypercube.Core.Ecs.Systems;
 using Hypercube.Utilities.Helpers;
@@ -73,10 +74,11 @@ public class World : IWorld
 
     public T EnsureComponent<T>(Entity entity) where T : IComponent
     {
-        if (!HasComponent<T>(entity))
-            AddComponent<T>(entity);
+        var pool = GetComponentPool<T>();
+        if (!pool.Has(entity.Id))
+            pool.Set(entity.Id, InstantiateComponent<T>());
 
-        return GetComponent<T>(entity);
+        return pool.Get(entity.Id);
     }
 
     public bool TryGetComponent<T>(Entity entity, [NotNullWhen(true)] out T? component) where T : IComponent
@@ -109,7 +111,7 @@ public class World : IWorld
         // Since we are working with an interface we cannot use a constructor
         // I don't want to create an initialization method and allow nullable types either
         // So we just set the value to getter
-        ReflectionHelper.SetProperty(instance, nameof(IEntitySystem.World), this);
+        ReflectionHelper.SetProperty(instance, nameof(IEntitySystem.World), this, flags:  BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 
         return (IEntitySystem) instance;
     }

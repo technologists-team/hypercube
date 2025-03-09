@@ -14,51 +14,87 @@ public sealed class WorldRegistrar
     
     public void Register()
     {
+        // Get all types with the RegisterEntitySystemAttribute
         var systemTypes = ReflectionHelper.GetAllTypesWithAttribute<RegisterEntitySystemAttribute>();
         var graph = new Dictionary<Type, List<Type>>();
         
-        foreach (var (type, attribute) in systemTypes)
+        // Initialize the graph for all system types
+        foreach (var (type, _) in systemTypes)
         {
             graph[type] = [];
-            
+        }
+        
+        // Build the dependency graph based on Before and After attributes
+        foreach (var (type, attribute) in systemTypes)
+        {
             foreach (var before in attribute.Before)
             {
-                graph[type].Add(before);
+                if (!graph.ContainsKey(before))
+                    graph[before] = [];
+                
+                // Add dependency: before -> type
+                graph[before].Add(type);
             }
             
             foreach (var after in attribute.After)
             {
-                graph[after].Add(type);
+                // Add dependency: type -> after
+                graph[type].Add(after);
             }
         }
         
+        // Perform topological sorting to determine the registration order
         var sortedTypes = new List<Type>();
         var visited = new HashSet<Type>();
+        var tempVisited = new HashSet<Type>();
 
-        foreach (var (systemType, _) in systemTypes)
+        foreach (var systemType in graph.Keys)
         {
-            Visit(systemType, graph, visited, sortedTypes);
+            if (visited.Contains(systemType))
+                continue;
+            
+            if (TopologicalSort(systemType, graph, visited, tempVisited, sortedTypes))
+                continue;
+            
+            throw new InvalidOperationException("Cyclic dependency detected in system registration.");
         }
-        
+
+        // Register systems in the world in the correct order
         foreach (var systemType in sortedTypes)
         {
             _world.AddSystem(systemType);
         }
     }
 
-    private static void Visit(Type type, Dictionary<Type, List<Type>> graph, HashSet<Type> visited, List<Type> sortedTypes)
+    // Recursive method for topological sorting
+    private static bool TopologicalSort(Type type, Dictionary<Type, List<Type>> graph, HashSet<Type> visited, HashSet<Type> tempVisited, List<Type> sortedTypes)
     {
-        if (!visited.Add(type))
-            return;
+        // If the type is temporarily visited, a cycle is detected
+        if (tempVisited.Contains(type))
+            return false;
 
-        if (graph.TryGetValue(type, out var value))
+        // If the type is already fully processed, skip it
+        if (visited.Contains(type))
+            return true;
+
+        // Mark the type as temporarily visited
+        tempVisited.Add(type);
+
+        // Recursively process all dependencies
+        if (graph.TryGetValue(type, out var dependencies))
         {
-            foreach (var dependency in value)
+            foreach (var dependency in dependencies)
             {
-                Visit(dependency, graph, visited, sortedTypes);
+                if (!TopologicalSort(dependency, graph, visited, tempVisited, sortedTypes))
+                    return false;
             }
         }
-        
+
+        // Remove the type from temporarily visited and add it to the sorted list
+        tempVisited.Remove(type);
+        visited.Add(type);
         sortedTypes.Add(type);
+
+        return true;
     }
 }
