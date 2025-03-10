@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Core.Ecs.Components;
+using Hypercube.Core.Ecs.Events;
+using Hypercube.Utilities.Debugging.Logger;
+using Hypercube.Utilities.Dependencies;
 using JetBrains.Annotations;
 
 namespace Hypercube.Core.Ecs.Systems;
@@ -10,31 +13,23 @@ namespace Hypercube.Core.Ecs.Systems;
 /// </summary>
 public abstract class EntitySystem : IEntitySystem
 {
-    /// <summary>
-    /// Gets the <see cref="World"/> instance that this system operates within.
-    /// This property is implicitly assigned and should not be null after initialization.
-    /// </summary>
+    [Dependency] protected readonly ILogger Logger = default!;
+    
+    /// <inheritdoc/>
     [UsedImplicitly(ImplicitUseKindFlags.Assign)]
     public World World { get; private set; } = default!;
 
-    /// <summary>
-    /// Called when the system is started. Override this method to perform initialization logic.
-    /// </summary>
+    /// <inheritdoc/>
     public virtual void Startup()
     {
     }
     
-    /// <summary>
-    /// Called when the system is shut down. Override this method to perform cleanup logic.
-    /// </summary>
+    /// <inheritdoc/>
     public virtual void Shutdown()
     {
     }
     
-    /// <summary>
-    /// Called every frame or update cycle. Override this method to implement system-specific update logic.
-    /// </summary>
-    /// <param name="deltaTime">The time elapsed since the last update, in seconds.</param>
+    /// <inheritdoc/>
     public virtual void Update(float deltaTime)
     {
     }
@@ -105,5 +100,31 @@ public abstract class EntitySystem : IEntitySystem
     protected bool TryGetComponent<T>(Entity entity, [NotNullWhen(true)] out T? component) where T : IComponent
     {
         return World.TryGetComponent(entity, out component);
+    }
+    
+    /// <summary>
+    /// Raises an event for a specific component and entity.
+    /// </summary>
+    /// <typeparam name="TComp">The type of the component, which must implement <see cref="IComponent"/>.</typeparam>
+    /// <typeparam name="TEvent">The type of the event, which must implement <see cref="IEvent"/>.</typeparam>
+    /// <param name="entity">The entity associated with the event.</param>
+    /// <param name="component">The component associated with the event.</param>
+    /// <param name="ev">The event to raise.</param>
+    protected void Raise<TComp, TEvent>(Entity entity, TComp component, ref TEvent ev)
+        where TComp : IComponent where TEvent : IEvent
+    {
+        World.Raise(entity, component, ref ev);
+    }
+
+    /// <summary>
+    /// Subscribes a handler to events of type <typeparamref name="TEvent"/> for components of type <typeparamref name="TComp"/>.
+    /// </summary>
+    /// <typeparam name="TComp">The type of the component, which must implement <see cref="IComponent"/>.</typeparam>
+    /// <typeparam name="TEvent">The type of the event, which must implement <see cref="IEvent"/>.</typeparam>
+    /// <param name="handler">The handler to subscribe.</param>
+    protected void Subscribe<TComp, TEvent>(EventRefHandler<TComp, TEvent> handler)
+        where TComp : IComponent where TEvent : IEvent
+    {
+        World.Subscribe(handler);
     }
 }

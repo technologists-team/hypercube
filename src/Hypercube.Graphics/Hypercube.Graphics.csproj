@@ -13,7 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Hypercube.Mathematics" Version="1.0.2" />
-        <PackageReference Include="Hypercube.Utilities" Version="1.0.3" />
+        <PackageReference Include="Hypercube.Utilities" Version="1.0.4" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
         <PackageReference Include="Silk.NET.GLFW" Version="2.22.0" />
         <PackageReference Include="Silk.NET.OpenGL" Version="2.22.0" />

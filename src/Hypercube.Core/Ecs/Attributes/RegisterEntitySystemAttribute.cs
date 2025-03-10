@@ -1,6 +1,8 @@
-﻿namespace Hypercube.Core.Ecs.Attributes;
+﻿using JetBrains.Annotations;
 
-[AttributeUsage(AttributeTargets.Class)]
+namespace Hypercube.Core.Ecs.Attributes;
+
+[MeansImplicitUse, AttributeUsage(AttributeTargets.Class)]
 public sealed class RegisterEntitySystemAttribute : Attribute
 {
     public readonly Type[] Before;

@@ -1,14 +1,29 @@
-﻿namespace Hypercube.Core.Ecs.Systems;
+﻿using Hypercube.Core.Ecs.Utilities;
 
-public class EntitySystemManager : IEntitySystemManager
+namespace Hypercube.Core.Ecs.Systems;
+
+public sealed class EntitySystemManager : IEntitySystemManager
 {
-    private readonly World _world;
+    public IWorld Main { get; }
+
+    private readonly IntPool _worldIdPool = new();
+    
+    private IWorld[] _worlds = [];
 
     public EntitySystemManager()
     {
-        _world = new World();
-        
-        var registrar = new WorldRegistrar(_world);
-        registrar.Register();
+        Main = CreateWorld();
     }
-}   
+
+    public IWorld CreateWorld()
+    {
+        var world = new World(_worldIdPool.Next);
+        
+        if (_worlds.Length >= world.Id)
+            Array.Resize(ref _worlds, world.Id + 1);
+
+        _worlds[world.Id] = world;
+        
+        return world;
+    }
+}
