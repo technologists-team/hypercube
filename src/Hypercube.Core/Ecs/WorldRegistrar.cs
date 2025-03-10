@@ -5,14 +5,7 @@ namespace Hypercube.Core.Ecs;
 
 public sealed class WorldRegistrar
 {
-    private readonly IWorld _world;
-    
-    public WorldRegistrar(IWorld world)
-    {
-        _world = world;
-    }
-    
-    public void Register()
+    public List<Type> GetTypes()
     {
         // Get all types with the RegisterEntitySystemAttribute
         var systemTypes = ReflectionHelper.GetAllTypesWithAttribute<RegisterEntitySystemAttribute>();
@@ -59,11 +52,7 @@ public sealed class WorldRegistrar
             throw new InvalidOperationException("Cyclic dependency detected in system registration.");
         }
 
-        // Register systems in the world in the correct order
-        foreach (var systemType in sortedTypes)
-        {
-            _world.AddSystem(systemType);
-        }
+        return sortedTypes;
     }
 
     // Recursive method for topological sorting

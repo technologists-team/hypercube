@@ -19,6 +19,7 @@ public sealed class Runtime
     private readonly DependenciesContainer _dependencies = new();
 
     [Dependency] private readonly IConfigManager _configManager = default!;
+    [Dependency] private readonly IEntitySystemManager _entitySystemManager = default!;
     [Dependency] private readonly IRuntimeLoop _runtimeLoop = default!;
     [Dependency] private readonly IResourceLoader _resourceLoader = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
@@ -52,6 +53,8 @@ public sealed class Runtime
         
         _logger.Info("The entry points are called!");
         _logger.Info("Initialization of internal modules...");
+        
+        _entitySystemManager.CrateMainWorld();
         
         _renderer.Init(new RendererSettings
         {
@@ -95,10 +98,10 @@ public sealed class Runtime
         _dependencies.Register<IConfigManager, ConfigManager>();
         _dependencies.Register<IRuntimeLoop, RuntimeLoop>();
         _dependencies.Register<IEntitySystemManager, EntitySystemManager>();
-        
+
         Resources.Dependencies.Register(_dependencies);
         Graphics.Dependencies.Register(_dependencies);
-        
+
         _dependencies.InstantiateAll();
         _dependencies.Inject(this);
     }

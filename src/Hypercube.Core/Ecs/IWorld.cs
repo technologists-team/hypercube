@@ -24,20 +24,6 @@ public interface IWorld
     void Update(float deltaTime);
 
     /// <summary>
-    /// Adds a system to the world by its type.
-    /// </summary>
-    /// <param name="type">The type of the system to add.</param>
-    /// <returns>True if the system was added successfully, otherwise false.</returns>
-    bool AddSystem(Type type);
-
-    /// <summary>
-    /// Adds a system of type <typeparamref name="T"/> to the world.
-    /// </summary>
-    /// <typeparam name="T">The type of the system, which must implement <see cref="IEntitySystem"/>.</typeparam>
-    /// <returns>True if the system was added successfully, otherwise false.</returns>
-    bool AddSystem<T>() where T : IEntitySystem;
-
-    /// <summary>
     /// Retrieves a system of type <typeparamref name="T"/> from the world.
     /// </summary>
     /// <typeparam name="T">The type of the system to retrieve.</typeparam>

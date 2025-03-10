@@ -1,23 +1,30 @@
 ﻿using Hypercube.Core.Ecs.Utilities;
+using Hypercube.Utilities.Dependencies;
 
 namespace Hypercube.Core.Ecs.Systems;
 
 public sealed class EntitySystemManager : IEntitySystemManager
 {
-    public IWorld Main { get; }
+    [Dependency] private readonly DependenciesContainer _container = default!;
 
+    public IWorld Main { get; private set; } = default!;
+
+    private readonly WorldRegistrar _registrar = new();
     private readonly IntPool _worldIdPool = new();
-    
-    private IWorld[] _worlds = [];
 
-    public EntitySystemManager()
+    private IWorld[] _worlds = [];
+    
+    public void CrateMainWorld()
     {
+        if (Main is not null)
+            throw new InvalidOperationException();
+
         Main = CreateWorld();
     }
 
     public IWorld CreateWorld()
     {
-        var world = new World(_worldIdPool.Next);
+        var world = new World(_worldIdPool.Next, _registrar.GetTypes(), _container);
         
         if (_worlds.Length >= world.Id)
             Array.Resize(ref _worlds, world.Id + 1);

@@ -5,6 +5,7 @@ using Hypercube.Core.Ecs.Components;
 using Hypercube.Core.Ecs.Events;
 using Hypercube.Core.Ecs.Systems;
 using Hypercube.Core.Ecs.Utilities;
+using Hypercube.Utilities.Dependencies;
 
 namespace Hypercube.Core.Ecs;
 
@@ -16,13 +17,17 @@ public class World : IWorld
     
     private readonly Dictionary<Type, object> _componentPools = [];
     private readonly Dictionary<Type, IEntitySystem> _systems = [];
-    
+
+    private readonly DependenciesContainer _container;
     private readonly WorldEventBus _eventBus = new();
     private readonly IntPool _entityPool = new();
 
-    public World(int id)
+    public World(int id, List<Type> systems, DependenciesContainer? container = null)
     {
         Id = id;
+        _container = new DependenciesContainer(container);
+
+        AddSystems(systems);
     }
     
     /// <inheritdoc/>
@@ -33,26 +38,6 @@ public class World : IWorld
     }
 
     #region System
-    
-    /// <inheritdoc/>
-    public bool AddSystem(Type type)
-    {
-        if (_systems.ContainsKey(type))
-            return false;
-
-        var system = InstantiateSystem(type);
-        
-        _systems.Add(type, system);
-        system.Startup();
-        
-        return true;
-    }
-
-    /// <inheritdoc/>
-    public bool AddSystem<T>() where T : IEntitySystem
-    {
-        return AddSystem(typeof(T));
-    }
 
     /// <inheritdoc/>
     public T GetSystem<T>() where T : IEntitySystem
@@ -177,6 +162,29 @@ public class World : IWorld
         _componentPools[typeof(T)] = pool;
         
         return (ComponentPool<T>) pool;
+    }
+    
+    private void AddSystems(List<Type> types)
+    {
+        foreach (var type in types)
+        {
+            var system = InstantiateSystem(type);
+
+            if (!_systems.TryAdd(type, system))
+                throw new InvalidOperationException();
+
+            _container.Register(type);
+        }
+
+        foreach (var (_, system) in _systems)
+        {
+            _container.Inject(system);
+        }
+        
+        foreach (var (_, system) in _systems)
+        {
+            system.Startup();
+        }
     }
 
     private IEntitySystem InstantiateSystem(Type type)
