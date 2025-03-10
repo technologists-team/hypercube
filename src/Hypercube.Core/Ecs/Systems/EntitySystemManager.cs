@@ -13,7 +13,13 @@ public sealed class EntitySystemManager : IEntitySystemManager
     private readonly IntPool _worldIdPool = new();
 
     private IWorld[] _worlds = [];
-    
+
+    public void Update(float deltaTime)
+    {
+        foreach (var world in _worlds)
+            world.Update(deltaTime);
+    }
+
     public void CrateMainWorld()
     {
         if (Main is not null)

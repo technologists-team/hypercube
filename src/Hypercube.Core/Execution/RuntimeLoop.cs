@@ -1,4 +1,5 @@
-﻿using Hypercube.Graphics.Rendering;
+﻿using Hypercube.Core.Ecs.Systems;
+using Hypercube.Graphics.Rendering;
 using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
 
@@ -6,6 +7,7 @@ namespace Hypercube.Core.Execution;
 
 public sealed class RuntimeLoop : IRuntimeLoop
 {
+    [Dependency] private readonly IEntitySystemManager _entitySystemManager = default!;
     [Dependency] private readonly ILogger _logger = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
 
@@ -20,9 +22,7 @@ public sealed class RuntimeLoop : IRuntimeLoop
         
         Running = true;
         while (Running)
-        {
             OnRun();
-        }
         
         _logger.Debug("Shutdown run loop, unsuspend main thread");
     }
@@ -34,6 +34,7 @@ public sealed class RuntimeLoop : IRuntimeLoop
 
     private void OnRun()
     {
+        _entitySystemManager.Update(1);
         _renderer.Update();
         _renderer.Render();
     }
