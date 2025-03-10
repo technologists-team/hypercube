@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace Hypercube.Core.Ecs.Components;
+namespace Hypercube.Core.Ecs.Core.Components;
 
 public class ComponentPool<T> where T : IComponent
 {

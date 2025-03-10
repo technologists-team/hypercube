@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Core.Ecs.Utilities;
+﻿namespace Hypercube.Core.Ecs.Core.Utilities;
 
 public class IntPool
 {

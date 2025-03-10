@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Hypercube.Core.Ecs.Core;
 
 namespace Hypercube.Core.Ecs;
 

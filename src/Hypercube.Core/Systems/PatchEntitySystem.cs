@@ -1,4 +1,4 @@
-﻿using Hypercube.Core.Ecs.Systems;
+﻿using Hypercube.Core.Ecs;
 using Hypercube.Graphics.Patching;
 using Hypercube.Graphics.Rendering.Context;
 using Hypercube.Utilities.Dependencies;

@@ -1,5 +1,5 @@
-﻿using Hypercube.Core.Ecs.Attributes;
-using Hypercube.Core.Ecs.Components;
+﻿using Hypercube.Core.Ecs;
+using Hypercube.Core.Ecs.Attributes;
 using Hypercube.Mathematics;
 using Hypercube.Mathematics.Vectors;
 

@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Hypercube.Core.Ecs.Components;
-using Hypercube.Core.Ecs.Events;
+using Hypercube.Core.Ecs.Core;
+using Hypercube.Core.Ecs.Core.Events;
 using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
 using JetBrains.Annotations;
 
-namespace Hypercube.Core.Ecs.Systems;
+namespace Hypercube.Core.Ecs;
 
 /// <summary>
 /// An abstract base class for entity systems that operate within a <see cref="World"/>.

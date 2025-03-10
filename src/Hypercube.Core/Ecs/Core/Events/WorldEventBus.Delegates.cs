@@ -1,8 +1,6 @@
-﻿using Hypercube.Core.Ecs.Components;
-using Hypercube.Core.Ecs.Events;
-using Hypercube.Utilities.References;
+﻿using Hypercube.Utilities.References;
 
-namespace Hypercube.Core.Ecs;
+namespace Hypercube.Core.Ecs.Core.Events;
 
 public delegate void GlobalEventRefHandler(ref Unit unit);
 public delegate void GlobalEventRefHandler<TEvent>(ref TEvent args)

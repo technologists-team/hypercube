@@ -6,7 +6,7 @@ using Hypercube.Mathematics.Shapes;
 namespace Hypercube.Core.Systems.Rendering;
 
 [RegisterEntitySystem]
-public sealed class RenderingSystem : PatchEntitySystem
+public sealed class SpriteSystem : PatchEntitySystem
 {
     public override void Draw(IRenderContext renderer)
     {

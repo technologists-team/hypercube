@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using Hypercube.Core.Ecs.Core;
+using JetBrains.Annotations;
 
-namespace Hypercube.Core.Ecs.Systems;
+namespace Hypercube.Core.Ecs;
 
 public interface IEntitySystem
 {

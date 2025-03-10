@@ -1,7 +1,8 @@
-﻿using Hypercube.Core.Ecs.Utilities;
+﻿using Hypercube.Core.Ecs.Core.Utilities;
+using Hypercube.Core.Ecs.Utilities;
 using Hypercube.Utilities.Dependencies;
 
-namespace Hypercube.Core.Ecs.Systems;
+namespace Hypercube.Core.Ecs.Core.Systems;
 
 public sealed class EntitySystemManager : IEntitySystemManager
 {

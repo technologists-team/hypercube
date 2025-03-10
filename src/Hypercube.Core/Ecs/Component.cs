@@ -1,3 +1,3 @@
-﻿namespace Hypercube.Core.Ecs.Components;
+﻿namespace Hypercube.Core.Ecs;
 
 public abstract class Component : IComponent;

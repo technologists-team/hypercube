@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Core.Ecs.Events;
+﻿namespace Hypercube.Core.Ecs.Core.Events;
 
 public sealed class EventSubscription : IEquatable<EventSubscription>
 {

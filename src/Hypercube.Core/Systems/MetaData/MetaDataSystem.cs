@@ -1,5 +1,5 @@
-﻿using Hypercube.Core.Ecs.Attributes;
-using Hypercube.Core.Ecs.Systems;
+﻿using Hypercube.Core.Ecs;
+using Hypercube.Core.Ecs.Attributes;
 
 namespace Hypercube.Core.Systems.MetaData;
 

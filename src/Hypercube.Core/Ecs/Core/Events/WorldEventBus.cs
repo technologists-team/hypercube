@@ -1,25 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
-using Hypercube.Core.Ecs.Components;
-using Hypercube.Core.Ecs.Events;
 using Hypercube.Utilities.Extensions;
 using Hypercube.Utilities.References;
 
-namespace Hypercube.Core.Ecs;
+namespace Hypercube.Core.Ecs.Core.Events;
 
 public class WorldEventBus
 {
     private readonly Dictionary<Type, List<EventSubscription>> _eventRegistration = new();
-
-    public void Raise<TComp, TEvent>(ref TEvent ev)
-        where TComp : IComponent where TEvent : IEvent
-    {
-        
-    }
-    
-    public void Raise<TComp, TEvent>(TComp component, ref TEvent ev)
-        where TComp : IComponent where TEvent : IEvent
-    {
-    }
 
     public void Raise<TComp, TEvent>(Entity entity, TComp component, ref TEvent ev)
         where TComp : IComponent where TEvent : IEvent

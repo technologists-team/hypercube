@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
-using Hypercube.Core.Ecs.Systems;
+using Hypercube.Core.Ecs;
+using Hypercube.Core.Ecs.Core.Systems;
 using Hypercube.Core.Execution.Attributes;
 using Hypercube.Core.Execution.Enums;
 using Hypercube.Core.Utilities.Helpers;

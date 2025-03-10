@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Core.Ecs.Systems;
+﻿namespace Hypercube.Core.Ecs;
 
 public interface IEntitySystemManager
 {

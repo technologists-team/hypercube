@@ -1,7 +1,7 @@
 ﻿using Hypercube.Core.Ecs.Attributes;
 using Hypercube.Utilities.Helpers;
 
-namespace Hypercube.Core.Ecs;
+namespace Hypercube.Core.Ecs.Utilities;
 
 public sealed class WorldRegistrar
 {
