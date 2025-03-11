@@ -6,12 +6,13 @@
         <Version>2.0.0</Version>
         <FileVersion>2.0.0</FileVersion>
 
+        <AllowEngineCoreUsage>true</AllowEngineCoreUsage>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
-
+    
     <ItemGroup>
       <Folder Include="IO\" />
       <Folder Include="Networking\Client\" />
@@ -25,6 +26,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Hypercube.Analyzers\Hypercube.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       <ProjectReference Include="..\Hypercube.Graphics\Hypercube.Graphics.csproj" />
       <ProjectReference Include="..\Hypercube.Resources\Hypercube.Resources.csproj" />
     </ItemGroup>
