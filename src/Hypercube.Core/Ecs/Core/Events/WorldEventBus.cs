@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
+using Hypercube.Core.Analyzers;
 using Hypercube.Utilities.Extensions;
 using Hypercube.Utilities.References;
 
 namespace Hypercube.Core.Ecs.Core.Events;
 
+[EngineCore]
 public class WorldEventBus
 {
     private readonly Dictionary<Type, List<EventSubscription>> _eventRegistration = new();

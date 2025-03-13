@@ -14,6 +14,13 @@
     </PropertyGroup>
     
     <ItemGroup>
+        <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+            <_Parameter1>AllowEngineCoreUsage</_Parameter1>
+            <_Parameter2>$(AllowEngineCoreUsage)</_Parameter2>
+        </AssemblyAttribute>
+    </ItemGroup>
+    
+    <ItemGroup>
       <Folder Include="IO\" />
       <Folder Include="Networking\Client\" />
       <Folder Include="Networking\Server\" />

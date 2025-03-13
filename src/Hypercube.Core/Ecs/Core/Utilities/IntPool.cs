@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Core.Ecs.Core.Utilities;
+﻿using Hypercube.Core.Analyzers;
 
+namespace Hypercube.Core.Ecs.Core.Utilities;
+
+[EngineCore]
 public class IntPool
 {
     private readonly Stack<int> _released = new();

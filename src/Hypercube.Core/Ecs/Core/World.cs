@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Hypercube.Core.Analyzers;
 using Hypercube.Core.Ecs.Core.Components;
 using Hypercube.Core.Ecs.Core.Events;
 using Hypercube.Core.Ecs.Core.Utilities;
@@ -10,6 +11,7 @@ using Hypercube.Utilities.Dependencies;
 namespace Hypercube.Core.Ecs.Core;
 
 /// <inheritdoc/>
+[EngineCore]
 public class World : IWorld
 {
     /// <inheritdoc/>

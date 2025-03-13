@@ -1,5 +1,8 @@
-﻿namespace Hypercube.Core.Ecs.Core.Events;
+﻿using Hypercube.Core.Analyzers;
 
+namespace Hypercube.Core.Ecs.Core.Events;
+
+[EngineCore]
 public sealed class EventSubscription : IEquatable<EventSubscription>
 {
     public EventRefHandler Handler { get; }
