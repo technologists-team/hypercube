@@ -5,23 +5,25 @@ using Hypercube.Core.Analyzers;
 namespace Hypercube.Core.Ecs.Core.Components;
 
 [EngineCore]
-public class ComponentPool<T> where T : IComponent
+public class ComponentMapper<TComponent> where TComponent : IComponent
 {
     private const int DefaultEntity = -1;
     private const int DefaultIndex = -1;
     private const int GrowthFactor = 2;
-    
+
+    private TComponent[] _components = [];
     private int[] _mapping = [];
-    private T[] _components = [];
-    
+
     private int _lastComponentIndex = DefaultIndex;
 
     public bool Empty => _lastComponentIndex == DefaultIndex;
     public int Count => _lastComponentIndex + 1;
     
-    public T this[int entity]
+    public TComponent this[int entity]
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Get(entity);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         set => Set(entity, in value);
     }
     
@@ -32,7 +34,7 @@ public class ComponentPool<T> where T : IComponent
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Set(int entity, in T component)
+    public bool Set(int entity, in TComponent component)
     {
         Resize(ref _mapping, entity, DefaultEntity);
         
@@ -69,13 +71,13 @@ public class ComponentPool<T> where T : IComponent
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ref T Get(int entity)
+    public ref TComponent Get(int entity)
     {
         return ref _components[_mapping[entity]];
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool TryGet(int entity, [NotNullWhen(true)] ref T? component)
+    public bool TryGet(int entity, [NotNullWhen(true)] ref TComponent? component)
     {
         if (!Has(entity))
             return false;

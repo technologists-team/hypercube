@@ -155,15 +155,15 @@ public class World : IWorld
     #endregion
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ComponentPool<T> GetComponentPool<T>() where T : IComponent
+    private ComponentMapper<T> GetComponentPool<T>() where T : IComponent
     {
         if (_componentPools.TryGetValue(typeof(T), out var pool))
-            return (ComponentPool<T>) pool;
+            return (ComponentMapper<T>) pool;
         
-        pool = new ComponentPool<T>();
+        pool = new ComponentMapper<T>();
         _componentPools[typeof(T)] = pool;
         
-        return (ComponentPool<T>) pool;
+        return (ComponentMapper<T>) pool;
     }
     
     private void AddSystems(List<Type> types)
