@@ -6,7 +6,7 @@ using Hypercube.Core.Execution.Enums;
 using Hypercube.Core.Utilities.Helpers;
 using Hypercube.Graphics.Rendering;
 using Hypercube.Graphics.Windowing.Settings;
-using Hypercube.Resources.Loader;
+using Hypercube.Resources;
 using Hypercube.Utilities.Configuration;
 using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
@@ -22,7 +22,7 @@ public sealed class Runtime
     [Dependency] private readonly IConfigManager _configManager = default!;
     [Dependency] private readonly IEntitySystemManager _entitySystemManager = default!;
     [Dependency] private readonly IRuntimeLoop _runtimeLoop = default!;
-    [Dependency] private readonly IResourceLoader _resourceLoader = default!;
+    [Dependency] private readonly IResourceManager _resourceManager = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
 
     private readonly ILogger _logger = new ConsoleLogger();
@@ -46,11 +46,8 @@ public sealed class Runtime
 
         EntryPointsLoad();
         EntryPointsExecute(EntryPointLevel.BeforeInit);
-
-        foreach (var (file, prefix) in Config.MountFolders.Value)
-        {
-            _resourceLoader.MountContentFolder(file, prefix);
-        }
+        
+        _resourceManager.AddMountPoints(Config.MountFolders);
         
         _logger.Info("The entry points are called!");
         _logger.Info("Initialization of internal modules...");

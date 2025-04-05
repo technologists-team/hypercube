@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Hypercube.Resources;
 
+[PublicAPI]
 public readonly struct ResourcePath : IEquatable<ResourcePath>
 {
     /// <summary>
@@ -134,6 +136,49 @@ public readonly struct ResourcePath : IEquatable<ResourcePath>
         }
     }
 
+    /// <summary>
+    /// Normalizes the path by removing redundant separators and resolving '.' and '..'.
+    /// </summary>
+    public ResourcePath Normalized
+    {
+        get
+        {
+            if (IsEmpty || IsSelf)
+                return this;
+
+            var segments = Value.Split(Separator, StringSplitOptions.RemoveEmptyEntries);
+            var stack = new Stack<string>();
+
+            foreach (var segment in segments)
+            {
+                if (segment == ".")
+                    continue;
+            
+                if (segment == "..")
+                {
+                    if (stack.Count > 0 && stack.Peek() != "..")
+                    {
+                        stack.Pop();
+                        continue;
+                    }
+                    
+                    if (!Rooted)
+                    {
+                        stack.Push("..");
+                        continue;
+                    }
+                    
+                    continue;
+                }
+
+                stack.Push(segment);
+            }
+
+            var normalized = string.Join(SeparatorStr, stack.Reverse());
+            return Rooted ? SeparatorStr + normalized : normalized;
+        }
+    }
+    
     /// <summary>
     /// Constructor that initializes the path and converts it to the appropriate separator for the platform.
     /// </summary>

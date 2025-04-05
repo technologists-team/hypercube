@@ -3,6 +3,7 @@ using Hypercube.Graphics.Rendering.Manager;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Resources;
 using Hypercube.Resources.Loader;
+using Hypercube.Resources.Loaders;
 using Hypercube.Utilities.Dependencies;
 
 namespace Hypercube.Graphics.Rendering.Resources;
