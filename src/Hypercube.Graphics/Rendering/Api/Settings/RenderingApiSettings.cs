@@ -1,6 +1,6 @@
 ﻿using Hypercube.Mathematics;
 
-namespace Hypercube.Graphics.Rendering.Api;
+namespace Hypercube.Graphics.Rendering.Api.Settings;
 
 public readonly struct RenderingApiSettings
 {

@@ -1,30 +1,34 @@
 ﻿using Hypercube.Core.Analyzers;
 using Hypercube.Graphics.Rendering.Api;
+using Hypercube.Graphics.Rendering.Api.Handlers;
+using Hypercube.Graphics.Rendering.Api.Settings;
 using Hypercube.Graphics.Rendering.Context;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
+using JetBrains.Annotations;
 
 namespace Hypercube.Graphics.Rendering.Manager;
 
 [EngineInternal]
-public class RenderManager : IRenderManager
+[UsedImplicitly]
+public sealed class RenderManager : IRenderManager, IRenderManagerInternal
 {
-    public event DrawHandler? OnDraw;
-    
     [Dependency] private readonly DependenciesContainer _dependenciesContainer = default!;
     [Dependency] private readonly ILogger _logger = default!;
     [Dependency] private readonly IRenderContext _context = default!;
+
+    public event DrawHandler? OnDraw;
     
     private IRenderingApi? _api;
 
-    private IRenderingApi Api
+    public IRenderingApi Api
     {
         get => _api ?? throw new Exception();
-        set => _api = value;
+        private set => _api = value;
     }
-    
+
     public void Init(IContextInfo context, RenderingApiSettings settings)
     {
         Api = ApiFactory.Get(settings.Api);
@@ -65,8 +69,8 @@ public class RenderManager : IRenderManager
         Api.Render(window);
     }
 
-    public IShaderProgram CreateShaderProgram(Dictionary<ShaderType, string> shaderSources)
+    public IShaderProgram CreateShaderProgram(string source)
     {
-        return Api.CreateShaderProgram(shaderSources);
+        return Api.CreateShaderProgram(source);
     }
 }

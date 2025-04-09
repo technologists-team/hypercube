@@ -6,7 +6,7 @@ using Hypercube.Mathematics.Matrices;
 using Hypercube.Mathematics.Vectors;
 using Silk.NET.OpenGL;
 
-namespace Hypercube.Graphics.Rendering.Api.OpenGlRenderer;
+namespace Hypercube.Graphics.Rendering.Api.Realisations.OpenGl;
 
 public sealed partial class OpenGlRenderingApi
 {

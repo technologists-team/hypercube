@@ -1,4 +1,6 @@
-﻿using Hypercube.Graphics.Rendering.Batching;
+﻿using Hypercube.Graphics.Rendering.Api.Handlers;
+using Hypercube.Graphics.Rendering.Api.Settings;
+using Hypercube.Graphics.Rendering.Batching;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Graphics.Windowing;
 
@@ -8,6 +10,10 @@ public interface IRenderingApi
 {
     event InitHandler? OnInit;
     event DrawHandler? OnDraw;
+    
+    /// <summary>
+    /// Occurs when debug information is requested (typically through a debug overlay or console).
+    /// </summary>
     event DebugInfoHandler? OnDebugInfo;
 
     IShaderProgram? PrimitiveShaderProgram { get; }
@@ -37,6 +43,14 @@ public interface IRenderingApi
     void PushIndex(uint start, uint offset);
     void PushIndex(int start, int index);
     
-    IShader CreateShader(string source, ShaderType type);
-    IShaderProgram CreateShaderProgram(Dictionary<ShaderType, string> shaderSources);
+    /// <summary>
+    /// Creates a shader program from a single source file.
+    /// </summary>
+    /// <param name="source">
+    /// The shader source code following Hypercube's .shd specification.
+    /// </param>
+    /// <returns>
+    /// A compiled and linked shader program ready for rendering
+    /// </returns>
+    IShaderProgram CreateShaderProgram(string source);
 }

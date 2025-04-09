@@ -6,5 +6,5 @@ public enum ShaderType
     Fragment,
     Geometry,
     Compute,
-    Tesselation
+    Tessellation
 }

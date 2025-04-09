@@ -1,25 +1,25 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 using Hypercube.Core.Analyzers;
+using Hypercube.Graphics.Rendering.Api.Handlers;
 using Hypercube.Graphics.Rendering.Batching;
-using Hypercube.Graphics.Rendering.Resources;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Graphics.Utilities.Extensions;
 using Hypercube.Graphics.Viewports;
 using Hypercube.Graphics.Windowing;
-using Hypercube.Resources.Storage;
+using Hypercube.Resources;
 using Hypercube.Utilities.Dependencies;
 using Silk.NET.OpenGL;
 using ShaderType = Hypercube.Graphics.Rendering.Shaders.ShaderType;
 
-namespace Hypercube.Graphics.Rendering.Api.OpenGlRenderer;
+namespace Hypercube.Graphics.Rendering.Api.Realisations.OpenGl;
 
 [EngineInternal]
 public sealed partial class OpenGlRenderingApi : BaseRenderingApi
 {
     [Dependency] private readonly ICameraManager _cameraManager = default!;
-    [Dependency] private readonly IResourceStorage _resourceStorage = default!;
-
+    [Dependency] private readonly IResourceManager _resource = default!;
+    
     public override event DrawHandler? OnDraw;
     public override event DebugInfoHandler? OnDebugInfo;
 
@@ -97,8 +97,8 @@ public sealed partial class OpenGlRenderingApi : BaseRenderingApi
 
     protected override void InternalLoad()
     {
-        PrimitiveShaderProgram = _resourceStorage.GetResource<ResourceShader>("/shaders/base_primitive").ShaderProgram;
-        TexturingShaderProgram = _resourceStorage.GetResource<ResourceShader>("/shaders/base_texturing").ShaderProgram;
+        PrimitiveShaderProgram = _resource.Get<Shader>("/shaders/base_primitive.shd");
+        TexturingShaderProgram = _resource.Get<Shader>("/shaders/base_texturing.shd");
     }
 
     protected override void InternalTerminate()
@@ -173,7 +173,7 @@ public sealed partial class OpenGlRenderingApi : BaseRenderingApi
     protected override IShader InternalCreateShader(string source, ShaderType type)
     {
         var handle = Gl.CreateShader(type);
-        return new Shader(Gl, handle, type, source);
+        return new GlShader(Gl, handle, type, source);
     }
 
     protected override IShaderProgram InternalCreateShaderProgram(IEnumerable<IShader> shaders)

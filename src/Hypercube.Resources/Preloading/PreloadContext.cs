@@ -1,69 +1,61 @@
-﻿using System.Collections.Frozen;
+﻿using Hypercube.Resources.Loaders;
+using Hypercube.Utilities.Extensions;
 
 namespace Hypercube.Resources.Preloading;
 
-public class PreloadContext
+public sealed class PreloadContext
 {
     private readonly ResourceManager _manager;
-    private readonly List<ResourcePath> _resources = new();
-    
-    private FrozenSet<ResourcePath> _frozenResources = FrozenSet<ResourcePath>.Empty;
+    private readonly Dictionary<Type, List<ResourcePath>> _resources = [];
     
     internal PreloadContext(ResourceManager manager)
     {
         _manager = manager;
     }
 
-    public PreloadContext Add<T>(ResourcePath path) where T : class
+    public PreloadContext Add<T>(ResourcePath path) where T : Resource
     {
-        _resources.Add(path.Normalized);
-        _frozenResources = _resources.ToFrozenSet();
-        
+        _resources.GetOrInstantiate(typeof(T)).Add(path);
         return this;
     }
 
-    public PreloadContext AddRange<T>(IEnumerable<ResourcePath> paths) where T : class
+    public PreloadContext AddDirectory<T>(ResourcePath path) where T : Resource
     {
-        _resources.AddRange(paths.Select(p => p.Normalized));
-        _frozenResources = _resources.ToFrozenSet();
-        
+        _resources.GetOrInstantiate(typeof(T)).AddRange(_manager.FileSystem.GetFiles(path));
+        return this;
+    }
+    
+    public PreloadContext Add<T>(IEnumerable<ResourcePath> paths) where T : Resource
+    {
+        _resources.GetOrInstantiate(typeof(T)).AddRange(paths);
         return this;
     }
     
     public async Task ExecuteAsync(IProgress<PreloadProgress>? progress = null, CancellationToken cancellationToken = default)
     {
-        var total = _frozenResources.Count;
+        var total = _resources.Count;
         var loaded = 0;
-        
-        foreach (var path in _frozenResources)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
 
-            try
+        foreach (var (type, paths) in _resources)
+        {
+            foreach (var path in paths)
             {
-                var loader = _manager.FindBestLoader(path);
-                if (loader != null)
+                try
                 {
-                    var resolvedPath = _manager.ResolvePath(path);
-                    var resource = loader.Load(resolvedPath, _manager._fileSystem);
-                    
-                    lock (_manager._syncRoot)
-                    {
-                        var newResources = _manager._resources.ToDictionary();
-                        newResources[path] = resource;
-                        _manager._resources = newResources.ToFrozenDictionary();
-                    }
+                    cancellationToken.ThrowIfCancellationRequested();
+                
+                    _manager.Load(path, type);
+
+                    loaded++;
+                    progress?.Report(new PreloadProgress(loaded, total, path));
+                }
+                catch (Exception ex)
+                {
+                    progress?.Report(new PreloadProgress(loaded, total, path, ex));
                 }
 
-                loaded++;
-                progress?.Report(new PreloadProgress(loaded, total, path));
+                await Task.Yield();
             }
-            catch (Exception ex) when (ex is not OperationCanceledException)
-            {
-                progress?.Report(new PreloadProgress(loaded, total, path, ex));
-            }
-
-            await Task.Yield();
         }
     }
 }

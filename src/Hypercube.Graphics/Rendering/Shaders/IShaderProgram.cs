@@ -4,12 +4,11 @@ using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Graphics.Rendering.Shaders;
 
-/// <summary>
-/// What is usually called just a shader,
-/// when created.
-/// </summary>
 public interface IShaderProgram : IDisposable
 {
+    /// <summary>
+    /// Gets the handle for this shader program.
+    /// </summary>
     uint Handle { get; }
     
     void Use();

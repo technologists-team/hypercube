@@ -66,7 +66,7 @@ public static class SilkGLExtension
             ShaderType.Fragment => SilkShaderType.FragmentShader,
             ShaderType.Geometry => SilkShaderType.GeometryShader,
             ShaderType.Compute => SilkShaderType.ComputeShader,
-            ShaderType.Tesselation => SilkShaderType.TessEvaluationShader,
+            ShaderType.Tessellation => SilkShaderType.TessEvaluationShader,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

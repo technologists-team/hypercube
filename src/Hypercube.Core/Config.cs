@@ -1,5 +1,6 @@
 ﻿using Hypercube.Graphics;
 using Hypercube.Graphics.Rendering;
+using Hypercube.Graphics.Rendering.Api;
 using Hypercube.Mathematics;
 using Hypercube.Utilities.Configuration;
 
@@ -17,9 +18,9 @@ public static class Config
         {
             { ".", "/" },
             { "resources", "/" },
-            { "resources/audio", "/" },
-            { "resources/textures", "/" },
-            { "resources/shaders", "/" },
+            { "resources/audio", "audio/" },
+            { "resources/textures", "textures/" },
+            { "resources/shaders", "shaders/" },
         });
     
     /** 
@@ -44,7 +45,6 @@ public static class Config
     
     public static readonly ConfigField<WindowingApi> Windowing =
         new("Windowing", WindowingApi.Glfw);
-
     
     public static readonly ConfigField<int> WindowingWaitEventsTimeout =
         new("WindowingWaitEventsTimeout", 0);

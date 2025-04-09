@@ -32,11 +32,6 @@ public class Renderer : IRenderer
 
     public void Load()
     {
-        var graphicsPreloader = new GraphicsPreloader();
-        _dependencies.Inject(graphicsPreloader);
-        
-        graphicsPreloader.PreloadShaders();
-        
         _renderManager.Load();
     }
 

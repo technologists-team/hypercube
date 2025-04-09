@@ -1,4 +1,7 @@
-﻿using Hypercube.Graphics.Rendering.Batching;
+﻿using Hypercube.Graphics.Rendering.Api.Components;
+using Hypercube.Graphics.Rendering.Api.Handlers;
+using Hypercube.Graphics.Rendering.Api.Settings;
+using Hypercube.Graphics.Rendering.Batching;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Graphics.Windowing;
 using Hypercube.Mathematics;
@@ -91,19 +94,15 @@ public abstract partial class BaseRenderingApi : IRenderingApi
         PushIndex((uint) start, (uint) index);
     }
 
-    public IShader CreateShader(string source, ShaderType type)
+    public IShaderProgram CreateShaderProgram(string source)
     {
-        return InternalCreateShader(source, type);
-    }
-
-    public IShaderProgram CreateShaderProgram(Dictionary<ShaderType, string> shaderSources)
-    {
-        var shaders = new IShader[shaderSources.Count];
+        var sections = RenderingApiShaderLoader.ParseSections(source);
+        var shaders = new IShader[sections.Count];
 
         var index = 0;
-        foreach (var (type, source) in shaderSources)
+        foreach (var section in sections)
         {
-            shaders[index++] = CreateShader(source, type);
+            shaders[index++] = InternalCreateShader(section.Source, section.Type);
         }
         
         return InternalCreateShaderProgram(shaders);

@@ -8,5 +8,5 @@ public interface IResourceLoader
     Type ResourceType { get; }
     
     public bool CanLoad(ResourcePath path, IFileSystem fileSystem);
-    public object Load(ResourcePath path, IFileSystem fileSystem);
+    public Resource Load(ResourcePath path, IFileSystem fileSystem);
 }

@@ -1,5 +1,19 @@
 #version 460
 
+[fragment]
+out vec4 FragColor;
+
+in vec4 Color;
+in vec2 TexCoord;
+
+uniform sampler2D texture0;
+
+void main()
+{ 
+    FragColor = texture(texture0, TexCoord) * Color;
+}
+
+[vertex]
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec4 aColor;
 layout (location = 2) in vec2 aTexCoord;

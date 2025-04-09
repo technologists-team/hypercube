@@ -3,7 +3,7 @@ using Hypercube.Graphics.Utilities.Extensions;
 using JetBrains.Annotations;
 using Silk.NET.OpenGL;
 
-namespace Hypercube.Graphics.Rendering.Api.OpenGlRenderer;
+namespace Hypercube.Graphics.Rendering.Api.Realisations.OpenGl;
 
 public sealed partial class OpenGlRenderingApi
 {

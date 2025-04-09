@@ -3,17 +3,18 @@ using Hypercube.Core.Analyzers;
 using Hypercube.Graphics.Windowing.Settings;
 using Hypercube.Mathematics.Vectors;
 using Silk.NET.GLFW;
-using ContextApi = Hypercube.Graphics.Windowing.Settings.ContextApi;
+using SilkGlfw = Silk.NET.GLFW.Glfw;
 using SilkWindowHandle = Silk.NET.GLFW.WindowHandle;
+using ContextApi = Hypercube.Graphics.Windowing.Settings.ContextApi;
 
-namespace Hypercube.Graphics.Windowing.Api.GlfwWindowing;
+namespace Hypercube.Graphics.Windowing.Api.Realisations.Glfw;
 
 [EngineInternal]
-public sealed unsafe partial class GlfwBaseWindowingApi : BaseWindowingApi
+public sealed unsafe partial class GlfwWindowingApi : BaseWindowingApi
 {
     public override WindowingApi Type => WindowingApi.Glfw;
     
-    private Glfw _glfw = default!;
+    private SilkGlfw _glfw = default!;
 
     protected override string InternalInfo
     {
@@ -29,11 +30,10 @@ public sealed unsafe partial class GlfwBaseWindowingApi : BaseWindowingApi
             return result.ToString();
         }
     }
-
-
+    
     public override bool InternalInit()
     {
-        _glfw = Glfw.GetApi();
+        _glfw = SilkGlfw.GetApi();
         _glfw.SetErrorCallback(OnErrorCallback);
         
         if (!_glfw.Init())

@@ -3,22 +3,15 @@
 public sealed class MockFileSystem : IFileSystem
 {
     private readonly Dictionary<ResourcePath, byte[]> _files = new();
-    private readonly Dictionary<ResourcePath, string> _textFiles = new();
 
     public void AddFile(ResourcePath path, byte[] content)
     {
         _files[path.Normalized] = content;
     }
 
-    public void AddTextFile(ResourcePath path, string content)
-    {
-        _textFiles[path.Normalized] = content;
-    }
-
     public bool Exists(ResourcePath path)
     {
-        var normalized = path.Normalized;
-        return _files.ContainsKey(normalized) || _textFiles.ContainsKey(normalized);
+        return _files.ContainsKey(path.Normalized);
     }
 
     public Stream OpenRead(ResourcePath path)
@@ -28,5 +21,10 @@ public sealed class MockFileSystem : IFileSystem
             return new MemoryStream(data);
         
         throw new FileNotFoundException(normalized);
+    }
+
+    public List<ResourcePath> GetFiles(ResourcePath path)
+    {
+        return [];
     }
 }

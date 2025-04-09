@@ -2,6 +2,7 @@
 
 public enum WindowingApi
 {
+    Headless,
     Glfw,
     Sdl
 }

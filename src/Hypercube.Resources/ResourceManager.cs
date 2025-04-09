@@ -1,144 +1,124 @@
-﻿using System.Buffers;
-using System.Collections.Concurrent;
-using System.Collections.Frozen;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using Hypercube.Resources.FileSystems;
+﻿using Hypercube.Resources.FileSystems;
 using Hypercube.Resources.Loaders;
 using Hypercube.Resources.Preloading;
+using Hypercube.Utilities.Configuration;
+using JetBrains.Annotations;
 
 namespace Hypercube.Resources;
 
-public class ResourceManager : IResourceManager, IDisposable
+[UsedImplicitly]
+public sealed class ResourceManager : IResourceManager, IDisposable
 {
-    private sealed class PathCacheEntry
-    {
-        public string PhysicalPath { get; set; }
-        public DateTime LastCheck { get; set; }
-    }
+    public readonly IFileSystem FileSystem;
     
-    private readonly IFileSystem _fileSystem;
-    private readonly ReaderWriterLockSlim _mountsLock = new();
-    private Dictionary<string, string> _mountPoints = new();
+    private readonly Dictionary<Type, IResourceLoader> _loaders = [];
+    private readonly Dictionary<ResourcePath, Resource> _cache = [];
 
-    private readonly ConcurrentDictionary<string, object> _resources = new();
-    private readonly ConcurrentDictionary<string, PathCacheEntry> _pathCache = new();
-    private readonly Dictionary<Type, IResourceLoader> _loadersByType;
-    private readonly Dictionary<string, List<IResourceLoader>> _loadersByExtension;
-
+    public ResourceManager(IFileSystem fileSystem)
+    {
+        FileSystem = fileSystem;
+    }
     
     public ResourceManager()
     {
-        _fileSystem = new PhysicalFileSystem();
+        FileSystem = new PhysicalFileSystem();
+    }
 
-        _loadersByType = loaders.ToDictionary(x => x.ResourceType);
-        _loadersByExtension = loaders
-            .SelectMany(loader => loader.Extensions
-                .Select(ext => (ext, loader)))
-            .GroupBy(x => x.ext, x => x.loader)
-            .ToDictionary(g => g.Key, g => g.ToList());
+    public void AddMountPoints(ConfigField<Dictionary<string, string>> mountFolders)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddLoader<T>(IResourceLoader loader) where T : Resource
+    {
+        if (_loaders.ContainsKey(typeof(T)))
+            throw new Exception();
+        
+        _loaders.Add(typeof(T), loader);
+    }
+
+    public bool HasLoader<T>() where T : Resource
+    {
+        return _loaders.ContainsKey(typeof(T));
+    }
+
+    public void RemoveLoader<T>() where T : Resource
+    {
+        if (!_loaders.ContainsKey(typeof(T)))
+            throw new Exception();
+
+        _loaders.Remove(typeof(T));
+    }
+
+    public T Get<T>(ResourcePath path) where T : Resource
+    {
+        if (_cache.TryGetValue(path, out var resource))
+            return resource as T ?? throw new Exception();
+
+        return Load<T>(path);
+    }
+
+    public bool HasCache<T>(ResourcePath path) where T : Resource
+    {
+        return _cache.ContainsKey(path);
+    }
+
+    public T Load<T>(ResourcePath path) where T : Resource
+    {
+        return (T) Load(path, typeof(T));
+    }
+
+    public Resource Load(ResourcePath path, Type type)
+    {
+        if (!_loaders.TryGetValue(type, out var loader))
+            throw new Exception();
+
+        if (_cache.TryGetValue(path, out var cache))
+            return cache;
+        
+        var resource = loader.Load(path, FileSystem);
+        _cache[path] = resource;
+        
+        return resource;
+    }
+
+    public Resource Load(ResourcePath path)
+    {
+        if (_cache.TryGetValue(path, out var cache))
+            return cache;
+        
+        foreach (var (_, loader) in _loaders)
+        {
+            if (loader.Extensions.Contains(path.Extension))
+                return loader.Load(path, FileSystem);
+        }
+
+        throw new Exception();
+    }
+
+    public void Unload(ResourcePath path)
+    {
+        if (!_cache.Remove(path, out var resource))
+            throw new Exception();
+
+        resource.Dispose();
     }
     
-    public T Load<T>(ResourcePath path) where T : class
-    {
-        var sw = Stopwatch.StartNew();
-        
-        // 1. Проверка кэша ресурсов (самая частая операция)
-        if (_resources.TryGetValue(path, out var cached))
-        {
-            Debug.WriteLine($"Cache hit: {path} in {sw.ElapsedTicks} ticks");
-            return (T) cached;
-        }
-
-        // 2. Разрешение физического пути (с кэшированием)
-        var physicalPath = ResolvePathCached(path);
-        if (physicalPath == null)
-            throw new FileNotFoundException($"Resource '{path}' not found");
-
-        // 3. Определение загрузчика
-        var extension = Path.GetExtension(physicalPath).ToLowerInvariant();
-        if (!_loadersByExtension.TryGetValue(extension, out var candidateLoaders))
-            throw new InvalidOperationException($"No loader for extension '{extension}'");
-
-        // 4. Поиск подходящего загрузчика
-        foreach (var loader in candidateLoaders)
-        {
-            if (!loader.CanLoad(path, _fileSystem))
-                continue;
-            
-            var resource = (T) loader.Load(path, _fileSystem);
-            _resources[path] = resource;
-            
-            Debug.WriteLine($"Loaded {path} in {sw.ElapsedMilliseconds}ms");
-            return resource;
-        }
-
-        throw new InvalidOperationException($"No suitable loader found for {path}");
-    }
-
-    private string ResolvePathCached(ResourcePath path)
-    {
-        if (_pathCache.TryGetValue(path, out var cacheEntry) && 
-            (DateTime.UtcNow - cacheEntry.LastCheck).TotalSeconds < 5)
-            return cacheEntry.PhysicalPath;
-        
-        _mountsLock.EnterReadLock();
-        
-        try
-        {
-            foreach (var (physicalRoot, virtualRoot) in _mountPoints)
-            {
-                if (!path.Value.StartsWith(virtualRoot))
-                    continue;
-                
-                var relativePath = path.Value[virtualRoot.Length..];
-                var physicalPath = physicalRoot + relativePath;
-
-                if (!_fileSystem.Exists(physicalPath))
-                    continue;
-                    
-                // Update cache
-                _pathCache[path] = new PathCacheEntry
-                {
-                    PhysicalPath = physicalPath,
-                    LastCheck = DateTime.UtcNow
-                };
-                
-                return physicalPath;
-            }
-        }
-        finally
-        {
-            _mountsLock.ExitReadLock();
-        }
-
-        return string.Empty;
-    }
-    
-    public bool Unload(ResourcePath path)
-    {
-        if (!_resources.TryRemove(path, out var resource))
-            return false;
-        
-        if (resource is IDisposable disposable)
-            disposable.Dispose();
-        
-        _pathCache.TryRemove(path, out _);
-        return true;
-    }
-
     public void UnloadAll()
     {
-        foreach (var resource in _resources.Values.OfType<IDisposable>())
-            resource.Dispose();
-        
-        _resources.Clear();
-        _pathCache.Clear();
+        foreach (var (path, _) in _cache)
+        {
+            Unload(path);
+        }
+    }
+
+    public PreloadContext CreatePreloadContext()
+    {
+        return new PreloadContext(this);
     }
 
     public void Dispose()
     {
         UnloadAll();
-        _mountsLock.Dispose();
     }
 }

@@ -1,8 +1,9 @@
-﻿using Hypercube.Graphics.Rendering;
-using Hypercube.Graphics.Rendering.Api;
-using Hypercube.Graphics.Rendering.Api.OpenGlRenderer;
+﻿using Hypercube.Graphics.Rendering.Api;
+using Hypercube.Graphics.Rendering.Api.Realisations.Headless;
+using Hypercube.Graphics.Rendering.Api.Realisations.OpenGl;
 using Hypercube.Graphics.Windowing.Api;
-using Hypercube.Graphics.Windowing.Api.GlfwWindowing;
+using Hypercube.Graphics.Windowing.Api.Realisations.Glfw;
+using Hypercube.Graphics.Windowing.Api.Realisations.Headless;
 
 namespace Hypercube.Graphics;
 
@@ -12,7 +13,8 @@ public static class ApiFactory
     {
         return windowingApi switch
         {
-            WindowingApi.Glfw => new GlfwBaseWindowingApi(),
+            WindowingApi.Headless => new HeadlessWindowingApi(),
+            WindowingApi.Glfw => new GlfwWindowingApi(),
             WindowingApi.Sdl => throw new NotImplementedException(),
             _ => throw new NotImplementedException()
         };
@@ -22,6 +24,7 @@ public static class ApiFactory
     {
         return renderingApi switch
         {
+            RenderingApi.Headless => new HeadlessRenderingApi(),
             RenderingApi.OpenGl => new OpenGlRenderingApi(),
             RenderingApi.Vulkan => throw new NotImplementedException(),
             _ => throw new NotImplementedException()

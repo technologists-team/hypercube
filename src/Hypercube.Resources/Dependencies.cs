@@ -6,6 +6,6 @@ public static class Dependencies
 {
     public static void Register(DependenciesContainer container)
     {
-        container.Register<IResourceManager, ResourceManager>();
+        container.Register<IResourceManager>(new ResourceManager());
     }
 }

@@ -4,7 +4,7 @@ using Hypercube.Resources.Loaders;
 
 namespace Hypercube.Graphics;
 
-public sealed class TextureResourceLoader : ResourceLoader<Texture2D>
+public sealed class TextureResourceLoader : ResourceLoader<Texture>
 {
     public override string[] Extensions =>
     [
@@ -16,7 +16,7 @@ public sealed class TextureResourceLoader : ResourceLoader<Texture2D>
         throw new NotImplementedException();
     }
 
-    public override Texture2D Load(ResourcePath path, IFileSystem fileSystem)
+    public override Texture Load(ResourcePath path, IFileSystem fileSystem)
     {
         throw new NotImplementedException();
     }

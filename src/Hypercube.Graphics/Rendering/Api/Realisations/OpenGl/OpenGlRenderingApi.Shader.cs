@@ -3,15 +3,15 @@ using Hypercube.Graphics.Rendering.Shaders.Exceptions;
 using Silk.NET.OpenGL;
 using ShaderType = Hypercube.Graphics.Rendering.Shaders.ShaderType;
 
-namespace Hypercube.Graphics.Rendering.Api.OpenGlRenderer;
+namespace Hypercube.Graphics.Rendering.Api.Realisations.OpenGl;
 
 public sealed partial class OpenGlRenderingApi
 {
-    private sealed class Shader : BaseShader
+    private sealed class GlShader : BaseShader
     {
         private readonly GL _gl;
         
-        public Shader(GL gl, uint handle, ShaderType type, string source) : base(handle, type)
+        public GlShader(GL gl, uint handle, ShaderType type, string source) : base(handle, type)
         {
             _gl = gl;
 

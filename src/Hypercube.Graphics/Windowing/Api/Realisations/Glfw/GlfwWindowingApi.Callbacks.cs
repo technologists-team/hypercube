@@ -2,9 +2,9 @@
 using Silk.NET.GLFW;
 using Monitor = Silk.NET.GLFW.Monitor;
 
-namespace Hypercube.Graphics.Windowing.Api.GlfwWindowing;
+namespace Hypercube.Graphics.Windowing.Api.Realisations.Glfw;
 
-public unsafe partial class GlfwBaseWindowingApi
+public unsafe partial class GlfwWindowingApi
 {
     private void OnErrorCallback(ErrorCode errorCode, string description)
     {

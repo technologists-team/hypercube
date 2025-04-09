@@ -4,9 +4,9 @@ using ConnectedState = Hypercube.Graphics.Windowing.Api.Enums.ConnectedState;
 using SilkConnectedState = Silk.NET.GLFW.ConnectedState;
 using ContextApi = Hypercube.Graphics.Windowing.Settings.ContextApi;
 
-namespace Hypercube.Graphics.Windowing.Api.GlfwWindowing;
+namespace Hypercube.Graphics.Windowing.Api.Realisations.Glfw;
 
-public sealed partial class GlfwBaseWindowingApi
+public sealed partial class GlfwWindowingApi
 {
     private static ClientApi ToClientApi(ContextApi api)
     {

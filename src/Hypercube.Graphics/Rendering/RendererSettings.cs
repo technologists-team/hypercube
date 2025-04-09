@@ -1,4 +1,5 @@
 ﻿using Hypercube.Graphics.Rendering.Api;
+using Hypercube.Graphics.Rendering.Api.Settings;
 using Hypercube.Graphics.Windowing.Api;
 
 namespace Hypercube.Graphics.Rendering;

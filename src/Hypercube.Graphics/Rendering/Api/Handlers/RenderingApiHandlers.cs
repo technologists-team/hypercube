@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Graphics.Rendering.Api;
+﻿using Hypercube.Graphics.Rendering.Api.Settings;
+
+namespace Hypercube.Graphics.Rendering.Api.Handlers;
 
 public delegate void InitHandler(string info, RenderingApiSettings settings);
 public delegate void DrawHandler();

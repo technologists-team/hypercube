@@ -4,7 +4,9 @@ using Hypercube.Core.Ecs.Core.Systems;
 using Hypercube.Core.Execution.Attributes;
 using Hypercube.Core.Execution.Enums;
 using Hypercube.Core.Utilities.Helpers;
+using Hypercube.Graphics;
 using Hypercube.Graphics.Rendering;
+using Hypercube.Graphics.Rendering.Manager;
 using Hypercube.Graphics.Windowing.Settings;
 using Hypercube.Resources;
 using Hypercube.Utilities.Configuration;
@@ -24,6 +26,7 @@ public sealed class Runtime
     [Dependency] private readonly IRuntimeLoop _runtimeLoop = default!;
     [Dependency] private readonly IResourceManager _resourceManager = default!;
     [Dependency] private readonly IRenderer _renderer = default!;
+    [Dependency] private readonly IRenderManager _renderrManager = default!;
 
     private readonly ILogger _logger = new ConsoleLogger();
     private readonly Dictionary<EntryPointLevel, List<MethodInfo>> _entryPoints = [];
@@ -79,7 +82,15 @@ public sealed class Runtime
             TransparentFramebuffer = Config.MainWindowTransparentFramebuffer,
         });
         
+        _resourceManager.AddLoader<Texture>(new TextureResourceLoader());
+        _resourceManager.AddLoader<Shader>(new ShaderResourceLoader(_renderrManager));
+        
         _renderer.Load();
+
+        var context = _resourceManager.CreatePreloadContext();
+        context.AddDirectory<Texture>("resources/textures");
+        context.AddDirectory<Shader>("resources/shaders");
+        context.ExecuteAsync().Wait();
         
         _logger.Info("Preparation is complete, start the main application cycle");
         EntryPointsExecute(EntryPointLevel.AfterInit);

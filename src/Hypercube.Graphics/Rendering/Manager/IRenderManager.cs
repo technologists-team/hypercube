@@ -1,4 +1,6 @@
 ﻿using Hypercube.Graphics.Rendering.Api;
+using Hypercube.Graphics.Rendering.Api.Handlers;
+using Hypercube.Graphics.Rendering.Api.Settings;
 using Hypercube.Graphics.Rendering.Shaders;
 using Hypercube.Graphics.Windowing;
 
@@ -13,5 +15,5 @@ public interface IRenderManager
     void Shutdown();
     void Render(IWindow window);
     
-    IShaderProgram CreateShaderProgram(Dictionary<ShaderType, string> shaderSources);
+    IShaderProgram CreateShaderProgram(string source);
 }
