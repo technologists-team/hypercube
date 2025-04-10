@@ -18,9 +18,9 @@ public static class Config
         {
             { ".", "/" },
             { "resources", "/" },
-            { "resources/audio", "audio/" },
-            { "resources/textures", "textures/" },
-            { "resources/shaders", "shaders/" },
+ //           { "resources/audio", "audio/" },
+ //           { "resources/textures", "textures/" },
+            { "resources/shaders", "/shaders/" },
         });
     
     /** 

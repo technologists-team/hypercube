@@ -1,7 +1,6 @@
 ﻿using Hypercube.Resources.FileSystems;
 using Hypercube.Resources.Loaders;
 using Hypercube.Resources.Preloading;
-using Hypercube.Utilities.Configuration;
 using JetBrains.Annotations;
 
 namespace Hypercube.Resources;
@@ -23,10 +22,29 @@ public sealed class ResourceManager : IResourceManager, IDisposable
     {
         FileSystem = new PhysicalFileSystem();
     }
-
-    public void AddMountPoints(ConfigField<Dictionary<string, string>> mountFolders)
+    
+    /// <inheritdoc/>
+    public void Mount(Dictionary<ResourcePath, ResourcePath> mountFolders)
     {
-        throw new NotImplementedException();
+        FileSystem.Mount(mountFolders);
+    }
+
+    /// <inheritdoc/>
+    public void Mount(Dictionary<string, string> mountFolders)
+    {
+        FileSystem.Mount(mountFolders);
+    }
+
+    /// <inheritdoc/>
+    public void Mount(ResourcePath physicalPath, ResourcePath relativePath)
+    {
+        FileSystem.Mount(physicalPath, relativePath);
+    }
+
+    /// <inheritdoc/>
+    public void Unmount(ResourcePath relativePath)
+    {
+        FileSystem.Unmount(relativePath);
     }
 
     public void AddLoader<T>(IResourceLoader loader) where T : Resource

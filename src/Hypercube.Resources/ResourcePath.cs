@@ -43,7 +43,7 @@ public readonly struct ResourcePath : IEquatable<ResourcePath>
     public static readonly ResourcePath Self = ".";
 
     public static readonly ResourcePath Empty = string.Empty;
-
+    
     /// <summary>
     /// Static constructor to initialize platform-specific separators.
     /// </summary>
@@ -214,6 +214,20 @@ public readonly struct ResourcePath : IEquatable<ResourcePath>
 
         relative = null;
         return false;
+    }
+    
+    public bool IsChildOf(ResourcePath parent)
+    {
+        if (!parent.Rooted || !Rooted)
+            return false;
+
+        // Normalize both paths for comparison
+        var parentPath = parent.Value.TrimEnd(Separator) + Separator;
+        var thisPath = Value;
+
+        // Check if this path starts with parent path and is longer
+        return thisPath.StartsWith(parentPath) &&
+               thisPath.Length > parentPath.Length;
     }
 
     /// <summary>

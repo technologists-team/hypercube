@@ -8,8 +8,7 @@ public interface IResourceManager
     void Mount(Dictionary<ResourcePath, ResourcePath> mountFolders);
     void Mount(Dictionary<string, string> mountFolders);
     void Mount(ResourcePath path, ResourcePath physicalPath);
-    void Unmount(ResourcePath path);
-    ResourcePath ResolvePhysicalPath(ResourcePath path);
+    void Unmount(ResourcePath relativePath);
     void AddLoader<T>(IResourceLoader loader) where T : Resource;
     bool HasLoader<T>() where T : Resource;
     void RemoveLoader<T>() where T : Resource;

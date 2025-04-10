@@ -25,6 +25,9 @@
 
     <ItemGroup>
         <Compile Include="..\Hypercube.Core\Analyzers\*" LinkBase="Analyzers" />
+        <Compile Update="..\Hypercube.Core\Analyzers\FileSystem.cs">
+          <Link>Analyzers\FileSystem.cs</Link>
+        </Compile>
     </ItemGroup>
     
 </Project>

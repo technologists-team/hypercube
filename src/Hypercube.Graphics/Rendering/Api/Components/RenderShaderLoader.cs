@@ -10,7 +10,7 @@ public sealed class RenderingApiShaderLoader
     private const string SectionType = "type";
     private const string SectionCode = "code";
     
-    private static readonly Regex Regex = new(BuildRegexPattern(), RegexOptions.Singleline);
+    private static readonly Regex Regex;
     private static readonly Dictionary<string, ShaderType> SectionTags = new()
     {
         { "vertex", ShaderType.Vertex },
@@ -20,10 +20,17 @@ public sealed class RenderingApiShaderLoader
         { "tessellation", ShaderType.Tessellation }
     };
 
+    static RenderingApiShaderLoader()
+    {
+        Regex = new Regex(BuildRegexPattern(), RegexOptions.Multiline);
+    }
+
     public static List<Section> ParseSections(string source)
     {
         var sections = new List<Section>();
-        var matches = Regex.Matches(source);
+     
+        if (Regex.Matches(source) is not { } matches)
+            return [];
         
         var header = matches.Count > 0 ?
             matches[0].Groups[SectionHeader].Value.Trim() : string.Empty;
@@ -61,7 +68,7 @@ public sealed class RenderingApiShaderLoader
         }
         
         builder.Append(@$")\](?<{SectionCode}>.*?)(?=\[|$)");
-        return builder.ToString();
+            return builder.ToString();
     }
     
     public readonly struct Section

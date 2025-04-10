@@ -50,7 +50,7 @@ public sealed class Runtime
         EntryPointsLoad();
         EntryPointsExecute(EntryPointLevel.BeforeInit);
         
-        _resourceManager.AddMountPoints(Config.MountFolders);
+        _resourceManager.Mount(Config.MountFolders);
         
         _logger.Info("The entry points are called!");
         _logger.Info("Initialization of internal modules...");
@@ -87,10 +87,10 @@ public sealed class Runtime
         
         _renderer.Load();
 
-        var context = _resourceManager.CreatePreloadContext();
-        context.AddDirectory<Texture>("resources/textures");
-        context.AddDirectory<Shader>("resources/shaders");
-        context.ExecuteAsync().Wait();
+        //var context = _resourceManager.CreatePreloadContext();
+        //context.AddDirectory<Texture>("resources/textures");
+        //context.AddDirectory<Shader>("/resources/shaders/");
+        //context.ExecuteAsync().Wait();
         
         _logger.Info("Preparation is complete, start the main application cycle");
         EntryPointsExecute(EntryPointLevel.AfterInit);

@@ -4,9 +4,9 @@ public interface IFileSystem
 {
     void Mount(Dictionary<ResourcePath, ResourcePath> mountFolders);
     void Mount(Dictionary<string, string> mountFolders);
-    void Mount(ResourcePath path, ResourcePath physicalPath);
-    void Unmount(ResourcePath path);
+    void Mount(ResourcePath physicalPath, ResourcePath relativePath);
+    void Unmount(ResourcePath relativePath);
     bool Exists(ResourcePath path);
-    Stream OpenRead(ResourcePath path);
+    FileStream OpenRead(ResourcePath relativePath);
     List<ResourcePath> GetFiles(ResourcePath path);
 }
