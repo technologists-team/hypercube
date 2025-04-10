@@ -53,22 +53,20 @@ public sealed class RenderingApiShaderLoader
     private static string BuildRegexPattern()
     {
         var builder = new StringBuilder();
-        
-        builder.Append($"^(?<{SectionHeader}>.*?)");
-        builder.Append(@$"\[(?<{SectionType}>");
-        
-        var first = true;
-        foreach (var tag in SectionTags.Keys)
-        {
-            if (!first)
-                builder.Append('|');
-            
-            builder.Append(tag);
-            first = false;
-        }
-        
-        builder.Append(@$")\](?<{SectionCode}>.*?)(?=\[|$)");
-            return builder.ToString();
+    
+        // Capture the header (if any)
+        builder.Append($@"(?<{SectionHeader}>[\s\S]*?)");
+    
+        // Start a section: [vertex], [fragment], etc.
+        builder.Append($@"^\s*\[(?<{SectionType}>");
+    
+        // List all shader types (vertex|fragment|geometry|...).
+        builder.Append(string.Join("|", SectionTags.Keys));
+    
+        // Capture code up to the next section or the end of the file
+        builder.Append($@")\]\s*(?<{SectionCode}>[\s\S]*?)(?=^\s*\[|\z)");
+    
+        return builder.ToString();
     }
     
     public readonly struct Section
