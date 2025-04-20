@@ -4,11 +4,15 @@ using System.Runtime.CompilerServices;
 namespace Hypercube.Core.Ecs.Core.Components;
 
 [EngineInternal]
-public class ComponentMapper<TComponent> where TComponent : IComponent
+public sealed class ComponentMapper<TComponent> : IComponentMapper
+    where TComponent : IComponent
 {
     private const int DefaultEntity = -1;
     private const int DefaultIndex = -1;
     private const int GrowthFactor = 2;
+
+    public event Action<int>? Added; 
+    public event Action<int>? Removed; 
 
     private TComponent[] _components = [];
     private int[] _mapping = [];
@@ -17,6 +21,7 @@ public class ComponentMapper<TComponent> where TComponent : IComponent
 
     public bool Empty => _lastComponentIndex == DefaultIndex;
     public int Count => _lastComponentIndex + 1;
+    public IEnumerable<int> Entities => Enumerable.Range(0, _lastComponentIndex + 1);
     
     public TComponent this[int entity]
     {
@@ -51,7 +56,8 @@ public class ComponentMapper<TComponent> where TComponent : IComponent
         Resize(ref _components, _lastComponentIndex);
 
         _components[_lastComponentIndex] = component;
-
+        Added?.Invoke(entity);
+        
         return isNew;
     }
     
@@ -65,6 +71,7 @@ public class ComponentMapper<TComponent> where TComponent : IComponent
         if (index == DefaultIndex)
             return false;
         
+        Removed?.Invoke(entity);
         index = DefaultIndex;
         return true;
     }

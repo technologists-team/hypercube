@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Core.Ecs.Core.Events;
+using Hypercube.Core.Ecs.Core.Query;
 
 namespace Hypercube.Core.Ecs;
 
@@ -15,6 +16,8 @@ public interface IWorld
     /// </summary>
     int Id { get; }
 
+    EntityQueryBuilder EntityQueryBuilder { get; }
+    
     /// <summary>
     /// Updates the world logic. Called every frame or tick.
     /// </summary>

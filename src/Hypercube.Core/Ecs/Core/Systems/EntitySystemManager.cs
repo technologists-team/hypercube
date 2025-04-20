@@ -1,10 +1,12 @@
 ﻿using Hypercube.Core.Ecs.Core.Utilities;
 using Hypercube.Core.Ecs.Utilities;
 using Hypercube.Utilities.Dependencies;
+using JetBrains.Annotations;
 
 namespace Hypercube.Core.Ecs.Core.Systems;
 
 [EngineInternal]
+[UsedImplicitly]
 public sealed class EntitySystemManager : IEntitySystemManager
 {
     [Dependency] private readonly DependenciesContainer _container = default!;

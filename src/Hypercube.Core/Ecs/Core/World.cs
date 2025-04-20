@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Hypercube.Core.Ecs.Core.Components;
 using Hypercube.Core.Ecs.Core.Events;
+using Hypercube.Core.Ecs.Core.Query;
 using Hypercube.Core.Ecs.Core.Utilities;
 using Hypercube.Core.Ecs.Events;
 using Hypercube.Utilities.Dependencies;
@@ -11,7 +12,7 @@ namespace Hypercube.Core.Ecs.Core;
 
 /// <inheritdoc/>
 [EngineInternal]
-public class World : IWorld
+public sealed class World : IWorld
 {
     /// <inheritdoc/>
     public int Id { get; }
@@ -23,6 +24,8 @@ public class World : IWorld
     private readonly WorldEventBus _eventBus = new();
     private readonly IntPool _entityPool = new();
 
+    public EntityQueryBuilder EntityQueryBuilder => new(this);
+    
     public World(int id, List<Type> systems, DependenciesContainer? container = null)
     {
         Id = id;
@@ -72,7 +75,7 @@ public class World : IWorld
     public bool AddComponent<T>(Entity entity) where T : IComponent
     {
         var component = InstantiateComponent<T>();
-        var result =  GetComponentPool<T>().Set(entity.Id, component);
+        var result =  GetComponentMapper<T>().Set(entity.Id, component);
         var ev = new AddedEvent();
         
         _eventBus.Raise(entity, component, ref ev);
@@ -83,7 +86,7 @@ public class World : IWorld
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool RemoveComponent<T>(Entity entity) where T : IComponent
     {
-        var pool = GetComponentPool<T>();
+        var pool = GetComponentMapper<T>();
         if (!pool.Remove(entity.Id))
             return false;
 
@@ -98,21 +101,21 @@ public class World : IWorld
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool HasComponent<T>(Entity entity) where T : IComponent
     {
-        return GetComponentPool<T>().Has(entity.Id);
+        return GetComponentMapper<T>().Has(entity.Id);
     }
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T GetComponent<T>(Entity entity) where T : IComponent
     {
-        return GetComponentPool<T>().Get(entity.Id);
+        return GetComponentMapper<T>().Get(entity.Id);
     }
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public T EnsureComponent<T>(Entity entity) where T : IComponent
     {
-        var pool = GetComponentPool<T>();
+        var pool = GetComponentMapper<T>();
         if (pool.Has(entity.Id))
             return pool.Get(entity.Id);
         
@@ -130,7 +133,7 @@ public class World : IWorld
     public bool TryGetComponent<T>(Entity entity, [NotNullWhen(true)] out T? component) where T : IComponent
     {
         component = default;
-        return GetComponentPool<T>().TryGet(entity.Id, ref component);
+        return GetComponentMapper<T>().TryGet(entity.Id, ref component);
     }
     
     #endregion
@@ -154,7 +157,8 @@ public class World : IWorld
     #endregion
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ComponentMapper<T> GetComponentPool<T>() where T : IComponent
+    public ComponentMapper<T> GetComponentMapper<T>()
+        where T : IComponent
     {
         if (_componentPools.TryGetValue(typeof(T), out var pool))
             return (ComponentMapper<T>) pool;

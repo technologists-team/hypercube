@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Hypercube.Core.Ecs.Core;
 using Hypercube.Core.Ecs.Core.Events;
+using Hypercube.Core.Ecs.Core.Query;
 using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
 using JetBrains.Annotations;
@@ -19,19 +20,31 @@ public abstract class EntitySystem : IEntitySystem
     [UsedImplicitly(ImplicitUseKindFlags.Assign)]
     public World World { get; private set; } = default!;
 
+    protected EntityQueryBuilder EntityQueryBuilder => World.EntityQueryBuilder;
+    
     /// <inheritdoc/>
     public virtual void Startup()
     {
     }
-    
+
     /// <inheritdoc/>
     public virtual void Shutdown()
     {
     }
-    
+
     /// <inheritdoc/>
     public virtual void Update(float deltaTime)
     {
+    }
+    
+    protected Entity CreateEntity()
+    {
+        return World.CreateEntity();
+    }
+    
+    protected bool DestroyEntity(Entity entity)
+    {
+        return World.DestroyEntity(entity);
     }
     
     /// <summary>

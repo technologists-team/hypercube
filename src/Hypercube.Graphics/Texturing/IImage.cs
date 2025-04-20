@@ -1,11 +1,15 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.ObjectModel;
+using Hypercube.Mathematics.Shapes;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Graphics.Texturing;
 
-[PublicAPI]
 public interface IImage
 {
-    int Width { get; }
-    int Height { get; }
-    byte[] Data { get; }
+    Vector2i Size { get; }
+    ReadOnlyCollection<byte> Data { get; }
+    Box2 UV { get; }
+
+    int Width => Size.X;
+    int Height => Size.Y;
 }

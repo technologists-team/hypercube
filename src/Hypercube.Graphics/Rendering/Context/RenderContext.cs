@@ -5,11 +5,13 @@ using Hypercube.Mathematics;
 using Hypercube.Mathematics.Matrices;
 using Hypercube.Mathematics.Shapes;
 using Hypercube.Mathematics.Vectors;
+using JetBrains.Annotations;
 
 namespace Hypercube.Graphics.Rendering.Context;
 
 [EngineInternal]
-public class RenderContext : IRenderContext
+[UsedImplicitly]
+public sealed class RenderContext : IRenderContext
 {
     private IRenderingApi _renderingApi = default!;
     
@@ -18,6 +20,15 @@ public class RenderContext : IRenderContext
         _renderingApi = api;
     }
 
+    public void DrawTexture(Texture texture, Vector2 position, Color color)
+    {
+        if (_renderingApi.PrimitiveShaderProgram is null)
+            throw new Exception();
+
+        var box = new Box2(position, texture.Size);
+        AddQuadTriangleBatch(_renderingApi.BatchVerticesIndex, Matrix4x4.Identity.Transform(box), Box2.UV, color);
+    }
+    
     public void DrawRectangle(Box2 box, Color color, bool outline = false)
     {
         if (_renderingApi.PrimitiveShaderProgram is null)
