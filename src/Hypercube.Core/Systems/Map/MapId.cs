@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Systems.Map;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Systems.Map;
 
 [IdStruct(typeof(int))]
 public readonly partial struct MapId

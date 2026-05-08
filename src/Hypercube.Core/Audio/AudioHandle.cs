@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Audio;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Audio;
 
 [IdStruct(typeof(uint))]
 public readonly partial struct AudioHandle

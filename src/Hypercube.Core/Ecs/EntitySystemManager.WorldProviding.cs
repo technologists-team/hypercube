@@ -30,6 +30,6 @@ public partial class EntitySystemManager
     public void Remove<T>(Entity entity) where T : struct, IComponent
         => _globalWorld.Remove<T>(entity);
 
-    public Query CreateQuery(in QueryMeta meta)
-        => _globalWorld.CreateQuery(meta);
+    public Query Query(in QueryMeta meta)
+        => _globalWorld.Query(meta);
 }

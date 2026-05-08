@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Graphics.Rendering.Batching;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Graphics.Rendering.Batching;
 
 [IdStruct(typeof(int))]
 public readonly partial struct RenderStateId

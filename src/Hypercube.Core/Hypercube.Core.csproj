@@ -31,6 +31,10 @@
     <ProjectReference Include="..\..\submodules\modloader\src\Hypercube.ModLoader\Hypercube.ModLoader.csproj" />
     <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities\Hypercube.Utilities.csproj" />
       
+    <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Attributes\Hypercube.Utilities.Attributes.csproj" />
+    <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Analyzers\Hypercube.Utilities.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Analyzers.CodeFix\Hypercube.Utilities.Analyzers.CodeFix.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      
     <ProjectReference Include="..\Hypercube.Analyzers\Hypercube.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Hypercube.Physics\Hypercube.Physics.csproj" />
   </ItemGroup>

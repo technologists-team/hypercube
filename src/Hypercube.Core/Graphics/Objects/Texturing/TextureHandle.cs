@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Graphics.Objects.Texturing;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Graphics.Objects.Texturing;
 
 /// <summary>
 /// Represents a strongly-typed handle to a texture resource.

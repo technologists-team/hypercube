@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Windowing.Monitors;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Windowing.Monitors;
 
 [IdStruct(typeof(nint))]
 public partial struct MonitorHandle

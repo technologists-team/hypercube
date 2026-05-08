@@ -1,4 +1,6 @@
-﻿namespace Hypercube.Core.Windowing.Windows;
+﻿using Hypercube.Utilities.Attributes;
+
+namespace Hypercube.Core.Windowing.Windows;
 
 /// <summary>
 /// Represents a strongly-typed handle to a native window.

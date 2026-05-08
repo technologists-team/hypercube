@@ -18,10 +18,10 @@ public sealed partial class EntitySystemManager : IEntitySystemManager, IPostInj
     private readonly DependenciesContainer _container;
     private readonly IWorld _globalWorld;
     
-    public EntitySystemManager(IDependenciesContainer container, ILogger logger)
+    public EntitySystemManager(IDependenciesContainer container)
     {
         _container = new DependenciesContainer(container);
-        _globalWorld = new World(logger);
+        _globalWorld = new World();
     }
 
     public void OnPostInject()
