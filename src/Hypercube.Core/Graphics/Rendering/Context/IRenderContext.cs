@@ -75,7 +75,8 @@ public partial interface IRenderContext
     void DrawTexture(Texture texture, Vector2 position);
     void DrawTexture(Texture texture, Vector2 position, Angle rotation);
     void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale);
-    
+    void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color);
+
     /// <summary>
     /// Draws a texture on the screen with specified transformations.
     /// </summary>
@@ -84,7 +85,8 @@ public partial interface IRenderContext
     /// <param name="rotation">The rotation to apply to the texture.</param>
     /// <param name="scale">The scale to apply to the texture.</param>
     /// <param name="color">The color tint to apply to the texture.</param>
-    void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color);
+    /// <param name="uv">The normalized coordinate rectangle (0.0 to 1.0) defining the portion of the texture to render.</param>
+    void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color, Rect2 uv);
     
     void Scissor(bool value);
     void SetScissorRect(Rect2i rect);

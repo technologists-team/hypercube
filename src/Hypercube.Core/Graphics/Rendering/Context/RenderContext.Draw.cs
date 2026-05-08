@@ -27,7 +27,7 @@ public sealed partial class RenderContext
         {
             var vertexPosition = model.Vertices[v] * matrix;
             
-            var uv = vt >= 0 && vt < model.UVs.Length ? model.UVs[vt] : Vector2.Zero;;
+            var uv = vt >= 0 && vt < model.UVs.Length ? model.UVs[vt] : Vector2.Zero;
             var normal = vn >= 0 && vn < model.Normals.Length
                 ? (model.Normals[vn] * matrix).Normalized
                 : Vector3.UnitZ;
@@ -55,14 +55,22 @@ public sealed partial class RenderContext
     
     public void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale) 
     {
-        DrawTexture(texture, position, rotation, scale, Color.White);
+        DrawTexture(texture, position, rotation, scale, Color.White, Rect2.UV);
+    }
+    
+    public void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color) 
+    {
+        DrawTexture(texture, position, rotation, scale, color, Rect2.UV);
     }
 
-    public void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color)
+    public void DrawTexture(Texture texture, Vector2 position, Angle rotation, Vector2 scale, Color color, Rect2 uv)
     {
         if (_renderingApi.TexturingShaderProgram is null)
             throw new Exception();
 
+        if (texture.Gpu is null)
+            texture.GpuBind(_renderingApi);
+        
         var halfSize = texture.Size / 2;
         var rect = new Rect4(
             new Vector2(-halfSize.X, -halfSize.Y),
@@ -78,7 +86,7 @@ public sealed partial class RenderContext
         );
         
         _renderingApi.EnsureBatch(PrimitiveTopology.TriangleList, _renderingApi.TexturingShaderProgram.Handle, texture.Gpu?.Handle);
-        AddQuadTriangleBatch(_renderingApi.BatchVerticesIndex, rect * matrix, Rect2.UV, color);
+        AddQuadTriangleBatch(_renderingApi.BatchVerticesIndex, rect * matrix, uv, color);
     }
     
     public void DrawRectangle(Rect2 box, Color color, bool outline = false)
