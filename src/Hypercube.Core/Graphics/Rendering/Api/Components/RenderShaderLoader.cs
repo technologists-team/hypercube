@@ -24,7 +24,7 @@ public sealed class RenderingApiShaderLoader
     {
         Regex = new Regex(BuildRegexPattern(), RegexOptions.Multiline);
     }
-
+    
     public static List<Section> ParseSections(string source)
     {
         var sections = new List<Section>();

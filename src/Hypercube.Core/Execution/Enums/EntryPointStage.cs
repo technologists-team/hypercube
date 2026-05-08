@@ -3,5 +3,6 @@
 public enum EntryPointStage
 {
     BeforeInit,
-    AfterInit
+    BeforeRenderInit,
+    AfterInit,
 }

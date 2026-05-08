@@ -75,6 +75,8 @@ public sealed partial class Runtime
         _logger.Info("The entry points are called!");
         _logger.Info("Initialization of internal modules...");
 
+        EntryPointsExecute(EntryPointStage.BeforeRenderInit); 
+        
         _renderer.Init();
         var mainWindow = _renderer.CreateMainWindow();
         mainWindow.OnClose += () => _runtimeLoop.Shutdown();
