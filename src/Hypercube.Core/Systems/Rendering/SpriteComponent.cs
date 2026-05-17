@@ -2,6 +2,7 @@
 using Hypercube.Core.Resources;
 using Hypercube.Ecs.Components;
 using Hypercube.Mathematics;
+using Hypercube.Mathematics.Shapes;
 
 namespace Hypercube.Core.Systems.Rendering;
 
@@ -14,4 +15,5 @@ public struct SpriteComponent() : IComponent
     public Angle Rotation = Angle.Zero;
     public Vector2 Offset = Vector2.Zero;
     public Color Color = Color.White;
+    public Rect2 Uv = Rect2.UV;
 }
