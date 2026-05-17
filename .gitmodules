@@ -3,10 +3,10 @@
 	url = https://github.com/technologists-team/hypercube-mathematics.git
 [submodule "submodules/utilities"]
 	path = submodules/utilities
-	url = https://github.com/technologists-team/hypercube-utilities.git
+	url = https://github.com/Tesmi-Develop/hypercube-utilities.git
 [submodule "submodules/modloader"]
 	path = submodules/modloader
 	url = https://github.com/technologists-team/hypercube-modloader.git
 [submodule "submodules/ecs"]
 	path = submodules/ecs
-	url = https://github.com/technologists-team/hypercube-ecs.git
+	url = https://github.com/Tesmi-Develop/hypercube-ecs.git
