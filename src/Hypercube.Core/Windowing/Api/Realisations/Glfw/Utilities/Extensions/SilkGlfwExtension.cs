@@ -1,7 +1,5 @@
 ﻿using Hypercube.Core.Windowing.Monitors;
 using Hypercube.Core.Windowing.Monitors.Data;
-using Hypercube.Mathematics.Vectors;
-
 using SilkMonitor = Silk.NET.GLFW.Monitor;
 using SilkVideoMode = Silk.NET.GLFW.VideoMode;
 

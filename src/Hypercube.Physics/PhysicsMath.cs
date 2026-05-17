@@ -1,5 +1,4 @@
-﻿using Hypercube.Physics.Manifolds;
-using Hypercube.Physics.Shapes.Structs;
+﻿using Hypercube.Physics.Shapes.Structs;
 using JetBrains.Annotations;
 
 namespace Hypercube.Physics;

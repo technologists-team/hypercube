@@ -1,5 +1,4 @@
 ﻿using Hypercube.Core.Input.Args;
-using Hypercube.Mathematics.Vectors;
 using WindowHandle = Hypercube.Core.Windowing.Windows.WindowHandle;
 
 namespace Hypercube.Core.Input.Handler;

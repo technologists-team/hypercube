@@ -1,5 +1,4 @@
 ﻿using Hypercube.Mathematics.Shapes;
-using Hypercube.Mathematics.Vectors;
 using StbTrueTypeSharp;
 
 namespace Hypercube.Core.Graphics.Utilities.Helpers;

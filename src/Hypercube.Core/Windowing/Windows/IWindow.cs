@@ -1,6 +1,5 @@
 ﻿using Hypercube.Core.Graphics.Objects.Texturing;
 using Hypercube.Core.Windowing.Api;
-using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Windowing.Windows;
 
