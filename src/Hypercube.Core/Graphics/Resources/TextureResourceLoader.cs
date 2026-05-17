@@ -2,7 +2,6 @@
 using Hypercube.Core.Resources.FileSystems;
 using Hypercube.Core.Resources.Loaders;
 using Hypercube.Mathematics.Shapes;
-using Hypercube.Mathematics.Vectors;
 using StbImageSharp;
 
 namespace Hypercube.Core.Graphics.Resources;

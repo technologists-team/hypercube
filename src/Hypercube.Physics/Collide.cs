@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Hypercube.Physics.Manifolds;
+﻿using Hypercube.Physics.Manifolds;
 using Hypercube.Physics.Mathematics;
 using Hypercube.Physics.Shapes.Structs;
 using Hypercube.Utilities.Collections;

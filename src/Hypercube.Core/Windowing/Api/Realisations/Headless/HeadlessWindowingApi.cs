@@ -2,7 +2,6 @@
 using Hypercube.Core.Windowing.Api.Base;
 using Hypercube.Core.Windowing.Monitors;
 using Hypercube.Core.Windowing.Windows;
-using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Windowing.Api.Realisations.Headless;
 

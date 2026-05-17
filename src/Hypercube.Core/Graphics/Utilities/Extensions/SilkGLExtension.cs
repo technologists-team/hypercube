@@ -3,7 +3,6 @@ using System.Runtime.InteropServices;
 using Hypercube.Core.Graphics.Rendering.Batching;
 using Hypercube.Core.Windowing.Windows;
 using Hypercube.Mathematics;
-using Hypercube.Mathematics.Vectors;
 using Silk.NET.OpenGL;
  
 using ShaderType = Hypercube.Core.Graphics.Rendering.Shaders.ShaderType;

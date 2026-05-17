@@ -3,7 +3,6 @@ using Hypercube.Core.Execution.LifeCycle;
 using Hypercube.Ecs;
 using Hypercube.Ecs.System;
 using Hypercube.Ecs.System.Collections;
-using Hypercube.Utilities.Debugging.Logger;
 using Hypercube.Utilities.Dependencies;
 using Hypercube.Utilities.Helpers;
 

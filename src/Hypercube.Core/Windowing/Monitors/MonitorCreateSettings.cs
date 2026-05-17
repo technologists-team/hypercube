@@ -1,5 +1,4 @@
 ﻿using Hypercube.Core.Windowing.Monitors.Data;
-using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Windowing.Monitors;
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Frozen;
 using Hypercube.Core.Graphics.Utilities.Helpers;
 using Hypercube.Mathematics.Shapes;
-using Hypercube.Mathematics.Vectors;
 using StbImageWriteSharp;
 using StbTrueTypeSharp;
 

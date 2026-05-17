@@ -2,7 +2,6 @@
 using Hypercube.Core.Graphics.Objects.Texturing;
 using Hypercube.Core.Windowing.Api.Settings;
 using Hypercube.Core.Windowing.Monitors;
-using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Windowing.Windows;
 

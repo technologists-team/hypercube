@@ -1,6 +1,5 @@
 ﻿using Hypercube.Core.Viewports;
 using Hypercube.Ecs.Components;
-using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Systems.Camera;
 
