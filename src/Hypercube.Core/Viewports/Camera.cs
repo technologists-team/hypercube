@@ -13,7 +13,10 @@ public class Camera : ICamera
     public const float DefaultZNear = -1f;
     public const float DefaultZFar = 100f;
 
+    /// <inheritdoc />
     public Matrix4x4 Projection { get; private set; }
+    
+    /// <inheritdoc />
     public Matrix4x4 View { get; private set; }
 
     private Vector2i _size;
@@ -21,6 +24,7 @@ public class Camera : ICamera
     private float _zNear;
     private float _zFar;
 
+    /// <inheritdoc />
     public Vector2i Size
     {
         get => _size;
@@ -31,6 +35,7 @@ public class Camera : ICamera
         }
     }
 
+    /// <inheritdoc />
     public Vector3 Position
     {
         get;
@@ -41,6 +46,7 @@ public class Camera : ICamera
         }
     }
 
+    /// <inheritdoc />
     public Quaternion Rotation
     {
         get;
@@ -51,6 +57,7 @@ public class Camera : ICamera
         }
     } = Quaternion.Identity;
 
+    /// <inheritdoc />
     public Vector3 Scale
     {
         get => _scale;
@@ -61,6 +68,7 @@ public class Camera : ICamera
         }
     }
 
+    /// <inheritdoc />
     public float ZNear
     {
         get => _zNear;
@@ -71,6 +79,7 @@ public class Camera : ICamera
         }
     }
 
+    /// <inheritdoc />
     public float ZFar
     {
         get => _zFar;
@@ -110,13 +119,9 @@ public class Camera : ICamera
         return worldPositionWithW.Xyz / worldPositionWithW.W;
     }
     
-    private void UpdateProjection()
-    {
+    private void UpdateProjection() =>
         Projection = Matrix4x4.CreateOrthographic(Size, ZNear, ZFar);
-    }
 
-    private void UpdateView()
-    {
+    private void UpdateView() =>
         View = Matrix4x4.CreateTransformSRT(-Position, Rotation.Inversed, 1.0f / Scale);
-    }
 }
