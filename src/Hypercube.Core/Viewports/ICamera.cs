@@ -51,4 +51,6 @@ public interface ICamera
     /// Objects closer than this distance will not be rendered.
     /// </summary>
     float ZNear { get; set; }
+
+    Vector3 ScreenToWorld(Vector2i mousePosition);
 }

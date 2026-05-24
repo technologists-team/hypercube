@@ -1,5 +1,6 @@
 ﻿using Hypercube.Mathematics.Matrices;
 using Hypercube.Mathematics.Quaternions;
+using Hypercube.Mathematics.Vectors;
 
 namespace Hypercube.Core.Viewports;
 
@@ -91,6 +92,24 @@ public class Camera : ICamera
         UpdateView();
     }
 
+    public Vector3 ScreenToWorld(Vector2i mousePosition)
+    {
+        var size = Size;
+        if (size.X <= 0 || size.Y <= 0)
+            return Vector3.Zero;
+        
+        var ndcX = 2.0f * mousePosition.X / size.X - 1.0f;
+        var ndcY = 1.0f - 2.0f * mousePosition.Y / size.Y;
+        
+        var ndcPosition = new Vector4(ndcX, ndcY, 0.0f, 1.0f);
+        
+        var viewProjection = View * Projection;
+        var inverted = viewProjection.Inverted();
+        
+        var worldPositionWithW = ndcPosition * inverted;
+        return worldPositionWithW.Xyz / worldPositionWithW.W;
+    }
+    
     private void UpdateProjection()
     {
         Projection = Matrix4x4.CreateOrthographic(Size, ZNear, ZFar);
