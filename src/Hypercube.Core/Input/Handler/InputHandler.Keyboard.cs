@@ -27,8 +27,8 @@ public sealed partial class InputHandler
     public bool IsKeyState(Key key, KeyState state) =>
         IsKeyState(Api.Context, key, state);
 
-    public void SimulateMouseButton(KeyChangedArgs state) =>
-        SimulateMouseButton(Api.Context, state);
+    public void SimulateKey(KeyChangedArgs state) =>
+        SimulateKey(Api.Context, state);
 
     public bool IsKeyHeld(WindowHandle window, Key key) =>
         IsKeyState(window, key, KeyState.Held);
@@ -39,10 +39,17 @@ public sealed partial class InputHandler
     public bool IsKeyReleased(WindowHandle window, Key key) =>
         IsKeyState(window, key, KeyState.Released);
 
-    public bool IsKeyState(WindowHandle window, Key key, KeyState state) =>
-        _keys.TryGetValue(window, out var buffer) && buffer[state].Contains(key);
+    public bool IsKeyState(WindowHandle window, Key key, KeyState state)
+    {
+        if (!_keys.TryGetValue(window, out var buffer))
+            return false;
+        
+        return key == Key.Any
+            ? buffer.HasAny(state)
+            : buffer[state].Contains(key);
+    }
 
-    public void SimulateMouseButton(WindowHandle window, KeyChangedArgs state) =>
+    public void SimulateKey(WindowHandle window, KeyChangedArgs state) =>
         OnKeyUpdate(window, state);
 
     #endregion
@@ -73,6 +80,14 @@ public sealed partial class InputHandler
             KeyState.Held => _held,
             _ => throw new ArgumentOutOfRangeException(nameof(state), state, null)
         };
+        
+        public bool HasAny(KeyState state) => state switch
+        {
+            KeyState.Released => _released.Count > 0,
+            KeyState.Pressed => _pressed.Count > 0,
+            KeyState.Held => _held.Count > 0,
+            _ => throw new ArgumentOutOfRangeException(nameof(state), state, null)
+        };
 
         public void Apply(KeyChangedArgs state)
         {
@@ -87,6 +102,12 @@ public sealed partial class InputHandler
                 case KeyState.Released:
                     ApplyReleased(state.Key);
                     break;
+                
+                case KeyState.Held:
+                    break;
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
