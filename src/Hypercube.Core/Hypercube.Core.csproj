@@ -35,7 +35,6 @@
     <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities\Hypercube.Utilities.csproj" />
       
     <!-- Analyzers -->
-    <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Attributes\Hypercube.Utilities.Attributes.csproj" />
     <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Analyzers\Hypercube.Utilities.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities.Analyzers.CodeFix\Hypercube.Utilities.Analyzers.CodeFix.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 
