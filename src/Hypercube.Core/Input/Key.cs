@@ -4,8 +4,8 @@
 [PublicAPI]
 public enum Key : short
 {
-    Unknown = -1,
-
+    Any = -1,
+    
     #region Letters
     
     A = 65, // A

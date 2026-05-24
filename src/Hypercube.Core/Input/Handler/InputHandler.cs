@@ -26,15 +26,19 @@ public sealed partial class InputHandler : IInputHandler, IPostInject
     [Dependency] private readonly IWindowingManager _windowing = null!;
     [Dependency] private readonly IRuntimeLoop _runtimeLoop = null!;
 
+    public event Action<string>? OnChar;
+    
     private readonly Dictionary<nint, KeyStateBuffer> _keys = new();
 
     private IWindowingApi Api => _windowing.Api;
-    
+
+
     public void OnPostInject()
     {
         _runtimeLoop.Actions.Add(OnUpdate, EngineUpdatePriority.InputHandler); 
         
         Api.OnWindowKey += OnKeyUpdate;
+        Api.OnWindowChar += OnCharUpdate;
         Api.OnWindowMousePosition += OnMousePositionUpdate;
         Api.OnWindowMouseButton += OnMouseButtonUpdate;
     }
@@ -53,6 +57,11 @@ public sealed partial class InputHandler : IInputHandler, IPostInject
     private void OnKeyUpdate(WindowHandle window, KeyChangedArgs state)
     {
         GetKeySateBuffer(window).Apply(state);
+    }
+
+    private void OnCharUpdate(WindowHandle window, uint codePoint)
+    {
+        OnChar?.Invoke(char.ConvertFromUtf32((int) codePoint));
     }
 
     private void OnMousePositionUpdate(WindowHandle window, Vector2d position)

@@ -13,6 +13,8 @@ namespace Hypercube.Core.Input.Handler;
 [PublicAPI]
 public interface IInputHandler : IRuntimeUpdatable
 {
+    event Action<string> OnChar;
+    
     Vector2i MousePosition { get; }
     
     /// <summary>
@@ -125,7 +127,7 @@ public interface IInputHandler : IRuntimeUpdatable
     /// <param name="state">
     /// The mouse button state change to simulate.
     /// </param>
-    void SimulateMouseButton(KeyChangedArgs state);
+    void SimulateKey(KeyChangedArgs state);
     
     /// <summary>
     /// Simulates a mouse button state change event
@@ -139,7 +141,7 @@ public interface IInputHandler : IRuntimeUpdatable
     /// <param name="state">
     /// The mouse button state change to simulate.
     /// </param>
-    void SimulateMouseButton(WindowHandle window, KeyChangedArgs state);
+    void SimulateKey(WindowHandle window, KeyChangedArgs state);
 
     /// <summary>
     /// Returns whether the specified mouse button is currently held
