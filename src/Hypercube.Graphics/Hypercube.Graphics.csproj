@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\submodules\mathematics\src\Hypercube.Mathematics\Hypercube.Mathematics.csproj" />
+      <ProjectReference Include="..\..\submodules\utilities\src\Hypercube.Utilities\Hypercube.Utilities.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Silk.NET.GLFW" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL.Extensions.Creative" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL.Extensions.Enumeration" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL.Extensions.EXT" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL.Extensions.Soft" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.OpenAL.Soft.Native" Version="1.23.1" />
+        <PackageReference Include="Silk.NET.OpenGL" Version="2.22.0" />
+        <PackageReference Include="Silk.NET.SDL" Version="2.22.0" />
+    </ItemGroup>
+    
+</Project>
