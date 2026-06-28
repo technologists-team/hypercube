@@ -1,21 +1,22 @@
-﻿using Hypercube.Graphics.Core.Backends;
+﻿using Hypercube.Graphics.Core.Types;
+using Hypercube.Graphics.Types;
 using Hypercube.Utilities;
 
 namespace Hypercube.Graphics.Core;
 
 public static class Constants
 {
-    public static readonly (string, uint)[] ShaderAttribLocations =
+    public static readonly VertexAttribute[] ShaderAttribLocations =
     [
-        ("aPos",       0),
-        ("aColor",     1),
-        ("aTexCoords", 2),
-        ("aNormal",    3)
+        new("aPos",       0, 3, VertexAttributeType.Float),
+        new("aColor",     1, 4, VertexAttributeType.Float),
+        new("aTexCoords", 2, 2, VertexAttributeType.Float),
+        new("aNormal",    3, 3, VertexAttributeType.Float)
     ];
 
-    public static readonly RenderBackend[] ImplementedBackends =
+    public static readonly RenderBackendType[] ImplementedBackends =
     [
-        RenderBackend.OpenGL
+        RenderBackendType.OpenGL
     ];
     
     public static readonly Dictionary<OS, OSBackendInfo> OSBackendMatrix = new()
@@ -25,61 +26,61 @@ public static class Constants
             // we assume it supports OpenGL.
             // OpenGL is still the safest universal baseline
             OS.Unknown, new OSBackendInfo(
-                Best: RenderBackend.OpenGL,
-                Supported: [RenderBackend.OpenGL]
+                Best: RenderBackendType.OpenGL,
+                Supported: [RenderBackendType.OpenGL]
             )
         },
         {
             OS.Windows, new OSBackendInfo(
-                Best: RenderBackend.Direct3D12,
+                Best: RenderBackendType.Direct3D12,
                 Supported:
                 [
-                    RenderBackend.Direct3D12,
-                    RenderBackend.Direct3D11,
-                    RenderBackend.Vulkan,
-                    RenderBackend.OpenGL
+                    RenderBackendType.Direct3D12,
+                    RenderBackendType.Direct3D11,
+                    RenderBackendType.Vulkan,
+                    RenderBackendType.OpenGL
                 ]
             )
         },
         {
             OS.Linux, new OSBackendInfo(
-                Best: RenderBackend.Vulkan,
+                Best: RenderBackendType.Vulkan,
                 Supported:
                 [
-                    RenderBackend.Vulkan,
-                    RenderBackend.OpenGL,
-                    RenderBackend.OpenGles
+                    RenderBackendType.Vulkan,
+                    RenderBackendType.OpenGL,
+                    RenderBackendType.OpenGles
                 ]
             )
         },
         {
             OS.MacOS, new OSBackendInfo(
-                Best: RenderBackend.Metal,
+                Best: RenderBackendType.Metal,
                 Supported:
                 [
-                    RenderBackend.Metal,
-                    RenderBackend.Vulkan, // via MoltenVK
-                    RenderBackend.OpenGL
+                    RenderBackendType.Metal,
+                    RenderBackendType.Vulkan, // via MoltenVK
+                    RenderBackendType.OpenGL
                 ]
             )
         },
         {
             OS.Android, new OSBackendInfo(
-                Best: RenderBackend.Vulkan,
+                Best: RenderBackendType.Vulkan,
                 Supported:
                 [
-                    RenderBackend.Vulkan,
-                    RenderBackend.OpenGles
+                    RenderBackendType.Vulkan,
+                    RenderBackendType.OpenGles
                 ]
             )
         },
         {
             OS.Browser, new OSBackendInfo(
-                Best: RenderBackend.WebGpu,
+                Best: RenderBackendType.WebGpu,
                 Supported:
                 [
-                    RenderBackend.WebGpu,
-                    RenderBackend.OpenGles
+                    RenderBackendType.WebGpu,
+                    RenderBackendType.OpenGles
                 ]
             )
         }

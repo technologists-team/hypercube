@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hypercube.Analyzers\Hypercube.Analyzers.csproj" />
-    <ProjectReference Include="..\Hypercube.Core\Hypercube.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
