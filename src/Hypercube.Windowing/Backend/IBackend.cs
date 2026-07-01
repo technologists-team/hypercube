@@ -47,6 +47,10 @@ public interface IBackend
 
     void WindowSetIcon(WindowHandle window, Icon[] icons);
 
+    void MakeContextCurrent(WindowHandle window);
+
+    void SwapBuffers(WindowHandle window);
+    
     nint GetProcAddress(string procName);
 
     void PollEvents();

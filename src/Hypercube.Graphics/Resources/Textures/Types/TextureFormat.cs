@@ -1,4 +1,4 @@
-﻿namespace Hypercube.Graphics.Resources.Textures;
+﻿namespace Hypercube.Graphics.Resources.Textures.Types;
 
 public enum TextureFormat : byte
 {

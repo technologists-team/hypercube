@@ -12,47 +12,52 @@ namespace Hypercube.Windowing.Core.Device;
 
 public sealed class WindowingDevice : IWindowingDevice
 {
-   public event ErrorHandler? OnError;
+    public event ErrorHandler? OnError;
    
-   private readonly Dictionary<WindowHandle, IWindow> _windows = [];
-   private readonly Dictionary<MonitorHandle, IMonitor> _monitors = [];
+    private readonly Dictionary<WindowHandle, IWindow> _windows = [];
+    private readonly Dictionary<MonitorHandle, IMonitor> _monitors = [];
    
-   private readonly BackendHandler _handler;
+    private readonly BackendHandler _handler;
    
-   public Thread? Thread { get; private set; }  
+    public Thread? Thread { get; private set; }  
    
-   public WindowingDevice(in WindowingDeviceSettings deviceSettings)
-   {
-      var backend = BackendFactory.Create(deviceSettings.Backend);
-      var proxy = new BackendProxy(backend);
+    public WindowingDevice(in WindowingDeviceSettings deviceSettings)
+    {
+        var backend = BackendFactory.Create(deviceSettings.Backend);
+        var proxy = new BackendProxy(backend);
       
-      _handler = BackendFactory.Create(proxy, deviceSettings.Multithread);
-      _handler.OnError += (message, code) => OnError?.Invoke(message, code);
-      _handler.Initialize();
-   }
+        _handler = BackendFactory.Create(proxy, deviceSettings.Multithread);
+        _handler.OnError += (message, code) => OnError?.Invoke(message, code);
+        _handler.Initialize();
+    }
 
-   public IWindow CreateWindow(WindowCreateSettings settings)
-   {
-      var handle = _handler.WindowCreate(settings);
-      var instance = new Window(handle, _handler);
+    public IWindow CreateWindow(WindowCreateSettings settings)
+    {
+        var handle = _handler.WindowCreate(settings);
+        var instance = new Window(handle, _handler);
       
-      _windows[handle] = instance;
+        _windows[handle] = instance;
 
-      return instance;
-   }
+        return instance;
+    }
 
-   public void Terminate()
-   {
-      _handler.Terminate();
-   }
+    public void Terminate()
+    {
+        _handler.Terminate();
+    }
 
-   public void Update()
-   {
-      _handler.OnUpdate();
-   }
+    public void Update()
+    {
+        _handler.OnUpdate();
+    }
 
-   public nint GetProcAddress(string name)
-   {
-      return _handler.GetProcAddress(name);
-   }
+    public void SwapBuffers()
+    {
+        throw new NotImplementedException();
+    }
+
+    public nint GetProcAddress(string name)
+    {
+        return _handler.GetProcAddress(name);
+    }
 }

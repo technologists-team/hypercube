@@ -92,4 +92,14 @@ public sealed class BackendProxy
    {
       return _backend.GetProcAddress(name);
    }
+
+   public void MakeContextCurrent(WindowHandle handle)
+   {
+      _backend.MakeContextCurrent(handle);
+   }
+
+   public void SwapBuffers(WindowHandle handle)
+   {
+      _backend.SwapBuffers(handle);
+   }
 }

@@ -2,6 +2,8 @@
 using Hypercube.Graphics.Core;
 using Hypercube.Graphics.Core.Types;
 using Hypercube.Graphics.Device;
+using Hypercube.Graphics.Resources.Shaders;
+using Hypercube.Graphics.Resources.Textures;
 using Hypercube.Mathematics.Matrices;
 
 using Silk.NET.OpenGL;
@@ -11,6 +13,9 @@ namespace Hypercube.Graphics.Backend.Realisation.OpenGl;
 
 public sealed partial class OpenGlBackend : IBackend
 {
+    private readonly Dictionary<TextureBackendHandle, uint> _textures = new();
+    private readonly Dictionary<ShaderBackendHandle, uint> _shaders = new();
+    
     private readonly Vertex[] _batchVertices = new Vertex[2 << 14];
     private readonly uint[] _batchIndices = new uint[2 << 14];
     

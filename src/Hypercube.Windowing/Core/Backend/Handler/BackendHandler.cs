@@ -25,10 +25,20 @@ public abstract partial class BackendHandler : IDisposable
         return Proxy.GetProcAddress(name);
     }
 
+    public void MakeContextCurrent(WindowHandle handle)
+    {
+        Proxy.MakeContextCurrent(handle);
+    }
+
+    public void SwapBuffers(WindowHandle handle)
+    {
+        Proxy.SwapBuffers(handle);
+    }
+
     public abstract void OnUpdate();
-    
+
     public abstract void OnTerminate();
-    
+
     protected abstract void Execute(ICommand cmd);
 
     protected abstract Task ExecuteAsync(ICommand cmd);

@@ -39,6 +39,16 @@ public sealed class Window : IWindow, IDisposable
         _router.OnFocus -= FocusCallback;
     }
 
+    public void MakeContextCurrent()
+    {
+        _handler.MakeContextCurrent(_handle);
+    }
+
+    public void SwapBuffers()
+    {
+        _handler.SwapBuffers(_handle);
+    }
+
     public void Destroy()
     {
         _handler.WindowDestroy(_handle);

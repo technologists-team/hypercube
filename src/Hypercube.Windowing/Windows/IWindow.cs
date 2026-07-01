@@ -17,5 +17,7 @@ public interface IWindow
     void SetSize(Vector2i size);
     void SetTitle(string title);
 
+    void MakeContextCurrent();
+    void SwapBuffers();
     void Destroy();
 }

@@ -2,7 +2,9 @@
 
 namespace Hypercube.Graphics.Backend.Commands;
 
-public struct LowCommandBindShader
+public unsafe struct LowCommandCreateShader
 {
     public ShaderBackendHandle Handle;
+    public void* Data;
+    public int DataSize;
 }

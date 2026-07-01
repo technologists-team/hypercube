@@ -5,12 +5,12 @@ using Hypercube.Windowing.Core.Backend.Interaction.Handlers;
 using Hypercube.Windowing.Core.Windows;
 using Hypercube.Windowing.Types;
 using Hypercube.Windowing.Windows;
+
 // Silk redefine for reduce type/namespace collisions
 using SilkGlfw = Silk.NET.GLFW.Glfw;
 using SilkMonitor = Silk.NET.GLFW.Monitor;
 using SilkWindow = Silk.NET.GLFW.WindowHandle;
 using SilkImage = Silk.NET.GLFW.Image;
-
 using SilkWindowClientApi= Silk.NET.GLFW.ClientApi;
 using SilkWindowOpenGlProfile = Silk.NET.GLFW.OpenGlProfile;
 using SilkWindowHintOpenGlProfiler = Silk.NET.GLFW.WindowHintOpenGlProfile;
@@ -158,9 +158,19 @@ public sealed unsafe partial class GlfwBackend : IBackend
         WindowSetIcons((SilkWindow*) window.Value, icons.AsSpan());
     }
 
+    public void MakeContextCurrent(WindowHandle window)
+    {
+        _glfw.MakeContextCurrent((SilkWindow*) window.Value);
+    }
+
     public nint GetProcAddress(string procName)
     {
         return _glfw.GetProcAddress(procName);
+    }
+
+    public void SwapBuffers(WindowHandle window)
+    {
+        _glfw.SwapBuffers((SilkWindow*) window.Value);
     }
 
     public void PollEvents()

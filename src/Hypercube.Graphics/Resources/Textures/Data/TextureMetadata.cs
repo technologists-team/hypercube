@@ -1,6 +1,7 @@
-﻿using Hypercube.Mathematics.Vectors;
+﻿using Hypercube.Graphics.Resources.Textures.Types;
+using Hypercube.Mathematics.Vectors;
 
-namespace Hypercube.Graphics.Resources.Textures;
+namespace Hypercube.Graphics.Resources.Textures.Data;
 
 public readonly struct TextureMetadata
 {

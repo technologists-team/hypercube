@@ -2,15 +2,23 @@
 
 public enum LowCommandType : short
 {
-    Color,
+    // Clear
+    Clear,
+    ClearSettings,
+
     CullFaceMode,
     Scissor,
     Viewport,
-    BindShader,
     View,
+
+    // Shader
+    BindShader,
+    CreateShader,
+
+    // Rendering uniforms
     Projection,
     Primitive,
-    
+
     // Textures
     BindTexture,
     CreateTexture
