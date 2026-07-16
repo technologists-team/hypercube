@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using Hypercube.Graphics.Backend;
 using Hypercube.Graphics.Backend.Commands;
+using Hypercube.Graphics.Backend.Commands.Shader;
+using Hypercube.Graphics.Backend.Commands.Texture;
 using Hypercube.Graphics.Core.Resources;
 using Hypercube.Graphics.Resources.Shaders;
 using Hypercube.Graphics.Resources.Shaders.Data;
@@ -12,12 +14,11 @@ namespace Hypercube.Graphics.Core.Device.Modules;
 // Yes, it is heavily overloaded with repetitive code,
 // and yes, it is not the best solution;
 // this module will need to be updated in the future.
-public unsafe class GraphicDeviceResources
+public unsafe class GraphicDeviceResources : GraphicDeviceModule
 {
     private readonly Dictionary<TextureId, Texture> _textures = new();
     private readonly Dictionary<ShaderId, Shader> _shaders = new();
     
-    private readonly GraphicDevice _device;
     private readonly ResourceAllocator _allocator = new();
     
     private TextureId NextTextureId => field++;
@@ -26,13 +27,21 @@ public unsafe class GraphicDeviceResources
     private ShaderId NextShaderId => field++;
     private ShaderBackendHandle NextShaderHandle => field++;
     
-    public GraphicDeviceResources(GraphicDevice device)
+    public GraphicDeviceResources(GraphicDevice device) : base(device)
     {
-        _device = device;
     }
 
     #region Textures
 
+    public void BindTexture(TextureId id)
+    {
+        Device.Backend.CommandPush(new LowCommandBindTexture
+        {
+            Handle = _textures[id].Handle,
+            Slot = 0
+        }, LowCommandType.BindTexture);
+    }
+    
     public TextureId CreateTexture(Stream stream, TextureCreationSettings settings)
     {
         var id = NextTextureId;
@@ -54,7 +63,7 @@ public unsafe class GraphicDeviceResources
 
         _textures[id] = texture;
 
-        _device.Backend.CommandPush(new LowCommandCreateTexture
+        Device.Backend.CommandPush(new LowCommandCreateTexture
         {
             Handle = handle,
             Type = settings.Type,
@@ -94,7 +103,7 @@ public unsafe class GraphicDeviceResources
 
     public void BindShader(ShaderId id)
     {
-        _device.Backend.CommandPush(new LowCommandBindShader
+        Device.Backend.CommandPush(new LowCommandBindShader
         {
             Handle = _shaders[id].Handle,
         }, LowCommandType.BindShader);
@@ -144,7 +153,7 @@ public unsafe class GraphicDeviceResources
 
         _shaders[id] = shader;
 
-        _device.Backend.CommandPush(new LowCommandCreateShader
+        Device.Backend.CommandPush(new LowCommandCreateShader
         {
             Handle = handle,
             Data = data,

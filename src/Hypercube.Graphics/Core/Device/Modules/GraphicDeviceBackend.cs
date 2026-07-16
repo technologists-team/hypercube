@@ -1,21 +1,19 @@
 ﻿using Hypercube.Graphics.Backend;
 using Hypercube.Graphics.Device;
+using Hypercube.Graphics.Types;
 using Hypercube.Utilities.Commander;
 
 namespace Hypercube.Graphics.Core.Device.Modules;
 
-public sealed class GraphicDeviceBackend
+public sealed class GraphicDeviceBackend : GraphicDeviceModule
 {
-    private readonly GraphicDevice _device;
-    
     private readonly IBackend _backend;
     private readonly IUnsafeCommandBuffer _commandBuffer;
 
-    public GraphicDeviceBackend(GraphicDevice device, GraphicsDeviceSettings settings)
+    public GraphicDeviceBackend(GraphicDevice device, GraphicsDeviceSettings settings) : base(device)
     {
-        _device = device;
-        
-        _backend = BackendFactory.Create(settings.Backend);
+        // We granted not null in GraphicDevice
+        _backend = BackendFactory.Create(device.BackendType);
         _backend.Initialize(settings);
         
         _commandBuffer = new UnsafeCommandBuffer();

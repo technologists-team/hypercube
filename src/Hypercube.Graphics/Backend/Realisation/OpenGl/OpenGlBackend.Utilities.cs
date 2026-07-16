@@ -11,11 +11,31 @@ using SilkInternalFormat = Silk.NET.OpenGL.InternalFormat;
 using SilkPixelFormat = Silk.NET.OpenGL.PixelFormat;
 using SilkGLEnum = Silk.NET.OpenGL.GLEnum;
 using SilkShaderType = Silk.NET.OpenGL.ShaderType;
+using SilkClearBufferMask = Silk.NET.OpenGL.ClearBufferMask;
 
 namespace Hypercube.Graphics.Backend.Realisation.OpenGl;
 
 public sealed partial class OpenGlBackend
 {
+    private static SilkClearBufferMask Translate(ClearBufferMask mask)
+    {
+        var result = SilkClearBufferMask.None;
+        
+        if ((mask & ClearBufferMask.DepthBuffer) != 0)
+            result |= SilkClearBufferMask.DepthBufferBit;
+        
+        if ((mask & ClearBufferMask.StencilBuffer) != 0)
+            result |= SilkClearBufferMask.StencilBufferBit;
+
+        if ((mask & ClearBufferMask.ColorBuffer) != 0)
+            result |= SilkClearBufferMask.ColorBufferBit;
+
+        if ((mask & ClearBufferMask.CoverageBufferNv) != 0)
+            result |= SilkClearBufferMask.CoverageBufferBitNV;
+
+        return result;
+    }
+    
     private static SilkShaderType Translate(ShaderType type)
     {
         return type switch

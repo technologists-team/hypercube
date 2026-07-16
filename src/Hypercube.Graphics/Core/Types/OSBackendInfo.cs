@@ -3,6 +3,6 @@
 namespace Hypercube.Graphics.Core.Types;
 
 public readonly record struct OSBackendInfo(
-    RenderBackendType Best, 
-    RenderBackendType[] Supported
+    BackendType Best, 
+    BackendType[] Supported
 );

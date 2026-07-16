@@ -1,9 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Hypercube.Mathematics.Vectors;
-using Hypercube.Windowing.Core.Backend.Interaction.Handlers;
+using Hypercube.Windowing.Backend.Handlers;
 using Hypercube.Windowing.Core.Windows;
-using Hypercube.Windowing.Types;
 using Hypercube.Windowing.Windows;
 
 // Silk redefine for reduce type/namespace collisions
@@ -89,13 +88,13 @@ public sealed unsafe partial class GlfwBackend : IBackend
         }
         
         var handle = _glfw.CreateWindow(width, height, title, monitor, window);
+        var handleAddress = Translate(handle);
+        
         if (handle is null)
-        {
             return WindowHandle.Null;
-        }
         
         // Setters
-        WindowSetIcon(handle, settings.Icon);
+        WindowSetIcon(handleAddress, settings.Icon);
         
         // Callbacks input
         _glfw.SetKeyCallback(handle, WindowKeyCallback);
@@ -110,115 +109,65 @@ public sealed unsafe partial class GlfwBackend : IBackend
         _glfw.SetWindowPosCallback(handle, WindowPositionCallback);
         _glfw.SetWindowFocusCallback(handle, WindowFocusCallback);
         
-        return Translate(handle);
+        return handleAddress;
     } 
 
     public void WindowDestroy(WindowHandle window)
     {
-        WindowDestroy((SilkWindow*) window.Value);
+        _glfw.DestroyWindow((SilkWindow*) window.Value);
     }
 
     public void WindowFocus(WindowHandle window)
     {
-        WindowFocus((SilkWindow*) window.Value);
+        _glfw.FocusWindow((SilkWindow*) window.Value);
     }
 
     public void WindowAttention(WindowHandle window)
     {
-        WindowAttention((SilkWindow*) window.Value);
+        _glfw.RequestWindowAttention((SilkWindow*) window.Value);
+    }
+
+    public void WindowShow(WindowHandle window)
+    {
+        _glfw.ShowWindow((SilkWindow*) window.Value);   
+    }
+
+    public void WindowHide(WindowHandle window)
+    {
+        _glfw.HideWindow((SilkWindow*) window.Value);
+    }
+
+    public void WindowMinimize(WindowHandle window)
+    {
+        _glfw.MaximizeWindow((SilkWindow*) window.Value);
+    }
+
+    public void WindowMaximize(WindowHandle window)
+    {
+        _glfw.MaximizeWindow((SilkWindow*) window.Value);
+    }
+
+    public void WindowRestore(WindowHandle window)
+    {
+        _glfw.RestoreWindow((SilkWindow*) window.Value);
     }
 
     public void WindowSetPosition(WindowHandle window, Vector2i position)
     {
-        WindowSetPosition((SilkWindow*) window.Value, position);
+        _glfw.SetWindowPos((SilkWindow*) window.Value, position.X, position.Y);
     }
 
     public void WindowSetSize(WindowHandle window, Vector2i size)
     {
-        WindowSetSize((SilkWindow*) window.Value, size);
+        _glfw.SetWindowSize((SilkWindow*) window.Value, size.X, size.Y);
     }
 
     public void WindowSetTitle(WindowHandle window, string title)
     {
-        WindowSetTitle((SilkWindow*) window.Value, title);
+        _glfw.SetWindowTitle((SilkWindow*) window.Value, title);
     }
 
     public void WindowSetIcon(WindowHandle window, Icon icon)
-    {
-        WindowSetIcon((SilkWindow*) window.Value, icon);
-    }
-    
-    public void WindowSetIcon(WindowHandle window, ReadOnlySpan<Icon> icons)
-    {
-        WindowSetIcons((SilkWindow*) window.Value, icons);
-    }
-    
-    public void WindowSetIcon(WindowHandle window, Icon[] icons)
-    {
-        WindowSetIcons((SilkWindow*) window.Value, icons.AsSpan());
-    }
-
-    public void MakeContextCurrent(WindowHandle window)
-    {
-        _glfw.MakeContextCurrent((SilkWindow*) window.Value);
-    }
-
-    public nint GetProcAddress(string procName)
-    {
-        return _glfw.GetProcAddress(procName);
-    }
-
-    public void SwapBuffers(WindowHandle window)
-    {
-        _glfw.SwapBuffers((SilkWindow*) window.Value);
-    }
-
-    public void PollEvents()
-    {
-        _glfw.PollEvents();
-    }
-
-    public void WaitEvents()
-    {
-        _glfw.WaitEvents();
-    }
-
-    public void PostEmptyEvent()
-    {
-        _glfw.PostEmptyEvent();
-    }
-    
-    private void WindowDestroy(SilkWindow* window)
-    {
-        _glfw.DestroyWindow(window);
-    }
-
-    private void WindowFocus(SilkWindow* window)
-    {
-        _glfw.FocusWindow(window);
-    }
-
-    private void WindowAttention(SilkWindow* window)
-    {
-        _glfw.RequestWindowAttention(window);
-    }
-    
-    private void WindowSetPosition(SilkWindow* window, Vector2i position)
-    {
-        _glfw.SetWindowPos(window, position.X, position.Y);
-    }
-
-    private void WindowSetSize(SilkWindow* window, Vector2i size)
-    {
-        _glfw.SetWindowSize(window, size.X, size.Y);
-    }
-
-    private void WindowSetTitle(SilkWindow* window, string title)
-    {
-        _glfw.SetWindowTitle(window, title);
-    }
-    
-    private void WindowSetIcon(SilkWindow* window, Icon icon)
     {
         fixed (byte* pixels = icon.Data)
         {
@@ -232,11 +181,11 @@ public sealed unsafe partial class GlfwBackend : IBackend
                 Pixels = pixels
             };
 
-            _glfw.SetWindowIcon(window, 1, &silkImage);
+            _glfw.SetWindowIcon((SilkWindow*) window.Value, 1, &silkImage);
         }
     }
     
-    private void WindowSetIcons(SilkWindow* window, ReadOnlySpan<Icon> icons)
+    public void WindowSetIcons(WindowHandle window, ReadOnlySpan<Icon> icons)
     {
         if (icons.IsEmpty)
             return;
@@ -269,8 +218,50 @@ public sealed unsafe partial class GlfwBackend : IBackend
         
             offset += length;
         }
-        
+
         fixed (SilkImage* ptr = images)
-            _glfw.SetWindowIcon(window, images.Length, ptr);
+        {
+            _glfw.SetWindowIcon((SilkWindow*)window.Value, images.Length, ptr);
+        }
+    }
+
+    public void WindowSetIcons(WindowHandle window, Icon[] icons)
+    {
+        WindowSetIcons(window, new Span<Icon>(icons));
+    }
+
+    public void WindowSetContext(WindowHandle window)
+    {
+        _glfw.MakeContextCurrent((SilkWindow*) window.Value);
+    }
+
+    public nint GetProcAddress(string procName)
+    {
+        return _glfw.GetProcAddress(procName);
+    }
+
+    public void WindowSwapBuffers(WindowHandle window)
+    {
+        _glfw.SwapBuffers((SilkWindow*) window.Value);
+    }
+
+    public void PollEvents()
+    {
+        _glfw.PollEvents();
+    }
+
+    public void WaitEvents()
+    {
+        _glfw.WaitEvents();
+    }
+
+    public void PostEmptyEvent()
+    {
+        _glfw.PostEmptyEvent();
+    }
+
+    public WindowHandle WindowGetContext()
+    {
+        return Translate(_glfw.GetCurrentContext());
     }
 }

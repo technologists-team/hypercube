@@ -1,12 +1,9 @@
 ﻿namespace Hypercube.Graphics.Core.Device.Modules;
 
-public sealed class GraphicDeviceStatistic
+public sealed class GraphicDeviceStatistic : GraphicDeviceModule
 {
-    private readonly GraphicDevice _device;
-
-    public GraphicDeviceStatistic(GraphicDevice device)
+    public GraphicDeviceStatistic(GraphicDevice device) : base(device)
     {
-        _device = device;
     }
 
     public int BackendDrawCalls;

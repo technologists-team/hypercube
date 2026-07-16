@@ -6,6 +6,12 @@ namespace Hypercube.Graphics.Core;
 
 public static class Constants
 {
+    public const int BufferVerticesSize = 65536;
+    public const int BufferIndicesSize = 98304;
+        
+    public const int MinVertexCapacity = 1024;
+    public const int MinIndexCapacity = 2048;
+    
     public static readonly VertexAttribute[] ShaderAttribLocations =
     [
         new("aPos",       0, 3, VertexAttributeType.Float),
@@ -14,9 +20,11 @@ public static class Constants
         new("aNormal",    3, 3, VertexAttributeType.Float)
     ];
 
-    public static readonly RenderBackendType[] ImplementedBackends =
+    public static readonly BackendType[] ImplementedBackends =
     [
-        RenderBackendType.OpenGL
+        BackendType.OpenGl,
+        BackendType.OpenGles,
+        BackendType.Vulkan
     ];
     
     public static readonly Dictionary<OS, OSBackendInfo> OSBackendMatrix = new()
@@ -26,61 +34,61 @@ public static class Constants
             // we assume it supports OpenGL.
             // OpenGL is still the safest universal baseline
             OS.Unknown, new OSBackendInfo(
-                Best: RenderBackendType.OpenGL,
-                Supported: [RenderBackendType.OpenGL]
+                Best: BackendType.OpenGl,
+                Supported: [BackendType.OpenGl]
             )
         },
         {
             OS.Windows, new OSBackendInfo(
-                Best: RenderBackendType.Direct3D12,
+                Best: BackendType.Direct3D12,
                 Supported:
                 [
-                    RenderBackendType.Direct3D12,
-                    RenderBackendType.Direct3D11,
-                    RenderBackendType.Vulkan,
-                    RenderBackendType.OpenGL
+                    BackendType.Direct3D12,
+                    BackendType.Direct3D11,
+                    BackendType.Vulkan,
+                    BackendType.OpenGl
                 ]
             )
         },
         {
             OS.Linux, new OSBackendInfo(
-                Best: RenderBackendType.Vulkan,
+                Best: BackendType.Vulkan,
                 Supported:
                 [
-                    RenderBackendType.Vulkan,
-                    RenderBackendType.OpenGL,
-                    RenderBackendType.OpenGles
+                    BackendType.Vulkan,
+                    BackendType.OpenGl,
+                    BackendType.OpenGles
                 ]
             )
         },
         {
             OS.MacOS, new OSBackendInfo(
-                Best: RenderBackendType.Metal,
+                Best: BackendType.Metal,
                 Supported:
                 [
-                    RenderBackendType.Metal,
-                    RenderBackendType.Vulkan, // via MoltenVK
-                    RenderBackendType.OpenGL
+                    BackendType.Metal,
+                    BackendType.Vulkan, // via MoltenVK
+                    BackendType.OpenGl
                 ]
             )
         },
         {
             OS.Android, new OSBackendInfo(
-                Best: RenderBackendType.Vulkan,
+                Best: BackendType.Vulkan,
                 Supported:
                 [
-                    RenderBackendType.Vulkan,
-                    RenderBackendType.OpenGles
+                    BackendType.Vulkan,
+                    BackendType.OpenGles
                 ]
             )
         },
         {
             OS.Browser, new OSBackendInfo(
-                Best: RenderBackendType.WebGpu,
+                Best: BackendType.WebGpu,
                 Supported:
                 [
-                    RenderBackendType.WebGpu,
-                    RenderBackendType.OpenGles
+                    BackendType.WebGpu,
+                    BackendType.OpenGles
                 ]
             )
         }

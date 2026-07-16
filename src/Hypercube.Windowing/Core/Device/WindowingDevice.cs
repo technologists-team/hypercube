@@ -1,7 +1,6 @@
 ﻿using Hypercube.Windowing.Backend;
-using Hypercube.Windowing.Core.Backend;
-using Hypercube.Windowing.Core.Backend.Handler;
-using Hypercube.Windowing.Core.Backend.Interaction.Handlers;
+using Hypercube.Windowing.Backend.Handlers;
+using Hypercube.Windowing.Backend.Processors;
 using Hypercube.Windowing.Core.Monitors;
 using Hypercube.Windowing.Core.Windows;
 using Hypercube.Windowing.Device;
@@ -12,52 +11,67 @@ namespace Hypercube.Windowing.Core.Device;
 
 public sealed class WindowingDevice : IWindowingDevice
 {
+    /// <inheritdoc/>
     public event ErrorHandler? OnError;
    
     private readonly Dictionary<WindowHandle, IWindow> _windows = [];
     private readonly Dictionary<MonitorHandle, IMonitor> _monitors = [];
+    
+    private readonly WindowingBackendProcessor _processor;
+    
+    private bool _disposed;
    
-    private readonly BackendHandler _handler;
-   
-    public Thread? Thread { get; private set; }  
-   
-    public WindowingDevice(in WindowingDeviceSettings deviceSettings)
+    public WindowingDevice(in WindowingDeviceSettings settings)
     {
-        var backend = BackendFactory.Create(deviceSettings.Backend);
-        var proxy = new BackendProxy(backend);
-      
-        _handler = BackendFactory.Create(proxy, deviceSettings.Multithread);
-        _handler.OnError += (message, code) => OnError?.Invoke(message, code);
-        _handler.Initialize();
+        _processor = BackendFactory.CreateProcessor(settings.Backend, settings.Multithread);
+        
+        _processor.Raiser.OnError += (message, code) => OnError?.Invoke(message, code);
+        _processor.Executor.Initialize();
     }
 
-    public IWindow CreateWindow(WindowCreateSettings settings)
+    /// <inheritdoc/>
+    public IWindow CreateWindowSync(WindowCreateSettings settings)
     {
-        var handle = _handler.WindowCreate(settings);
-        var instance = new Window(handle, _handler);
+        var handle = _processor.Executor.WindowCreateSync(settings);
+        
+        var instance = new Window(handle, this, _processor);
       
         _windows[handle] = instance;
 
         return instance;
     }
 
-    public void Terminate()
+    public void WidowRemove(IWindow window)
     {
-        _handler.Terminate();
+        if (!_windows.Remove(window.Handle))
+            return;
     }
 
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+        
+        _processor.Dispose();
+        _disposed = true;
+    }
+    
+    /// <inheritdoc/>
     public void Update()
     {
-        _handler.OnUpdate();
+        _processor.OnUpdate();
     }
 
-    public void SwapBuffers()
-    {
-        throw new NotImplementedException();
-    }
-
+    /// <inheritdoc/>
     public nint GetProcAddress(string name)
     {
-        return _handler.GetProcAddress(name);
+        return _processor.Backend.GetProcAddress(name);
+    }
+
+    /// <inheritdoc/>
+    public IWindow GetContext()
+    {
+        return _windows[_processor.Backend.WindowGetContext()];
     }
 }

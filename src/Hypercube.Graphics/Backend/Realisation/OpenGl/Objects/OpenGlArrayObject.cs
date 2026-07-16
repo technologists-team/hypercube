@@ -28,20 +28,12 @@ public sealed class OpenGlArrayObject : IDisposable
     [PublicAPI]
     public void Bind()
     {
-        if (_bound)
-            return;
-
-        _bound = true;
         _gl.BindVertexArray(_handle);
     }
 
     [PublicAPI]
     public void Unbind()
     {
-        if (!_bound)
-            return;
-
-        _bound = false;
         _gl.BindVertexArray(Null);
     }
 

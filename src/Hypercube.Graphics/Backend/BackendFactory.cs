@@ -5,11 +5,11 @@ namespace Hypercube.Graphics.Backend;
 
 public class BackendFactory
 {
-    public static IBackend Create(RenderBackendType type)
+    public static IBackend Create(BackendType type)
     {
         return type switch
         {
-            RenderBackendType.OpenGL => new OpenGlBackend(),
+            BackendType.OpenGl => new OpenGlBackend(),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

@@ -1,23 +1,31 @@
-﻿using Hypercube.Windowing.Backend.Realisation.Glfw;
-using Hypercube.Windowing.Core.Backend;
-using Hypercube.Windowing.Core.Backend.Handler;
-using Hypercube.Windowing.Core.Backend.Handler.Realisation;
-using Hypercube.Windowing.Types;
+﻿using Hypercube.Windowing.Backend.Processors;
+using Hypercube.Windowing.Backend.Realisation.Glfw;
 
 namespace Hypercube.Windowing.Backend;
 
 public static class BackendFactory
 {
-    public static BackendHandler Create(BackendProxy proxy, bool multithread)
+    public static WindowingBackendProcessor CreateProcessor(WindowingBackendType type, bool multithread)
+    {
+        var backend = CreateBackend(type);
+        return multithread switch
+        {
+            true  => new WindowingBackendProcessorMultithread(backend),
+            false => new WindowingBackendProcessorForward(backend)
+        };
+    }
+
+    
+    public static WindowingBackendProcessor CreateProcessor(IBackend backend, bool multithread)
     {
         return multithread switch
         {
-            true  => new BackendHandlerMultithread(proxy),
-            false => new BackendHandlerForward(proxy)
+            true  => new WindowingBackendProcessorMultithread(backend),
+            false => new WindowingBackendProcessorForward(backend)
         };
     }
-    
-    public static IBackend Create(WindowingBackendType type)
+
+    private static IBackend CreateBackend(WindowingBackendType type)
     {
         return type switch
         {

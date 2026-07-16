@@ -2,6 +2,5 @@
 
 public interface IGraphicDevice
 {
-    void FrameStart();
-    void FrameEnd();
+    void Submit();
 }

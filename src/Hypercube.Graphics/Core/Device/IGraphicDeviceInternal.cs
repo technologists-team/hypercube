@@ -8,4 +8,6 @@ public interface IGraphicDeviceInternal : IGraphicDevice
     GraphicDeviceBackend Backend { get; }
     GraphicDeviceStatistic Statistic { get; }
     GraphicDeviceResources Resources { get; }
+    GraphicDeviceBatcher Batcher { get; }
+    GraphicDeviceRenderer Renderer { get; }
 }

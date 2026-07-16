@@ -1,8 +1,0 @@
-﻿using Hypercube.Graphics.Resources.Shaders;
-
-namespace Hypercube.Graphics.Backend.Commands;
-
-public struct LowCommandBindShader
-{
-    public ShaderBackendHandle Handle;
-}

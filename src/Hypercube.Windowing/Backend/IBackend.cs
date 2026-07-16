@@ -1,10 +1,11 @@
 ﻿using Hypercube.Mathematics.Vectors;
-using Hypercube.Windowing.Core.Backend.Interaction.Handlers;
+using Hypercube.Windowing.Backend.Handlers;
 using Hypercube.Windowing.Core.Windows;
 using Hypercube.Windowing.Windows;
 
 namespace Hypercube.Windowing.Backend;
 
+// NOTE: change to void ExecuteCommands(IUnsafeCommandBuffer commandBuffer); ???
 public interface IBackend
 {
     event ErrorHandler? OnError;
@@ -26,6 +27,12 @@ public interface IBackend
     bool Initialize();
     
     void Terminate();
+    
+    void PollEvents();
+
+    void WaitEvents();
+
+    void PostEmptyEvent();
 
     WindowHandle WindowCreate(WindowCreateSettings settings);
 
@@ -34,7 +41,19 @@ public interface IBackend
     void WindowFocus(WindowHandle window);
 
     void WindowAttention(WindowHandle window);
+    
+    void WindowShow(WindowHandle window);
+    
+    void WindowHide(WindowHandle window);
+    
+    void WindowMinimize(WindowHandle window);
+    
+    void WindowMaximize(WindowHandle window);
+    
+    void WindowRestore(WindowHandle window);
 
+    void WindowSetContext(WindowHandle window);
+    
     void WindowSetPosition(WindowHandle window, Vector2i position);
 
     void WindowSetSize(WindowHandle window, Vector2i size);
@@ -43,19 +62,13 @@ public interface IBackend
 
     void WindowSetIcon(WindowHandle window, Icon icon);
 
-    void WindowSetIcon(WindowHandle window, ReadOnlySpan<Icon> icons);
+    void WindowSetIcons(WindowHandle window, ReadOnlySpan<Icon> icons);
 
-    void WindowSetIcon(WindowHandle window, Icon[] icons);
+    void WindowSetIcons(WindowHandle window, Icon[] icons);
 
-    void MakeContextCurrent(WindowHandle window);
+    WindowHandle WindowGetContext();
 
-    void SwapBuffers(WindowHandle window);
-    
+    void WindowSwapBuffers(WindowHandle window);
+
     nint GetProcAddress(string procName);
-
-    void PollEvents();
-
-    void WaitEvents();
-
-    void PostEmptyEvent();
 }

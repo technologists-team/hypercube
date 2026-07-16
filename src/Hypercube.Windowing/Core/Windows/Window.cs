@@ -1,105 +1,150 @@
-﻿using Hypercube.Mathematics.Vectors;
-using Hypercube.Windowing.Core.Backend.Handler;
+﻿using System.Runtime.CompilerServices;
+using Hypercube.Mathematics.Vectors;
+using Hypercube.Windowing.Backend.Processors;
+using Hypercube.Windowing.Core.Device;
 using Hypercube.Windowing.Windows;
 
 namespace Hypercube.Windowing.Core.Windows;
 
-public sealed class Window : IWindow, IDisposable
+/// <inheritdoc/>
+public sealed partial class Window : IWindow
 {
-    public event RouterWindowCloseHandler? OnClose;
-
-    public Vector2i Size { get; private set; }
-    public Vector2i FramebufferSize { get; private set; }
-    public Vector2i Position { get; private set; }
-    public bool Focus { get; private set; }
+    /// <inheritdoc/>
+    public event Action? OnClose;
     
-    private readonly WindowHandle _handle;
-    private readonly BackendHandler _handler;
-    private readonly WindowEventRouter _router;
+    /// <inheritdoc/>
+    public event Action<Vector2i>? OnSize;
 
-    public Window(WindowHandle handle, BackendHandler handler)
+    /// <inheritdoc/>
+    public WindowHandle Handle { get; }
+    
+    /// <inheritdoc/>
+    public Vector2i Size { get; private set; }
+    
+    /// <inheritdoc/>
+    public Vector2i FramebufferSize { get; private set; }
+    
+    /// <inheritdoc/>
+    public Vector2i Position { get; private set; }
+    
+    /// <inheritdoc/>
+    public bool Focus { get; private set; }
+
+    private readonly WindowingDevice _device;
+    private readonly WindowingBackendProcessor _processor;
+
+    private bool _disposed; 
+    
+    public Window(WindowHandle handle, WindowingDevice device, WindowingBackendProcessor processor)
     {
-        _handle = handle;
-        _handler = handler;
+        Handle = handle;
         
-        _router = new WindowEventRouter(_handle, _handler);
-        _router.OnClose += CloseCallback;
-        _router.OnSize += SizeCallback;
-        _router.OnFramebufferSize += FramebufferSizeCallback;
-        _router.OnPosition += PositionCallback;
-        _router.OnFocus += FocusCallback;
+        _device = device;
+        _processor = processor;
+        
+        _processor.Raiser.OnWindowClose += CloseCallback;
+        _processor.Raiser.OnWindowSize += SizeCallback;
+        _processor.Raiser.OnWindowFramebufferSize += FramebufferSizeCallback;
+        _processor.Raiser.OnWindowPosition += PositionCallback;
+        _processor.Raiser.OnWindowFocus += FocusCallback;
     }
 
-    public void Dispose()
+    /// <inheritdoc/>
+    public void Show()
     {
-        _router.OnClose -= CloseCallback;
-        _router.OnSize -= SizeCallback;
-        _router.OnFramebufferSize -= FramebufferSizeCallback;
-        _router.OnPosition -= PositionCallback;
-        _router.OnFocus -= FocusCallback;
+        _processor.Executor.WindowShow(Handle);
     }
 
-    public void MakeContextCurrent()
+    /// <inheritdoc/>
+    public void Hide()
     {
-        _handler.MakeContextCurrent(_handle);
+        _processor.Executor.WindowHide(Handle);
     }
 
-    public void SwapBuffers()
+    /// <inheritdoc/>
+    public void Minimize()
     {
-        _handler.SwapBuffers(_handle);
+        _processor.Executor.WindowMinimize(Handle);
     }
 
-    public void Destroy()
+    /// <inheritdoc/>
+    public void Maximize()
     {
-        _handler.WindowDestroy(_handle);
+        _processor.Executor.WindowMaximize(Handle);
     }
 
+    /// <inheritdoc/>
+    public void Restore()
+    {
+        _processor.Executor.WindowRestore(Handle);
+    }
+
+    /// <inheritdoc/>
     public void SetIcon(Icon icon)
     {
-        _handler.SetIcon(_handle, icon);
+        _processor.Executor.WindowSetIcon(Handle, icon);
     }
 
+    public void SetIcons(Icon[] icons)
+    {
+        _processor.Executor.WindowSetIcons(Handle, icons);
+    }
+    
+    /// <inheritdoc/>
     public void SetPosition(Vector2i position)
     {
-        _handler.SetPosition(_handle, position);
+        _processor.Executor.WindowSetPosition(Handle, position);
     }
 
+    /// <inheritdoc/>
     public void SetSize(Vector2i size)
     {
-        _handler.SetSize(_handle, size);
+        _processor.Executor.WindowSetSize(Handle, size);
     }
 
+    /// <inheritdoc/>
     public void SetTitle(string title)
     {
-        _handler.SetTitle(_handle, title);
+        _processor.Executor.WindowSetTitle(Handle, title);
     }
 
-    #region Event callbacks
-
-    private void CloseCallback()
+    /// <inheritdoc/>
+    public void SetContext()
     {
-        OnClose?.Invoke();
+        _processor.Backend.WindowSetContext(Handle);
     }
 
-    private void SizeCallback(Vector2i size)
+    /// <inheritdoc/>
+    public void SwapBuffers()
     {
-        Size = size;
+        _processor.Backend.WindowSwapBuffers(Handle);
     }
 
-    private void FramebufferSizeCallback(Vector2i size)
+    /// <inheritdoc/>
+    public void Destroy()
     {
-        FramebufferSize = size;
+        Dispose();
     }
 
-    private void PositionCallback(Vector2i position)
+    /// <inheritdoc/>
+    public void Dispose()
     {
-        Position = position;
+        if (_disposed)
+            return;
+        
+        _processor.Raiser.OnWindowClose -= CloseCallback;
+        _processor.Raiser.OnWindowSize -= SizeCallback;
+        _processor.Raiser.OnWindowFramebufferSize -= FramebufferSizeCallback;
+        _processor.Raiser.OnWindowPosition -= PositionCallback;
+        _processor.Raiser.OnWindowFocus -= FocusCallback;
+        
+        _device.WidowRemove(this);
+        
+        _processor.Executor.WindowDestroy(Handle);
+        
+        _disposed = true;
     }
-
-    private void FocusCallback(bool focused)
-    {
-        Focus = focused;
-    }
-
-    #endregion
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool WindowFilter(WindowHandle handle) => Handle ==  handle;
 }

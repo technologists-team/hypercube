@@ -14,24 +14,24 @@ public static class GraphicsContext
         return new GraphicDevice(settings with { Backend = type });
     }
     
-    private static RenderBackendType ResolveBackend(RenderBackendType backendType = RenderBackendType.Auto, bool forced = false)
+    private static BackendType ResolveBackend(BackendType? type, bool forced = false)
     {
         var os = HyperOS.Current;
         
         // Something terrible going on
         if (!Constants.OSBackendMatrix.TryGetValue(os, out var info))
-            return RenderBackendType.None;
+            return BackendType.None;
         
-        if (backendType != RenderBackendType.Auto)
+        if (type is not null)
         {
-            if (info.Supported.Contains(backendType))
+            if (info.Supported.Contains(type.Value))
             {
-                if (TryChoose(backendType))
-                    return backendType;
+                if (TryChoose(type.Value))
+                    return type.Value;
             }
             
             if (forced)
-                return RenderBackendType.None;
+                return BackendType.None;
         }
         
         if (TryChoose(info.Best))
@@ -43,8 +43,8 @@ public static class GraphicsContext
                 return supportedBackend;
         }
 
-        return RenderBackendType.None;
+        return BackendType.None;
         
-        bool TryChoose(RenderBackendType back) => Constants.ImplementedBackends.Contains(back);
+        static bool TryChoose(BackendType back) => Constants.ImplementedBackends.Contains(back);
     }
 }
