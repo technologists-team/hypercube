@@ -22,4 +22,9 @@ public sealed class OpenGlesBackend : IBackend
     {
         throw new NotImplementedException();
     }
+
+    public IBackendFence CreateFence()
+    {
+        throw new NotImplementedException();
+    }
 }

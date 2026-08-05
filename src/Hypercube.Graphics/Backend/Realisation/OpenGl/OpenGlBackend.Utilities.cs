@@ -133,7 +133,7 @@ public sealed partial class OpenGlBackend
         foreach (var attribute in layout)
         {
             var type = Translate(attribute.Type);
-            _gl.VertexAttribPointer(
+            Gl.VertexAttribPointer(
                 attribute.Location, 
                 attribute.ComponentCount, 
                 type, 
@@ -142,7 +142,7 @@ public sealed partial class OpenGlBackend
                 pointer
             );
         
-            _gl.EnableVertexAttribArray(attribute.Location);
+            Gl.EnableVertexAttribArray(attribute.Location);
             pointer += attribute.ComponentCount * attribute.GetSize();
         }
     }

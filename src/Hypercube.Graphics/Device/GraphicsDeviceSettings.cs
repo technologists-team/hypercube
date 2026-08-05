@@ -1,9 +1,13 @@
-﻿using Hypercube.Graphics.Types;
+﻿using Hypercube.Graphics.Core;
+using Hypercube.Graphics.Types;
 
 namespace Hypercube.Graphics.Device;
 
-public struct GraphicsDeviceSettings
+public struct GraphicsDeviceSettings()
 {
+    public ProjectMetadata Application { get; init; } = Constants.Application;
+    public ProjectMetadata Engine { get; init; } = Constants.Engine;
+    
     public BackendType? Backend { get; init; }
     public bool BackendForced { get; init; }
     

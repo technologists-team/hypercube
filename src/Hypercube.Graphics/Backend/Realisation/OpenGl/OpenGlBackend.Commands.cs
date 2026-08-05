@@ -42,14 +42,14 @@ public sealed partial class OpenGlBackend
                 case LowCommandType.Clear:
                 {
                     _ = *(LowCommandClear*) data;
-                    _gl.Clear(_mask);
+                    Gl.Clear(_mask);
                     break;
                 }
 
                 case LowCommandType.ClearSettings:
                 {
                     var cmd = *(LowCommandClearSettings*) data;
-                    _gl.ClearColor(cmd.Color.NormalizedR, cmd.Color.NormalizedG, cmd.Color.NormalizedB, cmd.Color.NormalizedA);
+                    Gl.ClearColor(cmd.Color.NormalizedR, cmd.Color.NormalizedG, cmd.Color.NormalizedB, cmd.Color.NormalizedA);
                     _mask = Translate(cmd.Mask);
                     break;
                 }
@@ -61,7 +61,7 @@ public sealed partial class OpenGlBackend
                 case LowCommandType.CullFaceMode:
                 {
                     var cmd = *(LowCommandCullFace*)data;
-                    _gl.CullFace(Translate(cmd.Mode));
+                    Gl.CullFace(Translate(cmd.Mode));
                     break;
                 }
 
@@ -70,19 +70,19 @@ public sealed partial class OpenGlBackend
                     var cmd = *(LowCommandScissor*) data;
                     if (cmd.Enabled)
                     {
-                        _gl.Enable(EnableCap.ScissorTest);
-                        _gl.Scissor(cmd.Box.Left, cmd.Box.Bottom, (uint) cmd.Box.Right, (uint) cmd.Box.Top);
+                        Gl.Enable(EnableCap.ScissorTest);
+                        Gl.Scissor(cmd.Box.Left, cmd.Box.Bottom, (uint) cmd.Box.Right, (uint) cmd.Box.Top);
                         break;
                     }
                     
-                    _gl.Disable(EnableCap.ScissorTest);
+                    Gl.Disable(EnableCap.ScissorTest);
                     break;
                 }
                 
                 case LowCommandType.Viewport:
                 {
                     var cmd = *(LowCommandViewport*) data;
-                    _gl.Viewport(cmd.Viewport.Left, cmd.Viewport.Top, (uint) cmd.Viewport.Right, (uint) cmd.Viewport.Bottom);
+                    Gl.Viewport(cmd.Viewport.Left, cmd.Viewport.Top, (uint) cmd.Viewport.Right, (uint) cmd.Viewport.Bottom);
                     break;
                 }
                 
@@ -93,15 +93,15 @@ public sealed partial class OpenGlBackend
                 case LowCommandType.BindTexture:
                 {
                     var cmd = *(LowCommandBindTexture*) data;
-                    _gl.ActiveTexture(TextureUnit.Texture0 + cmd.Slot);
-                    _gl.BindTexture(TextureTarget.Texture2D, _textures[cmd.Handle]);
+                    Gl.ActiveTexture(TextureUnit.Texture0 + cmd.Slot);
+                    Gl.BindTexture(TextureTarget.Texture2D, _textures[cmd.Handle]);
                     break;
                 }
 
                 case LowCommandType.UnbindTexture:
                 {
                     _ = *(LowCommandUnbindTexture*) data;
-                    _gl.BindTexture(TextureTarget.Texture2D, NullTexture);
+                    Gl.BindTexture(TextureTarget.Texture2D, NullTexture);
                     break;
                 }
                 
@@ -113,11 +113,11 @@ public sealed partial class OpenGlBackend
                     var format = Translate(cmd.Format);
                     var pixelFormat = Translate(cmd.PixelFormat);
                     
-                    var texture = _gl.GenTexture();
+                    var texture = Gl.GenTexture();
                     _textures[cmd.Handle] = texture;
                     
-                    _gl.BindTexture(target, texture);
-                    _gl.TexImage2D(
+                    Gl.BindTexture(target, texture);
+                    Gl.TexImage2D(
                         target,
                         0,
                         format,
@@ -128,12 +128,12 @@ public sealed partial class OpenGlBackend
                         PixelType.UnsignedByte,
                         cmd.Data);
                     
-                    _gl.TexParameter(target, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
-                    _gl.TexParameter(target, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
-                    _gl.TexParameter(target, TextureParameterName.TextureWrapS, (int) TextureWrapMode.ClampToEdge);
-                    _gl.TexParameter(target, TextureParameterName.TextureWrapT, (int) TextureWrapMode.ClampToEdge);
+                    Gl.TexParameter(target, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
+                    Gl.TexParameter(target, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+                    Gl.TexParameter(target, TextureParameterName.TextureWrapS, (int) TextureWrapMode.ClampToEdge);
+                    Gl.TexParameter(target, TextureParameterName.TextureWrapT, (int) TextureWrapMode.ClampToEdge);
                     
-                    _gl.BindTexture(target, 0);
+                    Gl.BindTexture(target, 0);
                     break;
                 }
 
@@ -144,14 +144,14 @@ public sealed partial class OpenGlBackend
                 case LowCommandType.BindShader:
                 {
                     var cmd = *(LowCommandBindShader*) data;
-                    _gl.UseProgram(_shaders[cmd.Handle]);
+                    Gl.UseProgram(_shaders[cmd.Handle]);
                     break;
                 }
 
                 case LowCommandType.UnbindShader:
                 {
                     _ = *(LowCommandUnbindShader*) data;
-                    _gl.UseProgram(NullShader);
+                    Gl.UseProgram(NullShader);
                     break;
                 }
                 
@@ -161,7 +161,7 @@ public sealed partial class OpenGlBackend
                     var cmd = *(LowCommandCreateShader*) data;
                     var pointer = (byte*) cmd.Data;
 
-                    var program = _gl.CreateProgram();
+                    var program = Gl.CreateProgram();
                     
                     var count = *pointer;
                     pointer++;
@@ -194,16 +194,16 @@ public sealed partial class OpenGlBackend
                         // we go to new shader header
                         pointer += size;
                         
-                        var shader = _gl.CreateShader(shaderType);
+                        var shader = Gl.CreateShader(shaderType);
                         
-                        _gl.ShaderSource(shader, 1, &source, &length);
-                        _gl.CompileShader(shader);
-                        _gl.GetShader(shader, ShaderParameterName.CompileStatus, out var shaderCode);
+                        Gl.ShaderSource(shader, 1, &source, &length);
+                        Gl.CompileShader(shader);
+                        Gl.GetShader(shader, ShaderParameterName.CompileStatus, out var shaderCode);
 
                         if (shaderCode != 1)
                         {
-                            var log = _gl.GetShaderInfoLog(shader);
-                            _gl.DeleteShader(shader);
+                            var log = Gl.GetShaderInfoLog(shader);
+                            Gl.DeleteShader(shader);
                             
                             // TODO: out error
                             Console.WriteLine(log);
@@ -213,16 +213,16 @@ public sealed partial class OpenGlBackend
                         // Don't save failed shader
                         shaders[i] = shader;
                         
-                        _gl.AttachShader(program, shader);
+                        Gl.AttachShader(program, shader);
                     }
                     
-                    _gl.LinkProgram(program);
-                    _gl.GetProgram(program, ProgramPropertyARB.LinkStatus, out var programCode);
+                    Gl.LinkProgram(program);
+                    Gl.GetProgram(program, ProgramPropertyARB.LinkStatus, out var programCode);
 
                     if (programCode != 1)
                     {
-                        _gl.GetProgramInfoLog(program, out var log);
-                        _gl.DeleteProgram(program);
+                        Gl.GetProgramInfoLog(program, out var log);
+                        Gl.DeleteProgram(program);
                         
                         Console.WriteLine(log);
                     }
@@ -233,8 +233,8 @@ public sealed partial class OpenGlBackend
                         if (shader == NullShader)
                             continue;
 
-                        _gl.DetachShader(program, shader);
-                        _gl.DeleteShader(shader);
+                        Gl.DetachShader(program, shader);
+                        Gl.DeleteShader(shader);
                     }
 
                     _shaders[cmd.Handle] = program;
@@ -270,7 +270,7 @@ public sealed partial class OpenGlBackend
                     var cmd = *(LowCommandDraw*) data;
                    
                     _vao.Bind();
-                    _gl.DrawElements(_primitive, (uint) (cmd.End - cmd.Start), DrawElementsType.UnsignedInt, (void*) cmd.Start);
+                    Gl.DrawElements(_primitive, (uint) (cmd.End - cmd.Start), DrawElementsType.UnsignedInt, (void*) cmd.Start);
                     break;
                 }
                 

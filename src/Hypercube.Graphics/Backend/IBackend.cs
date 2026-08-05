@@ -10,4 +10,6 @@ public interface IBackend
     void Terminate();
 
     void ExecuteCommands(IUnsafeCommandBuffer commandBuffer);
+    
+    IBackendFence CreateFence();
 }

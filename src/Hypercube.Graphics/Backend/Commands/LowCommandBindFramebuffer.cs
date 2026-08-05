@@ -1,3 +1,3 @@
 ﻿namespace Hypercube.Graphics.Backend.Commands;
 
-public struct LowCommandDefaultFramebuffer;
+public struct wCommandDefaultFramebuffer;

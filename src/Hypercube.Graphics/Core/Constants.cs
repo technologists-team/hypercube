@@ -11,6 +11,18 @@ public static class Constants
         
     public const int MinVertexCapacity = 1024;
     public const int MinIndexCapacity = 2048;
+
+    public static readonly ProjectMetadata Engine = new()
+    {
+        Name = "Hypercube",
+        Version = new Version(3, 0, 0),
+    };
+
+    public static readonly ProjectMetadata Application = new()
+    {
+        Name = "Hypercube App",
+        Version = new Version(1, 0, 0),
+    };
     
     public static readonly VertexAttribute[] ShaderAttribLocations =
     [
