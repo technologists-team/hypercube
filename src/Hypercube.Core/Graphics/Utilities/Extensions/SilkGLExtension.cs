@@ -42,7 +42,7 @@ public static class SilkGLExtension
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Viewport(IWindow window)
         {
-            gl.Viewport(window.Size);
+            gl.Viewport(window.FramebufferSize);
         }
 
         [PublicAPI]
